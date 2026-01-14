@@ -1,0 +1,3821 @@
+/*******************************************************************************
+ * *
+ * 1. ESTRUCTURA BASE Y NAVEGACIÓN                 *
+ * *
+ *******************************************************************************/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    color: #111;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.barra-navegacion {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navegacion-izquierda {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-navegacion {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.titulo-navegacion h3 {
+    font-size: 18px;
+}
+
+.titulo-navegacion span {
+    font-size: 13px;
+    color: #777;
+}
+
+.menu-navegacion {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+}
+
+.menu-navegacion a {
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.menu-navegacion a.activo {
+    color: #e60000;
+}
+
+.boton-inicio-sesion {
+    background: #e60000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.boton-inicio-sesion:hover {
+    background: #cf1515;
+}
+
+
+/*******************************************************************************
+ * *
+ * 2. PIE DE PÁGINA (FOOTER) REVISADO                  *
+ * *
+ *******************************************************************************/
+
+.pie-pagina {
+    background: #1a1a1a;
+    color: white;
+    padding: 60px 0 20px 0;
+    margin-top: 50px;
+    border-top: 5px solid #e60000;
+}
+
+.rejilla-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 5%;
+    gap: 30px;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 200px; /* Evita que se compriman demasiado */
+}
+
+/* Columna del Logo */
+.logo-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.logo-footer img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.texto-logo-footer h3 {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.texto-logo-footer span {
+    font-size: 13px;
+    color: #e60000;
+    font-weight: 600;
+}
+
+.descripcion-breve {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Títulos de columnas */
+.footer-col h4 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background: #e60000;
+}
+
+/* Listas de enlaces */
+.lista-footer {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-footer li {
+    margin-bottom: 12px;
+    color: #bbb;
+    font-size: 15px;
+}
+
+.lista-footer a {
+    color: #bbb;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.lista-footer a:hover {
+    color: white;
+    transform: translateX(5px); /* Desplazamiento suave */
+}
+
+/* Iconos de contacto */
+.contacto-items li i {
+    color: #e60000;
+    margin-right: 10px;
+    width: 16px;
+    text-align: center;
+}
+
+/* Redes Sociales */
+.redes-iconos {
+    display: flex;
+    gap: 15px;
+}
+
+.redes-iconos a {
+    background: #333;
+    color: white;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.redes-iconos a:hover {
+    background: #e60000;
+    transform: translateY(-5px);
+}
+
+/* Parte Inferior (Copyright) */
+.footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: 40px;
+    padding: 20px 5% 0 5%;
+    text-align: center;
+}
+
+.copy {
+    color: #777;
+    font-size: 14px;
+}
+
+
+
+/*******************************************************************************
+ * *
+ * 3. PÁGINA DE INICIO                       *
+ * *
+ *******************************************************************************/
+
+.seccion-hero {
+    background: #e60000;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 10%;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hero-texto {
+    flex: 1;
+    min-width: 300px;
+}
+
+.seccion-hero h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.botones-hero {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.boton-principal {
+    background: white;
+    color: #e60000;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+}
+
+.boton-secundario {
+    background: transparent;
+    border: 2px solid white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+}
+
+.hero-imagen img {
+    width: 100%;
+    max-width: 430px;
+    border-radius: 10px;
+    height: auto;
+}
+
+.seccion-noticias {
+    padding: 60px 2%;
+    background: #fff;
+}
+
+.seccion-noticias h2 {
+    text-align: center;
+    font-size: 28px;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #777;
+    margin-bottom: 35px;
+}
+
+.rejilla-noticias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.tarjeta-noticia {
+    background: white;
+    max-width: 350px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.tarjeta-noticia img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.info-tarjeta {
+    padding: 20px;
+}
+
+.info-tarjeta a {
+    color: #e60000;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.estadisticas {
+    background: #2a2a2a;
+    color: white;
+    padding: 40px 5%;
+}
+
+.rejilla-estadisticas {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+}
+
+.una-estadistica h3 {
+    font-size: 30px;
+}
+
+.patrocinadores {
+    padding: 50px 5%;
+    background: white;
+}
+
+.rejilla-patrocinadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.patrocinador {
+    background: #eee;
+    padding: 35px 10px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+
+
+/*******************************************************************************
+ * *
+ * 4. PÁGINA DE EQUIPOS                          *
+ * *
+ *******************************************************************************/
+
+/* --- CABECERA --- */
+.seccion-equipo-header {
+    background: #e60000;
+    color: white;
+    text-align: center;
+    padding: 60px 40px; /* Un poco más de aire */
+}
+
+.seccion-equipo-header h1 {
+    font-size: 36px; /* Un poco más grande para impactar */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- NAVEGACIÓN --- */
+.navegacion-categorias {
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.botones-categoria {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Un poco más de espacio entre botones */
+    flex-wrap: wrap; /* Para que en móvil no se corten */
+}
+
+.boton-categoria {
+    background: #e60000; 
+    color: white !important;
+    padding: 12px 22px;
+    border-radius: 8px;
+    border: 1px solid #e60000;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.boton-categoria.activo, 
+.boton-categoria:hover {
+    background: #b30000 !important;
+    border-color: #b30000 !important;
+    transform: translateY(-2px); /* Pequeña elevación al pasar el ratón */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* --- SECCIÓN EQUIPO Y REJILLA --- */
+.equipo-jugadores {
+    padding: 50px 40px;
+    background: #f9f9f9; /* Un gris casi blanco para que las tarjetas resalten */
+}
+
+.rejilla-jugadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- LA TARJETA (EFECTO PRO) --- */
+.tarjeta-jugador {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid #eee;
+    position: relative;
+}
+
+.tarjeta-jugador:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(230, 0, 0, 0.15);
+    border-color: #e60000;
+}
+
+/* --- FOTO Y DORSAL --- */
+.foto-jugador {
+    height: 340px; /* Un poco más alta para que luzca el jugador */
+    background: #eee;
+    overflow: hidden;
+    position: relative;
+}
+
+.foto-jugador img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.tarjeta-jugador:hover .foto-jugador img {
+    transform: scale(1.1); /* Zoom suave al pasar el ratón */
+}
+
+/* El Badge del dorsal sobre la foto */
+.dorsal-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e60000;
+    color: white;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+/* --- INFO JUGADOR --- */
+.info-jugador {
+    padding: 25px;
+    text-align: center;
+}
+
+.posicion {
+    color: #e60000;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.info-jugador h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #222;
+    font-weight: 800;
+}
+
+/* Un pequeño separador elegante */
+.separador {
+    width: 30px;
+    height: 3px;
+    background: #e60000;
+    margin: 15px auto;
+    border-radius: 2px;
+}
+
+/* --- MENSAJES DE ERROR --- */
+.contenedor-mensaje-vacio {
+    display: flex;             
+    justify-content: center;   
+    align-items: center;       
+    flex-direction: column;    
+    width: 100%;                
+    min-height: 350px;       
+    text-align: center;
+    padding: 40px 0;
+}
+
+.alerta-basket {
+    text-align: center;
+    max-width: 500px;
+}
+
+.alerta-basket p {
+    font-size: 1.3rem;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+.boton-rojo-centrado, .boton-volver {
+    display: inline-block;
+    padding: 14px 30px;
+    background-color: #e60000;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background 0.3s;
+}
+
+.boton-rojo-centrado:hover, .boton-volver:hover {
+    background-color: #b30000;
+}
+
+/*******************************************************************************
+ * *
+ * 5. MERCHANDISING                           *
+ * *
+ *******************************************************************************/
+
+.seccion-merchandising-header {
+    background: #e60000;
+    /* Rojo principal */
+    color: white;
+    text-align: center;
+    padding: 30px 40px;
+}
+
+.seccion-merchandising-header h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.seccion-merchandising-header p {
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.iconos-merchandising {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* 2.2. SECCIÓN DE PRODUCTOS OFICIALES */
+.productos-oficiales {
+    padding: 50px 40px;
+    background: #f5f5f5;
+}
+
+.productos-oficiales h2 {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 28px;
+}
+
+.rejilla-productos {
+    display: grid;
+    /* 3 columnas, ajustando el ancho máximo del contenedor para centrar los 5 productos */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1050px;
+    /* Ancho ajustado para centrar mejor 5 elementos */
+    margin: 0 auto;
+}
+
+/* 2.3. TARJETA DE PRODUCTO */
+.tarjeta-producto {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta-producto img {
+    width: 100%;
+    /* Altura fija para que todas las imágenes tengan el mismo tamaño (opcional) */
+    height: 250px;
+    object-fit: cover;
+}
+
+.info-producto {
+    padding: 15px 15px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.info-producto h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.descripcion-producto {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.precio-comprar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.precio {
+    font-size: 22px;
+    /* Ligeramente más pequeño que el anterior */
+    font-weight: 700;
+    color: #e60000;
+}
+
+.boton-comprar {
+    background: #e60000;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.boton-comprar:hover {
+    background: #cf1515;
+}
+
+/* 2.4. SECCIÓN DE CONTACTO INFERIOR (Rojo) */
+.contacto-pedido {
+    background: #e60000;
+    color: white;
+    text-align: center;
+    padding: 40px 40px;
+}
+
+.contacto-pedido h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.contacto-pedido p {
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.boton-contacto {
+    background: white;
+    color: #e60000;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.boton-contacto:hover {
+    background: #eee;
+}
+
+.boton-contacto i {
+    margin-right: 8px;
+}
+
+/* ======================================================================= */
+/* 6. PARTIDOS */
+/* ======================================================================= */
+
+.seccion-partidos-header {
+    background: #e60000;
+    color: white;
+    padding: 30px 40px;
+}
+
+.header-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Simplificado: ya no es flex entre texto y contador */
+}
+
+.header-texto h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.header-texto p {
+    opacity: 0.9;
+    font-size: 16px;
+    text-align: center;
+
+}
+
+.seccion-calendario {
+    padding: 50px 40px;
+    background: #f5f5f5;
+}
+
+.rejilla-partidos {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.caja-equipo {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+}
+
+.titulo-equipo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.titulo-equipo i {
+    font-size: 24px;
+    color: #e60000;
+}
+
+.titulo-equipo h3 {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+.titulo-equipo p {
+    font-size: 14px;
+    color: #777;
+}
+
+
+.rejilla-partido-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.tarjeta-partido {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+    text-align: center;
+}
+
+.etiqueta-proximo {
+    background: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.jornada {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 12px;
+    color: #999;
+}
+
+.enfrentamiento {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.equipo {
+    flex: 1;
+}
+
+.equipo img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.equipo p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.rol-equipo {
+    font-size: 11px;
+    color: #888;
+}
+
+.vs {
+    font-weight: 700;
+    color: #e60000;
+    padding: 0 10px;
+    font-size: 18px;
+}
+
+.info-adicional {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #555;
+    display: block;
+}
+
+.info-adicional div {
+    margin-bottom: 5px;
+}
+
+.info-adicional i {
+    color: #e60000;
+    margin-right: 5px;
+    width: 15px;
+    text-align: center;
+}
+
+.dato-horario,
+.dato-lugar {
+    text-align: center;
+}
+
+/*******************************************************************************
+ * *
+ * 7. ESTADÍSTICAS DEL EQUIPO                                                  *
+ * *
+ *******************************************************************************/
+
+.seccion-estadisticas-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.seccion-estadisticas-header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.seccion-estadisticas-header p {
+    opacity: 0.9;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.temporada-actual {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.contenedor-estadisticas {
+    max-width: 1200px;
+    margin: -30px auto 50px auto;
+    padding: 0 20px;
+}
+
+/* Selector de Temporadas */
+.selector-temporadas {
+    background: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.btn-temp {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn-temp.activo {
+    background: #cf1515;
+    color: white;
+}
+
+/* Rejilla de Tarjetas Top */
+.rejilla-stats-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.card-stat {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid transparent;
+}
+
+.card-stat:nth-child(1) {
+    border-left-color: #cf1515;
+}
+
+.card-stat:nth-child(2) {
+    border-left-color: #f39c12;
+}
+
+.card-stat:nth-child(3) {
+    border-left-color: #a31111;
+}
+
+.card-stat:nth-child(4) {
+    border-left-color: #e74c3c;
+}
+
+.stat-info h3 {
+    font-size: 28px;
+    color: #333;
+}
+
+.stat-info p {
+    color: #888;
+    font-size: 14px;
+}
+
+/* Rejilla Detallada */
+.rejilla-detalles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.caja-detalle {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.detalle-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.detalle-header h4 {
+    font-size: 18px;
+}
+
+.icon-red {
+    color: #cf1515;
+}
+
+.fila-detalle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #fafafa;
+}
+
+.fila-detalle span {
+    color: #555;
+}
+
+.valor {
+    text-align: right;
+}
+
+.valor strong {
+    display: block;
+    font-size: 16px;
+}
+
+.valor small {
+    color: #cf1515;
+    font-weight: 600;
+}
+
+/* Resumen Final (Colores) */
+.rejilla-resumen-final {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card-resumen {
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+}
+
+.card-resumen.red {
+    background: #c02424;
+}
+
+.card-resumen.green {
+    background: #27ae60;
+}
+
+.card-resumen.dark {
+    background: #505c6d;
+}
+
+.resumen-head {
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+.resumen-body h2 {
+    font-size: 40px;
+    margin-bottom: 5px;
+}
+
+.resumen-body p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+
+/*******************************************************************************
+ * *
+ * 8. CLASIFICACIÓN                                                            *
+ * *
+ *******************************************************************************/
+
+.seccion-clasificacion-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.seccion-clasificacion-header h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.seccion-clasificacion-header p {
+    opacity: 0.9;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.icono-trofeo {
+    font-size: 50px;
+    color: #f1c40f;
+    /* Color dorado para el trofeo */
+}
+
+.contenedor-clasificacion {
+    max-width: 1100px;
+    margin: -30px auto 60px auto;
+    padding: 0 20px;
+}
+
+/* Selector de Categorías */
+.selector-categorias {
+    background: white;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.btn-cat {
+    padding: 10px 25px;
+    border: none;
+    background: #f1f1f1;
+    color: #444;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-cat.activo {
+    background: #cf1515;
+    color: white;
+}
+
+.btn-cat:hover:not(.activo) {
+    background: #e5e5e5;
+}
+
+/* Tabla Estilizada */
+.tabla-contenedor {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-header {
+    background: #e62e2e;
+    color: white;
+    padding: 18px 25px;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tabla-scroll {
+    overflow-x: auto;
+    /* Para que sea responsive en móviles */
+}
+
+.tabla-clasificacion {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-clasificacion th {
+    background: #fdfdfd;
+    padding: 15px 25px;
+    color: #666;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla-clasificacion td {
+    padding: 15px 25px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #333;
+    font-size: 15px;
+}
+
+/* Fila de Bellreguard CB (Nuestro Equipo) */
+.fila-destacada td {
+    background-color: #fff1f1;
+    color: #cf1515;
+}
+
+.fila-destacada td:first-child {
+    border-left: 4px solid #cf1515;
+}
+
+/* Estilos de puntos y posición */
+.tabla-clasificacion tr:hover td {
+    background-color: #fafafa;
+}
+
+.tabla-clasificacion td strong {
+    color: #111;
+}
+
+.fila-destacada td strong {
+    color: #cf1515;
+}
+
+
+/*******************************************************************************
+ * *
+ * 9. GALERÍA DE FOTOS                                                         *
+ * *
+ *******************************************************************************/
+
+.seccion-galeria-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.seccion-galeria-header h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.seccion-galeria-header p {
+    opacity: 0.9;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.stats-galeria {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.contenedor-galeria {
+    max-width: 1200px;
+    margin: -30px auto 60px auto;
+    padding: 0 20px;
+}
+
+/* Filtros de Categoría */
+.filtros-galeria {
+    background: white;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.btn-filtro {
+    padding: 10px 20px;
+    border: none;
+    background: #f1f1f1;
+    color: #444;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-filtro.activo {
+    background: #cf1515;
+    color: white;
+}
+
+/* Rejilla de Álbumes */
+.rejilla-albumes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.tarjeta-album {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.tarjeta-album:hover {
+    transform: translateY(-5px);
+}
+
+.imagen-album {
+    position: relative;
+    height: 230px;
+}
+
+.imagen-album img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-fotos {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #cf1515;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.info-album {
+    padding: 20px;
+}
+
+.info-album h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.info-album p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    height: 65px;
+    /* Altura fija para mantener alineación */
+    overflow: hidden;
+}
+
+.footer-album {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.fecha-album {
+    font-size: 13px;
+    color: #999;
+}
+
+.btn-ver-album {
+    background: #cf1515;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-ver-album:hover {
+    background: #a31111;
+}
+
+/* Cargar Más */
+.contenedor-cargar-mas {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-cargar-mas {
+    background: white;
+    color: #cf1515;
+    border: 2px solid #cf1515;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cargar-mas:hover {
+    background: #cf1515;
+    color: white;
+}
+
+/*******************************************************************************
+ * *
+ * 10. CONTACTO Y UBICACIÓN                                                    *
+ * *
+ *******************************************************************************/
+
+.seccion-contacto-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.seccion-contacto-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.seccion-contacto-header p {
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Círculos decorativos */
+.circulo-decorativo {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.c1 {
+    width: 120px;
+    height: 120px;
+    top: 15%;
+    left: 5%;
+}
+
+.c2 {
+    width: 80px;
+    height: 80px;
+    top: 60%;
+    left: 35%;
+}
+
+.c3 {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    right: 5%;
+}
+
+.contenedor-contacto {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.rejilla-contacto {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+/* Bloque Sobre Nosotros */
+.bloque-sobre-nosotros {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    /* Se ajusta al texto */
+}
+
+.titulo-con-icono {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.titulo-con-icono i {
+    background: #e62e2e;
+    color: white;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+}
+
+.bloque-sobre-nosotros h2 {
+    font-size: 28px;
+    color: #111;
+}
+
+.bloque-sobre-nosotros p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* Tarjetas de Información Laterales */
+.bloque-info-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tarjeta-contacto-mini {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.icono-contacto-rojo {
+    background: #e62e2e;
+    color: white;
+    min-width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.detalles-contacto h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.detalles-contacto p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.dato-principal {
+    display: block;
+    font-weight: 700;
+    color: #e62e2e;
+    margin-bottom: 2px;
+}
+
+.detalles-contacto small {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.iconos-redes-contacto {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.iconos-redes-contacto a {
+    color: #666;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.iconos-redes-contacto a:hover {
+    color: #e62e2e;
+}
+
+
+
+/* Sección Mapa */
+.titulo-mapa-centrado {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo-mapa-centrado h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.mapa-placeholder {
+    position: relative;
+    background: #e9ecef;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+.mapa-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0.1) contrast(1.1); /* Suaviza los colores para que peguen con tu web */
+}
+
+.info-flotante-mapa {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #e62e2e;
+    pointer-events: none; /* Permite hacer clic a través de ella para mover el mapa */
+}
+
+.info-flotante-mapa i {
+    color: #e62e2e;
+    font-size: 18px;
+}
+
+.info-flotante-mapa span {
+    font-weight: 700;
+    font-size: 14px;
+    color: #111;
+}
+
+.pin-mapa {
+    text-align: center;
+}
+
+.pin-mapa i {
+    font-size: 45px;
+    color: #e62e2e;
+    margin-bottom: 15px;
+}
+
+.pin-mapa p {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.pin-mapa small {
+    color: #888;
+}
+
+/*******************************************************************************
+ * *
+ * 11. PÁGINA DE LOGIN (ACCESO RESTRINGIDO)                                    *
+ * *
+ *******************************************************************************/
+
+.contenedor-login {
+    min-height: calc(100vh - 80px); /* Ajusta según la altura de tu nav */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+.caja-login {
+    background: white;
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Lado del Formulario */
+.login-formulario {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header {
+    margin-bottom: 30px;
+}
+
+.logo-login {
+    width: 60px;
+    margin-bottom: 15px;
+}
+
+.login-header h1 {
+    font-size: 26px;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.login-header p {
+    color: #777;
+    font-size: 14px;
+}
+
+.grupo-input {
+    margin-bottom: 20px;
+}
+
+.grupo-input label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.input-icono {
+    position: relative;
+}
+
+.input-icono i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.input-icono input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.input-icono input:focus {
+    border-color: #cf1515;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(207, 21, 21, 0.1);
+}
+
+
+
+.btn-acceder {
+    width: 100%;
+    background: #cf1515;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.3s;
+}
+
+.btn-acceder:hover {
+    background: #a31111;
+}
+
+.login-footer {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.login-footer p {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Lado Decorativo (Rojo) */
+.login-decoracion {
+    background: linear-gradient(135deg, #cf1515 0%, #8b0e0e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 40px;
+    position: relative;
+}
+
+/* Círculo sutil de fondo para la decoración */
+.login-decoracion::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+}
+
+.decoracion-contenido h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.decoracion-contenido p {
+    font-size: 16px;
+    opacity: 0.8;
+    position: relative;
+}
+
+
+/*******************************************************************************
+ * *
+ * 13. PANEL DE ADMINISTRACIÓN - ESTILOS COMPLETOS                               *
+ * *
+ *******************************************************************************/
+
+/* 1. RESET Y BASE */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+.contenedor-admin {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 2. SIDEBAR */
+.sidebar-admin {
+    width: 260px;
+    background: #1a1a1a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.admin-perfil {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #111;
+}
+
+.admin-perfil img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    border: 2px solid #e60000;
+    object-fit: cover;
+}
+
+.admin-info h4 { font-size: 16px; margin: 0; color: white; }
+.admin-info span { font-size: 12px; color: #777; }
+
+.menu-admin {
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-admin {
+    color: #bbb;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.item-admin i { width: 20px; text-align: center; font-size: 18px; }
+
+.item-admin:hover {
+    background: #333;
+    color: white;
+}
+
+.item-admin.activo {
+    background: #e60000;
+    color: white;
+    font-weight: 600;
+}
+
+.separador-admin {
+    height: 1px;
+    background: #333;
+    margin: 15px;
+}
+
+/* 3. CONTENIDO PRINCIPAL */
+.contenido-admin {
+    flex: 1;
+    margin-left: 260px; 
+    padding: 40px;
+}
+
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header-admin h2 {
+    font-size: 28px;
+    color: #111;
+    margin: 0;
+}
+
+.btn-nuevo {
+    background: #e60000;
+    color: white !important;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.pizarra-admin {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 4. TABLAS (LISTADOS) */
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-admin th {
+    text-align: left;
+    padding: 15px;
+    background: #f8f9fa;
+    color: #666;
+    font-size: 13px;
+    border-bottom: 2px solid #eee;
+}
+
+.tabla-admin td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.img-tabla {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dorsal-badge {
+    background: #1a1a1a;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-accion {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.btn-accion.editar { background: #fff3e0; color: #ef6c00; }
+.btn-accion.borrar { background: #ffebee; color: #c62828; }
+
+.btn-accion.editar:hover { background: #ef6c00; color: white; }
+.btn-accion.borrar:hover { background: #c62828; color: white; }
+
+/* 5. FORMULARIOS */
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+}
+
+.campo input, .campo select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fafafa;
+}
+
+.form-acciones {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.btn-guardar {
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+
+.btn-guardar:hover { background: #e60000; }
+
+/* Estilo específico para el campo del checkbox */
+.campo-checkbox .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #fafafa; /* Igual que tus otros inputs */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 46px; /* Para que mida lo mismo que los inputs de texto */
+    cursor: pointer;
+}
+
+.campo-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #fb8500; /* Color naranja corporativo */
+    cursor: pointer;
+}
+
+.campo-checkbox span {
+    font-size: 15px;
+    color: #666;
+}
+
+/* Efecto al pasar el ratón para que parezca un botón */
+.campo-checkbox .checkbox-wrapper:hover {
+    border-color: #fb8500;
+}
+
+
+/*************************************
+BUSCADOR DE INDEX EQUIPO Y JUGADORES
+*************************************/
+/* Contenedor principal del buscador alineado a la derecha */
+.contenedor-buscador {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.form-buscador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-grupal {
+    display: flex;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.input-grupal:focus-within {
+    border-color: #fb8500; /* Color naranja del club */
+}
+
+.input-search {
+    border: none;
+    padding: 8px 15px;
+    outline: none;
+    width: 250px;
+    font-size: 14px;
+}
+
+.btn-buscar {
+    background: #fb8500;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-buscar:hover {
+    background: #e67e00;
+}
+
+.btn-limpiar {
+    background: #6c757d;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-limpiar:hover {
+    background: #5a6268;
+}
+
+
+/*******************************************************************************
+ * *
+ * 13. Jugadores                              *
+ * *
+ *******************************************************************************/
+
+ /*EDITAR*/
+
+/* Contenedor Principal */
+.contenedor-edit-jugador {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Encabezado */
+.header-ficha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header-ficha h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.header-ficha p {
+    margin: 5px 0 0;
+    color: #888;
+}
+
+.btn-volver-link {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+}
+
+.btn-volver-link:hover {
+    color: #fb8500;
+}
+
+/* Tarjeta del Formulario */
+.pizarra-ficha {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 30px;
+    border: 1px solid #edf2f7;
+}
+
+.grid-formulario-fichas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* Secciones */
+.seccion-form-ficha h3 {
+    font-size: 1.1em;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seccion-personal h3 {
+    border-bottom: 2px solid #fb8500;
+    color: #fb8500;
+}
+
+.seccion-deportiva h3 {
+    border-bottom: 2px solid #023e8a;
+    color: #023e8a;
+}
+
+/* Campos de entrada */
+.campo-ficha {
+    margin-bottom: 15px;
+}
+
+.campo-ficha label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.input-ficha {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.input-ficha:focus {
+    border-color: #fb8500;
+    box-shadow: 0 0 0 3px rgba(251, 133, 0, 0.1);
+}
+
+/* Sección de la Foto */
+.seccion-foto-ficha {
+    grid-column: span 2;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border: 1px dashed #cbd5e0;
+}
+
+.preview-foto {
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.preview-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botones de Acción */
+.form-acciones-ficha {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-cancelar-ficha {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-cancelar-ficha:hover {
+    background: #edf2f7;
+}
+
+.btn-actualizar-ficha {
+    background: #fb8500;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(251, 133, 0, 0.3);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-actualizar-ficha:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   VISTA DETALLE DEL JUGADOR (SHOW)
+   ========================================================== */
+
+/* Contenedor de botones en el header */
+.acciones-header-ficha {
+    display: flex; 
+    gap: 12px; 
+    align-items: center;
+}
+
+/* Base común para botones de acción (Editar y Eliminar) */
+.btn-ficha-accion {
+    text-decoration: none;
+    padding: 0 25px;
+    height: 48px;
+    min-width: 150px;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.btn-ficha-accion:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    color: white;
+}
+
+/* Colores específicos */
+.btn-ficha-edit {
+    background: #fb8500; /* Naranja */
+    box-shadow: 0 4px 6px rgba(251, 133, 0, 0.3);
+}
+
+.btn-ficha-delete {
+    background: #e63000; /* Rojo */
+    box-shadow: 0 4px 6px rgba(230, 48, 0, 0.3);
+}
+
+/* Estilos de la Fotografía Grande */
+.ficha-col-foto {
+    text-align: center;
+}
+
+.ficha-foto-principal {
+    width: 100%;
+    height: 450px;
+    border-radius: 15px;
+    border: 5px solid white;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.ficha-foto-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilos de la Información Derecha */
+.ficha-col-datos {
+    padding-left: 10px;
+}
+
+.ficha-nombre-principal {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+/* Dorsal y Badge */
+.ficha-dorsal-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.ficha-dorsal-badge {
+    background: #1a1a1a;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    border-left: 5px solid #fb8500;
+}
+
+.ficha-dato-destacado {
+    font-size: 1.3rem;
+    margin: 0;
+    color: #fb8500;
+    font-weight: 700;
+    padding-top: 5px;
+}
+
+/* Filas de información técnica */
+.ficha-info-row {
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.ficha-valor-azul {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 600;
+    color: #023e8a;
+}
+
+
+
+
+
+
+/*******************************************************************************
+ * PAGINACION DE EQUIPOS Y JUGADORES
+ *******************************************************************************/
+
+/* ================= NAVBAR BASE ================= */
+
+
+
+/* Contenedor principal de la paginación */
+.contenedor-paginacion nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Estilo de los enlaces (botones) */
+.contenedor-paginacion .pagination {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.contenedor-paginacion .page-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #023e8a; /* Tu azul */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.contenedor-paginacion .page-link:hover {
+    background-color: #0077b6;
+}
+
+/* Estilo para cuando el botón está desactivado */
+.contenedor-paginacion .disabled .page-link {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/*******************************************************************************
+ * NOTICIAS
+ *******************************************************************************/
+
+ /*************************************
+ * INDEX    
+ **************************************/
+
+.contenedor-admin-noticias {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Admin */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header-admin h1 { font-size: 28px; color: #111; font-weight: 800; }
+.header-admin p { color: #666; }
+
+.btn-nuevo {
+    background: #e60000;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.btn-nuevo:hover { background: #b30000; transform: translateY(-2px); }
+
+/* Tabla Admin */
+.pizarra-admin {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-admin th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #888;
+    border-bottom: 2px solid #eee;
+}
+
+.tabla-admin td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+/* Imagen en tabla */
+.td-img img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.sin-foto {
+    width: 60px;
+    height: 60px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #ccc;
+}
+
+/* Info principal */
+.titulo-row {
+    display: block;
+    font-weight: 700;
+    color: #111;
+    font-size: 15px;
+}
+
+.autor-row {
+    font-size: 12px;
+    color: #e60000;
+    font-weight: 600;
+}
+
+.td-subtitulo p {
+    color: #666;
+    font-size: 13px;
+    margin: 0;
+}
+
+.fecha-admin {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Botones de acción */
+.acciones-admin {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-accion {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-ver { background: #e3f2fd; color: #1976d2; }
+.btn-editar { background: #fff3e0; color: #f57c00; }
+.btn-borrar { background: #ffebee; color: #d32f2f; }
+
+.btn-accion:hover { transform: scale(1.1); filter: brightness(0.9); }
+
+/* Alertas */
+.alerta-exito {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+
+/*******************************************************************************
+ * ESTILOS DE CREACIÓN DE NOTICIAS (ADMIN)
+ *******************************************************************************/
+
+/* Aplicar a la estructura de Noticias */
+
+.formulario-admin {
+    padding: 10px;
+}
+
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.campo label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.campo input[type="text"],
+.campo input[type="file"],
+.campo select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.campo input:focus {
+    border-color: #e60000;
+    box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.1);
+}
+
+/* BOTONES IGUALES A EQUIPO/JUGADOR */
+
+.btn-cancelar-ficha {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.btn-cancelar-ficha:hover {
+    background: #edf2f7;
+}
+
+.btn-actualizar-ficha {
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.btn-actualizar-ficha:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+
+/*******************************************************************************
+ * ESTILOS DE EDITAR NOTICIAS (ADMIN)
+ *******************************************************************************/
+
+/* Sección de la Foto (Estilo Ficha Jugadores) */
+.seccion-foto-ficha {
+    grid-column: span 2;
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 10px 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border: 1px dashed #cbd5e0;
+}
+
+.preview-foto {
+    width: 220px; /* Un poco más ancha para noticias */
+    height: 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    /* Fondo oscuro o gris suave para que si la foto es de otra proporción, 
+       los bordes sobrantes queden elegantes */
+    background: #2d3748; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    /* CLAVE: 'contain' para que se vea la imagen al 100% sin recortes */
+    object-fit: contain; 
+    display: block;
+}
+
+/* Texto e Inputs */
+.info-subida-ficha {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label-ficha {
+    font-weight: 700;
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.instruccion-ficha {
+    font-size: 0.85rem;
+    color: #718096;
+    margin: 0;
+}
+
+.btn-subir-discreto {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #edf2f7;
+    color: #4a5568;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+}
+
+.btn-subir-discreto:hover {
+    background: #e2e8f0;
+    color: #1a202c;
+}
+
+.aviso-ficha {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* Esconder el input original */
+input[type="file"]#imagen_noticia {
+    display: none;
+}
+
+
+/***************************
+ * SHOW EQUIPOS 
+ ***************************/
+
+/* Contenedor de acciones en la cabecera */
+.acciones-header-ficha {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-ficha-accion {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+/* Colores específicos */
+.btn-ficha-edit {
+    background-color: #fb8500; /* Naranja corporativo */
+}
+
+.btn-ficha-delete {
+    background-color: #e63946; /* Rojo eliminación */
+}
+
+.btn-ficha-volver {
+    background-color: #777777; /* Gris neutro */
+}
+
+/* Efectos Hover */
+.btn-ficha-accion:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+
+
+/***************************
+ * RESPONSIVE MÓVIL 
+ ***************************/
+
+/* ================= NAVBAR BASE ================= */
+.barra-navegacion {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.contenedor-menu-movil {
+    display: flex; 
+    align-items: center;
+}
+
+.boton-menu-movil {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #111;
+}
+
+.login-movil {
+    display: none;
+}
+
+/* ================= MÓVIL ================= */
+@media (max-width: 768px) {
+
+    /* ---------- NAVBAR ---------- */
+    .boton-menu-movil {
+        display: block;
+    }
+
+    .login-desktop {
+        display: none;
+    }
+
+    /* 🔽 MENÚ DESPLEGABLE (FIJO, DERECHA, NO SE CORTA) */
+    .menu-navegacion {
+        position: fixed;
+        top: 64px;
+        right: 12px;
+        width: 200px;
+        max-width: calc(100vw - 24px);
+
+        background: white;
+        padding: 10px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        z-index: 9999;
+    }
+
+    .menu-navegacion.activo {
+        display: flex;
+    }
+
+    .menu-navegacion a {
+        display: block;
+        padding: 8px 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        color: #333;
+    }
+
+    .menu-navegacion a:hover {
+        background: #f4f4f4;
+    }
+
+    /* SEPARACIÓN DEL BOTÓN INICIAR SESIÓN */
+    .menu-navegacion .login-movil {
+        display: block;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee; /* separador sutil */
+        text-align: center;
+    }
+
+    .login-movil .boton-inicio-sesion {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    /* ---------- HERO ---------- */
+    .seccion-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 5%;
+    }
+
+    .seccion-hero h1 {
+        font-size: 28px;
+    }
+
+    .botones-hero {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ---------- NOTICIAS ---------- */
+    .rejilla-noticias {
+        gap: 25px;
+    }
+
+    /* ---------- PATROCINADORES (MEJORADO) ---------- */
+    .patrocinadores {
+        padding: 50px 5%;
+        background: #fafafa;
+    }
+
+    .patrocinadores h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    .rejilla-patrocinadores {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+
+    .patrocinador {
+        background: white;
+        border-radius: 12px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    .patrocinador img {
+        max-width: 100px;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        filter: grayscale(100%);
+        opacity: 0.85;
+    }
+
+    /* ---------- EQUIPO ---------- */
+    .rejilla-jugadores {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .foto-jugador {
+        height: 240px;
+    }
+
+    /* ---------- MERCHANDISING ---------- */
+    .rejilla-productos {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .tarjeta-producto img {
+        height: 200px;
+    }
+
+    /* ---------- PARTIDOS ---------- */
+    .rejilla-partido-doble {
+        grid-template-columns: 1fr;
+    }
+
+    .enfrentamiento {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .vs {
+        padding: 5px 0;
+    }
+
+    /* ---------- ESTADÍSTICAS ---------- */
+    .seccion-estadisticas-header h1 {
+        font-size: 28px;
+    }
+
+    .rejilla-detalles,
+    .rejilla-resumen-final {
+        grid-template-columns: 1fr;
+    }
+
+    /* ---------- CLASIFICACIÓN ---------- */
+    .seccion-clasificacion-header h1 {
+        font-size: 30px;
+    }
+
+    .tabla-scroll {
+        overflow-x: auto;
+    }
+
+    .tabla-clasificacion th,
+    .tabla-clasificacion td {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    /* ---------- GALERÍA ---------- */
+    .rejilla-albumes {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .imagen-album {
+        height: 200px;
+    }
+
+    /* ---------- CONTACTO ---------- */
+    .rejilla-contacto {
+        grid-template-columns: 1fr;
+    }
+
+    .bloque-sobre-nosotros {
+        padding: 25px;
+    }
+
+    .mapa-placeholder {
+        height: 300px;
+    }
+
+    /* ---------- LOGIN ---------- */
+    .caja-login {
+        grid-template-columns: 1fr;
+    }
+
+    .login-decoracion {
+        display: none;
+    }
+
+    .login-formulario {
+        padding: 35px 25px;
+    }
+
+    /* ---------- FOOTER (SIN LÍNEAS ROJAS) ---------- */
+    .pie-pagina {
+        border-top: none;
+    }
+
+    .footer-col h4::after {
+        display: none;
+    }
+
+    .rejilla-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .logo-footer,
+    .redes-iconos {
+        justify-content: center;
+    }
+}
+
+/* =====================================================
+   ADMIN EQUIPOS - CREATE - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .header-admin h2 {
+        font-size: 20px;
+    }
+
+    .header-admin .btn-nuevo {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- CONTENEDOR ---------- */
+    .pizarra-admin {
+        padding: 15px;
+    }
+
+    /* ---------- FORMULARIO ---------- */
+    .formulario-admin {
+        width: 100%;
+    }
+
+    /* Grid a una columna */
+    .grid-formulario {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    /* ---------- CAMPOS ---------- */
+    .campo label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .campo input,
+    .campo select {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    /* ---------- CHECKBOX ---------- */
+    .campo-checkbox .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .campo-checkbox span {
+        font-size: 14px;
+    }
+
+    /* ---------- BOTÓN ---------- */
+    .form-acciones {
+        margin-top: 20px;
+    }
+
+    .btn-guardar {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* =====================================================
+   ADMIN EQUIPOS - EDIT - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin h2 {
+        font-size: 18px;
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    /* ---------- BLOQUE ESCUDO ---------- */
+    .campo img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .campo > div {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+
+    .campo input[type="file"] {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    /* ---------- ACCIONES ---------- */
+    .form-acciones {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .form-acciones a {
+        text-align: center;
+        width: 100%;
+        padding: 10px;
+        background: #f3f4f6;
+        border-radius: 6px;
+    }
+
+    .btn-guardar {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* =====================================================
+   ADMIN EQUIPOS - INDEX - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .header-admin .btn-nuevo {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- BUSCADOR ---------- */
+    .contenedor-buscador {
+        margin-bottom: 15px;
+    }
+
+    .form-buscador {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-grupal {
+        width: 100%;
+    }
+
+    .input-search {
+        width: 100%;
+    }
+
+    /* ---------- TABLA → TARJETAS ---------- */
+    .tabla-admin thead {
+        display: none;
+    }
+
+    .tabla-admin,
+    .tabla-admin tbody,
+    .tabla-admin tr,
+    .tabla-admin td {
+        display: block;
+        width: 100%;
+    }
+
+    .tabla-admin tr {
+        background: #fff;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    .tabla-admin td {
+        padding: 6px 0;
+        border: none;
+    }
+
+    /* ---------- ESCUDO ---------- */
+    .contenedor-escudo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .contenedor-escudo img {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* ---------- TEXTO ---------- */
+    .tabla-admin td strong {
+        font-size: 17px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* ---------- ACCIONES ---------- */
+    .tabla-admin td:last-child {
+        padding-top: 10px;
+    }
+
+    .tabla-admin td > div {
+        justify-content: space-between !important;
+    }
+
+    .btn-accion {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 15px;
+    }
+
+    /* ---------- PAGINACIÓN ---------- */
+    .contenedor-paginacion {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* =====================================================
+   ADMIN EQUIPOS - SHOW - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .header-admin h2 {
+        font-size: 18px;
+        line-height: 1.3;
+    }
+
+    .header-admin .btn-nuevo {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- CONTENEDOR PRINCIPAL ---------- */
+    .pizarra-admin > div {
+        flex-direction: column !important;
+        gap: 20px !important;
+        padding: 15px !important;
+    }
+
+    /* ---------- IMAGEN ---------- */
+    .pizarra-admin img {
+        max-width: 180px !important;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* ---------- INFO ---------- */
+    .pizarra-admin h3 {
+        font-size: 16px;
+    }
+
+    .pizarra-admin p {
+        font-size: 15px !important;
+        margin: 10px 0 !important;
+    }
+
+    .badge {
+        font-size: 14px !important;
+        padding: 4px 10px !important;
+    }
+
+    /* ---------- BOTONES ---------- */
+    .pizarra-admin > div > div:last-child > div {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-accion {
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 16px;
+    }
+}
+
+/* =====================================================
+   ADMIN JUGADORES - CREATE - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- CONTENEDOR GENERAL ---------- */
+    .contenedor-edit-jugador {
+        padding: 10px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header-ficha {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .header-ficha h2 {
+        font-size: 18px;
+    }
+
+    .header-ficha p {
+        font-size: 14px;
+    }
+
+    .header-ficha .btn-nuevo {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- FORMULARIO ---------- */
+    .grid-formulario-fichas {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* ---------- SECCIONES ---------- */
+    .seccion-form-ficha {
+        padding: 15px;
+    }
+
+    .seccion-form-ficha h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    /* ---------- CAMPOS ---------- */
+    .campo-ficha label {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .input-ficha {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    /* Quitar grid de 2 columnas (dorsal / posición) */
+    .seccion-deportiva > div {
+        display: flex !important;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* ---------- FOTO ---------- */
+    .seccion-foto-ficha {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .preview-foto img {
+        max-width: 180px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* ---------- ACCIONES ---------- */
+    .form-acciones-ficha {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn-cancelar-ficha,
+    .btn-actualizar-ficha {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+/* =====================================================
+   ADMIN JUGADORES - EDIT - AJUSTES EXTRA MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* Título largo */
+    .header-ficha h2 {
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    /* Imagen actual del jugador */
+    .preview-foto img {
+        max-width: 160px;
+    }
+
+    /* Botones de editar */
+    .btn-actualizar-ficha {
+        font-weight: 600;
+    }
+}
+
+/* =====================================================
+   ADMIN JUGADORES - INDEX - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .header-admin .btn-nuevo {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- BUSCADOR ---------- */
+    .form-buscador {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-search {
+        width: 100%;
+    }
+
+    /* ---------- TABLA → CARDS ---------- */
+    .tabla-admin thead {
+        display: none;
+    }
+
+    .tabla-admin,
+    .tabla-admin tbody,
+    .tabla-admin tr,
+    .tabla-admin td {
+        display: block;
+        width: 100%;
+    }
+
+    .tabla-admin tr {
+        background: #fff;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .tabla-admin td {
+        padding: 6px 0;
+        border: none;
+    }
+
+    /* ---------- FOTO + NOMBRE ---------- */
+    .tabla-admin td:first-child {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .tabla-admin .contenedor-escudo {
+        width: 90px !important;
+        height: 90px !important;
+        margin: 0 auto;
+    }
+
+    /* ---------- DORSAL ---------- */
+    .dorsal-badge {
+        display: inline-block;
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    /* ---------- TEXTO ---------- */
+    .tabla-admin td strong {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    /* ---------- ACCIONES ---------- */
+    .tabla-admin td:last-child {
+        margin-top: 10px;
+    }
+
+    .tabla-admin td > div {
+        justify-content: space-between !important;
+    }
+
+    .btn-accion {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    /* ---------- PAGINACIÓN ---------- */
+    .contenedor-paginacion {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+}
+
+/* =====================================================
+   ADMIN JUGADORES - SHOW - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- CONTENEDOR ---------- */
+    .contenedor-edit-jugador {
+        padding: 10px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header-ficha {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-ficha h2 {
+        font-size: 18px;
+    }
+
+    .header-ficha p {
+        font-size: 14px;
+    }
+
+    .acciones-header-ficha {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .btn-ficha-accion {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    /* ---------- GRID → COLUMNA ---------- */
+    .grid-formulario-fichas {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* ---------- FOTO ---------- */
+    .ficha-foto-principal img {
+        max-width: 200px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* ---------- DATOS ---------- */
+    .ficha-nombre-principal {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .ficha-dorsal-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ficha-info-row label {
+        font-size: 13px;
+    }
+
+    .ficha-info-row p,
+    .ficha-dato-destacado,
+    .ficha-valor-azul {
+        font-size: 15px;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .form-acciones-ficha {
+        padding-top: 15px;
+        margin-top: 30px;
+    }
+
+    .form-acciones-ficha p {
+        text-align: center;
+        font-size: 12px;
+    }
+}
+
+/* =====================================================
+   ADMIN DASHBOARD - RESPONSIVE MÓVIL
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- HEADER ---------- */
+    .header-admin {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .header-admin h2 {
+        font-size: 20px;
+    }
+
+    /* ---------- CONTENEDOR ---------- */
+    .pizarra-admin {
+        padding: 15px;
+    }
+
+    /* ---------- TARJETA PRINCIPAL ---------- */
+    .tarjeta-vacia {
+        text-align: center;
+        padding: 25px 20px;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+    .tarjeta-vacia i {
+        font-size: 48px;
+        color: #fb8500;
+        margin-bottom: 15px;
+    }
+
+    .tarjeta-vacia h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .tarjeta-vacia p {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.4;
+    }
+}
+
