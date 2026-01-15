@@ -1,8 +1,8 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
-{{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
+{{-- ESTO PASA PORQUE TENEMOS LA VARIABLE TITULO DE NOTICIAS, Y COMO HAY DOS VARIABLES QUE SE LLAMAN IGUAL, NOS TOCA CAMBIARLO --}}
+@php $titulo = 'Inicio - Bellreguard Club de Basket'; @endphp
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
@@ -24,20 +24,33 @@
     <section class="seccion-noticias">
         <h2>Últimas Noticias</h2>
         <p class="subtitulo">Mantente al día con todas las novedades del club</p>
+        
         <div class="rejilla-noticias">
-            @for ($i = 1; $i <= 4; $i++)
-            <div class="tarjeta-noticia">
-                <img src="{{ asset('img/intro.jpeg') }}" />
-                <div class="info-tarjeta">
-                    <span class="fecha">15 Noviembre 2024</span>
-                    <h3>Victoria Contundente en Casa</h3>
-                    <p>El equipo logró una importante victoria por 85–72 ante el equipo visitante.</p>
-                    <a href="#">Leer más →</a>
+            @forelse ($noticias as $noticia)
+                <div class="tarjeta-noticia">
+                    <div class="contenedor-img">
+                        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" />
+                    </div>
+                    
+                    <div class="info-tarjeta">
+                        <span class="fecha">{{ $noticia->created_at->format('d M, Y') }}</span>
+                        <h3>{{ $noticia->titulo }}</h3>
+                        <p>{{ Str::limit($noticia->subtitulo, 80) }}</p>
+                        <a href="{{ route('noticias.show', $noticia->slug) }}">Leer más →</a>
+                    </div>
                 </div>
-            </div>
-            @endfor
+            @empty
+            
+                {{-- ESTE MENSAJE APARECE SI NO HAY NOTICIAS --}}
+                <div class="sin-noticias">
+                    <i class="fas fa-newspaper"></i>
+                    <p>Actualmente no hay noticias publicadas.</p>
+                    <span>¡Vuelve pronto para enterarte de todas las novedades!</span>
+                </div>
+            @endforelse
         </div>
     </section>
+
 
     <section class="patrocinadores">
         <h2>Nuestros Patrocinadores</h2>

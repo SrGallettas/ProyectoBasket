@@ -75,6 +75,8 @@ class NoticiaController extends Controller
 
             // Guardamos solo el nombre del archivo en la BD
             $noticia->imagen_noticia = $nombreImagen;
+        } else {
+            $noticia->imagen_jugador = 'basket.jpeg';
         }
 
 
@@ -193,10 +195,9 @@ class NoticiaController extends Controller
         return redirect()->route('noticias.index')->with('mensaje', 'Noticia eliminada correctamente');
     }
 
-    public function show ($id) 
+    public function show($id)
     {
         $noticia = Noticia::findOrFail($id);
         return view('admin.noticias.show', compact('noticia'));
     }
-    
 }

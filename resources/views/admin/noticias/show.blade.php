@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<div class="contenedor-edit-noticia"> {{-- Cambiado para seguir tu estructura --}}
+<div class="contenedor-ficha-noticia"> {{-- Ajustado a tu CSS --}}
     
     <header class="header-ficha">
         <div>
@@ -10,12 +10,10 @@
         </div>
         <div class="acciones-header-ficha">
             
-            {{-- Botón EDITAR --}}
             <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-ficha-accion btn-ficha-edit">
                 <i class="fas fa-edit"></i>&nbsp;EDITAR
             </a>
 
-            {{-- Botón ELIMINAR --}}
             <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta noticia?')" style="margin: 0;">
                 @csrf
                 @method('DELETE')
@@ -24,7 +22,6 @@
                 </button>
             </form>
 
-            {{-- Botón VOLVER --}}
             <a href="{{ route('noticias.index') }}" class="btn-ficha-accion btn-ficha-volver">
                 <i class="fas fa-arrow-left"></i>&nbsp;VOLVER AL LISTADO
             </a>
@@ -32,15 +29,29 @@
     </header>
 
     <div class="pizarra-ficha">
-        {{-- Aquí va el resto del contenido de la noticia que ya tienes --}}
-        <div class="noticia-hero-img" style="height: 350px; overflow: hidden; border-radius: 12px; margin-bottom: 25px;">
-            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" style="width: 100%; height: 100%; object-fit: cover;">
+        {{-- Contenedor de Imagen con el placeholder por si falla --}}
+        <div class="noticia-hero-container">
+            @if($noticia->imagen_noticia)
+                <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" class="noticia-img-main">
+            @else
+                <div class="noticia-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Sin imagen de portada</span>
+                </div>
+            @endif
         </div>
         
-        <h1 class="noticia-title" style="font-size: 2.2rem; font-weight: 800;">{{ $noticia->titulo }}</h1>
-        <p class="noticia-subtitle" style="font-size: 1.2rem; color: #666; border-left: 4px solid #fb8500; padding-left: 15px; margin: 20px 0;">{{ $noticia->subtitulo }}</p>
+        <h1 class="noticia-view-title">{{ $noticia->titulo }}</h1>
+
+        {{-- NUEVO: Bloque de Autor y Fecha --}}
+        <div class="noticia-view-footer" style="margin-bottom: 25px; border-bottom: none; border-top: none; padding-top: 0;">
+            <span class="meta-item"><i class="fas fa-user-pen"></i> <strong>Autor:</strong> {{ $noticia->autor }}</span>
+            <span class="meta-item"><i class="fas fa-calendar-check"></i> <strong>Publicado:</strong> {{ $noticia->created_at->format('d/m/Y') }}</span>
+        </div>
         
-        <div class="noticia-body" style="font-size: 1.1rem; line-height: 1.8; color: #334155;">
+        <p class="noticia-view-subtitle">{{ $noticia->subtitulo }}</p>
+        
+        <div class="noticia-view-body">
             {!! nl2br(e($noticia->contenido)) !!}
         </div>
     </div>

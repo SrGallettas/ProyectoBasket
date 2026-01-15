@@ -35,9 +35,9 @@
                 <tr>
                     <td class="td-img">
                         @if($noticia->imagen_noticia)
-                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Miniatura">
+                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia">
                         @else
-                            <div class="sin-foto"><i class="fas fa-image"></i></div>
+                            <div class="sin-foto"><i class="fas fa-image" alt = 'imagen_noticia' ></i></div>
                         @endif
                     </td>
                     <td>
@@ -71,7 +71,8 @@
             </tbody>
         </table>
 
-        <div class="paginacion-admin">
+        {{--Esto es la paginación--}}
+        <div class="contenedor-paginacion">
             {{ $noticias->links() }}
         </div>
     </div>

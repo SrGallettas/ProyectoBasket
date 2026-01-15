@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Equipo; // No olvides importar el modelo para que funcione la página de equipo
+use App\Models\Equipo;
+use App\Models\Noticia;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
 {
     public function inicio()
     {
-        return view('basket.inicio');
+        $noticias = Noticia::latest()->take(6)->get();
+        return view('basket.inicio', compact("noticias"));
     }
 
     public function equipo(Request $request)
     {
         // 1. Obtenemos los equipos locales para los botones
-        $equiposLocales = \App\Models\Equipo::where('es_local', true)->get();
+        $equiposLocales = Equipo::where('es_local', true)->get();
 
         // 2. Filtro por categoría (por defecto 'Senior')
         $categoriaSel = $request->get('categoria', 'Senior');
 
         // 3. Buscamos el equipo específico con sus jugadores
-        $equipoMostrar = \App\Models\Equipo::where('es_local', true)
+        $equipoMostrar = Equipo::where('es_local', true)
             ->where('categoria', $categoriaSel)
             ->with('jugadores')
             ->first();
@@ -57,5 +59,18 @@ class BasketController extends Controller
     public function contacto()
     {
         return view('basket.contacto');
+    }
+
+    public function noticia()
+    {
+        $noticias = Noticia::orderBy('created_at', 'asc')->paginate(10);
+        return view('basket.noticias', compact('noticias'));
+    }
+
+    public function noticia_detalle($slug)
+    {
+        $noticia = Noticia::where('slug', $slug)->firstOrFail();
+
+        return view('basket.noticias_detalle', compact('noticia'));
     }
 }

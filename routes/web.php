@@ -16,6 +16,8 @@ Route::get('estadisticas', [BasketController::class, 'estadisticas'])->name('bas
 Route::get('partidos', [BasketController::class, 'partidos'])->name('basket.partidos');
 Route::get('galeria', [BasketController::class, 'galeria'])->name('basket.galeria');
 Route::get('contacto', [BasketController::class, 'contacto'])->name('basket.contacto');
+Route::get('noticia', [BasketController::class, 'noticia'])->name('basket.noticias');
+Route::get('/noticias/{slug}', [BasketController::class, 'noticia_detalle'])->name('noticias.detalle');
 
 // --- 2. AUTENTICACIÓN (Solo accesibles si NO estás logueado) ---
 Route::middleware(['guest'])->group(function () {

@@ -16,11 +16,7 @@
 <div class="contenedor-buscador">
     <form action="{{ route('equipos.search') }}" method="GET" class="form-buscador">
         <div class="input-grupal">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Buscar por nombre..." 
-                   value="{{ $search ?? '' }}" {{-- Mantiene el texto después de buscar --}}
-                   class="input-search">
+            <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" lass="input-search">
             <button type="submit" class="btn-buscar">
                 <i class="fas fa-search"></i>
             </button>
