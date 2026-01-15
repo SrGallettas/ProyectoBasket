@@ -52,6 +52,8 @@
         <p class="noticia-view-subtitle">{{ $noticia->subtitulo }}</p>
         
         <div class="noticia-view-body">
+            {{-- Sirve para que los saltos de línea (los "Enter") se respeten y el texto no se vea como un bloque pegado.--}}
+            {{-- e(...) (Seguridad) --}}
             {!! nl2br(e($noticia->contenido)) !!}
         </div>
     </div>

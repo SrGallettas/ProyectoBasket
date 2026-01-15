@@ -6,6 +6,7 @@ use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\MerchandisingController;
 
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
 Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
@@ -37,10 +38,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // RUTAS DE BÚSQUEDA (SIEMPRE antes de los resource)
     Route::get('equipos/search', [EquipoController::class, 'search'])->name('equipos.search');
     Route::get('jugadores/search', [JugadorController::class, 'search'])->name('jugadores.search');
+    Route::get('noticias/search', [NoticiaController::class, 'search'])->name('noticias.search');
+
 
     // Route::resource ya crea las 7 rutas (index, create, store, show, edit, update, destroy)
     Route::resource("equipos", EquipoController::class);
     Route::resource("jugadores", JugadorController::class);
     Route::resource("noticias", NoticiaController::class);
+    Route::resource("merchandising", MerchandisingController::class);
 
 });

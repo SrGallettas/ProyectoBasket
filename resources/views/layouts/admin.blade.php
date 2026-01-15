@@ -36,6 +36,10 @@
                     <i class="fas fa-newspaper"></i> Noticias
                 </a>
 
+                <a href="{{ route('merchandising.index') }}" class="item-admin {{ request()->is('admin/merchandising*') ? 'activo' : '' }}">
+                    <i class="fas fa-shopping-bag"></i> Merchandising
+                </a>
+
                 <div class="separador-admin"></div>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">

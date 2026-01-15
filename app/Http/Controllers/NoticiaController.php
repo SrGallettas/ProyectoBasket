@@ -200,4 +200,24 @@ class NoticiaController extends Controller
         $noticia = Noticia::findOrFail($id);
         return view('admin.noticias.show', compact('noticia'));
     }
+
+    
+    ///////////////
+    // BUSCADOR //
+    /////////////
+    public function search(Request $request)
+    {
+        $search = $request->get('search');
+
+        $noticias = Noticia::where('titulo', 'like', '%' . $search . '%')
+            ->orWhere('autor', 'like', '%' . $search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        // Importante para que al cambiar de página no se pierda la búsqueda
+        $noticias->appends(['search' => $search]);
+
+        return view('admin.noticias.index', compact('noticias', 'search'));
+    }
+
+
 }

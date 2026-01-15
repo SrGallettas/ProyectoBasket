@@ -13,6 +13,25 @@
         </a>
     </div>
 
+    {{-- Buscador de Equipos --}}
+    <div class="contenedor-buscador">
+        <form action="{{ route('noticias.search') }}" method="GET" class="form-buscador">
+            <div class="input-grupal">
+                <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" lass="input-search">
+                <button type="submit" class="btn-buscar">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            {{-- Si hay una búsqueda activa, mostramos un botón para limpiar --}}
+            @if(isset($search) && $search != '')
+                <a href="{{ route('noticias.index') }}" class="btn-limpiar" title="Limpiar búsqueda">
+                    <i class="fas fa-times"></i>
+                </a>
+            @endif
+        </form>
+    </div>
+
+
    {{-- Mensaje de éxito al crear, editar o borrar --}}
     @if(session('mensaje'))
         <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
@@ -31,7 +50,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($noticias as $noticia)
+                @forelse($noticias as $noticia)
                 <tr>
                     <td class="td-img">
                         @if($noticia->imagen_noticia)
@@ -67,7 +86,14 @@
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                {{-- MENSAJE CUANDO ESTÁ VACÍO --}}
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 40px; color: #777;">
+                        <i class="fas fa-info-circle"></i> No se han encontrado noticias disponibles.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
 

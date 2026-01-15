@@ -58,7 +58,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($jugadores as $jugador)
+            @forelse($jugadores as $jugador)
             <tr>
                 {{-- 1. FOTO --}}
                 <td>
@@ -127,7 +127,14 @@
                     </div>
                 </td>
             </tr>
-            @endforeach
+            @empty
+            {{-- MENSAJE SI NO HAY JUGADORES --}}
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 40px; color: #777;">
+                    <i class="fas fa-info-circle"></i> No se han encontrado jugadores en la base de datos.
+                </td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 

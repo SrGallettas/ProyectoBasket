@@ -51,7 +51,7 @@
         </thead>
         <tbody>
             {{-- BUCLE: Repite la fila por cada equipo que haya en la base de datos --}}
-            @foreach($equipos as $equipo)
+            @forelse($equipos as $equipo)
             <tr>
                 <td>
                     <div class="contenedor-escudo">
@@ -87,7 +87,14 @@
                     </div>
                 </td>
             </tr>
-            @endforeach
+            @empty
+            {{-- MENSAJE SI NO HAY JUGADORES --}}
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 40px; color: #777;">
+                    <i class="fas fa-info-circle"></i> No se han encontrado equipos en la base de datos.
+                </td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 
