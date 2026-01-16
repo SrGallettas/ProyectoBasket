@@ -33,7 +33,7 @@ class JugadorController extends Controller
             'posicion'         => 'required|string',
             'fecha_nacimiento' => 'required|date',
             'equipo_id'        => 'required|exists:equipos,id',
-            'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10MB
+            'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
         ], [
             'nombre.required'           => 'El nombre es obligatorio.',
             'apellido.required'         => 'El apellido es obligatorio.',
@@ -43,7 +43,7 @@ class JugadorController extends Controller
             'equipo_id.exists'          => 'El equipo seleccionado no es válido.',
             'imagen_jugador.image'      => 'El archivo debe ser una imagen.',
             'imagen_jugador.mimes'      => 'La foto debe ser JPG o PNG.',
-            'imagen_jugador.max'        => 'La foto es demasiado pesada (máximo 10MB).',
+            'imagen_jugador.max'        => 'La foto es demasiado pesada (máximo 2MB).',
         ]);
 
         $jugador = new Jugador();

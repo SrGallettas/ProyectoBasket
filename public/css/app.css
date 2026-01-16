@@ -113,7 +113,8 @@ body {
 
 .footer-col {
     flex: 1;
-    min-width: 200px; /* Evita que se compriman demasiado */
+    min-width: 200px;
+    /* Evita que se compriman demasiado */
 }
 
 /* Columna del Logo */
@@ -187,7 +188,8 @@ body {
 
 .lista-footer a:hover {
     color: white;
-    transform: translateX(5px); /* Desplazamiento suave */
+    transform: translateX(5px);
+    /* Desplazamiento suave */
 }
 
 /* Iconos de contacto */
@@ -314,7 +316,8 @@ body {
 /* AJUSTE: Rejilla más pequeña y controlada */
 .rejilla-noticias {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 320px)); /* Limita el tamaño máximo */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+    /* Limita el tamaño máximo */
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -340,7 +343,8 @@ body {
 /* AJUSTE: Imagen mejor proporcionada */
 .contenedor-img {
     width: 100%;
-    height: 170px; /* Altura más pequeña para que sea una tarjeta compacta */
+    height: 170px;
+    /* Altura más pequeña para que sea una tarjeta compacta */
     overflow: hidden;
     position: relative;
     background-color: #f0f0f0;
@@ -349,8 +353,8 @@ body {
 .contenedor-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    object-position: center; 
+    object-fit: cover;
+    object-position: center;
     transition: transform 0.5s ease;
 }
 
@@ -371,7 +375,8 @@ body {
 }
 
 .info-tarjeta {
-    padding: 15px; /* Menos padding para ahorrar espacio */
+    padding: 15px;
+    /* Menos padding para ahorrar espacio */
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -385,7 +390,8 @@ body {
 }
 
 .info-tarjeta h3 {
-    font-size: 1.1rem; /* Título un poco más pequeño */
+    font-size: 1.1rem;
+    /* Título un poco más pequeño */
     font-weight: 700;
     margin: 5px 0;
     line-height: 1.2;
@@ -480,11 +486,13 @@ body {
     background: #e60000;
     color: white;
     text-align: center;
-    padding: 60px 40px; /* Un poco más de aire */
+    padding: 60px 40px;
+    /* Un poco más de aire */
 }
 
 .seccion-equipo-header h1 {
-    font-size: 36px; /* Un poco más grande para impactar */
+    font-size: 36px;
+    /* Un poco más grande para impactar */
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -498,12 +506,14 @@ body {
 .botones-categoria {
     display: flex;
     justify-content: center;
-    gap: 15px; /* Un poco más de espacio entre botones */
-    flex-wrap: wrap; /* Para que en móvil no se corten */
+    gap: 15px;
+    /* Un poco más de espacio entre botones */
+    flex-wrap: wrap;
+    /* Para que en móvil no se corten */
 }
 
 .boton-categoria {
-    background: #e60000; 
+    background: #e60000;
     color: white !important;
     padding: 12px 22px;
     border-radius: 8px;
@@ -514,18 +524,20 @@ body {
     transition: all 0.3s ease;
 }
 
-.boton-categoria.activo, 
+.boton-categoria.activo,
 .boton-categoria:hover {
     background: #b30000 !important;
     border-color: #b30000 !important;
-    transform: translateY(-2px); /* Pequeña elevación al pasar el ratón */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    /* Pequeña elevación al pasar el ratón */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* --- SECCIÓN EQUIPO Y REJILLA --- */
 .equipo-jugadores {
     padding: 50px 40px;
-    background: #f9f9f9; /* Un gris casi blanco para que las tarjetas resalten */
+    background: #f9f9f9;
+    /* Un gris casi blanco para que las tarjetas resalten */
 }
 
 .rejilla-jugadores {
@@ -555,7 +567,8 @@ body {
 
 /* --- FOTO Y DORSAL --- */
 .foto-jugador {
-    height: 340px; /* Un poco más alta para que luzca el jugador */
+    height: 340px;
+    /* Un poco más alta para que luzca el jugador */
     background: #eee;
     overflow: hidden;
     position: relative;
@@ -569,7 +582,8 @@ body {
 }
 
 .tarjeta-jugador:hover .foto-jugador img {
-    transform: scale(1.1); /* Zoom suave al pasar el ratón */
+    transform: scale(1.1);
+    /* Zoom suave al pasar el ratón */
 }
 
 /* El Badge del dorsal sobre la foto */
@@ -583,7 +597,7 @@ body {
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 1.1rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 2;
 }
 
@@ -621,12 +635,12 @@ body {
 
 /* --- MENSAJES DE ERROR --- */
 .contenedor-mensaje-vacio {
-    display: flex;             
-    justify-content: center;   
-    align-items: center;       
-    flex-direction: column;    
-    width: 100%;                
-    min-height: 350px;       
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 350px;
     text-align: center;
     padding: 40px 0;
 }
@@ -642,7 +656,8 @@ body {
     margin-bottom: 25px;
 }
 
-.boton-rojo-centrado, .boton-volver {
+.boton-rojo-centrado,
+.boton-volver {
     display: inline-block;
     padding: 14px 30px;
     background-color: #e60000;
@@ -654,7 +669,8 @@ body {
     transition: background 0.3s;
 }
 
-.boton-rojo-centrado:hover, .boton-volver:hover {
+.boton-rojo-centrado:hover,
+.boton-volver:hover {
     background-color: #b30000;
 }
 
@@ -1717,7 +1733,7 @@ body {
     background: #e9ecef;
     height: 450px;
     border-radius: 15px;
-    overflow: hidden; 
+    overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
 }
@@ -1725,7 +1741,8 @@ body {
 .mapa-placeholder iframe {
     width: 100%;
     height: 100%;
-    filter: grayscale(0.1) contrast(1.1); /* Suaviza los colores para que peguen con tu web */
+    filter: grayscale(0.1) contrast(1.1);
+    /* Suaviza los colores para que peguen con tu web */
 }
 
 .info-flotante-mapa {
@@ -1740,7 +1757,8 @@ body {
     gap: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     border-left: 4px solid #e62e2e;
-    pointer-events: none; /* Permite hacer clic a través de ella para mover el mapa */
+    pointer-events: none;
+    /* Permite hacer clic a través de ella para mover el mapa */
 }
 
 .info-flotante-mapa i {
@@ -1779,8 +1797,8 @@ body {
  * *
  *******************************************************************************/
 
- /*LISTADO DE NOTICIAS*/
- 
+/*LISTADO DE NOTICIAS*/
+
 /* --- HEADER "GRANOTA" --- */
 .news-hero {
     background: #e60000;
@@ -1821,7 +1839,7 @@ body {
 /* --- CONTENEDOR DE NOTICIAS --- */
 .noticias-container-rectangular {
     max-width: 1100px;
-    margin: -50px auto 80px; 
+    margin: -50px auto 80px;
     padding: 0 20px;
     position: relative;
     z-index: 10;
@@ -1831,7 +1849,7 @@ body {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
     font-weight: 700;
     color: #444;
@@ -1844,7 +1862,7 @@ body {
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border: 1px solid #f0f0f0;
     margin-bottom: 25px;
     transition: all 0.3s ease;
@@ -1903,7 +1921,8 @@ body {
 
 .noticia-title-bold {
     font-size: 1.6rem;
-    font-weight: 800; /* Negrita potente */
+    font-weight: 800;
+    /* Negrita potente */
     color: #1a1a1a;
     margin-bottom: 10px;
     line-height: 1.2;
@@ -1965,7 +1984,9 @@ body {
     letter-spacing: 0.5px;
 }
 
-.fecha-top { color: #718096; }
+.fecha-top {
+    color: #718096;
+}
 
 .titulo-noticia {
     font-size: 3.2rem;
@@ -2007,16 +2028,30 @@ body {
     font-size: 1.2rem;
 }
 
-.autor-detalles { text-align: left; }
-.nombre-autor { display: block; font-weight: 700; color: #1a202c; }
-.rol-autor { display: block; font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; }
+.autor-detalles {
+    text-align: left;
+}
+
+.nombre-autor {
+    display: block;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.rol-autor {
+    display: block;
+    font-size: 0.75rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+}
 
 /* Imagen Principal */
 .articulo-imagen-wrap {
-    margin: 0 -60px 60px; /* Se expande más allá del texto para impacto visual */
+    margin: 0 -60px 60px;
+    /* Se expande más allá del texto para impacto visual */
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
 }
 
 .articulo-imagen-wrap img {
@@ -2055,8 +2090,15 @@ body {
     text-align: center;
 }
 
-.caja-compartir h3 { margin-bottom: 10px; font-size: 1.5rem; }
-.caja-compartir p { color: #718096; margin-bottom: 25px; }
+.caja-compartir h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.caja-compartir p {
+    color: #718096;
+    margin-bottom: 25px;
+}
 
 .social-flex {
     display: flex;
@@ -2075,10 +2117,21 @@ body {
     transition: transform 0.2s;
 }
 
-.social-link:hover { transform: translateY(-3px); }
-.fb { background: #1877f2; }
-.tw { background: #1da1f2; }
-.wa { background: #25d366; }
+.social-link:hover {
+    transform: translateY(-3px);
+}
+
+.fb {
+    background: #1877f2;
+}
+
+.tw {
+    background: #1da1f2;
+}
+
+.wa {
+    background: #25d366;
+}
 
 .btn-regresar-lista {
     display: inline-block;
@@ -2089,7 +2142,9 @@ body {
     transition: 0.3s;
 }
 
-.btn-regresar-lista:hover { color: #e60000; }
+.btn-regresar-lista:hover {
+    color: #e60000;
+}
 
 
 
@@ -2100,7 +2155,8 @@ body {
  *******************************************************************************/
 
 .contenedor-login {
-    min-height: calc(100vh - 80px); /* Ajusta según la altura de tu nav */
+    min-height: calc(100vh - 80px);
+    /* Ajusta según la altura de tu nav */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2116,7 +2172,7 @@ body {
     grid-template-columns: 1fr 1fr;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 /* Lado del Formulario */
@@ -2239,7 +2295,7 @@ body {
     position: absolute;
     width: 300px;
     height: 300px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
 }
 
@@ -2263,7 +2319,8 @@ body {
  *******************************************************************************/
 
 /* 1. RESET Y BASE */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -2303,8 +2360,16 @@ body, html {
     object-fit: cover;
 }
 
-.admin-info h4 { font-size: 16px; margin: 0; color: white; }
-.admin-info span { font-size: 12px; color: #777; }
+.admin-info h4 {
+    font-size: 16px;
+    margin: 0;
+    color: white;
+}
+
+.admin-info span {
+    font-size: 12px;
+    color: #777;
+}
 
 .menu-admin {
     padding: 20px 10px;
@@ -2325,7 +2390,11 @@ body, html {
     transition: 0.3s;
 }
 
-.item-admin i { width: 20px; text-align: center; font-size: 18px; }
+.item-admin i {
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+}
 
 .item-admin:hover {
     background: #333;
@@ -2347,7 +2416,7 @@ body, html {
 /* 3. CONTENIDO PRINCIPAL */
 .contenido-admin {
     flex: 1;
-    margin-left: 260px; 
+    margin-left: 260px;
     padding: 40px;
 }
 
@@ -2380,7 +2449,7 @@ body, html {
     background: white;
     border-radius: 12px;
     padding: 40px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* 4. TABLAS (LISTADOS) */
@@ -2437,11 +2506,25 @@ body, html {
     text-decoration: none;
 }
 
-.btn-accion.editar { background: #fff3e0; color: #ef6c00; }
-.btn-accion.borrar { background: #ffebee; color: #c62828; }
+.btn-accion.editar {
+    background: #fff3e0;
+    color: #ef6c00;
+}
 
-.btn-accion.editar:hover { background: #ef6c00; color: white; }
-.btn-accion.borrar:hover { background: #c62828; color: white; }
+.btn-accion.borrar {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.btn-accion.editar:hover {
+    background: #ef6c00;
+    color: white;
+}
+
+.btn-accion.borrar:hover {
+    background: #c62828;
+    color: white;
+}
 
 /* 5. FORMULARIOS */
 .grid-formulario {
@@ -2462,7 +2545,8 @@ body, html {
     color: #444;
 }
 
-.campo input, .campo select {
+.campo input,
+.campo select {
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -2490,7 +2574,9 @@ body, html {
 
 
 
-.btn-guardar:hover { background: #e60000; }
+.btn-guardar:hover {
+    background: #e60000;
+}
 
 /* Estilo específico para el campo del checkbox */
 .campo-checkbox .checkbox-wrapper {
@@ -2498,17 +2584,20 @@ body, html {
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
-    background: #fafafa; /* Igual que tus otros inputs */
+    background: #fafafa;
+    /* Igual que tus otros inputs */
     border: 1px solid #ddd;
     border-radius: 8px;
-    height: 46px; /* Para que mida lo mismo que los inputs de texto */
+    height: 46px;
+    /* Para que mida lo mismo que los inputs de texto */
     cursor: pointer;
 }
 
 .campo-checkbox input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: #fb8500; /* Color naranja corporativo */
+    accent-color: #fb8500;
+    /* Color naranja corporativo */
     cursor: pointer;
 }
 
@@ -2549,7 +2638,8 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 }
 
 .input-grupal:focus-within {
-    border-color: #fb8500; /* Color naranja del club */
+    border-color: #fb8500;
+    /* Color naranja del club */
 }
 
 .input-search {
@@ -2596,7 +2686,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
  * *
  *******************************************************************************/
 
- /*EDITAR*/
+/*EDITAR*/
 
 /* Contenedor Principal */
 .contenedor-edit-jugador {
@@ -2642,7 +2732,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 .pizarra-ficha {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     padding: 30px;
     border: 1px solid #edf2f7;
 }
@@ -2719,7 +2809,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     border-radius: 8px;
     overflow: hidden;
     border: 3px solid white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .preview-foto img {
@@ -2776,8 +2866,8 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 
 /* Contenedor de botones en el header */
 .acciones-header-ficha {
-    display: flex; 
-    gap: 12px; 
+    display: flex;
+    gap: 12px;
     align-items: center;
 }
 
@@ -2810,17 +2900,20 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 
 /* Colores específicos */
 .btn-ficha-edit {
-    background: #fb8500; /* Naranja */
+    background: #fb8500;
+    /* Naranja */
     box-shadow: 0 4px 6px rgba(251, 133, 0, 0.3);
 }
 
 .btn-ficha-delete {
-    background: #e63000; /* Rojo */
+    background: #e63000;
+    /* Rojo */
     box-shadow: 0 4px 6px rgba(230, 48, 0, 0.3);
 }
 
 .btn-ficha-volver {
-    background-color: #64748b; /* Gris azulado profesional */
+    background-color: #64748b;
+    /* Gris azulado profesional */
 }
 
 /* Estilos de la Fotografía Grande */
@@ -2833,7 +2926,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     height: 450px;
     border-radius: 15px;
     border: 5px solid white;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     overflow: hidden;
 }
 
@@ -2926,7 +3019,8 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 .contenedor-paginacion .page-link {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #023e8a; /* Tu azul */
+    background-color: #023e8a;
+    /* Tu azul */
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -2950,14 +3044,14 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
  * NOTICIAS
  *******************************************************************************/
 
- /*************************************
+/*************************************
  * INDEX    
  **************************************/
 
 .contenedor-admin-noticias {
-    width: 100%;       
-    margin: 0;         
-    padding: 0;       
+    width: 100%;
+    margin: 0;
+    padding: 0;
     font-family: 'Inter', sans-serif;
 }
 
@@ -2969,8 +3063,15 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     margin-bottom: 30px;
 }
 
-.header-admin h1 { font-size: 28px; color: #111; font-weight: 800; }
-.header-admin p { color: #666; }
+.header-admin h1 {
+    font-size: 28px;
+    color: #111;
+    font-weight: 800;
+}
+
+.header-admin p {
+    color: #666;
+}
 
 .btn-nuevo {
     background: #e60000;
@@ -2982,13 +3083,16 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     transition: 0.3s;
 }
 
-.btn-nuevo:hover { background: #b30000; transform: translateY(-2px); }
+.btn-nuevo:hover {
+    background: #b30000;
+    transform: translateY(-2px);
+}
 
 /* Tabla Admin */
 .pizarra-admin {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }
 
@@ -3078,11 +3182,25 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     cursor: pointer;
 }
 
-.btn-ver { background: #e3f2fd; color: #1976d2; }
-.btn-editar { background: #fff3e0; color: #f57c00; }
-.btn-borrar { background: #ffebee; color: #d32f2f; }
+.btn-ver {
+    background: #e3f2fd;
+    color: #1976d2;
+}
 
-.btn-accion:hover { transform: scale(1.1); filter: brightness(0.9); }
+.btn-editar {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.btn-borrar {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+.btn-accion:hover {
+    transform: scale(1.1);
+    filter: brightness(0.9);
+}
 
 /* Alertas */
 .alerta-exito {
@@ -3193,15 +3311,16 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 }
 
 .preview-foto {
-    width: 220px; /* Un poco más ancha para noticias */
+    width: 220px;
+    /* Un poco más ancha para noticias */
     height: 140px;
     border-radius: 8px;
     overflow: hidden;
     border: 4px solid white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     /* Fondo oscuro o gris suave para que si la foto es de otra proporción, 
        los bordes sobrantes queden elegantes */
-    background: #2d3748; 
+    background: #2d3748;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3211,7 +3330,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     max-width: 100%;
     max-height: 100%;
     /* CLAVE: 'contain' para que se vea la imagen al 100% sin recortes */
-    object-fit: contain; 
+    object-fit: contain;
     display: block;
 }
 
@@ -3327,7 +3446,8 @@ input[type="file"]#imagen_noticia {
 .noticia-view-subtitle {
     font-size: 1.2rem;
     color: #64748b;
-    border-left: 4px solid #e60000; /* Color rojo del club */
+    border-left: 4px solid #e60000;
+    /* Color rojo del club */
     padding-left: 15px;
     margin: 25px 0;
     line-height: 1.6;
@@ -3359,7 +3479,7 @@ input[type="file"]#imagen_noticia {
     margin-right: 5px;
 }
 
- /*************************************
+/*************************************
   **************************************
   ADMIN -- MERCHANDISING   
 ************************************** 
@@ -3378,7 +3498,8 @@ input[type="file"]#imagen_noticia {
 .img-merchan-tabla {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Para que no se corte el diseño de la ropa */
+    object-fit: contain;
+    /* Para que no se corte el diseño de la ropa */
     padding: 2px;
 }
 
@@ -3441,4 +3562,75 @@ input[type="file"]#imagen_noticia {
     display: flex;
     gap: 10px;
     justify-content: center;
+}
+
+/***************************************
+****************************************
+CREAR PRODUCTO
+****************************************
+***************************************/
+
+.contenedor-edit-merchan {
+   display: block;
+    overflow: hidden; /* Esto obliga al contenedor a respetar sus límites */
+    width: auto; 
+    margin-left: 20px;
+}
+
+.seccion-producto h3 {
+    border-bottom: 2px solid #fb8500;
+    color: #fb8500;
+}
+
+.seccion-logistica h3 {
+    border-bottom: 2px solid #023e8a;
+    color: #023e8a;
+}
+
+textarea.input-ficha {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.preview-foto {
+    width: 150px;
+    height: 150px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e2e8f0;
+}
+
+.preview-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+input[type="number"].input-ficha {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.input-error {
+    border-color: #e63000 !important;
+    background-color: #fff5f5;
+}
+
+.text-error {
+    color: #e63000;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+
+
+.text-error {
+    color: #e63000;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 600;
 }
