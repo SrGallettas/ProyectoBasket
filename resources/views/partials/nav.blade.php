@@ -13,7 +13,7 @@
     <ul class="menu-navegacion">
         <li><a href="{{ url('/') }}">Inicio</a></li>
         <li><a href="{{ route('basket.equipo') }}">Equipo</a></li>
-        <li><a href="{{ route('basket.merchandising') }}">Tienda</a></li>
+        <li><a href="{{ route('basket.tienda') }}">Tienda</a></li>
         <li><a href="{{ route('basket.clasificacion') }}">Clasificación</a></li>
         <li><a href="{{ route('basket.estadisticas') }}">Estadísticas</a></li>
         <li><a href="{{ route('basket.partidos') }}">Partidos</a></li>
@@ -22,11 +22,27 @@
         <li><a href="{{ route('basket.contacto') }}">Contacto</a></li>
     </ul>
 
-    {{-- 3. BOTÓN LOGIN --}}
+    {{-- 3. BOTÓN LOGIN / LOGOUT --}}
     <div class="login-seccion">
-        <a href="{{ route('login') }}" class="boton-inicio-sesion">
-            INICIAR SESIÓN
-        </a>
+        @guest
+            <a href="{{ route('login') }}" class="boton-inicio-sesion">
+                INICIAR SESIÓN
+            </a>
+        @endguest
+
+        @auth
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="{{ route('dashboard') }}" class="boton-admin-nav">
+                    ADMINISTRACIÓN
+                </a>
+                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="boton-cerrar-sesion">
+                        SALIR DE SESIÓN
+                    </button>
+                </form>
+            </div>
+        @endauth
     </div>
 
 </nav>

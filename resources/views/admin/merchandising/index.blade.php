@@ -66,6 +66,12 @@
                     </td>
                     <td>
                         <div class="acciones-flex">
+
+                            <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" style="background: #e3f2fd; color: #1976d2;" title="Ver Detalles">
+                                <i class="fas fa-eye"></i>
+                            </a>
+
+
                             <a href="{{ route('merchandising.edit', $item->id) }}" class="btn-accion editar" title="Editar">
                                 <i class="fas fa-pen"></i>
                             </a>

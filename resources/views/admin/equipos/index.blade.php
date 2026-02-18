@@ -16,7 +16,7 @@
 <div class="contenedor-buscador">
     <form action="{{ route('equipos.search') }}" method="GET" class="form-buscador">
         <div class="input-grupal">
-            <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" lass="input-search">
+            <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" class="input-search">
             <button type="submit" class="btn-buscar">
                 <i class="fas fa-search"></i>
             </button>
@@ -66,7 +66,7 @@
                     {{-- Contenedor de los botones Editar y Borrar --}}
                     <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
                         
-                        <a href="{{ route('equipos.show', $equipo->id) }}" class="btn-accion" title="Ver Detalle" style="background-color: #00b4d8; color: white;">
+                        <a href="{{ route('equipos.show', $equipo->id) }}" class="btn-accion" title="Ver Detalle" style="background: #e3f2fd; color: #1976d2;">
                             <i class="fas fa-eye"></i>
                         </a>
 

@@ -76,7 +76,7 @@ class NoticiaController extends Controller
             // Guardamos solo el nombre del archivo en la BD
             $noticia->imagen_noticia = $nombreImagen;
         } else {
-            $noticia->imagen_jugador = 'basket.jpeg';
+            $noticia->imagen_noticia = 'basket.jpeg';
         }
 
 

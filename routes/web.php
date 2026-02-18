@@ -11,7 +11,7 @@ use App\Http\Controllers\MerchandisingController;
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
 Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
 Route::get('equipo', [BasketController::class, 'equipo'])->name('basket.equipo');
-Route::get('merchandising', [BasketController::class, 'merchandising'])->name('basket.merchandising');
+Route::get('tienda', [BasketController::class, 'tienda'])->name('basket.tienda');
 Route::get('clasificacion', [BasketController::class, 'clasificacion'])->name('basket.clasificacion');
 Route::get('estadisticas', [BasketController::class, 'estadisticas'])->name('basket.estadisticas');
 Route::get('partidos', [BasketController::class, 'partidos'])->name('basket.partidos');
@@ -30,7 +30,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middle
 // --- 3. PANEL DE ADMINISTRACIÓN (PROTEGIDO) ---
 // Todo lo que esté aquí dentro requiere estar logueado
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    
+
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
@@ -46,5 +46,4 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource("jugadores", JugadorController::class);
     Route::resource("noticias", NoticiaController::class);
     Route::resource("merchandising", MerchandisingController::class);
-
 });

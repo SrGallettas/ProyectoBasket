@@ -36,7 +36,7 @@
                         <span class="fecha">{{ $noticia->created_at->format('d M, Y') }}</span>
                         <h3>{{ $noticia->titulo }}</h3>
                         <p>{{ Str::limit($noticia->subtitulo, 80) }}</p>
-                        <a href="{{ route('noticias.show', $noticia->slug) }}">Leer más →</a>
+                        <a href="{{ route('noticias.detalle', $noticia->slug) }}">Leer más →</a>
                     </div>
                 </div>
             @empty

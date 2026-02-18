@@ -21,7 +21,6 @@ class EquipoFactory extends Factory
         return [
             "nombre" => $this->faker->city() . ' Basket Club',
             "categoria" => $this->faker->randomElement(['Senior', 'Junior', 'Cadete']),
-            'numero_jugadores' => 12,
         ];
     }
 }

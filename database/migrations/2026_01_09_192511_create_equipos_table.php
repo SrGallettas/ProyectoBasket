@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('categoria'); 
             $table->string('imagen_club')->nullable();
-            $table->integer('numero_jugadores')->default(0);
             $table->boolean('es_local')->default(false);
             $table->timestamps();
         });

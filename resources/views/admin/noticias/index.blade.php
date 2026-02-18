@@ -13,11 +13,11 @@
         </a>
     </div>
 
-    {{-- Buscador de Equipos --}}
+    {{-- Buscador de Noticias --}}
     <div class="contenedor-buscador">
         <form action="{{ route('noticias.search') }}" method="GET" class="form-buscador">
             <div class="input-grupal">
-                <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" lass="input-search">
+                <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" class="input-search">
                 <button type="submit" class="btn-buscar">
                     <i class="fas fa-search"></i>
                 </button>

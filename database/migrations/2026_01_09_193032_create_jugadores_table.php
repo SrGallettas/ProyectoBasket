@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('dorsal')->nullable();
             $table->string('imagen_jugador')->nullable();
         
-            // AQUÍ VA LA RELACIÓN:
             // Crea una columna 'equipo_id' que se conecta con la tabla 'equipos'
             $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
         

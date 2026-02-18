@@ -50,7 +50,7 @@
                         <label>Tallas Disponibles</label>
                         <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
                             {{-- Lógica para dejar marcados los checkboxes --}}
-                            @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica'] as $talla)
+                            @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica', 'Sin Talla'] as $talla)
                                 <label>
                                     <input type="checkbox" name="talla[]" value="{{ $talla }}" 
                                     {{ is_array(old('talla')) && in_array($talla, old('talla')) ? 'checked' : '' }}> 

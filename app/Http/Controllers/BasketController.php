@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipo;
 use App\Models\Noticia;
+use App\Models\Merchandising;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
@@ -31,9 +32,10 @@ class BasketController extends Controller
         return view('basket.equipo', compact('equiposLocales', 'equipoMostrar', 'categoriaSel'));
     }
 
-    public function merchandising()
+    public function tienda()
     {
-        return view('basket.merchandising');
+        $merchandising = Merchandising::orderBy('nombre', 'asc')->get();        
+        return view('basket.merchandising', compact('merchandising'));
     }
 
     public function clasificacion()

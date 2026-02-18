@@ -22,69 +22,38 @@
         <p class="subtitulo">Encuentra toda la ropa y accesorios del equipo</p>
 
         <div class="rejilla-productos">
-
+        @forelse($merchandising as $item)
             <div class="tarjeta-producto">
-                <img src="./img/camiseta.jpg" alt="Camiseta Oficial" />
+                {{-- Imagen: cargada desde la carpeta de merchandising --}}
+                <img src="{{ asset('merchandising/' . $item->imagen_merchan) }}" alt="{{ $item->nombre }}" />
+                
                 <div class="info-producto">
-                    <h3>Camiseta Oficial</h3>
-                    <p class="descripcion-producto">Camiseta oficial del equipo en colores rojo y blanco</p>
+                    <h3>{{ $item->nombre }}</h3>
+                    <p class="descripcion-producto">{{ $item->descripcion }}</p>
+                    
+                    {{-- Tallas: se muestran solo si el item las tiene --}}
+                    @if($item->talla)
+                        <div class="bloque-tallas" style="margin-bottom: 15px; font-size: 0.9rem;">
+                            <strong>Tallas:</strong> 
+                            <span class="tallas-texto" style="background: #eee; padding: 2px 6px; border-radius: 4px;">
+                                {{ str_replace(',', ', ', $item->talla) }}
+                            </span>
+                        </div>
+                    @endif
+
                     <div class="precio-comprar">
-                        <span class="precio">35€</span>
+                        {{-- Precio: formateado con el símbolo € --}}
+                        <span class="precio">{{ number_format($item->precio, 0) }}€</span>
                         <button class="boton-comprar">¡Estoy Interesado!</button>
                     </div>
                 </div>
             </div>
-
-            <div class="tarjeta-producto">
-                <img src="img/pantalon.jpg" alt="Pantalones de Juego" />
-                <div class="info-producto">
-                    <h3>Pantalones de Juego</h3>
-                    <p class="descripcion-producto">Pantalones oficiales rojos con detalles blancos</p>
-                    <div class="precio-comprar">
-                        <span class="precio">28€</span>
-                        <button class="boton-comprar">¡Estoy Interesado!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tarjeta-producto">
-                <img src="img/gorra.jpg" alt="Gorra del Equipo" />
-                <div class="info-producto">
-                    <h3>Gorra del Equipo</h3>
-                    <p class="descripcion-producto">Gorra oficial roja con logo bordado</p>
-                    <div class="precio-comprar">
-                        <span class="precio">22€</span>
-                        <button class="boton-comprar">¡Estoy Interesado!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tarjeta-producto">
-                <img src="img/sudadera.jpg" alt="Sudadera con Capucha" />
-                <div class="info-producto">
-                    <h3>Sudadera con Capucha</h3>
-                    <p class="descripcion-producto">Sudadera roja con logo blanco del equipo</p>
-                    <div class="precio-comprar">
-                        <span class="precio">45€</span>
-                        <button class="boton-comprar">¡Estoy Interesado!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tarjeta-producto">
-                <img src="img/mochila.jpg" alt="Mochila del Equipo" />
-                <div class="info-producto">
-                    <h3>Mochila del Equipo</h3>
-                    <p class="descripcion-producto">Mochila blanca con detalles rojos y logo</p>
-                    <div class="precio-comprar">
-                        <span class="precio">38€</span>
-                        <button class="boton-comprar">¡Estoy Interesado!</button>
-                    </div>
-                </div>
-            </div>
-
+        @empty
+            <p>No hay productos disponibles en este momento.</p>
+        @endforelse
         </div>
     </section>
+
 
     <section class="contacto-pedido">
         <h2>¿Te gusta algún producto?</h2>

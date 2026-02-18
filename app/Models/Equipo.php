@@ -11,7 +11,7 @@ class Equipo extends Model
 
     protected $fillable = [
         'nombre', 
-        'categoria', 'imagen_club', 'numero_jugadores', 'es_local'
+        'categoria', 'imagen_club', 'es_local'
     ];
 
     public function jugadores() {

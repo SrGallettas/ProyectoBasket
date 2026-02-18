@@ -70,4 +70,85 @@ class MerchandisingController extends Controller
         $item->save();
         return redirect()->route('merchandising.index')->with('mensaje', 'Jugador creado con éxito');
     }
+
+
+    public function edit($id)
+    {
+        $item = Merchandising::findOrFail($id);
+        
+        // Convertimos el string de la BD "S,M,L" de nuevo a un array para que los checkboxes funcionen
+        $tallasSeleccionadas = explode(',', $item->talla);
+
+        return view('admin.merchandising.edit', compact('item', 'tallasSeleccionadas'));
+    }
+
+    // UPDATE: Procesa los cambios
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nombre'         => 'required|string|max:255',
+            'precio'         => 'required|numeric|min:0',
+            'talla'          => 'required|array|min:1',
+            'imagen_merchan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Nullable al editar
+            'descripcion'    => 'nullable|string',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'precio.required' => 'El precio es obligatorio.',
+            'talla.required'  => 'Selecciona al menos una talla.',
+        ]);
+
+        $item = Merchandising::findOrFail($id);
+        $item->nombre = $request->nombre;
+        $item->descripcion = $request->descripcion;
+        $item->precio = $request->precio;
+
+        // Tallas: Array a String
+        if ($request->has('talla')) {
+            $item->talla = implode(',', $request->talla);
+        }
+
+        // Gestión de Imagen
+        if ($request->hasFile('imagen_merchan')) {
+            // Borrar la foto anterior si existe
+            $rutaAntigua = public_path('merchandising/' . $item->imagen_merchan);
+            if ($item->imagen_merchan && file_exists($rutaAntigua)) {
+                unlink($rutaAntigua);
+            }
+
+            // Subir la nueva
+            $imagen = $request->file('imagen_merchan');
+            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+            $imagen->move(public_path('merchandising'), $nombreImagen);
+            $item->imagen_merchan = $nombreImagen;
+        }
+
+        $item->save();
+        return redirect()->route('merchandising.index')->with('mensaje', 'Producto actualizado correctamente');
+    }
+
+    // DESTROY: Elimina el registro y su foto
+    public function destroy($id)
+    {
+        $item = Merchandising::findOrFail($id);
+
+        // Borrar archivo físico
+        $rutaImagen = public_path('merchandising/' . $item->imagen_merchan);
+        if ($item->imagen_merchan && file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+
+        $item->delete();
+        return redirect()->route('merchandising.index')->with('mensaje', 'Producto eliminado correctamente');
+    }
+
+
+    public function show($id)
+{
+    $item = Merchandising::findOrFail($id);
+    
+    // Convertimos el string "S,M,L" en array para listarlo bonito con badges
+    $tallas = $item->talla ? explode(',', $item->talla) : [];
+
+    return view('admin.merchandising.show', compact('item', 'tallas'));
+}
 }

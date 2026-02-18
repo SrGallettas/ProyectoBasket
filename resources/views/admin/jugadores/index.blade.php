@@ -13,20 +13,19 @@
 </header>
 
 
-{{-- Buscador de Equipos --}}
+{{-- Buscador de Jugadores --}}
 <div class="contenedor-buscador">
     <form action="{{ route('jugadores.search') }}" method="GET" class="form-buscador">
         <div class="input-grupal">
             <input type="text" 
                    name="search" 
                    placeholder="Buscar por nombre..." 
-                   value="{{ $search ?? '' }}" {{-- Mantiene el texto después de buscar --}}
+                   value="{{ $search ?? '' }}" 
                    class="input-search">
             <button type="submit" class="btn-buscar">
                 <i class="fas fa-search"></i>
             </button>
         </div>
-        {{-- Si hay una búsqueda activa, mostramos un botón para limpiar --}}
         @if(isset($search) && $search != '')
             <a href="{{ route('jugadores.index') }}" class="btn-limpiar" title="Limpiar búsqueda">
                 <i class="fas fa-times"></i>
@@ -34,6 +33,7 @@
         @endif
     </form>
 </div>
+
 
 {{-- Mensaje de éxito al crear, editar o borrar --}}
 @if(session('mensaje'))
