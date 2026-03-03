@@ -12,10 +12,11 @@
         </a>
     </header>
 
+     {{-- Bloque de errores (Estilo idéntico al de Merchandising) --}}
     @if ($errors->any())
-    <div style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <div class="cuadro-errores-admin">
         <strong>¡Vaya! Algo ha ido mal:</strong>
-        <ul style="margin-top: 5px; margin-bottom: 0; list-style: none; padding-left: 0;">
+        <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach

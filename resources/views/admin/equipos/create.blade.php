@@ -9,16 +9,16 @@
 </header>
 
 {{-- Bloque para mostrar errores de validación --}}
+
 @if ($errors->any())
-    <div style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <strong>¡Vaya! Algo ha ido mal:</strong>
-        {{-- Añadimos list-style: none y quitamos el padding --}}
-        <ul style="margin-top: 5px; margin-bottom: 0; list-style: none; padding-left: 0;">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="cuadro-errores-admin">
+    <strong>¡Vaya! Algo ha ido mal:</strong>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
 <div class="pizarra-admin">

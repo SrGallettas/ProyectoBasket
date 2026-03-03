@@ -3,32 +3,21 @@
 @section('contenido_admin')
 <div class="contenedor-admin-principal"> 
     
-    <header class="header-admin">
-        <div>
-            <h2>Gestión de Merchandising</h2>
-            <p style="color: #777;">Productos y equipación oficial del club</p>
-        </div>
-        <a href="{{ route('merchandising.create') }}" class="btn-nuevo">
-            <i class="fas fa-plus"></i> Nuevo Producto
-        </a>
-    </header>
+    {{-- 1. USAMOS EL COMPONENTE --}}
+    <x-admin-header 
+        titulo="Gestión de Merchandising" 
+        subtitulo="Productos y equipación oficial del club"
+        :rutaNuevo="route('merchandising.create')" 
+        textoNuevo="Nuevo Producto"
+        :rutaIndex="route('merchandising.index')"
+    />
 
-    {{-- Buscador --}}
-    <div class="contenedor-buscador">
-        <form action="{{ route('merchandising.index') }}" method="GET" class="form-buscador">
-            <div class="input-grupal">
-                <input type="text" name="search" placeholder="Buscar producto..." value="{{ $search ?? '' }}" class="input-search">
-                <button type="submit" class="btn-buscar">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            @if(isset($search) && $search != '')
-                <a href="{{ route('merchandising.index') }}" class="btn-limpiar">
-                    <i class="fas fa-times"></i>
-                </a>
-            @endif
-        </form>
-    </div>
+    {{-- Mensaje de éxito (Opcional, pero recomendado tenerlo) --}}
+    @if(session('mensaje'))
+        <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i> {{ session('mensaje') }}
+        </div>
+    @endif
 
     <div class="pizarra-admin">
         <table class="tabla-admin">
@@ -55,7 +44,7 @@
                     </td>
                     <td>
                         <div class="info-producto">
-                            <span class="nombre-producto">{{ $item->nombre }}</span>
+                            <span class="nombre-producto"><strong>{{ $item->nombre }}</strong></span>
                         </div>
                     </td>
                     <td>
@@ -65,18 +54,17 @@
                         <strong class="precio-texto">{{ number_format($item->precio, 2, ',', '.') }}€</strong>
                     </td>
                     <td>
-                        <div class="acciones-flex">
+                        <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
 
                             <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" style="background: #e3f2fd; color: #1976d2;" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
                             </a>
 
-
                             <a href="{{ route('merchandising.edit', $item->id) }}" class="btn-accion editar" title="Editar">
                                 <i class="fas fa-pen"></i>
                             </a>
                             
-                            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Eliminar producto?')">
+                            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Eliminar producto?')" style="margin: 0;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-accion borrar" title="Eliminar">
@@ -88,9 +76,9 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5">
+                    <td colspan="5" style="text-align: center; padding: 40px; color: #777;">
                         <div class="mensaje-vacio">
-                            <i class="fas fa-box-open"></i>
+                            <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
                             <p>No se han encontrado productos de merchandising.</p>
                         </div>
                     </td>
@@ -98,8 +86,13 @@
                 @endforelse
             </tbody>
         </table>
-
-
+        
+        {{-- Paginación si la usas --}}
+        @if(method_exists($merchandising, 'links'))
+            <div class="contenedor-paginacion">
+                {{ $merchandising->links() }}
+            </div>
+        @endif
     </div>
 </div>
 @endsection

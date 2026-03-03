@@ -9,11 +9,25 @@ use Illuminate\Support\Facades\Storage;
 
 class JugadorController extends Controller
 {
-    // Muestra la lista de jugadores
-    public function index()
+    // Muestra la lista de jugadores (Ahora con el buscador integrado)
+    public function index(Request $request)
     {
-        $jugadores = Jugador::orderBy('nombre', 'asc')->paginate(10);
-        return view('admin.jugadores.index', compact('jugadores'));
+        // 1. Capturamos el término de búsqueda que envía el componente
+        $search = $request->input('search');
+
+        // 2. Consulta unificada: Si hay búsqueda filtra, si no, trae todos
+        $jugadores = Jugador::with('equipo') // Eager loading para no saturar la BD
+            ->when($search, function($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%')
+                      ->orWhere('apellido', 'like', '%' . $search . '%')
+                      ->orWhere('dorsal', 'like', '%' . $search . '%');
+            })
+            ->orderBy('nombre', 'asc')
+            ->paginate(10)
+            ->withQueryString(); // Esto sustituye al ->appends, mantiene la búsqueda al paginar
+
+        // 3. Pasamos $search para que el botón "limpiar" (la X) del componente funcione
+        return view('admin.jugadores.index', compact('jugadores', 'search'));
     }
 
     // Muestra el formulario (pasando los equipos)
@@ -160,21 +174,4 @@ class JugadorController extends Controller
         return view('admin.jugadores.show', compact('jugador'));
     }
 
-    ///////////////
-    // BUSCADOR //
-    /////////////
-    public function search(Request $request)
-    {
-        $search = $request->get('search');
-
-        $jugadores = Jugador::where('nombre', 'like', '%' . $search . '%')
-            ->orWhere('apellido', 'like', '%' . $search . '%')
-            ->orderBy('apellido', 'ASC')
-            ->paginate(10);
-            
-        // Importante para que al cambiar de página no se pierda la búsqueda
-        $jugadores->appends(['search' => $search]);
-
-        return view('admin.jugadores.index', compact('jugadores', 'search'));
-    }
 }

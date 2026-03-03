@@ -8,11 +8,23 @@ use App\Models\Merchandising;
 class MerchandisingController extends Controller
 {
 
-    // Muestra la lista de noticias
-    public function index()
+    // Muestra la lista de productos (Con buscador integrado)
+    public function index(Request $request)
     {
-        $merchandising = Merchandising::orderBy('nombre', 'asc')->paginate(10);
-        return view('admin.merchandising.index', compact('merchandising'));
+        // 1. Capturamos el término de búsqueda que envía el componente
+        $search = $request->input('search');
+
+        // 2. Consulta: Si hay búsqueda filtra por nombre o descripción, si no, trae todos.
+        $merchandising = Merchandising::when($search, function($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%')
+                      ->orWhere('descripcion', 'like', '%' . $search . '%');
+            })
+            ->orderBy('nombre', 'asc')
+            ->paginate(10)
+            ->withQueryString(); // Mantiene el parámetro ?search= en la paginación
+
+        // 3. Mandamos los datos y la variable $search para la "X" de limpiar búsqueda
+        return view('admin.merchandising.index', compact('merchandising', 'search'));
     }
 
     // Muestra el formulario para crear el producto

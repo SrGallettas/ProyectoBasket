@@ -8,15 +8,24 @@ use Illuminate\Support\Facades\Storage;
 
 class EquipoController extends Controller
 {
-    // Muestra la lista de todos los equipos
-    public function index()
+    // Muestra la lista de todos los equipos (Con buscador integrado)
+    public function index(Request $request)
     {
-        // Ordenamos por nombre de la A a la Z y paginamos de 10 en 10
-        // El with count para contar el numero de jugadores de ese club
+        // 1. Capturamos lo que viene del buscador del componente
+        $search = $request->input('search');
+
+        // 2. Consulta: Si hay búsqueda filtra por nombre, si no, trae todos.
+        // Usamos withQueryString() para que la búsqueda se mantenga al cambiar de página.
         $equipos = Equipo::withCount('jugadores')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%');
+            })
             ->orderBy('nombre', 'asc')
-            ->paginate(10);
-        return view('admin.equipos.index', compact('equipos')); // Los manda a la vista index
+            ->paginate(10)
+            ->withQueryString();
+
+        // 3. Mandamos los equipos y la variable $search a la vista
+        return view('admin.equipos.index', compact('equipos', 'search'));
     }
 
     // Muestra el formulario para crear un equipo nuevo
@@ -127,22 +136,5 @@ class EquipoController extends Controller
 
         // Retornamos la vista 'show' pasando los datos del equipo
         return view('admin.equipos.show', compact('equipo'));
-    }
-
-    ////////////////
-    /// BUSCADOR///
-    //////////////
-    public function search(Request $request)
-    {
-        $search = $request->get('search');
-
-        $equipos = Equipo::where('nombre', 'like', '%' . $search . '%')
-            ->orderBy('nombre', 'ASC')
-            ->paginate(3); 
-
-        // Importante para que al cambiar de página no se pierda la búsqueda
-        $equipos->appends(['search' => $search]);
-
-        return view('admin.equipos.index', compact('equipos', 'search'));
     }
 }

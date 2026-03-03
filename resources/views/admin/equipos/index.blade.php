@@ -1,35 +1,15 @@
 @extends('layouts.admin') {{-- Carga la base (el diseño general del panel) --}}
 
 @section('contenido_admin') {{-- Aquí empieza el contenido que se mete dentro del diseño --}}
-<header class="header-admin">
-    <div>
-        <h2>Gestión de Equipos</h2>
-        <p style="color: #777;">Categorías y grupos del Bellreguard CB</p>
-    </div>
-    {{-- Botón para ir a la vista de crear equipo nuevo --}}
-    <a href="{{ route('equipos.create') }}" class="btn-nuevo">
-        <i class="fas fa-plus"></i> Nuevo Equipo
-    </a>
-</header>
 
-{{-- Buscador de Equipos --}}
-<div class="contenedor-buscador">
-    <form action="{{ route('equipos.search') }}" method="GET" class="form-buscador">
-        <div class="input-grupal">
-            <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" class="input-search">
-            <button type="submit" class="btn-buscar">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        {{-- Si hay una búsqueda activa, mostramos un botón para limpiar --}}
-        @if(isset($search) && $search != '')
-            <a href="{{ route('equipos.index') }}" class="btn-limpiar" title="Limpiar búsqueda">
-                <i class="fas fa-times"></i>
-            </a>
-        @endif
-    </form>
-</div>
-
+{{-- 1. USAMOS EL COMPONENTE (Sustituye al header y al buscador viejo) --}}
+<x-admin-header 
+    titulo="Gestión de Equipos" 
+    subtitulo="Categorías y grupos del Bellreguard CB"
+    :rutaNuevo="route('equipos.create')" 
+    textoNuevo="Nuevo Equipo"
+    :rutaIndex="route('equipos.index')"
+/>
 
 {{-- Mensaje de éxito: Solo aparece cuando creas, editas o borras algo correctamente --}}
 @if(session('mensaje'))
@@ -57,7 +37,7 @@
                     <div class="contenedor-escudo">
                         {{-- Muestra la foto guardada en la carpeta public/escudos --}}
                         <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" style="object-fit: contain;">
-                    </div> {{-- DIV cerrado correctamente --}}
+                    </div>
                 </td>
                 <td><strong>{{ $equipo->nombre }}</strong></td>
                 <td>{{ $equipo->categoria }}</td>
@@ -70,15 +50,15 @@
                             <i class="fas fa-eye"></i>
                         </a>
 
-                        {{-- Botón Editar: Pasa el ID del equipo en la URL para saber cuál editar --}}
+                        {{-- Botón Editar --}}
                         <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-accion editar" title="Editar" style="margin: 0;">
                             <i class="fas fa-pen"></i>
                         </a>
                         
-                        {{-- Formulario para Borrar: Es un formulario porque usa el método DELETE --}}
+                        {{-- Formulario para Borrar --}}
                         <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar equipo?')" style="margin: 0; display: flex; align-items: center;">
-                            @csrf {{-- Token de seguridad obligatorio --}}
-                            @method('DELETE') {{-- Le dice a Laravel que use la función destroy --}}
+                            @csrf
+                            @method('DELETE')
                             <button type="submit" class="btn-accion borrar" title="Eliminar" style="margin: 0;">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -88,9 +68,9 @@
                 </td>
             </tr>
             @empty
-            {{-- MENSAJE SI NO HAY JUGADORES --}}
+            {{-- MENSAJE SI NO HAY EQUIPOS --}}
             <tr>
-                <td colspan="9" style="text-align: center; padding: 40px; color: #777;">
+                <td colspan="5" style="text-align: center; padding: 40px; color: #777;">
                     <i class="fas fa-info-circle"></i> No se han encontrado equipos en la base de datos.
                 </td>
             </tr>

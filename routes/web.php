@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\MerchandisingController;
+use App\Http\Controllers\PartidoController;
+
 
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
 Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
@@ -46,4 +48,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource("jugadores", JugadorController::class);
     Route::resource("noticias", NoticiaController::class);
     Route::resource("merchandising", MerchandisingController::class);
+    Route::resource('partidos', PartidoController::class);
 });

@@ -1,11 +1,25 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin">
-    <h2>Ficha del Equipo: {{ $equipo->nombre }}</h2>
-    <a href="{{ route('equipos.index') }}" class="btn-nuevo" style="background-color: #777;">
-        <i class="fas fa-arrow-left"></i> Volver al listado
-    </a>
+<header class="header-ficha">
+    <div>
+        <h2>Ficha del Equipo: {{ $equipo->nombre }}</h2>
+        <p>Información general y categoría</p>
+    </div>
+    <div class="acciones-header-ficha">
+        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-ficha-accion btn-ficha-edit">
+            <i class="fas fa-edit"></i>&nbsp;EDITAR
+        </a>
+        <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar?')">
+            @csrf @method('DELETE')
+            <button type="submit" class="btn-ficha-accion btn-ficha-delete">
+                <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
+            </button>
+        </form>
+        <a href="{{ route('equipos.index') }}" class="btn-ficha-accion btn-ficha-volver">
+            <i class="fas fa-arrow-left"></i>&nbsp;VOLVER
+        </a>
+    </div>
 </header>
 
 <div class="pizarra-admin">

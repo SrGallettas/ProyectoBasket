@@ -40,11 +40,17 @@
                     <i class="fas fa-shopping-bag"></i> Merchandising
                 </a>
 
+                <a href="{{ route('partidos.index') }}" class="item-admin {{ request()->is('admin/partidos*') ? 'activo' : '' }}">
+                    <i class="fas fa-calendar-alt"></i> Partidos
+                </a>
+
                 <div class="separador-admin"></div>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
-                    <i class="fas fa-arrow-left"></i> Ver Web
+                    <i class="fas fa-arrow-left"></i> Volver a la Web
                 </a>
+
+                
 </nav>
         </aside>
 

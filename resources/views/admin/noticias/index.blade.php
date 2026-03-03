@@ -1,36 +1,16 @@
-@extends('layouts.admin') {{-- O tu layout de admin si tienes otro --}}
+@extends('layouts.admin')
 
 @section('contenido_admin')
 <div class="contenedor-admin-noticias">
     
-    <div class="header-admin">
-        <div>
-            <h1>Gestión de Noticias</h1>
-            <p>Aquí puedes crear, editar o eliminar las noticias del club.</p>
-        </div>
-        <a href="{{ route('noticias.create') }}" class="btn-nuevo">
-            <i class="fas fa-plus"></i> Nueva Noticia
-        </a>
-    </div>
-
-    {{-- Buscador de Noticias --}}
-    <div class="contenedor-buscador">
-        <form action="{{ route('noticias.search') }}" method="GET" class="form-buscador">
-            <div class="input-grupal">
-                <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" class="input-search">
-                <button type="submit" class="btn-buscar">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            {{-- Si hay una búsqueda activa, mostramos un botón para limpiar --}}
-            @if(isset($search) && $search != '')
-                <a href="{{ route('noticias.index') }}" class="btn-limpiar" title="Limpiar búsqueda">
-                    <i class="fas fa-times"></i>
-                </a>
-            @endif
-        </form>
-    </div>
-
+    {{-- 1. USAMOS EL COMPONENTE (Sustituye al header y al buscador viejo) --}}
+    <x-admin-header 
+        titulo="Gestión de Noticias" 
+        subtitulo="Aquí puedes crear, editar o eliminar las noticias del club."
+        :rutaNuevo="route('noticias.create')" 
+        textoNuevo="Nueva Noticia"
+        :rutaIndex="route('noticias.index')"
+    />
 
    {{-- Mensaje de éxito al crear, editar o borrar --}}
     @if(session('mensaje'))
@@ -54,32 +34,35 @@
                 <tr>
                     <td class="td-img">
                         @if($noticia->imagen_noticia)
-                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia">
+                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
                         @else
-                            <div class="sin-foto"><i class="fas fa-image" alt = 'imagen_noticia' ></i></div>
+                            <div class="sin-foto"><i class="fas fa-image"></i></div>
                         @endif
                     </td>
                     <td>
                         <div class="info-principal">
-                            <span class="titulo-row">{{ $noticia->titulo }}</span>
-                            <span class="autor-row"><i class="fas fa-user"></i> {{ $noticia->autor }}</span>
+                            <span class="titulo-row"><strong>{{ $noticia->titulo }}</strong></span><br>
+                            <span class="autor-row" style="color: #666; font-size: 0.9em;"><i class="fas fa-user"></i> {{ $noticia->autor }}</span>
                         </div>
                     </td>
                     <td>
                         <span class="fecha-admin">{{ $noticia->created_at->format('d/m/Y') }}</span>
                     </td>
                     <td>
-                        <div class="acciones-admin">
-                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion btn-ver" title="Ver detalle">
+                        <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
+                            {{-- Botón Ver --}}
+                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion" style="background: #e3f2fd; color: #1976d2;" title="Ver detalle">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion btn-editar" title="Editar">
+                            {{-- Botón Editar --}}
+                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion editar" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')">
+                            {{-- Formulario Borrar --}}
+                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')" style="margin: 0;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion btn-borrar" title="Eliminar">
+                                <button type="submit" class="btn-accion borrar" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -87,7 +70,6 @@
                     </td>
                 </tr>
                 @empty
-                {{-- MENSAJE CUANDO ESTÁ VACÍO --}}
                 <tr>
                     <td colspan="4" style="text-align: center; padding: 40px; color: #777;">
                         <i class="fas fa-info-circle"></i> No se han encontrado noticias disponibles.

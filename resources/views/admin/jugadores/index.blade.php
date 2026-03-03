@@ -1,41 +1,17 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin">
-    <div>
-        <h2>Gestión de Jugadores</h2>
-        <p style="color: #777;">Plantilla completa del club</p>
-    </div>
-    
-    <a href="{{ route('jugadores.create') }}" class="btn-nuevo">
-        <i class="fas fa-plus"></i> Añadir Jugador
-    </a>
-</header>
 
+{{-- Invocamos el componente con tus datos --}}
+<x-admin-header 
+    titulo="Gestión de Jugadores" 
+    subtitulo="Plantilla completa del club"
+    :rutaNuevo="route('jugadores.create')" 
+    textoNuevo="Añadir Jugador"
+    :rutaIndex="route('jugadores.index')"
+/>
 
-{{-- Buscador de Jugadores --}}
-<div class="contenedor-buscador">
-    <form action="{{ route('jugadores.search') }}" method="GET" class="form-buscador">
-        <div class="input-grupal">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Buscar por nombre..." 
-                   value="{{ $search ?? '' }}" 
-                   class="input-search">
-            <button type="submit" class="btn-buscar">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        @if(isset($search) && $search != '')
-            <a href="{{ route('jugadores.index') }}" class="btn-limpiar" title="Limpiar búsqueda">
-                <i class="fas fa-times"></i>
-            </a>
-        @endif
-    </form>
-</div>
-
-
-{{-- Mensaje de éxito al crear, editar o borrar --}}
+{{-- Mensaje de éxito --}}
 @if(session('mensaje'))
     <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
         <i class="fas fa-check-circle"></i> {{ session('mensaje') }}
@@ -44,6 +20,7 @@
 
 <div class="pizarra-admin">
     <table class="tabla-admin">
+        {{-- Tu tabla se queda EXACTAMENTE IGUAL que la tenías --}}
         <thead>
             <tr>
                 <th>Foto</th>

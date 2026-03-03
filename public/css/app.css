@@ -2439,13 +2439,6 @@ html {
     padding: 40px;
 }
 
-.header-admin {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
 .header-admin h2 {
     font-size: 28px;
     color: #111;
@@ -2705,6 +2698,61 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
  * *
  *******************************************************************************/
 
+ /* ESTILO DE LOS BOTONES PARA TODAS LAS PLANTILLAS DE SHOW */
+
+/* --- HEADER UNIFICADO PARA TODOS LOS SHOWS --- */
+/* --- BOTONES DE ACCIÓN (MÁS COLOR) --- */
+.acciones-header-ficha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-ficha-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;           /* Un pelín más altos */
+    padding: 0 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;       /* Texto más grueso */
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Colores más vivos */
+.btn-ficha-edit { 
+    background-color: #ff9800; /* Naranja vibrante */
+    color: white !important; 
+}
+
+.btn-ficha-delete { 
+    background-color: #ef5350; /* Rojo vivo */
+    color: white !important; 
+}
+
+.btn-ficha-volver { 
+    background-color: #546e7a; /* Gris azulado potente */
+    color: white !important; 
+}
+
+/* Efectos al pasar el ratón */
+.btn-ficha-accion:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn-ficha-accion i {
+    font-size: 14px;
+}
+
 /*EDITAR*/
 
 /* Contenedor Principal */
@@ -2883,57 +2931,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
    VISTA DETALLE DEL JUGADOR (SHOW)
    ========================================================== */
 
-/* Contenedor de botones en el header */
-.acciones-header-ficha {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
 
-/* Base común para botones de acción (Editar y Eliminar) */
-.btn-ficha-accion {
-    text-decoration: none;
-    padding: 0 25px;
-    height: 48px;
-    min-width: 150px;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    text-transform: uppercase;
-}
-
-.btn-ficha-accion:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
-    color: white;
-}
-
-/* Colores específicos */
-.btn-ficha-edit {
-    background: #fb8500;
-    /* Naranja */
-    box-shadow: 0 4px 6px rgba(251, 133, 0, 0.3);
-}
-
-.btn-ficha-delete {
-    background: #e63000;
-    /* Rojo */
-    box-shadow: 0 4px 6px rgba(230, 48, 0, 0.3);
-}
-
-.btn-ficha-volver {
-    background-color: #64748b;
-    /* Gris azulado profesional */
-}
 
 /* Estilos de la Fotografía Grande */
 .ficha-col-foto {
@@ -3494,6 +3492,7 @@ input[type="file"]#imagen_noticia {
 **************************************/
 
 /* Contenedor de imagen en tabla */
+/* Contenedor de imagen en tabla - AHORA OCUPA TODO */
 .contenedor-foto-tabla {
     width: 60px;
     height: 60px;
@@ -3501,14 +3500,18 @@ input[type="file"]#imagen_noticia {
     overflow: hidden;
     background: #f8fafc;
     border: 1px solid #eee;
+    /* Eliminamos cualquier margen interno que pueda tener la celda */
+    padding: 0 !important; 
 }
 
 .img-merchan-tabla {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    /* Para que no se corte el diseño de la ropa */
-    padding: 2px;
+    /* CAMBIO CLAVE: 'cover' expande la imagen hasta llenar el cuadro */
+    object-fit: cover; 
+    /* CAMBIO CLAVE: Quitamos el padding para que llegue a los bordes */
+    padding: 0;
+    display: block;
 }
 
 .sin-foto-mini {
@@ -3876,3 +3879,171 @@ VER PRODUCTO
     padding: 15px;
     border-radius: 8px;
 }
+
+/******************************************************************/
+/*********************** PARTIDOS *************************/
+/******************************************************************/
+
+/* INDEX PARTIDOS */
+
+/* --- ESTILOS PARA LA TABLA DE PARTIDOS --- */
+
+/* Celda de fecha y lugar */
+.fecha-txt { font-weight: bold; color: #1a202c; }
+.hora-txt { color: #718096; font-size: 0.85rem; }
+.lugar-txt { color: #4a5568; font-size: 0.9rem; }
+.lugar-txt i { color: #ef4444; margin-right: 4px; }
+
+/* Columnas de equipos (Escudo + Nombre) */
+.col-equipo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.escudo-tabla {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.nombre-equipo {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #2d3748;
+}
+
+/* El Marcador / VS */
+.badge-vs {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    border: 1px solid #cbd5e0;
+}
+
+.marcador-txt {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #1a202c;
+    letter-spacing: -1px;
+}
+
+/* Alineación de acciones */
+.col-acciones {
+    padding: 15px !important;
+    vertical-align: middle;
+}
+
+.grupo-acciones {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Botón Ver específico */
+.btn-ver {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+/* Mensaje cuando no hay datos */
+.tabla-vacia {
+    text-align: center;
+    padding: 50px !important;
+    color: #a0aec0;
+    font-style: italic;
+}
+
+.tabla-vacia i {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+/* Alerta de éxito */
+.alerta-exito {
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+
+/* ---------------------------------------------------------
+-------------------------------------------------------------
+CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
+-------------------------------------------------------------
+------------------------------------------------------------- */
+.cuadro-errores-admin {
+    background: #fee2e2; 
+    border: 1px solid #ef4444; 
+    color: #b91c1c; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px;
+}
+
+.cuadro-errores-admin ul {
+    margin-top: 5px; 
+    margin-bottom: 0; 
+    list-style: none; 
+    padding-left: 0;
+}
+
+.cuadro-errores-admin li {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+
+
+/* --- NOTA INFORMATIVA ERROR CREAR PARTIDOS --- */
+.nota-informativa-partido {
+    text-align: center; 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.nota-informativa-partido i {
+    font-size: 3rem; 
+    color: #cbd5e0; 
+    margin-bottom: 15px;
+}
+
+.nota-informativa-partido p {
+    color: #718096; 
+    font-size: 0.9em;
+    max-width: 250px;
+    line-height: 1.4;
+}
+
+/* --- BOTÓN GUARDAR (VIBRANTE) --- */
+.btn-actualizar-ficha {
+    background: #023e8a; 
+    box-shadow: 0 4px 6px rgba(2, 62, 138, 0.3);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-actualizar-ficha:hover {
+    background: #0353a4;
+    transform: translateY(-2px);
+}
+
+/********************************************/

@@ -9,11 +9,23 @@ use Illuminate\Support\Str;
 class NoticiaController extends Controller
 {
 
-    // Muestra la lista de noticias
-    public function index()
+    public function index(Request $request)
     {
-        $noticias = Noticia::orderBy('titulo', 'asc')->paginate(10);
-        return view('admin.noticias.index', compact('noticias'));
+        // 1. Capturamos el término de búsqueda
+        $search = $request->input('search');
+
+        // 2. Consulta: Filtramos por título, autor o subtítulo si hay búsqueda
+        $noticias = Noticia::when($search, function($query) use ($search) {
+                $query->where('titulo', 'like', '%' . $search . '%')
+                      ->orWhere('autor', 'like', '%' . $search . '%')
+                      ->orWhere('subtitulo', 'like', '%' . $search . '%');
+            })
+            ->orderBy('created_at', 'desc') // Normalmente las noticias se ven mejor de las nuevas a las viejas
+            ->paginate(10)
+            ->withQueryString();
+
+        // 3. Retornamos la vista con los datos necesarios para el componente
+        return view('admin.noticias.index', compact('noticias', 'search'));
     }
 
     // Muestra el formulario 
@@ -202,22 +214,5 @@ class NoticiaController extends Controller
     }
 
     
-    ///////////////
-    // BUSCADOR //
-    /////////////
-    public function search(Request $request)
-    {
-        $search = $request->get('search');
-
-        $noticias = Noticia::where('titulo', 'like', '%' . $search . '%')
-            ->orWhere('autor', 'like', '%' . $search . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-        // Importante para que al cambiar de página no se pierda la búsqueda
-        $noticias->appends(['search' => $search]);
-
-        return view('admin.noticias.index', compact('noticias', 'search'));
-    }
-
 
 }
