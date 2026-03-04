@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@use('Carbon\Carbon') 
+
 @section('contenido_admin')
 
 {{-- Invocamos el componente con tus datos --}}
@@ -75,7 +77,7 @@
                 {{-- 4. FECHA DE NACIMIENTO --}}
                 <td>
                     {{-- Usamos carbon para poner la fecha en formato día/mes/año --}}
-                    {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'No asignada' }}
+                    {{ $jugador->fecha_nacimiento ? Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'No asignada' }}
                 </td>
                 
                 {{-- 7. ACCIONES (ALINEADAS) --}}

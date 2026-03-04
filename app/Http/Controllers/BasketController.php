@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Equipo;
 use App\Models\Noticia;
 use App\Models\Merchandising;
+use App\Models\Partido;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
@@ -50,7 +51,8 @@ class BasketController extends Controller
 
     public function partidos()
     {
-        return view('basket.partidos');
+        $partidos = Partido::orderBy('created_at', 'asc')->paginate(10);
+        return view('basket.partidos', compact('partidos'));
     }
 
     public function galeria()

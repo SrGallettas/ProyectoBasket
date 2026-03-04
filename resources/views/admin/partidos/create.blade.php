@@ -90,16 +90,6 @@
 
                 </div>
 
-                
-                {{-- NOTA INFORMATIVA --}}
-                <div class="seccion-foto-ficha">
-                    <div class="nota-informativa-partido">
-                        <i class="fas fa-clock"></i>
-                        <p>El partido se creará con el marcador vacío. Podrás añadir el resultado una vez finalice el encuentro.</p>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-acciones-ficha">
                 <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha">Cancelar</a>
                 <button type="submit" class="btn-actualizar-ficha">

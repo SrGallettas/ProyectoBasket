@@ -17,11 +17,7 @@ return new class extends Migration
             $table->foreignId('equipo_visitante_id')->constrained('equipos');
             $table->dateTime('fecha_hora');
             $table->string('lugar')->default('Pabellón Municipal');
-            $table->string('categoria');
-
-            // Marcador opcional: se queda en NULL hasta que termine el partido
-            $table->integer('puntos_local')->nullable();
-            $table->integer('puntos_visitante')->nullable();
+            $table->string('categoria');           
 
             $table->timestamps();
         });

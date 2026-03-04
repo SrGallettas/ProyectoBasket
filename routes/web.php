@@ -37,12 +37,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // RUTAS DE BÚSQUEDA (SIEMPRE antes de los resource)
-    Route::get('equipos/search', [EquipoController::class, 'search'])->name('equipos.search');
-    Route::get('jugadores/search', [JugadorController::class, 'search'])->name('jugadores.search');
-    Route::get('noticias/search', [NoticiaController::class, 'search'])->name('noticias.search');
-
-
     // Route::resource ya crea las 7 rutas (index, create, store, show, edit, update, destroy)
     Route::resource("equipos", EquipoController::class);
     Route::resource("jugadores", JugadorController::class);

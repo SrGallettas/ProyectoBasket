@@ -14,10 +14,7 @@ class Partido extends Model
         'equipo_visitante_id', 
         'fecha_hora', 
         'lugar',
-        'categoria', 
-        'puntos_local', 
-        'puntos_visitante'
-        
+        'categoria'
     ];
 
     public function equipoLocal()

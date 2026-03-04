@@ -91,9 +91,11 @@ class PartidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id);
+
+        return view('admin.partidos.show', compact('partido'));
     }
 
     /**
@@ -101,22 +103,59 @@ class PartidoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $partido = Partido::findOrFail($id); // Busca el partido que quieres editar
+        $equipos = Equipo::orderBy('nombre', 'asc')->get(); // Trae todos los equipos para que puedas cambiar el local o visitante si quieres
+        return view('admin.partidos.edit', compact('partido', 'equipos')); // Los manda al formulario de edición
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
+
+    public function update(Request $request, $id)
+    {
+        // 1. VALIDACIÓN: Comprobamos que los datos recibidos son correctos.
+        $request->validate([
+            'equipo_local_id'     => 'required|exists:equipos,id',
+            'equipo_visitante_id' => 'required|exists:equipos,id|different:equipo_local_id',
+            'fecha_hora'          => 'required|date',
+            'lugar'               => 'required|string|max:255',
+            'categoria'           => 'required|string',
+        ], [
+            // Mensajes de error personalizados para que el admin sepa qué falla
+            'equipo_local_id.required'     => 'El equipo local es obligatorio.',
+            'equipo_visitante_id.required'      => 'El equipo visitante es obligatorio.',
+            'equipo_visitante_id.different' => 'Un equipo no puede jugar contra sí mismo.',
+            'fecha_hora.required'          => 'La fecha y hora son obligatorias para el calendario.',
+            'lugar.required'               => 'Debes indicar dónde se juega el partido.',
+        ]);
+
+        // 2. BUSQUEDA: Localizamos el partido por su ID o devolvemos error 404
+        $partido = Partido::findOrFail($id);
+
+        // 3. ASIGNACIÓN: Actualizamos los campos con los datos del formulario
+        $partido->equipo_local_id     = $request->equipo_local_id;
+        $partido->equipo_visitante_id = $request->equipo_visitante_id;
+        $partido->fecha_hora          = $request->fecha_hora;
+        $partido->lugar               = $request->lugar;
+        $partido->categoria           = $request->categoria;
+
+        // 4. PERSISTENCIA: Guardamos los cambios en la base de datos
+        $partido->save();
+
+        // 5. REDIRECCIÓN: Volvemos al listado con el mensaje de confirmación
+        return redirect()->route('partidos.index')->with('mensaje', 'Partido actualizado correctamente.');
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $partido = Partido::findOrFail($id);
+
+        $partido->delete();
+
+        return redirect()->route('partidos.index')->with('mensaje', 'Partido eliminado correctamente del club');
     }
 }

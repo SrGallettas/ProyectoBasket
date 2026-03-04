@@ -56,7 +56,7 @@
                     <td>
                         <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
 
-                            <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" style="background: #e3f2fd; color: #1976d2;" title="Ver Detalles">
+                            <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
                             </a>
 
