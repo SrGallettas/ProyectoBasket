@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/equipo.css') }}" />
+@endpush
+
 @section('contenido')
 <section class="seccion-equipo-header">
     <h1>Nuestro Equipo</h1>
@@ -19,7 +23,7 @@
 <section class="equipo-jugadores">
     @if($equipoMostrar)
         {{-- Título centrado --}}
-        <h2 style="text-align: center; margin-bottom: 40px; width: 100%; text-transform: uppercase;">
+        <h2 class="equipo-titulo-categoria">
             Equipo {{ $equipoMostrar->categoria }} - {{ $equipoMostrar->nombre }}
         </h2>
         
@@ -54,7 +58,7 @@
                     </div>
                 </div>
             @empty
-                <div class="contenedor-mensaje-vacio" style="grid-column: 1 / -1;">
+                <div class="contenedor-mensaje-vacio full-grid-column">
                     <div class="alerta-basket">
                         <p>Todavía no hay jugadores inscritos en el equipo <strong>{{ $equipoMostrar->nombre }}</strong>.</p>
                     </div>

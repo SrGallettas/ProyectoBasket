@@ -1,0 +1,2019 @@
+/*******************************************************************************
+ * *
+ * 13. PANEL DE ADMINISTRACIÓN - ESTILOS COMPLETOS                               *
+ * *
+ *******************************************************************************/
+
+/* 1. RESET Y BASE */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+.contenedor-admin {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 2. SIDEBAR */
+.sidebar-admin {
+    width: 260px;
+    background: #1a1a1a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.admin-perfil {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #111;
+}
+
+.admin-perfil img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    border: 2px solid #e60000;
+    object-fit: cover;
+}
+
+.admin-info h4 {
+    font-size: 16px;
+    margin: 0;
+    color: white;
+}
+
+.admin-info span {
+    font-size: 12px;
+    color: #777;
+}
+
+.menu-admin {
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-admin {
+    color: #bbb;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.item-admin i {
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.item-admin:hover {
+    background: #333;
+    color: white;
+}
+
+.item-admin.activo {
+    background: #e60000;
+    color: white;
+    font-weight: 600;
+}
+
+.separador-admin {
+    height: 1px;
+    background: #333;
+    margin: 15px;
+}
+
+/* 3. CONTENIDO PRINCIPAL */
+.contenido-admin {
+    flex: 1;
+    margin-left: 260px;
+    padding: 40px;
+}
+
+.header-admin h2 {
+    font-size: 28px;
+    color: #111;
+    margin: 0;
+}
+
+.btn-nuevo {
+    background: #e60000;
+    color: white !important;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.pizarra-admin {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 4. TABLAS (LISTADOS) */
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-admin th {
+    text-align: left;
+    padding: 15px;
+    background: #f8f9fa;
+    color: #666;
+    font-size: 13px;
+    border-bottom: 2px solid #eee;
+}
+
+.tabla-admin td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.dorsal-badge {
+    background: #1a1a1a;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.btn-accion {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.btn-accion.editar {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.btn-accion.borrar {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.btn-accion.editar:hover {
+    background: #ef6c00;
+    color: white;
+}
+
+.btn-accion.borrar:hover {
+    background: #c62828;
+    color: white;
+}
+
+/* 5. FORMULARIOS */
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+}
+
+.campo input,
+.campo select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fafafa;
+}
+
+.form-acciones {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.btn-guardar {
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+
+.btn-guardar:hover {
+    background: #e60000;
+}
+
+/* Estilo específico para el campo del checkbox */
+.campo-checkbox .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #fafafa;
+    /* Igual que tus otros inputs */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 46px;
+    /* Para que mida lo mismo que los inputs de texto */
+    cursor: pointer;
+}
+
+.campo-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #fb8500;
+    /* Color naranja corporativo */
+    cursor: pointer;
+}
+
+.campo-checkbox span {
+    font-size: 15px;
+    color: #666;
+}
+
+/* Efecto al pasar el ratón para que parezca un botón */
+.campo-checkbox .checkbox-wrapper:hover {
+    border-color: #fb8500;
+}
+
+
+/*************************************
+BUSCADOR DE INDEX EQUIPO Y JUGADORES
+*************************************/
+/* Contenedor principal del buscador alineado a la derecha */
+.contenedor-buscador {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.form-buscador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-grupal {
+    display: flex;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.input-grupal:focus-within {
+    border-color: #fb8500;
+    /* Color naranja del club */
+}
+
+.input-search {
+    border: none;
+    padding: 8px 15px;
+    outline: none;
+    width: 250px;
+    font-size: 14px;
+}
+
+.btn-buscar {
+    background: #fb8500;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-buscar:hover {
+    background: #e67e00;
+}
+
+.btn-limpiar {
+    background: #6c757d;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-limpiar:hover {
+    background: #5a6268;
+}
+
+
+/*******************************************************************************
+ * *
+ * 13. Jugadores                              *
+ * *
+ *******************************************************************************/
+
+/* ESTILO DE LOS BOTONES PARA TODAS LAS PLANTILLAS DE SHOW */
+
+/* --- HEADER UNIFICADO PARA TODOS LOS SHOWS --- */
+/* --- BOTONES DE ACCIÓN (MÁS COLOR) --- */
+.acciones-header-ficha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-ficha-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    /* Un pelín más altos */
+    padding: 0 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    /* Texto más grueso */
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Colores más vivos */
+.btn-ficha-edit {
+    background-color: #ff9800;
+    /* Naranja vibrante */
+    color: white !important;
+}
+
+.btn-ficha-delete {
+    background-color: #ef5350;
+    /* Rojo vivo */
+    color: white !important;
+}
+
+.btn-ficha-volver {
+    background-color: #546e7a;
+    /* Gris azulado potente */
+    color: white !important;
+}
+
+/* Efectos al pasar el ratón */
+.btn-ficha-accion:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-ficha-accion i {
+    font-size: 14px;
+}
+
+/*EDITAR*/
+
+/* Contenedor Principal */
+.contenedor-edit-jugador {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Encabezado */
+.header-ficha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header-ficha h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.header-ficha p {
+    margin: 5px 0 0;
+    color: #888;
+}
+
+.btn-volver-link {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+}
+
+.btn-volver-link:hover {
+    color: #fb8500;
+}
+
+/* Tarjeta del Formulario */
+.pizarra-ficha {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    border: 1px solid #edf2f7;
+}
+
+.grid-formulario-fichas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* Secciones */
+.seccion-form-ficha h3 {
+    font-size: 1.1em;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seccion-personal h3 {
+    border-bottom: 2px solid #fb8500;
+    color: #fb8500;
+}
+
+.seccion-deportiva h3 {
+    border-bottom: 2px solid #023e8a;
+    color: #023e8a;
+}
+
+/* Campos de entrada */
+.campo-ficha {
+    margin-bottom: 15px;
+}
+
+.campo-ficha label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.input-ficha {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.input-ficha:focus {
+    border-color: #fb8500;
+    box-shadow: 0 0 0 3px rgba(251, 133, 0, 0.1);
+}
+
+/* Sección de la Foto */
+.seccion-foto-ficha {
+    grid-column: span 2;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border: 1px dashed #cbd5e0;
+}
+
+.preview-foto {
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.preview-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botones de Acción */
+.form-acciones-ficha {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-cancelar-ficha {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-cancelar-ficha:hover {
+    background: #edf2f7;
+}
+
+.btn-actualizar-ficha {
+    background: #fb8500;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(251, 133, 0, 0.3);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-actualizar-ficha:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   VISTA DETALLE DEL JUGADOR (SHOW)
+   ========================================================== */
+
+
+
+/* Estilos de la Fotografía Grande */
+.ficha-col-foto {
+    text-align: center;
+}
+
+.ficha-foto-principal {
+    width: 100%;
+    height: 450px;
+    border-radius: 15px;
+    border: 5px solid white;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.ficha-foto-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilos de la Información Derecha */
+.ficha-col-datos {
+    padding-left: 10px;
+}
+
+.ficha-nombre-principal {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+/* Dorsal y Badge */
+.ficha-dorsal-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.ficha-dato-destacado {
+    font-size: 1.3rem;
+    margin: 0;
+    color: #fb8500;
+    font-weight: 700;
+    padding-top: 5px;
+}
+
+/* Filas de información técnica */
+.ficha-info-row {
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.ficha-valor-azul {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 600;
+    color: #023e8a;
+}
+
+
+
+
+
+
+/*******************************************************************************
+ * PAGINACION DE EQUIPOS Y JUGADORES
+ *******************************************************************************/
+
+/* ================= NAVBAR BASE ================= */
+
+
+
+/* Contenedor principal de la paginación */
+.contenedor-paginacion nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Estilo de los enlaces (botones) */
+.contenedor-paginacion .pagination {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.contenedor-paginacion .page-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #023e8a;
+    /* Tu azul */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.contenedor-paginacion .page-link:hover {
+    background-color: #0077b6;
+}
+
+/* Estilo para cuando el botón está desactivado */
+.contenedor-paginacion .disabled .page-link {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/*******************************************************************************
+ * NOTICIAS
+ *******************************************************************************/
+
+/*************************************
+ * INDEX    
+ **************************************/
+
+.contenedor-admin-noticias {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Admin */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header-admin h1 {
+    font-size: 28px;
+    color: #111;
+    font-weight: 800;
+}
+
+.header-admin p {
+    color: #666;
+}
+
+.btn-nuevo {
+    background: #e60000;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.btn-nuevo:hover {
+    background: #b30000;
+    transform: translateY(-2px);
+}
+
+/* Tabla Admin */
+.pizarra-admin {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-admin th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #888;
+    border-bottom: 2px solid #eee;
+}
+
+.tabla-admin td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+/* Imagen en tabla */
+.td-img img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.sin-foto {
+    width: 60px;
+    height: 60px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #ccc;
+}
+
+/* Info principal */
+.titulo-row {
+    display: block;
+    font-weight: 700;
+    color: #111;
+    font-size: 15px;
+}
+
+.autor-row {
+    font-size: 12px;
+    color: #e60000;
+    font-weight: 600;
+}
+
+.fecha-admin {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.btn-accion {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-accion:hover {
+    transform: scale(1.1);
+    filter: brightness(0.9);
+}
+
+/* Alertas */
+.alerta-exito {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+
+/*******************************************************************************
+ * ESTILOS DE CREACIÓN DE NOTICIAS (ADMIN)
+ *******************************************************************************/
+
+/* Aplicar a la estructura de Noticias */
+
+.formulario-admin {
+    padding: 10px;
+}
+
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.campo label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.campo input[type="text"],
+.campo input[type="file"],
+.campo select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.campo input:focus {
+    border-color: #e60000;
+    box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.1);
+}
+
+/* BOTONES IGUALES A EQUIPO/JUGADOR */
+
+.btn-cancelar-ficha {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.btn-cancelar-ficha:hover {
+    background: #edf2f7;
+}
+
+.btn-actualizar-ficha {
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.btn-actualizar-ficha:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+
+/*******************************************************************************
+ * ESTILOS DE EDITAR NOTICIAS (ADMIN)
+ *******************************************************************************/
+
+
+
+.preview-foto {
+    width: 220px;
+    /* Un poco más ancha para noticias */
+    height: 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Fondo oscuro o gris suave para que si la foto es de otra proporción, 
+       los bordes sobrantes queden elegantes */
+    background: #2d3748;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    /* CLAVE: 'contain' para que se vea la imagen al 100% sin recortes */
+    object-fit: contain;
+    display: block;
+}
+
+/* Texto e Inputs */
+.info-subida-ficha {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label-ficha {
+    font-weight: 700;
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.instruccion-ficha {
+    font-size: 0.85rem;
+    color: #718096;
+    margin: 0;
+}
+
+.btn-subir-discreto {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #edf2f7;
+    color: #4a5568;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+}
+
+.btn-subir-discreto:hover {
+    background: #e2e8f0;
+    color: #1a202c;
+}
+
+.aviso-ficha {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* Esconder el input original */
+input[type="file"]#imagen_noticia {
+    display: none;
+}
+
+
+/***************************
+ * SHOW EQUIPOS 
+ ***************************/
+
+/* Contenedor Principal */
+.contenedor-ficha-noticia {
+    padding: 20px;
+}
+
+/* Imagen y Placeholder */
+.noticia-hero-container {
+    height: 350px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.noticia-img-main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.noticia-placeholder {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.noticia-placeholder i {
+    font-size: 5rem;
+    color: #cbd5e0;
+}
+
+.noticia-placeholder span {
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Tipografía de la Noticia */
+.noticia-view-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+}
+
+.noticia-view-subtitle {
+    font-size: 1.2rem;
+    color: #64748b;
+    border-left: 4px solid #e60000;
+    /* Color rojo del club */
+    padding-left: 15px;
+    margin: 25px 0;
+    line-height: 1.6;
+}
+
+.noticia-view-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #334155;
+    padding: 10px 0;
+}
+
+/* Footer de la Noticia */
+.noticia-view-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    gap: 25px;
+}
+
+.noticia-view-footer .meta-item {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.noticia-view-footer .meta-item i {
+    margin-right: 5px;
+}
+
+/*************************************
+  **************************************
+  ADMIN -- MERCHANDISING   
+************************************** 
+**************************************/
+
+/* Contenedor de imagen en tabla */
+/* Contenedor de imagen en tabla - AHORA OCUPA TODO */
+.contenedor-foto-tabla {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8fafc;
+    border: 1px solid #eee;
+    /* Eliminamos cualquier margen interno que pueda tener la celda */
+    padding: 0 !important;
+}
+
+.img-merchan-tabla {
+    width: 100%;
+    height: 100%;
+    /* CAMBIO CLAVE: 'cover' expande la imagen hasta llenar el cuadro */
+    object-fit: cover;
+    /* CAMBIO CLAVE: Quitamos el padding para que llegue a los bordes */
+    padding: 0;
+    display: block;
+}
+
+.sin-foto-mini {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #cbd5e0;
+    font-size: 1.5rem;
+}
+
+/* Info de producto */
+.info-producto {
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-producto {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Tallas y Precios */
+.badge-talla {
+    background: #e2e8f0;
+    color: #4a5568;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.precio-texto {
+    color: #2d3748;
+    font-size: 1.1rem;
+}
+
+/* Mensaje cuando no hay nada */
+.mensaje-vacio {
+    text-align: center;
+    padding: 60px 0;
+    color: #94a3b8;
+}
+
+.mensaje-vacio i {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/***************************************
+****************************************
+CREAR PRODUCTO
+****************************************
+***************************************/
+
+.contenedor-edit-merchan {
+    display: block;
+    overflow: hidden;
+    /* Esto obliga al contenedor a respetar sus límites */
+    width: auto;
+    margin-left: 20px;
+}
+
+.seccion-producto h3 {
+    border-bottom: 2px solid #fb8500;
+    color: #fb8500;
+}
+
+.seccion-logistica h3 {
+    border-bottom: 2px solid #023e8a;
+    color: #023e8a;
+}
+
+textarea.input-ficha {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.preview-foto {
+    width: 150px;
+    height: 150px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e2e8f0;
+}
+
+.preview-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+input[type="number"].input-ficha {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+/***************************************
+****************************************
+EDITAR PRODUCTO
+****************************************
+***************************************/
+
+
+/* Contenedor principal de la sección */
+.seccion-foto-ficha {
+    grid-column: 1 / -1;
+    /* Ocupa todo el ancho en el grid */
+    margin-top: 20px;
+}
+
+/* La tarjeta horizontal */
+.card-imagen-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 25px;
+    width: 100%;
+}
+
+/* Miniatura a la izquierda */
+.preview-foto-noticia {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    /* Evita que se encoja */
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.preview-foto-noticia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Textos y botón a la derecha */
+.info-subida-noticia h3 {
+    margin: 0 0 5px 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+    border: none !important;
+    /* Quita el borde naranja/azul si lo hereda */
+}
+
+.info-subida-noticia p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* Botón estilo "Cambiar fotografía" */
+.btn-cambiar-foto {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f5f9;
+    color: #334155;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #cbd5e1;
+    transition: all 0.3s ease;
+}
+
+.btn-cambiar-foto:hover {
+    background-color: #e2e8f0;
+}
+
+.nota-subida {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+
+
+/***************************************
+****************************************
+VER PRODUCTO
+****************************************
+***************************************/
+
+
+
+
+
+
+/* Contenedor y Header */
+.contenedor-ficha-merchan {
+    padding: 20px;
+}
+
+.header-ficha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 20px;
+}
+
+/* Grid de Información */
+.pizarra-show {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.grid-show-merchan {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+}
+
+/* Estilo de la Foto */
+.marco-foto-show {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.marco-foto-show img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Bloques de Texto */
+.label-ficha {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    letter-spacing: 0.05em;
+}
+
+.bloque-info {
+    margin-bottom: 25px;
+}
+
+.bloque-info h3 {
+    font-size: 1.8rem;
+    color: #1e293b;
+    margin: 0;
+}
+
+.bloque-info-doble {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 25px;
+}
+
+.precio-destacado {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #023e8a;
+}
+
+/* Badges de Tallas */
+.contenedor-badges-tallas {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.badge-talla-show {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 700;
+    border: 1px solid #cbd5e1;
+}
+
+.descripcion-texto {
+    line-height: 1.6;
+    color: #475569;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/******************************************************************/
+/*********************** PARTIDOS *************************/
+/******************************************************************/
+
+/* INDEX PARTIDOS */
+
+/* --- ESTILOS PARA LA TABLA DE PARTIDOS --- */
+
+/* --- AJUSTES TABLA PARTIDOS --- */
+
+.tabla-partidos-ajustada {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    /* Crea el efecto de filas separadas */
+    width: 100%;
+}
+
+.tabla-partidos-ajustada td {
+    padding: 15px 10px;
+    /* Más padding para que no esté apretado */
+    background: #fff;
+    vertical-align: middle;
+}
+
+/* Control de anchos de columna */
+.col-fecha {
+    width: 120px;
+}
+
+.col-categoria {
+    width: 130px;
+}
+
+.col-equipo {
+    width: 25%;
+}
+
+/* Los equipos ocupan más espacio */
+.col-vs {
+    width: 60px;
+    text-align: center;
+}
+
+.col-lugar {
+    width: 200px;
+}
+
+.col-acciones {
+    width: 110px;
+}
+
+/* Estilo de los textos de fecha */
+.celda-fecha {
+    display: flex;
+    flex-direction: column;
+}
+
+.txt-dia {
+    font-weight: 700;
+    color: #334155;
+}
+
+.txt-hora {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Contenedores de equipos y escudos */
+.contenedor-equipo-tabla {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contenedor-equipo-tabla.reverse {
+    justify-content: flex-end;
+}
+
+.escudo-tabla-ajustado {
+    width: 35px;
+    /* Tamaño fijo para que no deforme la fila */
+    height: 35px;
+    object-fit: contain;
+    /* Evita que la imagen se estire */
+}
+
+.nombre-equipo {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: #1e293b;
+}
+
+/* El VS decorativo */
+.vs-decorativo {
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #94a3b8;
+    background: #f8fafc;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Botones de acción más limpios */
+.flex-acciones {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+
+/* ---------------------------------------------------------
+-------------------------------------------------------------
+CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
+-------------------------------------------------------------
+------------------------------------------------------------- */
+.cuadro-errores-admin {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.cuadro-errores-admin ul {
+    margin-top: 5px;
+    margin-bottom: 0;
+    list-style: none;
+    padding-left: 0;
+}
+
+.cuadro-errores-admin li {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+
+/* --- BOTÓN GUARDAR (VIBRANTE) --- */
+.btn-actualizar-ficha {
+    background: #023e8a;
+    box-shadow: 0 4px 6px rgba(2, 62, 138, 0.3);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-actualizar-ficha:hover {
+    background: #0353a4;
+    transform: translateY(-2px);
+}
+
+/********************************************/
+/****************** SHOW PARTIDO *****************/
+/********************************************/
+
+/* --- ESTILOS PARA EL SHOW DEL PARTIDO --- */
+
+.seccion-show-partido {
+    padding: 20px;
+}
+
+.marcador-visual {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px 0;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
+    border-radius: 15px;
+}
+
+.equipo-detalle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 35%;
+}
+
+.escudo-grande {
+    width: 150px;
+    height: 150px;
+    background: white;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.escudo-grande img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.nombre-equipo-gigante {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rol-equipo {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-top: 5px;
+}
+
+.separador-vs {
+    background: #1e293b;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.2rem;
+    box-shadow: 0 0 0 8px #f1f5f9;
+}
+
+.divisor-ficha {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+}
+
+.grid-info-detalle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: #023e8a;
+    background: #e0f2fe;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.info-item p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+
+/* 14.3 Admin - utilidades compartidas */
+.admin-alert-success {
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.admin-thumb-60 {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.admin-subtle-text {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.admin-row-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.admin-view-btn {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.admin-form-inline {
+    margin: 0;
+}
+
+.admin-empty-cell {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+}
+
+.admin-error-box {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.admin-error-list {
+    margin-top: 5px;
+    margin-bottom: 0;
+    list-style: none;
+    padding-left: 0;
+}
+
+.campo-span-2 {
+    grid-column: span 2;
+}
+
+.input-fullwidth {
+    width: 100%;
+}
+
+.admin-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.form-acciones-ficha-top {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.btn-actualizar-rojo {
+    background: #e60000;
+    box-shadow: 0 4px 6px rgba(230, 0, 0, 0.2);
+}
+
+.noticia-view-footer-compact {
+    margin-bottom: 25px;
+    border-bottom: none;
+    border-top: none;
+    padding-top: 0;
+}
+
+.admin-img-contain {
+    object-fit: contain;
+}
+
+.admin-actions-cell {
+    padding: 25px 15px;
+    vertical-align: middle;
+}
+
+.admin-no-margin {
+    margin: 0;
+}
+
+.admin-form-inline-flex {
+    display: flex;
+    align-items: center;
+}
+
+.admin-flex-gap-15 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-link-cancel {
+    margin-right: 20px;
+    color: #777;
+    text-decoration: none;
+}
+
+/* 14.4 Admin - Equipos (show) */
+.equipo-show-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.equipo-show-card {
+    flex: 1;
+    text-align: center;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.equipo-show-img {
+    max-width: 250px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.equipo-show-info {
+    flex: 2;
+}
+
+.equipo-show-title {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #fb8500;
+    display: inline-block;
+}
+
+.equipo-show-text {
+    font-size: 1.2rem;
+    margin: 15px 0;
+}
+
+.equipo-show-badge {
+    background: #023e8a;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 1rem;
+}
+
+.equipo-show-separator {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 25px 0;
+}
+
+.equipo-show-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 14.5 Admin - Jugadores */
+.admin-photo-frame {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.admin-photo-fill {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-badge-light {
+    background: #e3f2fd;
+    color: #0d47a1;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.jugador-form-double-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input-white {
+    background: white;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.input-help-text {
+    margin: 10px 0 0;
+    font-size: 0.8em;
+    color: #718096;
+}
+
+.btn-actualizar-azul {
+    background: #023e8a;
+    box-shadow: 0 4px 6px rgba(2, 62, 138, 0.3);
+}
+
+.btn-ficha-volver-secondary {
+    background-color: #777;
+}
+
+.ficha-caption {
+    margin-top: 15px;
+    color: #888;
+    font-style: italic;
+}
+
+.ficha-title-no-margin {
+    margin-top: 0;
+}
+
+.ficha-space-bottom {
+    margin-bottom: 25px;
+}
+
+.ficha-space-top {
+    margin-top: 20px;
+}
+
+.ficha-date-text {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #4a5568;
+}
+
+.form-acciones-ficha-centered {
+    justify-content: center;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+.ficha-meta-footer {
+    color: #bbb;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* 14.6 Admin - Merchandising */
+.merch-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.merch-tallas-checkboxes {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.hidden-file-input {
+    display: none;
+}

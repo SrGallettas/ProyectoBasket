@@ -20,7 +20,9 @@ class EquipoFactory extends Factory
     {
         return [
             "nombre" => $this->faker->city() . ' Basket Club',
-            "categoria" => $this->faker->randomElement(['Senior', 'Junior', 'Cadete']),
+            "categoria" => $this->faker->randomElement(['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín']),
+            "imagen_club" => 'club_14.png',
+            "es_local" => true,
         ];
     }
 }

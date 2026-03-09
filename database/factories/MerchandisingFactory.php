@@ -17,10 +17,21 @@ class MerchandisingFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombre' => $this->faker->randomElement(['Camiseta Oficial', 'Sudadera Basket', 'Pantalón Corto', 'Bufanda Club', 'Gorra']),
+            'nombre' => $this->faker->randomElement([
+                'Camiseta Oficial',
+                'Sudadera Basket',
+                'Pantalón Corto',
+                'Bufanda Club',
+                'Gorra',
+                'Mochila Deportiva',
+                'Calcetines Técnicos',
+                'Balón Entrenamiento',
+                'Camiseta Calentamiento',
+                'Botella Térmica',
+            ]),
             'descripcion' => $this->faker->sentence(10),
             'precio' => $this->faker->randomFloat(2, 10, 60), // Precio entre 10 y 60
-            'imagen_merchan' => 'aaaa.jpeg',
+            'imagen_merchan' => 'club_14.png',
             'talla' => $this->faker->randomElement(['S', 'M', 'L', 'XL', 'XXL', 'Talla Única', 'Sin Talla']),
         ];
     }

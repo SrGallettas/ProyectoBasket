@@ -21,6 +21,7 @@ Route::get('galeria', [BasketController::class, 'galeria'])->name('basket.galeri
 Route::get('contacto', [BasketController::class, 'contacto'])->name('basket.contacto');
 Route::get('noticia', [BasketController::class, 'noticia'])->name('basket.noticias');
 Route::get('/noticias/{slug}', [BasketController::class, 'noticia_detalle'])->name('noticias.detalle');
+Route::post('tienda/interes', [BasketController::class, 'enviarInteresMerchan'])->name('basket.tienda.interes');
 
 // --- 2. AUTENTICACIÓN (Solo accesibles si NO estás logueado) ---
 Route::middleware(['guest'])->group(function () {

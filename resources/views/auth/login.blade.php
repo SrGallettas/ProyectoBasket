@@ -1,6 +1,10 @@
 {{-- 1. EXTENSIÓN DEL LAYOUT Y TÍTULO --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/login.css') }}" />
+@endpush
+
 @section('title', 'Inicio - Bellreguard Club de Basket')
 
 @section('contenido')
@@ -33,7 +37,7 @@
                     </div>
                     {{-- Validación: Muestra error si el email es incorrecto --}}
                     @error('email')
-                        <span style="color: #e63000; font-size: 0.8rem; margin-top: 5px; display: block;">{{ $message }}</span>
+                        <span class="login-error-text">{{ $message }}</span>
                     @enderror
                 </div>
 

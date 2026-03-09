@@ -49,7 +49,7 @@
                     </div>
                     <div class="campo-ficha">
                         <label>Tallas Disponibles</label>
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
+                        <div class="merch-tallas-checkboxes">
                             {{-- Lógica para dejar marcados los checkboxes --}}
                             @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica', 'Sin Talla'] as $talla)
                                 <label>

@@ -14,7 +14,7 @@
 
    {{-- Mensaje de éxito al crear, editar o borrar --}}
     @if(session('mensaje'))
-        <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
+        <div class="admin-alert-success">
             <i class="fas fa-check-circle"></i> {{ session('mensaje') }}
         </div>
     @endif
@@ -34,7 +34,7 @@
                 <tr>
                     <td class="td-img">
                         @if($noticia->imagen_noticia)
-                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia" class="admin-thumb-60">
                         @else
                             <div class="sin-foto"><i class="fas fa-image"></i></div>
                         @endif
@@ -42,16 +42,16 @@
                     <td>
                         <div class="info-principal">
                             <span class="titulo-row"><strong>{{ $noticia->titulo }}</strong></span><br>
-                            <span class="autor-row" style="color: #666; font-size: 0.9em;"><i class="fas fa-user"></i> {{ $noticia->autor }}</span>
+                            <span class="autor-row admin-subtle-text"><i class="fas fa-user"></i> {{ $noticia->autor }}</span>
                         </div>
                     </td>
                     <td>
                         <span class="fecha-admin">{{ $noticia->created_at->format('d/m/Y') }}</span>
                     </td>
                     <td>
-                        <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
+                        <div class="admin-row-actions">
                             {{-- Botón Ver --}}
-                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion" style="background: #e3f2fd; color: #1976d2;" title="Ver detalle">
+                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion admin-view-btn" title="Ver detalle">
                                 <i class="fas fa-eye"></i>
                             </a>
                             {{-- Botón Editar --}}
@@ -59,7 +59,7 @@
                                 <i class="fas fa-edit"></i>
                             </a>
                             {{-- Formulario Borrar --}}
-                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')" style="margin: 0;">
+                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-accion borrar" title="Eliminar">
@@ -71,7 +71,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 40px; color: #777;">
+                    <td colspan="4" class="admin-empty-cell">
                         <i class="fas fa-info-circle"></i> No se han encontrado noticias disponibles.
                     </td>
                 </tr>

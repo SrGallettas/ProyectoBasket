@@ -1,0 +1,182 @@
+/*******************************************************************************
+ * *
+ * 9. GALERÍA DE FOTOS                                                         *
+ * *
+ *******************************************************************************/
+
+.seccion-galeria-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.seccion-galeria-header h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.seccion-galeria-header p {
+    opacity: 0.9;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.stats-galeria {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.contenedor-galeria {
+    max-width: 1200px;
+    margin: -30px auto 60px auto;
+    padding: 0 20px;
+}
+
+/* Filtros de Categoría */
+.filtros-galeria {
+    background: white;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.btn-filtro {
+    padding: 10px 20px;
+    border: none;
+    background: #f1f1f1;
+    color: #444;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-filtro.activo {
+    background: #cf1515;
+    color: white;
+}
+
+/* Rejilla de Álbumes */
+.rejilla-albumes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.tarjeta-album {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.tarjeta-album:hover {
+    transform: translateY(-5px);
+}
+
+.imagen-album {
+    position: relative;
+    height: 230px;
+}
+
+.imagen-album img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-fotos {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #cf1515;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.info-album {
+    padding: 20px;
+}
+
+.info-album h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.info-album p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    height: 65px;
+    /* Altura fija para mantener alineación */
+    overflow: hidden;
+}
+
+.footer-album {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.fecha-album {
+    font-size: 13px;
+    color: #999;
+}
+
+.btn-ver-album {
+    background: #cf1515;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-ver-album:hover {
+    background: #a31111;
+}
+
+/* Cargar Más */
+.contenedor-cargar-mas {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-cargar-mas {
+    background: white;
+    color: #cf1515;
+    border: 2px solid #cf1515;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cargar-mas:hover {
+    background: #cf1515;
+    color: white;
+}
+

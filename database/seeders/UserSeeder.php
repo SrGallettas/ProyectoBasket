@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -14,10 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@basket.com',
-            'password' => bcrypt('admin123'), // La contraseña quedará encriptada
-        ]);
+        // Usuario fijo para acceso conocido al panel.
+        User::updateOrCreate(
+            ['email' => 'admin@bellreguard.com'],
+            [
+                'name' => 'Admin Bellreguard',
+                'password' => Hash::make('12345678'),
+            ]
+        );
+
+        // Usuarios de apoyo para poblar la tabla de administración.
+        User::factory()->count(5)->create();
     }
 }

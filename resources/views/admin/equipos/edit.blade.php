@@ -7,10 +7,10 @@
 </header>
 
 @if ($errors->any())
-    <div style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <div class="admin-error-box">
         <strong>¡Vaya! Algo ha ido mal:</strong>
         {{-- Añadimos list-style: none y quitamos el padding --}}
-        <ul style="margin-top: 5px; margin-bottom: 0; list-style: none; padding-left: 0;">
+        <ul class="admin-error-list">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
@@ -48,9 +48,9 @@
             {{-- Campo para la imagen --}}
             <div class="campo">
                 <label>Escudo Actual</label>
-                <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="admin-flex-gap-15">
                     {{-- Mostramos la imagen que tiene el equipo ahora mismo --}}
-                    <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" style="object-fit: contain;">
+                    <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" class="admin-img-contain">
                     
                     {{-- Input para subir una foto nueva si el usuario quiere cambiarla --}}
                     <input type="file" name="imagen_club" id="imagen_club">
@@ -61,7 +61,7 @@
         {{-- Botones de acción --}}
         <div class="form-acciones">
             {{-- Enlace para volver atrás sin guardar nada --}}
-            <a href="{{ route('equipos.index') }}" style="margin-right: 20px; color: #777; text-decoration: none;">Cancelar</a>
+            <a href="{{ route('equipos.index') }}" class="admin-link-cancel">Cancelar</a>
             
             {{-- El botón submit envía el formulario al método "update" del controlador --}}
             <button type="submit" class="btn-guardar">Guardar Cambios</button>

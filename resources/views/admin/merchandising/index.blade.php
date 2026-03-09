@@ -14,7 +14,7 @@
 
     {{-- Mensaje de éxito (Opcional, pero recomendado tenerlo) --}}
     @if(session('mensaje'))
-        <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
+        <div class="admin-alert-success">
             <i class="fas fa-check-circle"></i> {{ session('mensaje') }}
         </div>
     @endif
@@ -54,7 +54,7 @@
                         <strong class="precio-texto">{{ number_format($item->precio, 2, ',', '.') }}€</strong>
                     </td>
                     <td>
-                        <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
+                        <div class="admin-row-actions">
 
                             <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
@@ -64,7 +64,7 @@
                                 <i class="fas fa-pen"></i>
                             </a>
                             
-                            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Eliminar producto?')" style="margin: 0;">
+                            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Eliminar producto?')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-accion borrar" title="Eliminar">
@@ -76,9 +76,9 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" style="text-align: center; padding: 40px; color: #777;">
+                    <td colspan="5" class="admin-empty-cell">
                         <div class="mensaje-vacio">
-                            <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            <i class="fas fa-box-open merch-empty-icon"></i>
                             <p>No se han encontrado productos de merchandising.</p>
                         </div>
                     </td>

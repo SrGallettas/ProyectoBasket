@@ -1,6 +1,10 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/inicio.css') }}" />
+@endpush
+
 {{-- ESTO PASA PORQUE TENEMOS LA VARIABLE TITULO DE NOTICIAS, Y COMO HAY DOS VARIABLES QUE SE LLAMAN IGUAL, NOS TOCA CAMBIARLO --}}
 @php $titulo = 'Inicio - Bellreguard Club de Basket'; @endphp
 

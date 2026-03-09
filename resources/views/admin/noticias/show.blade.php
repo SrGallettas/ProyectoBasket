@@ -14,7 +14,7 @@
                 <i class="fas fa-edit"></i>&nbsp;EDITAR
             </a>
 
-            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta noticia?')" style="margin: 0;">
+            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta noticia?')" class="admin-form-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-ficha-accion btn-ficha-delete">
@@ -44,7 +44,7 @@
         <h1 class="noticia-view-title">{{ $noticia->titulo }}</h1>
 
         {{-- NUEVO: Bloque de Autor y Fecha --}}
-        <div class="noticia-view-footer" style="margin-bottom: 25px; border-bottom: none; border-top: none; padding-top: 0;">
+        <div class="noticia-view-footer noticia-view-footer-compact">
             <span class="meta-item"><i class="fas fa-user-pen"></i> <strong>Autor:</strong> {{ $noticia->autor }}</span>
             <span class="meta-item"><i class="fas fa-calendar-check"></i> <strong>Publicado:</strong> {{ $noticia->created_at->format('d/m/Y') }}</span>
         </div>

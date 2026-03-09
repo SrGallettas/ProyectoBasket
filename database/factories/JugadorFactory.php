@@ -24,7 +24,8 @@ class JugadorFactory extends Factory
             'apellido' => $this->faker->lastName(),
             'posicion' => $this->faker->randomElement(['Base', 'Escolta', 'Alero', 'Ala-pívot', 'Pívot']),
             'dorsal' => $this->faker->numberBetween(1, 99),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d', $max = 'now')
+            'fecha_nacimiento' => $this->faker->date('Y-m-d', $max = 'now'),
+            'imagen_jugador' => 'club_14.png',
         ];
     }
 }

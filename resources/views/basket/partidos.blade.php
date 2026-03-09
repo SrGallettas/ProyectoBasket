@@ -1,6 +1,10 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/partidos.css') }}" />
+@endpush
+
 {{-- IMPORTAMOS LA LIBRERÍA CARBON --}}
 @use('Carbon\Carbon') 
 
@@ -38,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="rejilla-partido-doble">
+                <div class="rejilla-partido-doble {{ $encuentros->count() === 1 ? 'unico' : '' }}">
                     @foreach($encuentros as $partido)
                         <div class="tarjeta-partido">
                             <span class="etiqueta-proximo activo">Próximo</span>
@@ -84,7 +88,7 @@
                 </div>
             </div>
         @empty
-            <div class="tarjeta-partido" style="grid-column: 1 / -1; text-align: center;">
+            <div class="tarjeta-partido partidos-empty-card">
                 <p>No hay partidos programados actualmente.</p>
             </div>
         @endforelse

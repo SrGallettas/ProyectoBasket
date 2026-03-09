@@ -15,7 +15,7 @@
                 <i class="fas fa-edit"></i>&nbsp;EDITAR
             </a>
 
-            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" style="margin: 0;">
+            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" class="admin-form-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-ficha-accion btn-ficha-delete">
@@ -23,7 +23,7 @@
                 </button>
             </form>
 
-            <a href="{{ route('merchandising.index') }}" class="btn-ficha-accion btn-ficha-volver" style="background-color: #777;">
+            <a href="{{ route('merchandising.index') }}" class="btn-ficha-accion btn-ficha-volver btn-ficha-volver-secondary">
                 <i class="fas fa-arrow-left"></i> Volver al listado
             </a>
         </div>

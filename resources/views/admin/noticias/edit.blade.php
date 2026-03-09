@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+<header class="header-admin admin-header-spaced">
     <div>
         <h2><i class="fas fa-edit"></i> Editar Noticia</h2>
-        <p style="color: #666; margin: 0;">Estás editando: <strong>{{ $noticia->titulo }}</strong></p>
+        <p class="admin-editing-text">Estás editando: <strong>{{ $noticia->titulo }}</strong></p>
     </div>
-    <a href="{{ route('noticias.index') }}" class="btn-nuevo" style="background-color: #777; text-decoration: none; color: white; padding: 10px 18px; border-radius: 6px; font-weight: 600; font-size: 0.9rem;">
+    <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary">
         <i class="fas fa-arrow-left"></i> Volver al listado
     </a>
 </header>
@@ -15,7 +15,7 @@
 @if ($errors->any())
     <div class="alerta-error">
         <strong>¡Atención!</strong>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
+        <ul class="admin-error-list">
             @foreach ($errors->all() as $error)
                 <li><i class="fas fa-times"></i> {{ $error }}</li>
             @endforeach
@@ -31,13 +31,13 @@
         <div class="grid-formulario">
             
             {{-- Título --}}
-            <div class="campo" style="grid-column: span 2;">
+            <div class="campo campo-span-2">
                 <label>Título de la Noticia</label>
                 <input type="text" name="titulo" value="{{ old('titulo', $noticia->titulo) }}" required>
             </div>
 
             {{-- Subtítulo --}}
-            <div class="campo" style="grid-column: span 2;">
+            <div class="campo campo-span-2">
                 <label>Subtítulo o Resumen</label>
                 <textarea name="subtitulo" rows="2" required>{{ old('subtitulo', $noticia->subtitulo) }}</textarea>
             </div>
@@ -73,7 +73,7 @@
             </div>
 
             {{-- Contenido --}}
-            <div class="campo" style="grid-column: span 2;">
+            <div class="campo campo-span-2">
                 <label>Cuerpo de la Noticia</label>
                 <textarea name="contenido" rows="10" required>{{ old('contenido', $noticia->contenido) }}</textarea>
             </div>

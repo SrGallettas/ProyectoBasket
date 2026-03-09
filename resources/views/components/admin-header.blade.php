@@ -4,7 +4,7 @@
 <header class="header-admin">
     <div>
         <h2>{{ $titulo }}</h2>
-        <p style="color: #777;">{{ $subtitulo }}</p>
+        <p class="admin-header-subtitle">{{ $subtitulo }}</p>
     </div>
     
     @if($rutaNuevo)

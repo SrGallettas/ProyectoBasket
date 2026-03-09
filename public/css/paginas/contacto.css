@@ -1,0 +1,247 @@
+/*******************************************************************************
+ * *
+ * 10. CONTACTO Y UBICACIÓN                                                    *
+ * *
+ *******************************************************************************/
+
+.seccion-contacto-header {
+    background: #cf1515;
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.seccion-contacto-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.seccion-contacto-header p {
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Círculos decorativos */
+.circulo-decorativo {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.c1 {
+    width: 120px;
+    height: 120px;
+    top: 15%;
+    left: 5%;
+}
+
+.c2 {
+    width: 80px;
+    height: 80px;
+    top: 60%;
+    left: 35%;
+}
+
+.c3 {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    right: 5%;
+}
+
+.contenedor-contacto {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.rejilla-contacto {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+/* Bloque Sobre Nosotros */
+.bloque-sobre-nosotros {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    /* Se ajusta al texto */
+}
+
+.titulo-con-icono {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.titulo-con-icono i {
+    background: #e62e2e;
+    color: white;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+}
+
+.bloque-sobre-nosotros h2 {
+    font-size: 28px;
+    color: #111;
+}
+
+.bloque-sobre-nosotros p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* Tarjetas de Información Laterales */
+.bloque-info-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tarjeta-contacto-mini {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.icono-contacto-rojo {
+    background: #e62e2e;
+    color: white;
+    min-width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.detalles-contacto h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.detalles-contacto p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.dato-principal {
+    display: block;
+    font-weight: 700;
+    color: #e62e2e;
+    margin-bottom: 2px;
+}
+
+.detalles-contacto small {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.iconos-redes-contacto {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.iconos-redes-contacto a {
+    color: #666;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.iconos-redes-contacto a:hover {
+    color: #e62e2e;
+}
+
+
+
+/* Sección Mapa */
+.titulo-mapa-centrado {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo-mapa-centrado h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.mapa-placeholder {
+    position: relative;
+    background: #e9ecef;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+.mapa-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0.1) contrast(1.1);
+    /* Suaviza los colores para que peguen con tu web */
+}
+
+.info-flotante-mapa {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #e62e2e;
+    pointer-events: none;
+    /* Permite hacer clic a través de ella para mover el mapa */
+}
+
+.info-flotante-mapa i {
+    color: #e62e2e;
+    font-size: 18px;
+}
+
+.info-flotante-mapa span {
+    font-weight: 700;
+    font-size: 14px;
+    color: #111;
+}
+
+.btn-regresar-lista:hover {
+    color: #e60000;
+}
+
+
+
+
+/* Migrado de inline */
+.mapa-iframe-no-border { border: 0; }

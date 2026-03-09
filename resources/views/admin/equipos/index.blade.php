@@ -13,7 +13,7 @@
 
 {{-- Mensaje de éxito: Solo aparece cuando creas, editas o borras algo correctamente --}}
 @if(session('mensaje'))
-    <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
+    <div class="admin-alert-success">
         <i class="fas fa-check-circle"></i> {{ session('mensaje') }}
     </div>
 @endif
@@ -36,30 +36,30 @@
                 <td>
                     <div class="contenedor-escudo">
                         {{-- Muestra la foto guardada en la carpeta public/escudos --}}
-                        <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" style="object-fit: contain;">
+                        <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" class="admin-img-contain">
                     </div>
                 </td>
                 <td><strong>{{ $equipo->nombre }}</strong></td>
                 <td>{{ $equipo->categoria }}</td>
                 <td>{{ $equipo->jugadores_count }}</td>
-                <td style="padding: 25px 15px; vertical-align: middle;">
+                <td class="admin-actions-cell">
                     {{-- Contenedor de los botones Editar y Borrar --}}
-                    <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
+                    <div class="admin-row-actions">
                         
-                        <a href="{{ route('equipos.show', $equipo->id) }}" class="btn-accion" title="Ver Detalle" style="background: #e3f2fd; color: #1976d2;">
+                        <a href="{{ route('equipos.show', $equipo->id) }}" class="btn-accion admin-view-btn" title="Ver Detalle">
                             <i class="fas fa-eye"></i>
                         </a>
 
                         {{-- Botón Editar --}}
-                        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-accion editar" title="Editar" style="margin: 0;">
+                        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-accion editar admin-no-margin" title="Editar">
                             <i class="fas fa-pen"></i>
                         </a>
                         
                         {{-- Formulario para Borrar --}}
-                        <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar equipo?')" style="margin: 0; display: flex; align-items: center;">
+                        <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar equipo?')" class="admin-form-inline admin-form-inline-flex">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-accion borrar" title="Eliminar" style="margin: 0;">
+                            <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -70,7 +70,7 @@
             @empty
             {{-- MENSAJE SI NO HAY EQUIPOS --}}
             <tr>
-                <td colspan="5" style="text-align: center; padding: 40px; color: #777;">
+                <td colspan="5" class="admin-empty-cell">
                     <i class="fas fa-info-circle"></i> No se han encontrado equipos en la base de datos.
                 </td>
             </tr>

@@ -1,6 +1,10 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/contacto.css') }}" />
+@endpush
+
 {{-- TÍTULO DE LA PESTAÑA --}}
 @section('title', 'Inicio - Bellreguard Club de Basket')
 
@@ -88,7 +92,7 @@
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3092.115479007358!2d-0.1678986234394086!3d38.94492107171408!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd61e88a6595614d%3A0x727823800999a75a!2sPavell%C3%B3%20Municipal%20de%20Bellreguard!5e0!3m2!1ses!2ses!4v1705000000000!5m2!1ses!2ses" 
                 width="100%" 
                 height="100%" 
-                style="border:0;" 
+                class="mapa-iframe-no-border"
                 allowfullscreen="" 
                 loading="lazy" 
                 referrerpolicy="no-referrer-when-downgrade">

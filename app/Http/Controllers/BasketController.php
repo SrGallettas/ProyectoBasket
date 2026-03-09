@@ -7,6 +7,7 @@ use App\Models\Noticia;
 use App\Models\Merchandising;
 use App\Models\Partido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BasketController extends Controller
 {
@@ -76,5 +77,39 @@ class BasketController extends Controller
         $noticia = Noticia::where('slug', $slug)->firstOrFail();
 
         return view('basket.noticias_detalle', compact('noticia'));
+    }
+
+    public function enviarInteresMerchan(Request $request)
+    {
+        $validated = $request->validate([
+            'producto_id' => 'required|exists:merchandising,id',
+            'talla' => 'nullable|string|max:20',
+        ]);
+
+        $producto = Merchandising::findOrFail($validated['producto_id']);
+        $talla = $validated['talla'] ?? 'Sin talla especificada';
+        $tallasDisponibles = $producto->talla
+            ? array_map('trim', explode(',', $producto->talla))
+            : [];
+
+        if (!empty($tallasDisponibles) && !in_array($talla, $tallasDisponibles, true)) {
+            return back()->withErrors([
+                'talla' => 'Selecciona una talla valida para este producto.'
+            ])->withInput();
+        }
+
+        $destinatario = env('MERCH_INTERES_EMAIL', 'info@bellreguardcb.com');
+        $asunto = 'Interés ' . $producto->nombre;
+
+        $mensaje = "Hola Bellreguard CB,\n\n"
+            . "Estoy interesado en el producto: {$producto->nombre}.\n"
+            . "Me gustaría pedirlo en la talla: {$talla}.\n\n"
+            . "Gracias.";
+
+        Mail::raw($mensaje, function ($mail) use ($destinatario, $asunto) {
+            $mail->to($destinatario)->subject($asunto);
+        });
+
+        return back()->with('mensaje', 'Tu interés se ha enviado correctamente.');
     }
 }

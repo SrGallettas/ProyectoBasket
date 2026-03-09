@@ -1,0 +1,164 @@
+/*******************************************************************************
+ * *
+ * 11. PÁGINA DE LOGIN (ACCESO RESTRINGIDO)                                    *
+ * *
+ *******************************************************************************/
+
+.contenedor-login {
+    min-height: calc(100vh - 80px);
+    /* Ajusta según la altura de tu nav */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+.caja-login {
+    background: white;
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado del Formulario */
+.login-formulario {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header {
+    margin-bottom: 30px;
+}
+
+.logo-login {
+    width: 60px;
+    margin-bottom: 15px;
+}
+
+.login-header h1 {
+    font-size: 26px;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.login-header p {
+    color: #777;
+    font-size: 14px;
+}
+
+.grupo-input {
+    margin-bottom: 20px;
+}
+
+.grupo-input label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.input-icono {
+    position: relative;
+}
+
+.input-icono i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.input-icono input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.input-icono input:focus {
+    border-color: #cf1515;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(207, 21, 21, 0.1);
+}
+
+
+
+.btn-acceder {
+    width: 100%;
+    background: #cf1515;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.3s;
+}
+
+.btn-acceder:hover {
+    background: #a31111;
+}
+
+.login-footer {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.login-footer p {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Lado Decorativo (Rojo) */
+.login-decoracion {
+    background: linear-gradient(135deg, #cf1515 0%, #8b0e0e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 40px;
+    position: relative;
+}
+
+/* Círculo sutil de fondo para la decoración */
+.login-decoracion::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+}
+
+.decoracion-contenido h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.decoracion-contenido p {
+    font-size: 16px;
+    opacity: 0.8;
+    position: relative;
+}
+
+

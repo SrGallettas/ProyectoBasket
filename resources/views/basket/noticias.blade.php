@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
+@endpush
+
 @section('titulo', 'Noticias - Bellreguard Basket')
 
 @section('contenido')

@@ -14,10 +14,10 @@
     </header>
 
     @if ($errors->any())
-    <div style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <div class="admin-error-box">
         <strong>¡Vaya! Algo ha ido mal:</strong>
         {{-- Añadimos list-style: none y quitamos el padding --}}
-        <ul style="margin-top: 5px; margin-bottom: 0; list-style: none; padding-left: 0;">
+        <ul class="admin-error-list">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
@@ -54,14 +54,14 @@
                 <div class="seccion-form-ficha seccion-deportiva">
                     <h3><i class="fas fa-basketball-ball"></i> Datos Deportivos</h3>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="jugador-form-double-grid">
                         <div class="campo-ficha">
                             <label>Dorsal</label>
                             <input type="number" name="dorsal" value="{{ $jugador->dorsal }}" class="input-ficha">
                         </div>
                         <div class="campo-ficha">
                             <label>Posición</label>
-                            <select name="posicion" class="input-ficha" style="background: white;">
+                            <select name="posicion" class="input-ficha input-white">
                                 @foreach(['Base', 'Escolta', 'Alero', 'Ala-Pívot', 'Pívot'] as $pos)
                                     <option value="{{ $pos }}" {{ $jugador->posicion == $pos ? 'selected' : '' }}>{{ $pos }}</option>
                                 @endforeach
@@ -71,7 +71,7 @@
 
                     <div class="campo-ficha">
                         <label>Equipo Actual</label>
-                        <select name="equipo_id" required class="input-ficha" style="background: white;">
+                        <select name="equipo_id" required class="input-ficha input-white">
                             @foreach($equipos as $equipo)
                                 <option value="{{ $equipo->id }}" {{ $jugador->equipo_id == $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="seccion-foto-ficha">
-                    <div style="text-align: center;">
+                    <div class="text-center">
                         <label>Imagen Actual</label>
                         <div class="preview-foto">
                             @if($jugador->imagen_jugador)
@@ -93,10 +93,10 @@
                         </div>
                     </div>
                     
-                    <div style="flex: 1;">
+                    <div class="flex-1">
                         <label>Subir nueva fotografía</label>
-                        <input type="file" name="imagen_jugador" class="input-ficha" style="background: white;">
-                        <p style="margin: 10px 0 0; font-size: 0.8em; color: #718096;">Formatos admitidos: JPG o PNG. Se recomienda tamaño cuadrado.</p>
+                        <input type="file" name="imagen_jugador" class="input-ficha input-white">
+                        <p class="input-help-text">Formatos admitidos: JPG o PNG. Se recomienda tamaño cuadrado.</p>
                     </div>
                 </div>
             </div>

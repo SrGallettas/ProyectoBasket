@@ -1,6 +1,10 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/merchandising.css') }}" />
+@endpush
+
 {{-- TÍTULO DE LA PESTAÑA --}}
 @section('title', 'Inicio - Bellreguard Club de Basket')
 
@@ -33,9 +37,9 @@
                     
                     {{-- Tallas: se muestran solo si el item las tiene --}}
                     @if($item->talla)
-                        <div class="bloque-tallas" style="margin-bottom: 15px; font-size: 0.9rem;">
+                        <div class="bloque-tallas merch-tallas-bloque">
                             <strong>Tallas:</strong> 
-                            <span class="tallas-texto" style="background: #eee; padding: 2px 6px; border-radius: 4px;">
+                            <span class="tallas-texto merch-tallas-texto">
                                 {{ str_replace(',', ', ', $item->talla) }}
                             </span>
                         </div>
@@ -44,7 +48,30 @@
                     <div class="precio-comprar">
                         {{-- Precio: formateado con el símbolo € --}}
                         <span class="precio">{{ number_format($item->precio, 0) }}€</span>
-                        <button class="boton-comprar">¡Estoy Interesado!</button>
+                        @php
+                            $tallas = $item->talla ? explode(',', $item->talla) : [];
+                        @endphp
+
+                        <div class="interes-formulario">
+                            @if(count($tallas) > 0)
+                                <select class="selector-talla js-talla" required>
+                                    <option value="">Selecciona talla</option>
+                                    @foreach($tallas as $talla)
+                                        <option value="{{ trim($talla) }}">{{ trim($talla) }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="hidden" class="js-talla" value="Sin talla">
+                            @endif
+
+                            <button
+                                type="button"
+                                class="boton-comprar js-gmail-interes"
+                                data-producto="{{ $item->nombre }}"
+                            >
+                                ¡Estoy Interesado!
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,5 +91,31 @@
     </section>
 
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const botones = document.querySelectorAll('.js-gmail-interes');
+
+    botones.forEach(function (boton) {
+        boton.addEventListener('click', function () {
+            const contenedor = boton.closest('.interes-formulario');
+            const tallaInput = contenedor ? contenedor.querySelector('.js-talla') : null;
+            const talla = tallaInput ? tallaInput.value.trim() : 'Sin talla';
+
+            if (tallaInput && tallaInput.tagName === 'SELECT' && !talla) {
+                alert('Selecciona una talla antes de continuar.');
+                return;
+            }
+
+            const producto = boton.dataset.producto || 'Producto';
+            const asunto = `Interés ${producto}`;
+            const cuerpo = `Hola Bellreguard CB,\n\nEstoy interesado en el producto: ${producto}.\nMe gustaría pedirlo en la talla: ${talla}.\n\nGracias.`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=admin@bellreguard.com&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+            window.open(gmailUrl, '_blank');
+        });
+    });
+});
+</script>
 
 @endsection

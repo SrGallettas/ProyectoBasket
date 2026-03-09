@@ -82,7 +82,7 @@
                             <label for="imagen_merchan" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Cambiar fotografía
                             </label>
-                            <input type="file" name="imagen_merchan" id="imagen_merchan" style="display: none;">
+                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input">
                             
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>

@@ -31,11 +31,11 @@
         @endguest
 
         @auth
-            <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="auth-actions-wrap">
                 <a href="{{ route('dashboard') }}" class="boton-admin-nav">
                     ADMINISTRACIÓN
                 </a>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                <form action="{{ route('logout') }}" method="POST" class="logout-inline-form">
                     @csrf
                     <button type="submit" class="boton-cerrar-sesion">
                         SALIR DE SESIÓN

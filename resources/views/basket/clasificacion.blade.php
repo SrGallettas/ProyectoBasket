@@ -1,6 +1,10 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/paginas/clasificacion.css') }}" />
+@endpush
+
 {{-- TÍTULO DE LA PESTAÑA --}}
 @section('title', 'Inicio - Bellreguard Club de Basket')
 

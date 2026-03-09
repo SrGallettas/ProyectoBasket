@@ -3,7 +3,7 @@
 @section('contenido_admin')
 <header class="header-admin">
     <h2>Crear Nuevo Equipo</h2>
-    <a href="{{ route('noticias.index') }}" class="btn-nuevo" style="background-color: #777;">
+    <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary">
             <i class="fas fa-arrow-left"></i> Volver al listado
     </a>
 </header>
