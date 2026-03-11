@@ -46,6 +46,10 @@
                     <i class="fas fa-calendar-alt"></i> Partidos
                 </a>
 
+                <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
+                    <i class="fas fa-images"></i> Galerías
+                </a>
+
                 <div class="separador-admin"></div>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">

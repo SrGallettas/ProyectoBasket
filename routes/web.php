@@ -8,6 +8,7 @@ use App\Http\Controllers\BasketController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\PartidoController;
+use App\Http\Controllers\GaleriaController;
 
 
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
@@ -18,6 +19,7 @@ Route::get('clasificacion', [BasketController::class, 'clasificacion'])->name('b
 Route::get('estadisticas', [BasketController::class, 'estadisticas'])->name('basket.estadisticas');
 Route::get('partidos', [BasketController::class, 'partidos'])->name('basket.partidos');
 Route::get('galeria', [BasketController::class, 'galeria'])->name('basket.galeria');
+Route::get('galeria/{slug}', [BasketController::class, 'galeriaDetalle'])->name('basket.galeria.detalle');
 Route::get('contacto', [BasketController::class, 'contacto'])->name('basket.contacto');
 Route::get('noticia', [BasketController::class, 'noticia'])->name('basket.noticias');
 Route::get('/noticias/{slug}', [BasketController::class, 'noticia_detalle'])->name('noticias.detalle');
@@ -44,4 +46,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource("noticias", NoticiaController::class);
     Route::resource("merchandising", MerchandisingController::class);
     Route::resource('partidos', PartidoController::class);
+    Route::resource('galerias', GaleriaController::class);
 });

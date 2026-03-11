@@ -2017,3 +2017,119 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 .hidden-file-input {
     display: none;
 }
+
+.admin-help-text {
+    margin: 6px 0 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.admin-badge-neutral {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.admin-code {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 0.85rem;
+    color: #374151;
+}
+
+.galeria-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+    margin-top: 30px;
+}
+
+.galeria-admin-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    padding-bottom: 14px;
+}
+
+.galeria-admin-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.galeria-admin-remove {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.galeria-admin-principal,
+.galeria-upload-principal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+.galeria-admin-card-static {
+    padding-bottom: 0;
+}
+
+.galeria-admin-grid-show .galeria-admin-card img {
+    height: 220px;
+}
+
+.galeria-upload-summary {
+    margin-top: 30px;
+}
+
+.galeria-upload-item {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.galeria-upload-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.galeria-upload-item-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.galeria-upload-item-body strong {
+    font-size: 0.9rem;
+    color: #111827;
+    word-break: break-word;
+}
+
+.galeria-upload-remove {
+    align-self: flex-start;
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-weight: 700;
+    cursor: pointer;
+}

@@ -1,86 +1,69 @@
-{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
 @endpush
 
-{{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('title', 'Galería - Bellreguard Club de Basket')
 
-{{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
-
 <section class="seccion-galeria-header">
     <div class="header-contenido">
         <h1>Galería Bellreguard CB</h1>
-        <p>Revive los mejores momentos de nuestro equipo</p>
+        <p>Álbumes del club organizados por tipo para que puedas filtrar cada momento.</p>
         <div class="stats-galeria">
-            <span><i class="fas fa-camera"></i> 500+ Fotos</span>
-            <span><i class="fas fa-calendar-alt"></i> Temporada 2023-24</span>
+            <span><i class="fas fa-folder-open"></i> {{ $galerias->total() }} álbumes</span>
+            <span><i class="fas fa-images"></i> {{ $galerias->sum('imagenes_count') }} fotos en esta página</span>
         </div>
     </div>
 </section>
 
 <section class="contenedor-galeria">
     <div class="filtros-galeria">
-        <button class="btn-filtro activo">Todos</button>
-        <button class="btn-filtro"><i class="fas fa-basketball-ball"></i> Partidos</button>
-        <button class="btn-filtro"><i class="fas fa-dumbbell"></i> Entrenamientos</button>
-        <button class="btn-filtro"><i class="fas fa-users"></i> Equipo</button>
-        <button class="btn-filtro"><i class="fas fa-star"></i> Eventos</button>
+        @foreach($tipos as $clave => $label)
+            <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
+               class="btn-filtro {{ $tipoSeleccionado === $clave ? 'activo' : '' }}">
+                {{ $label }}
+            </a>
+        @endforeach
     </div>
 
     <div class="rejilla-albumes">
-        <div class="tarjeta-album">
-            <div class="imagen-album">
-                <img src="img/final.jpeg" alt="Final Liga Regional">
-                <span class="badge-fotos">25 fotos</span>
-            </div>
-            <div class="info-album">
-                <h3>Final Liga Regional</h3>
-                <p>Victoria histórica contra Valencia BC. Momentos épicos del partido más importante de la temporada.</p>
-                <div class="footer-album">
-                    <span class="fecha-album">15 Marzo 2024</span>
-                    <a href="#" class="btn-ver-album">Ver álbum</a>
+        @forelse($galerias as $galeria)
+            <div class="tarjeta-album">
+                <div class="imagen-album">
+                    @if($galeria->portada)
+                        <img src="{{ asset('galerias/' . $galeria->portada->archivo) }}" alt="{{ $galeria->titulo }}">
+                    @else
+                        <div class="album-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    @endif
+                    <span class="badge-fotos">{{ $galeria->imagenes_count }} fotos</span>
+                </div>
+                <div class="info-album">
+                    <span class="tipo-album">{{ $tipos[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
+                    <h3>{{ $galeria->titulo }}</h3>
+                    <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion, 120) }}</p>
+                    <div class="footer-album">
+                        <span class="fecha-album">{{ $galeria->created_at->format('d/m/Y') }}</span>
+                        <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="tarjeta-album">
-            <div class="imagen-album">
-                <img src="img/final.jpeg" alt="Entrenamiento Intensivo">
-                <span class="badge-fotos">15 fotos</span>
+        @empty
+            <div class="galeria-empty-state">
+                <i class="fas fa-images"></i>
+                <h3>No hay álbumes para este filtro</h3>
+                <p>Cuando se creen galerías desde el panel de administración aparecerán aquí.</p>
             </div>
-            <div class="info-album">
-                <h3>Entrenamiento Intensivo</h3>
-                <p>Sesión de preparación para la final. Ejercicios tácticos y físicos en el pabellón municipal.</p>
-                <div class="footer-album">
-                    <span class="fecha-album">10 Marzo 2024</span>
-                    <a href="#" class="btn-ver-album">Ver álbum</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="tarjeta-album">
-            <div class="imagen-album">
-                <img src="img/final.jpeg" alt="Celebración Campeones">
-                <span class="badge-fotos">32 fotos</span>
-            </div>
-            <div class="info-album">
-                <h3>Celebración Campeones</h3>
-                <p>La celebración del título de liga regional. Momentos únicos con aficionados y jugadores.</p>
-                <div class="footer-album">
-                    <span class="fecha-album">20 Marzo 2024</span>
-                    <a href="#" class="btn-ver-album">Ver álbum</a>
-                </div>
-            </div>
-        </div>
+        @endforelse
     </div>
 
-    <div class="contenedor-cargar-mas">
-        <button class="btn-cargar-mas"><i class="fas fa-plus"></i> Cargar más álbumes</button>
-    </div>
+    @if($galerias->hasPages())
+        <div class="contenedor-paginacion-galeria">
+            {{ $galerias->links() }}
+        </div>
+    @endif
 </section>
-
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Noticia;
 use App\Models\Merchandising;
 use App\Models\Partido;
+use App\Models\Galeria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -58,7 +59,26 @@ class BasketController extends Controller
 
     public function galeria()
     {
-        return view('basket.galeria');
+        $tipoSeleccionado = request('tipo', 'todos');
+        $tipos = ['todos' => 'Todos'] + Galeria::TIPOS;
+
+        $galerias = Galeria::with('imagenes')
+            ->withCount('imagenes')
+            ->when($tipoSeleccionado !== 'todos', function ($query) use ($tipoSeleccionado) {
+                $query->where('tipo', $tipoSeleccionado);
+            })
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('basket.galeria', compact('galerias', 'tipos', 'tipoSeleccionado'));
+    }
+
+    public function galeriaDetalle($slug)
+    {
+        $galeria = Galeria::with('imagenes')->where('slug', $slug)->firstOrFail();
+
+        return view('basket.galeria_detalle', compact('galeria'));
     }
 
     public function contacto()
