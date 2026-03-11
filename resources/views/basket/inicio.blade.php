@@ -16,8 +16,8 @@
             <h1>Bellreguard Club de Basket</h1>
             <p>Pasión, dedicación y excelencia en cada partido. Únete a nuestra familia basketbolística.</p>
             <div class="botones-hero">
-                <button class="boton-principal">Ver Próximos Partidos</button>
-                <button class="boton-secundario">Conocer el Equipo</button>
+                <a href="{{ route('basket.partidos') }}" class="boton-principal">Ver Próximos Partidos</a>
+                <a href="{{ route('basket.equipo') }}" class="boton-secundario">Conocer el Equipo</a>
             </div>
         </div>
         <div class="hero-imagen">
@@ -53,6 +53,12 @@
                 </div>
             @endforelse
         </div>
+
+        @if($noticias->isNotEmpty())
+            <div class="inicio-cta-wrap">
+                <a href="{{ route('basket.noticias') }}" class="inicio-cta-link">Ver todas las noticias</a>
+            </div>
+        @endif
     </section>
 
 

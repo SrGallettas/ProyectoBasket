@@ -2,33 +2,15 @@
 
 @section('contenido_admin')
 <div class="contenedor-ficha-merchan">
-    
-    <header class="header-ficha">
-        <div>
-            <h2>Ficha del Producto</h2>
-            <p>Detalles completos y stock de la tienda</p>
-        </div>
-        {{-- Grupo de botones arriba a la derecha --}}
-        <div class="acciones-header-ficha">
-            
-            <a href="{{ route('merchandising.edit', $item->id) }}" class="btn-ficha-accion btn-ficha-edit">
-                <i class="fas fa-edit"></i>&nbsp;EDITAR
-            </a>
-
-            <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" class="admin-form-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-ficha-accion btn-ficha-delete">
-                    <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
-                </button>
-            </form>
-
-            <a href="{{ route('merchandising.index') }}" class="btn-ficha-accion btn-ficha-volver btn-ficha-volver-secondary">
-                <i class="fas fa-arrow-left"></i> Volver al listado
-            </a>
-        </div>
-
-    </header>
+    <x-admin-show-header
+        titulo="Ficha del Producto"
+        subtitulo="Detalles completos y stock de la tienda"
+        :editRoute="route('merchandising.edit', $item->id)"
+        :deleteRoute="route('merchandising.destroy', $item->id)"
+        :indexRoute="route('merchandising.index')"
+        confirmMessage="¿Seguro que deseas eliminar este producto?"
+        backClass="btn-ficha-volver-secondary"
+    />
 
     <div class="pizarra-show">
         <div class="grid-show-merchan">

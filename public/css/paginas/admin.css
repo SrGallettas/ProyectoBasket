@@ -18,6 +18,12 @@ html {
     min-height: 100vh;
 }
 
+.admin-mobile-toggle,
+.admin-mobile-backdrop,
+.admin-mobile-header {
+    display: none;
+}
+
 /* 2. SIDEBAR */
 .sidebar-admin {
     width: 260px;
@@ -26,8 +32,16 @@ html {
     display: flex;
     flex-direction: column;
     position: fixed;
-    height: 100vh;
+    top: 0;
+    bottom: 0;
     z-index: 1000;
+    transition: width 0.25s ease;
+}
+
+.admin-sidebar-topbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 14px 14px 0;
 }
 
 .admin-perfil {
@@ -62,6 +76,9 @@ html {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 24px;
 }
 
 .item-admin {
@@ -74,6 +91,7 @@ html {
     gap: 12px;
     font-size: 14px;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .item-admin i {
@@ -104,6 +122,57 @@ html {
     flex: 1;
     margin-left: 260px;
     padding: 40px;
+    transition: margin-left 0.25s ease;
+}
+
+.admin-sidebar-toggle {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(17, 17, 17, 0.18);
+}
+
+.admin-sidebar-toggle:hover {
+    background: #e60000;
+}
+
+body.admin-sidebar-collapsed .sidebar-admin {
+    width: 88px;
+}
+
+body.admin-sidebar-collapsed .contenido-admin {
+    margin-left: 88px;
+}
+
+body.admin-sidebar-collapsed .admin-perfil {
+    justify-content: center;
+    padding: 24px 10px;
+}
+
+body.admin-sidebar-collapsed .admin-sidebar-topbar {
+    justify-content: center;
+    padding: 14px 0 0;
+}
+
+body.admin-sidebar-collapsed .admin-info,
+body.admin-sidebar-collapsed .item-admin span {
+    display: none;
+}
+
+body.admin-sidebar-collapsed .item-admin {
+    justify-content: center;
+    padding: 12px;
+}
+
+body.admin-sidebar-collapsed .item-admin i {
+    width: auto;
 }
 
 .header-admin h2 {
@@ -2132,4 +2201,288 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     padding: 6px 12px;
     font-weight: 700;
     cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .contenido-admin {
+        padding: 28px;
+    }
+
+    .pizarra-admin,
+    .pizarra-ficha {
+        padding: 28px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar-admin {
+        width: 88px;
+    }
+
+    .contenido-admin {
+        margin-left: 88px;
+        padding: 22px;
+    }
+
+    .admin-perfil {
+        justify-content: center;
+        padding: 24px 10px;
+    }
+
+    .admin-sidebar-topbar {
+        justify-content: center;
+        padding: 14px 0 0;
+    }
+
+    .admin-info,
+    .item-admin span {
+        display: none;
+    }
+
+    .item-admin {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .item-admin i {
+        width: auto;
+    }
+
+    .header-admin,
+    .header-ficha,
+    .admin-header-spaced {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .contenedor-buscador {
+        justify-content: stretch;
+    }
+
+    .form-buscador {
+        width: 100%;
+    }
+
+    .input-grupal {
+        width: 100%;
+    }
+
+    .input-search {
+        width: 100%;
+    }
+
+    .grid-formulario-fichas,
+    .grid-formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .seccion-foto-ficha {
+        grid-column: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .jugador-form-double-grid,
+    .ficha-dorsal-wrapper {
+        grid-template-columns: 1fr;
+        display: grid;
+        gap: 14px;
+    }
+
+    .ficha-col-datos {
+        padding-left: 0;
+    }
+
+    .ficha-foto-principal {
+        height: 360px;
+    }
+
+    .acciones-header-ficha,
+    .form-acciones-ficha {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .btn-ficha-accion,
+    .btn-cancelar-ficha,
+    .btn-actualizar-ficha,
+    .btn-nuevo-secondary,
+    .btn-volver-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabla-admin {
+        min-width: 900px;
+    }
+
+    .pizarra-admin {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-admin {
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+    }
+
+    .admin-sidebar-topbar {
+        justify-content: flex-end;
+        padding: 14px 14px 0;
+    }
+
+    .admin-perfil {
+        justify-content: flex-start;
+        padding: 24px 20px;
+    }
+
+    .admin-info,
+    .item-admin span {
+        display: block;
+    }
+
+    .item-admin {
+        justify-content: flex-start;
+        padding: 12px 15px;
+    }
+
+    .item-admin i {
+        width: 20px;
+    }
+
+    .admin-mobile-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #1a1a1a;
+        color: white;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    .admin-mobile-toggle {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 10px;
+        background: #111;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .admin-mobile-header-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .admin-mobile-header-text strong {
+        font-size: 0.95rem;
+    }
+
+    .admin-mobile-header-text span {
+        font-size: 0.78rem;
+        color: #a1a1aa;
+    }
+
+    .admin-mobile-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 999;
+    }
+
+    body.admin-mobile-sidebar-open .admin-mobile-backdrop {
+        display: block;
+    }
+
+    body.admin-mobile-sidebar-open .sidebar-admin {
+        transform: translateX(0);
+    }
+
+    .contenido-admin {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px 16px 24px;
+    }
+
+    .pizarra-admin,
+    .pizarra-ficha {
+        padding: 18px;
+        border-radius: 10px;
+    }
+
+    .header-ficha h2,
+    .header-admin h2 {
+        font-size: 1.45rem;
+    }
+
+    .contenedor-edit-jugador {
+        padding: 0;
+    }
+
+    .ficha-foto-principal {
+        height: 300px;
+    }
+
+    .preview-foto {
+        width: 90px;
+        height: 90px;
+    }
+
+    .ficha-nombre-principal {
+        font-size: 1.45rem;
+    }
+
+    .ficha-dato-destacado,
+    .ficha-valor-azul,
+    .ficha-date-text {
+        font-size: 1rem;
+    }
+
+    .admin-row-actions {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .contenido-admin {
+        padding: 12px;
+        padding-bottom: 20px;
+    }
+
+    .header-ficha h2,
+    .header-admin h2 {
+        font-size: 1.3rem;
+    }
+
+    .pizarra-admin,
+    .pizarra-ficha {
+        padding: 14px;
+    }
+
+    .seccion-form-ficha h3 {
+        font-size: 1rem;
+    }
+
+    .ficha-foto-principal {
+        height: 250px;
+    }
+
+    .btn-ficha-accion,
+    .btn-cancelar-ficha,
+    .btn-actualizar-ficha {
+        height: auto;
+        min-height: 42px;
+        padding: 12px 16px;
+    }
 }

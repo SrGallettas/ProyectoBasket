@@ -14,6 +14,7 @@ class Galeria extends Model
     protected $fillable = [
         'titulo',
         'slug',
+        'carpeta',
         'descripcion',
         'tipo',
     ];

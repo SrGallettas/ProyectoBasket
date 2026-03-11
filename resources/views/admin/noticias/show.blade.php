@@ -2,31 +2,14 @@
 
 @section('contenido_admin')
 <div class="contenedor-ficha-noticia"> {{-- Ajustado a tu CSS --}}
-    
-    <header class="header-ficha">
-        <div>
-            <h2>Visualizar Noticia</h2>
-            <p>Publicación editorial del club</p>
-        </div>
-        <div class="acciones-header-ficha">
-            
-            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-ficha-accion btn-ficha-edit">
-                <i class="fas fa-edit"></i>&nbsp;EDITAR
-            </a>
-
-            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta noticia?')" class="admin-form-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-ficha-accion btn-ficha-delete">
-                    <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
-                </button>
-            </form>
-
-            <a href="{{ route('noticias.index') }}" class="btn-ficha-accion btn-ficha-volver">
-                <i class="fas fa-arrow-left"></i>&nbsp;VOLVER AL LISTADO
-            </a>
-        </div>
-    </header>
+    <x-admin-show-header
+        titulo="Visualizar Noticia"
+        subtitulo="Publicación editorial del club"
+        :editRoute="route('noticias.edit', $noticia->id)"
+        :deleteRoute="route('noticias.destroy', $noticia->id)"
+        :indexRoute="route('noticias.index')"
+        confirmMessage="¿Seguro que deseas eliminar esta noticia?"
+    />
 
     <div class="pizarra-ficha">
         {{-- Contenedor de Imagen con el placeholder por si falla --}}

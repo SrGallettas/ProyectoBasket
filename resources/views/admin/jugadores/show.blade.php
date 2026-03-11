@@ -2,31 +2,15 @@
 
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
-    
-    <header class="header-ficha">
-        <div>
-            <h2>Ficha del Jugador</h2>
-            <p>Perfil detallado de la plantilla</p>
-        </div>
-        <div class="acciones-header-ficha">
-            
-            <a href="{{ route('jugadores.edit', $jugador->id) }}" class="btn-ficha-accion btn-ficha-edit">
-                <i class="fas fa-edit"></i>&nbsp;EDITAR
-            </a>
-
-            <form action="{{ route('jugadores.destroy', $jugador->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este jugador?')" class="admin-form-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-ficha-accion btn-ficha-delete">
-                    <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
-                </button>
-            </form>
-
-            <a href="{{ route('jugadores.index') }}" class="btn-ficha-accion btn-ficha-volver btn-ficha-volver-secondary">
-                <i class="fas fa-arrow-left"></i> Volver al listado
-            </a>
-        </div>
-    </header>
+    <x-admin-show-header
+        titulo="Ficha del Jugador"
+        subtitulo="Perfil detallado de la plantilla"
+        :editRoute="route('jugadores.edit', $jugador->id)"
+        :deleteRoute="route('jugadores.destroy', $jugador->id)"
+        :indexRoute="route('jugadores.index')"
+        confirmMessage="¿Seguro que deseas eliminar este jugador?"
+        backClass="btn-ficha-volver-secondary"
+    />
 
     <div class="pizarra-ficha">
         <div class="grid-formulario-fichas">

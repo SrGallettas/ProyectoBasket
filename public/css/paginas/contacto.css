@@ -245,3 +245,143 @@
 
 /* Migrado de inline */
 .mapa-iframe-no-border { border: 0; }
+
+@media (max-width: 992px) {
+    .seccion-contacto-header {
+        padding: 60px 24px;
+    }
+
+    .contenedor-contacto {
+        margin: 40px auto;
+        padding: 0 24px;
+    }
+
+    .rejilla-contacto {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-bottom: 50px;
+    }
+
+    .bloque-sobre-nosotros,
+    .tarjeta-contacto-mini {
+        padding: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .seccion-contacto-header {
+        padding: 42px 18px;
+    }
+
+    .seccion-contacto-header h1 {
+        font-size: 34px;
+    }
+
+    .seccion-contacto-header p {
+        font-size: 15px;
+    }
+
+    .c1,
+    .c2,
+    .c3 {
+        opacity: 0.45;
+    }
+
+    .contenedor-contacto {
+        margin: 28px auto;
+        padding: 0 18px;
+    }
+
+    .bloque-sobre-nosotros {
+        padding: 22px 18px;
+    }
+
+    .titulo-con-icono {
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .bloque-sobre-nosotros h2 {
+        font-size: 24px;
+    }
+
+    .bloque-sobre-nosotros p {
+        font-size: 14px;
+        line-height: 1.65;
+        margin-bottom: 16px;
+    }
+
+    .tarjeta-contacto-mini {
+        padding: 18px;
+        gap: 14px;
+    }
+
+    .detalles-contacto h4 {
+        font-size: 16px;
+    }
+
+    .titulo-mapa-centrado {
+        margin-bottom: 24px;
+    }
+
+    .titulo-mapa-centrado h2 {
+        font-size: 26px;
+    }
+
+    .mapa-placeholder {
+        height: 340px;
+    }
+}
+
+@media (max-width: 576px) {
+    .seccion-contacto-header {
+        padding: 34px 16px;
+    }
+
+    .seccion-contacto-header h1 {
+        font-size: 28px;
+    }
+
+    .contenedor-contacto {
+        padding: 0 16px;
+    }
+
+    .titulo-con-icono {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .bloque-sobre-nosotros {
+        text-align: center;
+    }
+
+    .tarjeta-contacto-mini {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .iconos-redes-contacto {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .mapa-placeholder {
+        height: 280px;
+        border-radius: 12px;
+    }
+
+    .info-flotante-mapa {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        padding: 10px 14px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .info-flotante-mapa span {
+        font-size: 13px;
+    }
+}

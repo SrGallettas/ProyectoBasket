@@ -1,26 +1,15 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-ficha">
-    <div>
-        <h2>Ficha del Equipo: {{ $equipo->nombre }}</h2>
-        <p>Información general y categoría</p>
-    </div>
-    <div class="acciones-header-ficha">
-        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-ficha-accion btn-ficha-edit">
-            <i class="fas fa-edit"></i>&nbsp;EDITAR
-        </a>
-        <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar?')">
-            @csrf @method('DELETE')
-            <button type="submit" class="btn-ficha-accion btn-ficha-delete">
-                <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
-            </button>
-        </form>
-        <a href="{{ route('equipos.index') }}" class="btn-ficha-accion btn-ficha-volver">
-            <i class="fas fa-arrow-left"></i>&nbsp;VOLVER
-        </a>
-    </div>
-</header>
+<x-admin-show-header
+    :titulo="'Ficha del Equipo: ' . $equipo->nombre"
+    subtitulo="Información general y categoría"
+    :editRoute="route('equipos.edit', $equipo->id)"
+    :deleteRoute="route('equipos.destroy', $equipo->id)"
+    :indexRoute="route('equipos.index')"
+    confirmMessage="¿Eliminar equipo?"
+    backText="VOLVER"
+/>
 
 <div class="pizarra-admin">
     <div class="equipo-show-layout">

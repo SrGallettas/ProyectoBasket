@@ -18,16 +18,28 @@ body {
     overflow-x: hidden;
 }
 
+body.menu-movil-abierto {
+    overflow: hidden;
+}
+
 .barra-navegacion {
     background: #fff;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     padding: 15px 5%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
     z-index: 100;
+}
+
+.panel-navegacion {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .navegacion-izquierda {
@@ -51,19 +63,55 @@ body {
     color: #777;
 }
 
+.boton-menu-movil {
+    display: none;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f4f6;
+    padding: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.boton-menu-movil span {
+    width: 20px;
+    height: 2px;
+    border-radius: 999px;
+    background: #111;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
 .menu-navegacion {
     display: flex;
     gap: 25px;
     list-style: none;
+    justify-content: center;
+    flex: 1;
+}
+
+.login-seccion {
+    display: flex;
+    justify-content: flex-end;
+    min-width: max-content;
 }
 
 .menu-navegacion a {
     color: #333;
     font-weight: 500;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .menu-navegacion a.activo {
+    color: #e60000;
+}
+
+.menu-navegacion a:hover {
     color: #e60000;
 }
 
@@ -271,6 +319,159 @@ body {
     font-size: 14px;
 }
 
+@media (max-width: 1439px) {
+    .barra-navegacion {
+        display: flex;
+        padding: 14px 20px;
+        flex-wrap: wrap;
+        gap: 14px;
+        justify-content: space-between;
+    }
+
+    .boton-menu-movil {
+        display: inline-flex;
+    }
+
+    .panel-navegacion {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        background: #fff;
+        border-top: 1px solid #e5e7eb;
+        padding: 18px 0 6px;
+        max-height: calc(100vh - 88px);
+        overflow-y: auto;
+    }
+
+    .barra-navegacion.nav-abierta .panel-navegacion {
+        display: flex;
+    }
+
+    .barra-navegacion.nav-abierta .boton-menu-movil span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .barra-navegacion.nav-abierta .boton-menu-movil span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .barra-navegacion.nav-abierta .boton-menu-movil span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .menu-navegacion {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .menu-navegacion li a {
+        display: block;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #f9fafb;
+        font-size: 15px;
+    }
+
+    .login-seccion {
+        width: 100%;
+        padding-top: 8px;
+    }
+
+    .login-seccion > a,
+    .auth-actions-wrap {
+        width: 100%;
+    }
+
+    .auth-actions-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .auth-actions-wrap .logout-inline-form {
+        display: block;
+        width: 100%;
+    }
+
+    .boton-inicio-sesion,
+    .boton-cerrar-sesion,
+    .boton-admin-nav {
+        width: 100%;
+        text-align: center;
+    }
+
+    .rejilla-footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .barra-navegacion {
+        padding: 12px 16px;
+    }
+
+    .titulo-navegacion h3 {
+        font-size: 16px;
+    }
+
+    .titulo-navegacion span {
+        font-size: 12px;
+    }
+
+    .logo-navegacion {
+        width: 40px;
+        height: 40px;
+    }
+
+    .pie-pagina {
+        padding-top: 44px;
+    }
+
+    .rejilla-footer {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 0 16px;
+        justify-items: end;
+    }
+
+    .footer-col,
+    .info-club {
+        text-align: right;
+    }
+
+    .logo-footer {
+        justify-content: flex-end;
+    }
+
+    .footer-col h4 {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .footer-col h4::after {
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+
+    .redes-iconos {
+        justify-content: flex-end;
+    }
+
+    .contacto-items li {
+        justify-content: flex-end;
+    }
+
+    .footer-bottom {
+        margin-top: 28px;
+        padding: 18px 16px 0;
+    }
+}
+
 
 
 
@@ -317,4 +518,3 @@ body {
     color: #666;
     margin: 0;
 }
-

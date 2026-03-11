@@ -413,6 +413,10 @@
 }
 
 @media (max-width: 768px) {
+    .seccion-galeria-header {
+        padding: 42px 18px;
+    }
+
     .seccion-galeria-header h1 {
         font-size: 30px;
     }
@@ -422,8 +426,29 @@
         gap: 8px;
     }
 
+    .contenedor-galeria {
+        padding: 0 18px;
+        margin-top: -18px;
+    }
+
+    .filtros-galeria {
+        justify-content: stretch;
+        gap: 8px;
+    }
+
+    .btn-filtro {
+        width: 100%;
+        justify-content: center;
+    }
+
     .rejilla-albumes {
         grid-template-columns: 1fr;
+    }
+
+    .tarjeta-album {
+        max-width: 420px;
+        width: 100%;
+        margin: 0 auto;
     }
 
     .galeria-editorial-shell {
@@ -448,6 +473,11 @@
         gap: 12px;
     }
 
+    .galeria-breadcrumb {
+        width: 100%;
+        justify-content: center;
+    }
+
     .lightbox-nav {
         width: 42px;
         height: 42px;
@@ -465,5 +495,55 @@
         flex-direction: column;
         gap: 6px;
         text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .seccion-galeria-header {
+        padding: 34px 16px;
+    }
+
+    .seccion-galeria-header h1 {
+        font-size: 26px;
+    }
+
+    .seccion-galeria-header p {
+        font-size: 15px;
+    }
+
+    .contenedor-galeria {
+        padding: 0 16px;
+    }
+
+    .filtros-galeria {
+        padding: 12px;
+        margin-bottom: 24px;
+    }
+
+    .info-album {
+        padding: 14px;
+    }
+
+    .info-album p {
+        height: auto;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .galeria-editorial-shell {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .foto-galeria-card img {
+        height: 200px;
+    }
+
+    .lightbox-cerrar {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
     }
 }

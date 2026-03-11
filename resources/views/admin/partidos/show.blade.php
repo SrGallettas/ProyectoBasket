@@ -4,19 +4,14 @@
 
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
-    
-    {{-- CABECERA DE LA FICHA --}}
-    <header class="header-ficha">
-        <div>
-            <h2>Detalle del Encuentro</h2>
-            <p>ID del Partido: #{{ $partido->id }} | Categoría: {{ $partido->categoria }}</p>
-        </div>
-        <div class="grupo-botones-header">
-            <a href="{{ route('partidos.index') }}" class="btn-volver-link">
-                <i class="fas fa-chevron-left"></i> Volver al listado
-            </a>
-        </div>
-    </header>
+    <x-admin-show-header
+        titulo="Detalle del Encuentro"
+        :subtitulo="'ID del Partido: #' . $partido->id . ' | Categoría: ' . $partido->categoria"
+        :editRoute="route('partidos.edit', $partido->id)"
+        :deleteRoute="route('partidos.destroy', $partido->id)"
+        :indexRoute="route('partidos.index')"
+        confirmMessage="¿Seguro que deseas eliminar este partido?"
+    />
 
     <div class="pizarra-ficha">
         {{-- AREA DEL MARCADOR / ENFRENTAMIENTO --}}

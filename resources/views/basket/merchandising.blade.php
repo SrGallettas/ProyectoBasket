@@ -22,8 +22,11 @@
     </section>
 
     <section class="productos-oficiales">
-        <h2>Productos Oficiales</h2>
-        <p class="subtitulo">Encuentra toda la ropa y accesorios del equipo</p>
+        <div class="merch-intro">
+            <span class="merch-kicker">Coleccion oficial</span>
+            <h2>Productos Oficiales</h2>
+            <p class="subtitulo merch-subtitulo">Encuentra toda la ropa y accesorios del equipo en una selección cuidada, pensada para acompañar al club dentro y fuera de la pista.</p>
+        </div>
 
         <div class="rejilla-productos">
         @forelse($merchandising as $item)

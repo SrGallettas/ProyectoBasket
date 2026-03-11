@@ -56,6 +56,7 @@ class GaleriaController extends Controller
         $galeria = Galeria::create([
             'titulo' => $validated['titulo'],
             'slug' => $this->generarSlugUnico($validated['titulo']),
+            'carpeta' => $this->generarCarpetaUnica($validated['titulo']),
             'descripcion' => $validated['descripcion'],
             'tipo' => $validated['tipo'],
         ]);
@@ -153,6 +154,8 @@ class GaleriaController extends Controller
             $this->borrarArchivoImagen($imagen->archivo);
         }
 
+        $this->borrarCarpetaGaleriaSiExiste($galeria);
+
         $galeria->delete();
 
         return redirect()->route('galerias.index')->with('mensaje', 'Galeria eliminada correctamente.');
@@ -181,21 +184,22 @@ class GaleriaController extends Controller
     {
         $imagenesGuardadas = [];
         $hayImagenPrincipalActual = $galeria->imagenes()->where('es_principal', true)->exists();
+        $directorioGaleria = $this->directorioGaleria($galeria);
 
         foreach ($imagenes as $imagen) {
             if (!$imagen) {
                 continue;
             }
 
-            if (!is_dir(public_path('galerias'))) {
-                mkdir(public_path('galerias'), 0755, true);
+            if (!is_dir($directorioGaleria)) {
+                mkdir($directorioGaleria, 0755, true);
             }
 
             $nombreImagen = time() . '_' . Str::random(8) . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move(public_path('galerias'), $nombreImagen);
+            $imagen->move($directorioGaleria, $nombreImagen);
 
             $imagenesGuardadas[] = $galeria->imagenes()->create([
-                'archivo' => $nombreImagen,
+                'archivo' => $galeria->carpeta . '/' . $nombreImagen,
                 'es_principal' => false,
             ]);
         }
@@ -217,6 +221,39 @@ class GaleriaController extends Controller
 
         if (file_exists($ruta)) {
             unlink($ruta);
+        }
+    }
+
+    private function generarCarpetaUnica(string $titulo): string
+    {
+        $base = Str::slug($titulo);
+        $base = $base !== '' ? $base : 'galeria';
+        $carpeta = $base;
+        $contador = 1;
+
+        while (Galeria::where('carpeta', $carpeta)->exists()) {
+            $carpeta = $base . '-' . $contador;
+            $contador++;
+        }
+
+        return $carpeta;
+    }
+
+    private function directorioGaleria(Galeria $galeria): string
+    {
+        return public_path('galerias/' . $galeria->carpeta);
+    }
+
+    private function borrarCarpetaGaleriaSiExiste(Galeria $galeria): void
+    {
+        $directorio = $this->directorioGaleria($galeria);
+
+        if (is_dir($directorio)) {
+            $archivos = array_diff(scandir($directorio), ['.', '..']);
+
+            if (empty($archivos)) {
+                rmdir($directorio);
+            }
         }
     }
 

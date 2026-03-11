@@ -178,3 +178,138 @@
 
 /* Migrado de inline */
 .partidos-empty-card { grid-column: 1 / -1; text-align: center; }
+
+@media (max-width: 992px) {
+    .seccion-partidos-header,
+    .seccion-calendario {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .rejilla-partido-doble {
+        grid-template-columns: 1fr;
+    }
+
+    .rejilla-partido-doble.unico {
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .seccion-partidos-header {
+        padding: 34px 18px;
+    }
+
+    .header-texto h1 {
+        font-size: 28px;
+    }
+
+    .header-texto p {
+        font-size: 15px;
+    }
+
+    .seccion-calendario {
+        padding: 34px 18px;
+    }
+
+    .caja-equipo {
+        padding: 16px;
+    }
+
+    .titulo-equipo {
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .titulo-equipo h3 {
+        font-size: 18px;
+    }
+
+    .tarjeta-partido {
+        padding: 14px;
+    }
+
+    .jornada {
+        position: static;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .enfrentamiento {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .equipo img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .equipo p {
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
+    .info-adicional {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .seccion-partidos-header {
+        padding: 28px 16px;
+    }
+
+    .header-texto h1 {
+        font-size: 24px;
+    }
+
+    .seccion-calendario {
+        padding: 28px 16px;
+    }
+
+    .caja-equipo {
+        padding: 14px;
+    }
+
+    .titulo-equipo i {
+        font-size: 20px;
+    }
+
+    .titulo-equipo h3 {
+        font-size: 17px;
+    }
+
+    .tarjeta-partido {
+        padding: 12px;
+    }
+
+    .etiqueta-proximo {
+        font-size: 11px;
+        padding: 3px 7px;
+    }
+
+    .enfrentamiento {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .vs {
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .equipo {
+        width: 100%;
+    }
+
+    .equipo img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .info-adicional div {
+        margin-bottom: 8px;
+    }
+}
