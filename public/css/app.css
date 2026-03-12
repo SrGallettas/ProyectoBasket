@@ -168,6 +168,70 @@ body.menu-movil-abierto {
     text-decoration: none;
 }
 
+.estado-vacio {
+    grid-column: 1 / -1;
+    max-width: 760px;
+    margin: 12px auto;
+    padding: 30px 26px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    box-shadow: 0 16px 34px rgba(17, 24, 39, 0.08);
+    text-align: center;
+}
+
+.estado-vacio-icono {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 16px;
+    border-radius: 999px;
+    background: #fff1f2;
+    color: #e60000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+
+.estado-vacio h3 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.2;
+    color: #111827;
+}
+
+.estado-vacio p {
+    margin: 0 auto;
+    max-width: 620px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #4b5563;
+}
+
+.estado-vacio-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: 1px solid #e60000;
+    background: #e60000;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.estado-vacio-accion:hover {
+    background: #cf1515;
+    box-shadow: 0 10px 22px rgba(230, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
 
 /*******************************************************************************
  * *
@@ -319,7 +383,7 @@ body.menu-movil-abierto {
     font-size: 14px;
 }
 
-@media (max-width: 1439px) {
+@media (max-width: 1024px) {
     .barra-navegacion {
         display: flex;
         padding: 14px 20px;
@@ -334,7 +398,7 @@ body.menu-movil-abierto {
 
     .panel-navegacion {
         width: 100%;
-        display: none;
+        display: flex;
         flex-direction: column;
         align-items: stretch;
         background: #fff;
@@ -342,6 +406,10 @@ body.menu-movil-abierto {
         padding: 18px 0 6px;
         max-height: calc(100vh - 88px);
         overflow-y: auto;
+    }
+
+    .js-nav .barra-navegacion .panel-navegacion {
+        display: none;
     }
 
     .barra-navegacion.nav-abierta .panel-navegacion {
@@ -425,6 +493,19 @@ body.menu-movil-abierto {
     .logo-navegacion {
         width: 40px;
         height: 40px;
+    }
+
+    .estado-vacio {
+        margin: 8px auto;
+        padding: 24px 16px;
+    }
+
+    .estado-vacio h3 {
+        font-size: 20px;
+    }
+
+    .estado-vacio p {
+        font-size: 14px;
     }
 
     .pie-pagina {

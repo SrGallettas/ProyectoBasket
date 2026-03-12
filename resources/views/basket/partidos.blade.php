@@ -88,8 +88,13 @@
                 </div>
             </div>
         @empty
-            <div class="tarjeta-partido partidos-empty-card">
-                <p>No hay partidos programados actualmente.</p>
+            <div class="estado-vacio partidos-empty-card">
+                <div class="estado-vacio-icono">
+                    <i class="fa-regular fa-calendar-xmark"></i>
+                </div>
+                <h3>Calendario en actualización</h3>
+                <p>Estamos cerrando los próximos encuentros. Muy pronto publicaremos nuevas fechas y horarios.</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
             </div>
         @endforelse
         

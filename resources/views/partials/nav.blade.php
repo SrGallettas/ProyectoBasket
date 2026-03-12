@@ -56,6 +56,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    document.documentElement.classList.add('js-nav');
+
     const nav = document.querySelector('[data-nav]');
     const toggle = document.querySelector('[data-nav-toggle]');
     const panel = document.querySelector('[data-nav-panel]');
@@ -81,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.addEventListener('resize', function () {
-        if (window.innerWidth > 1439) {
+        if (window.innerWidth > 1024) {
             nav.classList.remove('nav-abierta');
             toggle.setAttribute('aria-label', 'Abrir menu');
             toggle.setAttribute('aria-expanded', 'false');

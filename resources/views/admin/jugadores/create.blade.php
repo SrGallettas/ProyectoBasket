@@ -83,17 +83,22 @@
                 </div>
 
                 <div class="seccion-foto-ficha">
-                    <div class="text-center">
-                        <label>Imagen</label>
-                        <div class="preview-foto">
+                    <div class="card-imagen-horizontal">
+                        <div class="preview-foto-noticia">
                             <img src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto">
                         </div>
-                    </div>
-                    
-                    <div class="flex-1">
-                        <label>Subir fotografía del jugador</label>
-                        <input type="file" name="imagen_jugador" class="input-ficha input-white">
-                        <p class="input-help-text">Formatos: JPG o PNG. La foto se guardará en public/jugadores.</p>
+
+                        <div class="info-subida-noticia">
+                            <h3>Imagen del Jugador</h3>
+                            <p>Para que luzca bien, usa una fotografía vertical o cuadrada.</p>
+
+                            <label for="imagen_jugador" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Seleccionar fotografía
+                            </label>
+                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input">
+
+                            <span class="nota-subida">Formatos: JPG o PNG. La foto se guardará en public/jugadores.</span>
+                        </div>
                     </div>
                 </div>
             </div>

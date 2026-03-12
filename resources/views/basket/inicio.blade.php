@@ -44,12 +44,13 @@
                     </div>
                 </div>
             @empty
-            
-                {{-- ESTE MENSAJE APARECE SI NO HAY NOTICIAS --}}
-                <div class="sin-noticias">
-                    <i class="fas fa-newspaper"></i>
-                    <p>Actualmente no hay noticias publicadas.</p>
-                    <span>¡Vuelve pronto para enterarte de todas las novedades!</span>
+                <div class="estado-vacio">
+                    <div class="estado-vacio-icono">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3>Sin noticias publicadas por ahora</h3>
+                    <p>En cuanto tengamos novedades del club, las veras aqui en primer plano.</p>
+                    <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
                 </div>
             @endforelse
         </div>

@@ -13,12 +13,6 @@
 <body>
     <div class="contenedor-admin">
         <aside class="sidebar-admin" id="admin-sidebar">
-            <div class="admin-sidebar-topbar">
-                <button type="button" class="admin-sidebar-toggle" id="admin-sidebar-toggle" aria-label="Desplegar u ocultar menú">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-
             <div class="admin-perfil">
                 <img src="{{ asset('img/basket.jpeg') }}" alt="Logo Admin">
                 <div class="admin-info">
@@ -57,9 +51,13 @@
                 </a>
 
                 <div class="separador-admin"></div>
+
+                <button type="button" class="item-admin admin-sidebar-menu-toggle" id="admin-sidebar-toggle" aria-label="Desplegar u ocultar menú">
+                    <i class="fas fa-bars"></i><span>Abrir o cerrar menú</span>
+                </button>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
-                    <i class="fas fa-arrow-left"></i><span>Volver a la Web</span>
+                    <i class="fas fa-door-open"></i><span>Volver a la Web</span>
                 </a>
 
                 

@@ -1,56 +1,74 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<x-admin-show-header
-    :titulo="'Ficha del Equipo: ' . $equipo->nombre"
-    subtitulo="Información general y categoría"
-    :editRoute="route('equipos.edit', $equipo->id)"
-    :deleteRoute="route('equipos.destroy', $equipo->id)"
-    :indexRoute="route('equipos.index')"
-    confirmMessage="¿Eliminar equipo?"
-    backText="VOLVER"
-/>
+<div class="contenedor-edit-jugador">
+    <x-admin-show-header
+        :titulo="'Ficha del Equipo: ' . $equipo->nombre"
+        subtitulo="Perfil general del equipo y su categoría"
+        :editRoute="route('equipos.edit', $equipo->id)"
+        :deleteRoute="route('equipos.destroy', $equipo->id)"
+        :indexRoute="route('equipos.index')"
+        confirmMessage="¿Eliminar equipo?"
+        backClass="btn-ficha-volver-secondary"
+    />
 
-<div class="pizarra-admin">
-    <div class="equipo-show-layout">
-        
-        <div class="equipo-show-card">
-            <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" class="equipo-show-img">
+    <div class="pizarra-ficha">
+        <div class="grid-formulario-fichas">
+            <div class="seccion-form-ficha ficha-col-foto">
+                <div class="ficha-foto-principal ficha-foto-principal-escudo">
+                    @if($equipo->imagen_club)
+                        <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo del {{ $equipo->nombre }}">
+                    @else
+                        <img src="{{ asset('img/club_14.png') }}" alt="Escudo no disponible">
+                    @endif
+                </div>
+                <p class="ficha-caption">Escudo Oficial del Club</p>
+            </div>
+
+            <div class="seccion-form-ficha ficha-col-datos ficha-col-datos-equipo">
+                <h3 class="ficha-title-no-margin"><i class="fas fa-shield-alt"></i> Datos del Equipo</h3>
+
+                <div class="campo-ficha ficha-info-row ficha-space-bottom">
+                    <label>Nombre del Equipo</label>
+                    <p class="ficha-nombre-principal">{{ $equipo->nombre }}</p>
+                </div>
+
+                <div class="ficha-dorsal-wrapper">
+                    <div class="campo-ficha flex-1">
+                        <label>Categoría</label>
+                        <p class="ficha-dato-destacado">
+                            <i class="fas fa-tags"></i> {{ $equipo->categoria }}
+                        </p>
+                    </div>
+                    <div class="campo-ficha flex-2">
+                        <label>Jugadores inscritos</label>
+                        <div>
+                            <span class="ficha-valor-azul">{{ $equipo->jugadores()->count() }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo-ficha ficha-info-row">
+                    <label>Identificador</label>
+                    <p class="ficha-valor-azul">
+                        <i class="fas fa-hashtag"></i> Equipo #{{ $equipo->id }}
+                    </p>
+                </div>
+
+                <div class="campo-ficha ficha-space-top">
+                    <label>Fecha de Registro</label>
+                    <p class="ficha-date-text">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ $equipo->created_at->format('d/m/Y H:i') }}
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="equipo-show-info">
-            <h3 class="equipo-show-title">Información General</h3>
-            
-            <p class="equipo-show-text">
-                <strong>Nombre:</strong> {{ $equipo->nombre }}
+        <div class="form-acciones-ficha form-acciones-ficha-centered">
+            <p class="ficha-meta-footer">
+                Registro creado el: {{ $equipo->created_at->format('d/m/Y H:i') }} | ID Sistema: #{{ $equipo->id }}
             </p>
-            
-            <p class="equipo-show-text">
-                <strong>Categoría:</strong> <span class="badge equipo-show-badge">{{ $equipo->categoria }}</span>
-            </p>
-
-            <p class="equipo-show-text">
-                <strong>Fecha de Registro:</strong> {{ $equipo->created_at->format('d/m/Y') }}
-            </p>
-
-            <hr class="equipo-show-separator">
-
-            <div class="equipo-show-actions">
-
-                {{-- Botón Editar: Pasa el ID del equipo en la URL para saber cuál editar --}}
-                <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-accion editar admin-no-margin" title="Editar">
-                    <i class="fas fa-pen"></i>
-                </a>
-                        
-                {{-- Formulario para Borrar: Es un formulario porque usa el método DELETE --}}
-                <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Eliminar equipo?')" class="admin-form-inline admin-form-inline-flex">
-                    @csrf {{-- Token de seguridad obligatorio --}}
-                    @method('DELETE') {{-- Le dice a Laravel que use la función destroy --}}
-                    <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 </div>

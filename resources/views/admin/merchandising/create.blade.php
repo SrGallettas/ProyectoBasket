@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<div class="contenedor-edit-merchan">
+<div class="contenedor-edit-jugador">
     <header class="header-ficha">
         <div>
             <h2>Nuevo Producto</h2>
@@ -63,9 +63,22 @@
                 </div>
 
                 <div class="seccion-foto-ficha">
-                    <div class="info-subida-ficha">
-                        <label>Imagen del Producto</label>
-                        <input type="file" name="imagen_merchan">
+                    <div class="card-imagen-horizontal">
+                        <div class="preview-foto-noticia">
+                            <img src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
+                        </div>
+
+                        <div class="info-subida-noticia">
+                            <h3>Imagen del Producto</h3>
+                            <p>Para que luzca bien, usa una imagen cuadrada o vertical.</p>
+
+                            <label for="imagen_merchan" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Seleccionar fotografía
+                            </label>
+                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input">
+
+                            <span class="nota-subida">La foto es obligatoria y se guardará en public/merchandising.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -77,5 +90,5 @@
             </div>
         </form>
     </div> 
-</div> 
+</div>
 @endsection

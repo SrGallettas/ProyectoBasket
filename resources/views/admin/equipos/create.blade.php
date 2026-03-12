@@ -1,61 +1,112 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin">
-    <h2>Crear Nuevo Equipo</h2>
-    <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary">
+<div class="contenedor-edit-jugador">
+    <header class="header-ficha">
+        <div>
+            <h2>Añadir Nuevo Equipo</h2>
+            <p>Introduce los datos para registrar un nuevo equipo del club</p>
+        </div>
+        <a href="{{ route('equipos.index') }}" class="btn-nuevo btn-nuevo-secondary">
             <i class="fas fa-arrow-left"></i> Volver al listado
-    </a>
-</header>
+        </a>
+    </header>
 
-{{-- Bloque para mostrar errores de validación --}}
+    @if ($errors->any())
+    <div class="cuadro-errores-admin">
+        <strong>¡Vaya! Algo ha ido mal:</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
-@if ($errors->any())
-<div class="cuadro-errores-admin">
-    <strong>¡Vaya! Algo ha ido mal:</strong>
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+    <div class="pizarra-ficha">
+        <form action="{{ route('equipos.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-<div class="pizarra-admin">
-    <form action="{{ route('equipos.store') }}" method="POST" enctype="multipart/form-data" class="formulario-admin">
-        @csrf
-        <div class="grid-formulario">
-            <div class="campo">
-                <label>Nombre del Equipo</label>
-                <input type="text" name="nombre" placeholder="Ej: Senior A" required>
-            </div>
-            <div class="campo">
-                <label>Categoría</label>
-                <select name="categoria" required>
-                    <option value="Senior">Senior</option>
-                    <option value="Junior">Junior</option>
-                    <option value="Cadete">Cadete</option>
-                    <option value="Infantil">Infantil</option>
-                    <option value="Alevín">Alevín</option>
-                </select>
-            </div>
+            <div class="grid-formulario-fichas">
+                <div class="seccion-form-ficha seccion-personal">
+                    <h3><i class="fas fa-shield-alt"></i> Datos del Equipo</h3>
 
-            <div class="campo campo-checkbox">
-                <label>¿Es del club?</label>
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" name="es_local" id="es_local" value="1">
-                    <span>Sí, es equipo local</span>
+                    <div class="campo-ficha">
+                        <label>Nombre del Equipo</label>
+                        <input
+                            type="text"
+                            name="nombre"
+                            value="{{ old('nombre') }}"
+                            placeholder="Ej: Senior A"
+                            required
+                            class="input-ficha"
+                        >
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Categoría</label>
+                        <select name="categoria" required class="input-ficha input-white">
+                            <option value="" disabled {{ old('categoria') == '' ? 'selected' : '' }}>Selecciona...</option>
+                            @foreach(['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $categoria)
+                                <option value="{{ $categoria }}" {{ old('categoria') == $categoria ? 'selected' : '' }}>
+                                    {{ $categoria }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="seccion-form-ficha seccion-deportiva">
+                    <h3><i class="fas fa-clipboard-list"></i> Configuración</h3>
+
+                    <div class="campo-ficha">
+                        <label>Estado del Equipo</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input
+                                type="checkbox"
+                                name="es_local"
+                                id="es_local"
+                                value="1"
+                                {{ old('es_local') ? 'checked' : '' }}
+                            >
+                            <span>Sí, es equipo local</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Uso de la imagen</label>
+                        <p class="input-help-text">Puedes subir un escudo propio o dejar la imagen por defecto del formulario por ahora.</p>
+                    </div>
+                </div>
+
+                <div class="seccion-foto-ficha">
+                    <div class="card-imagen-horizontal">
+                        <div class="preview-foto-noticia">
+                            <img src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto">
+                        </div>
+
+                        <div class="info-subida-noticia">
+                            <h3>Imagen del Equipo</h3>
+                            <p>Para que luzca bien, usa un escudo nítido o una imagen cuadrada del equipo.</p>
+
+                            <label for="imagen_club" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Seleccionar imagen
+                            </label>
+                            <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input">
+
+                            <span class="nota-subida">Formatos: JPG o PNG. La imagen se guardará en public/escudos.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="campo">
-                <label>Escudo/Imagen del Club</label>
-                <input type="file" name="imagen_club">
+            <div class="form-acciones-ficha">
+                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul">
+                    <i class="fas fa-save"></i> REGISTRAR EQUIPO
+                </button>
             </div>
-        </div>
-        <div class="form-acciones">
-            <button type="submit" class="btn-guardar">Guardar Equipo</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 @endsection

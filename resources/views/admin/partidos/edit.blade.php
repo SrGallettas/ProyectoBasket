@@ -2,18 +2,11 @@
 
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
-    
-    <header class="header-ficha">
-        <div>
-            {{-- Título dinámico para saber qué partido editamos --}}
-            <h2>Ficha de Edición</h2>
-            <p>Actualizando encuentro: <strong>{{ $partido->equipoLocal->nombre }} vs {{ $partido->equipoVisitante->nombre }}</strong></p>
-        </div>
-        {{-- Usamos tu clase de enlace volver --}}
-        <a href="{{ route('partidos.index') }}" class="btn-volver-link">
-            <i class="fas fa-chevron-left"></i> Volver al listado
-        </a>
-    </header>
+    <x-admin-edit-header
+        titulo="Ficha de Edición"
+        :subtitulo="'Actualizando encuentro: <strong>' . e($partido->equipoLocal->nombre . ' vs ' . $partido->equipoVisitante->nombre) . '</strong>'"
+        :backRoute="route('partidos.index')"
+    />
 
     {{-- Bloque de errores con tu clase CSS limpia --}}
     @if ($errors->any())

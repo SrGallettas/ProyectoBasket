@@ -1,69 +1,107 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin admin-header-spaced">
-    <h2><i class="fas fa-images"></i> Crear Nueva Galería</h2>
-    <a href="{{ route('galerias.index') }}" class="btn-nuevo btn-nuevo-secondary">
-        <i class="fas fa-arrow-left"></i> Volver al listado
-    </a>
-</header>
+<div class="contenedor-edit-jugador">
+    <header class="header-ficha">
+        <div>
+            <h2>Añadir Nueva Galería</h2>
+            <p>Organiza un nuevo álbum de imágenes para la web del club</p>
+        </div>
+        <a href="{{ route('galerias.index') }}" class="btn-nuevo btn-nuevo-secondary">
+            <i class="fas fa-arrow-left"></i> Volver al listado
+        </a>
+    </header>
 
-@if ($errors->any())
-    <div class="admin-error-box">
+    @if ($errors->any())
+    <div class="cuadro-errores-admin">
         <strong>Revisa el formulario:</strong>
-        <ul class="admin-error-list">
+        <ul>
             @foreach ($errors->all() as $error)
-                <li><i class="fas fa-exclamation-circle"></i> {{ $error }}</li>
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 
-<div class="pizarra-admin">
-    <form action="{{ route('galerias.store') }}" method="POST" enctype="multipart/form-data" class="formulario-admin">
-        @csrf
-        <input type="hidden" name="imagen_principal_nueva" value="0" data-imagen-principal-nueva>
-        <div class="grid-formulario">
-            <div class="campo campo-span-2">
-                <label>Título de la galería</label>
-                <input type="text" name="titulo" value="{{ old('titulo') }}" placeholder="Ej: Final senior contra Gandia" required>
+    <div class="pizarra-ficha">
+        <form action="{{ route('galerias.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="imagen_principal_nueva" value="0" data-imagen-principal-nueva>
+
+            <div class="seccion-form-ficha seccion-personal">
+                <h3><i class="fas fa-images"></i> Datos de la Galería</h3>
+
+                <div class="campo-ficha">
+                    <label>Título de la galería</label>
+                    <input
+                        type="text"
+                        name="titulo"
+                        value="{{ old('titulo') }}"
+                        placeholder="Ej: Final senior contra Gandia"
+                        required
+                        class="input-ficha"
+                    >
+                </div>
+
+                <div class="campo-ficha">
+                    <label>Tipo</label>
+                    <select name="tipo" required class="input-ficha input-white">
+                        <option value="">Selecciona un tipo</option>
+                        @foreach($tipos as $clave => $label)
+                            <option value="{{ $clave }}" @selected(old('tipo') === $clave)>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="campo-ficha">
+                    <label>Descripción</label>
+                    <textarea
+                        name="descripcion"
+                        rows="6"
+                        class="input-ficha admin-textarea"
+                        placeholder="Resumen del álbum o del evento"
+                        required
+                    >{{ old('descripcion') }}</textarea>
+                </div>
             </div>
 
-            <div class="campo">
-                <label>Tipo</label>
-                <select name="tipo" required>
-                    <option value="">Selecciona un tipo</option>
-                    @foreach($tipos as $clave => $label)
-                        <option value="{{ $clave }}" @selected(old('tipo') === $clave)>{{ $label }}</option>
-                    @endforeach
-                </select>
+            <div class="seccion-foto-ficha">
+                <div class="card-imagen-horizontal">
+                    <div class="preview-foto-noticia galeria-preview-vacio">
+                        <div class="galeria-preview-placeholder">
+                            <i class="fas fa-images"></i>
+                            <span>Sin imágenes cargadas</span>
+                        </div>
+                    </div>
+
+                    <div class="info-subida-noticia">
+                        <h3>Imágenes de la Galería</h3>
+                        <p>Puedes añadir varias tandas de imágenes y después elegir cuál será la portada principal.</p>
+
+                        <label for="imagenes_galeria_create" class="btn-cambiar-foto">
+                            <i class="fas fa-camera"></i> Seleccionar imágenes
+                        </label>
+                        <input type="file" name="imagenes[]" id="imagenes_galeria_create" accept="image/*" multiple required data-acumular-imagenes class="hidden-file-input">
+
+                        <span class="nota-subida">Formatos: JPG, PNG o WEBP. Las imágenes se guardarán dentro de la carpeta de la galería.</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="campo">
-                <label>Imágenes</label>
-                <input type="file" name="imagenes[]" accept="image/*" multiple required data-acumular-imagenes>
-                <small class="admin-help-text">Puedes seleccionar varias tandas. Las imágenes se irán acumulando hasta guardar.</small>
+            <div class="campo-ficha galeria-upload-summary" data-upload-summary hidden>
+                <label>Imágenes preparadas para subir</label>
+                <p class="input-help-text">Marca cuál será la imagen principal de la galería.</p>
+                <div class="galeria-admin-grid" data-upload-preview></div>
             </div>
 
-            <div class="campo campo-span-2">
-                <label>Descripción</label>
-                <textarea name="descripcion" rows="5" class="admin-textarea" placeholder="Resumen del álbum o del evento" required>{{ old('descripcion') }}</textarea>
+            <div class="form-acciones-ficha">
+                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo">
+                    <i class="fas fa-save"></i> GUARDAR GALERÍA
+                </button>
             </div>
-        </div>
-
-        <div class="campo campo-span-2 galeria-upload-summary" data-upload-summary hidden>
-            <label>Imágenes preparadas para subir</label>
-            <small class="admin-help-text">Marca cuál será la imagen principal de la galería.</small>
-            <div class="galeria-admin-grid" data-upload-preview></div>
-        </div>
-
-        <div class="form-acciones-ficha form-acciones-ficha-top">
-            <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-            <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo">
-                <i class="fas fa-save"></i> Guardar Galería
-            </button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <script>

@@ -1,91 +1,120 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<header class="header-admin admin-header-spaced">
-    <div>
-        <h2><i class="fas fa-edit"></i> Editar Noticia</h2>
-        <p class="admin-editing-text">Estás editando: <strong>{{ $noticia->titulo }}</strong></p>
-    </div>
-    <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary">
-        <i class="fas fa-arrow-left"></i> Volver al listado
-    </a>
-</header>
+<div class="contenedor-edit-jugador">
+    <x-admin-edit-header
+        titulo="Editar Noticia"
+        subtitulo="Actualiza el contenido editorial y la imagen de portada"
+        :backRoute="route('noticias.index')"
+    />
 
-{{-- Bloque de errores --}}
-@if ($errors->any())
-    <div class="alerta-error">
-        <strong>¡Atención!</strong>
-        <ul class="admin-error-list">
+    @if ($errors->any())
+    <div class="cuadro-errores-admin">
+        <strong>¡Vaya! Algo ha ido mal:</strong>
+        <ul>
             @foreach ($errors->all() as $error)
-                <li><i class="fas fa-times"></i> {{ $error }}</li>
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 
-<div class="pizarra-admin">
-    <form action="{{ route('noticias.update', $noticia->id) }}" method="POST" enctype="multipart/form-data" class="formulario-admin">
-        @csrf
-        @method('PUT') {{-- Esto es vital para que Laravel sepa que es una edición --}}
+    <div class="pizarra-ficha">
+        <form action="{{ route('noticias.update', $noticia->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-        <div class="grid-formulario">
-            
-            {{-- Título --}}
-            <div class="campo campo-span-2">
-                <label>Título de la Noticia</label>
-                <input type="text" name="titulo" value="{{ old('titulo', $noticia->titulo) }}" required>
-            </div>
+            <div class="grid-formulario-fichas">
+                <div class="seccion-form-ficha seccion-personal">
+                    <h3><i class="fas fa-newspaper"></i> Datos de Publicación</h3>
 
-            {{-- Subtítulo --}}
-            <div class="campo campo-span-2">
-                <label>Subtítulo o Resumen</label>
-                <textarea name="subtitulo" rows="2" required>{{ old('subtitulo', $noticia->subtitulo) }}</textarea>
-            </div>
-
-            {{-- Autor --}}
-            <div class="campo">
-                <label>Autor</label>
-                <input type="text" name="autor" value="{{ old('autor', $noticia->autor) }}" required>
-            </div>
-
-            {{-- Imagen --}}
-            <div class="seccion-foto-ficha">
-                <div class="preview-foto">
-                    @if($noticia->imagen_noticia)
-                        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" id="img-preview" alt="Foto noticia">
-                    @else
-                        <img src="{{ asset('images/no-image.png') }}" id="img-preview" alt="Sin foto">
-                    @endif
-                </div>
-    
-                <div class="info-subida-ficha">
-                    <label class="label-ficha">Imagen de la Noticia</label>
-                    <p class="instruccion-ficha">Para que luzca bien, usa una imagen horizontal (16:9).</p>
-            
-                    <div class="custom-input-file">
-                        <input type="file" name="imagen_noticia" id="imagen_noticia" accept="image/*" onchange="actualizarPreview(this)">
-                        <label for="imagen_noticia" class="btn-subir-discreto">
-                            <i class="fas fa-camera"></i> Cambiar fotografía
-                        </label>
+                    <div class="campo-ficha">
+                        <label>Título de la Noticia</label>
+                        <input
+                            type="text"
+                            name="titulo"
+                            value="{{ old('titulo', $noticia->titulo) }}"
+                            placeholder="Ej: Gran victoria del Senior A"
+                            required
+                            class="input-ficha"
+                        >
                     </div>
-                    <small class="aviso-ficha">Si no seleccionas ninguna, se mantendrá la actual.</small>
+
+                    <div class="campo-ficha">
+                        <label>Subtítulo o Resumen</label>
+                        <textarea
+                            name="subtitulo"
+                            rows="3"
+                            placeholder="Breve resumen para la portada"
+                            required
+                            class="input-ficha admin-textarea"
+                        >{{ old('subtitulo', $noticia->subtitulo) }}</textarea>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Autor</label>
+                        <input
+                            type="text"
+                            name="autor"
+                            value="{{ old('autor', $noticia->autor) }}"
+                            placeholder="Nombre del redactor"
+                            required
+                            class="input-ficha"
+                        >
+                    </div>
+                </div>
+
+                <div class="seccion-form-ficha seccion-deportiva">
+                    <h3><i class="fas fa-pen-nib"></i> Cuerpo Editorial</h3>
+
+                    <div class="campo-ficha">
+                        <label>Contenido</label>
+                        <textarea
+                            name="contenido"
+                            rows="12"
+                            placeholder="Escribe aquí toda la noticia..."
+                            required
+                            class="input-ficha admin-textarea"
+                        >{{ old('contenido', $noticia->contenido) }}</textarea>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Imagen de portada</label>
+                        <p class="input-help-text">Si subes una nueva imagen, sustituirá la actual. Si no, se conservará la existente.</p>
+                    </div>
+                </div>
+
+                <div class="seccion-foto-ficha">
+                    <div class="card-imagen-horizontal">
+                        <div class="preview-foto-noticia">
+                            <img
+                                src="{{ $noticia->imagen_noticia ? asset('noticias/' . $noticia->imagen_noticia) : asset('img/basket.jpeg') }}"
+                                alt="Imagen actual de la noticia"
+                            >
+                        </div>
+
+                        <div class="info-subida-noticia">
+                            <h3>Imagen de la Noticia</h3>
+                            <p>Para que luzca bien, usa una imagen horizontal con buena presencia en portada.</p>
+
+                            <label for="imagen_noticia" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Cambiar imagen
+                            </label>
+                            <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input">
+
+                            <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Contenido --}}
-            <div class="campo campo-span-2">
-                <label>Cuerpo de la Noticia</label>
-                <textarea name="contenido" rows="10" required>{{ old('contenido', $noticia->contenido) }}</textarea>
+            <div class="form-acciones-ficha">
+                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha">
+                    <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
+                </button>
             </div>
-        </div>
-
-        {{-- Botones --}}
-        <div class="form-acciones-ficha">
-            <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-            <button type="submit" class="btn-actualizar-ficha">
-                <i class="fas fa-sync-alt"></i> Actualizar Noticia
-            </button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 @endsection

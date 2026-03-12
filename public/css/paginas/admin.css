@@ -38,12 +38,6 @@ html {
     transition: width 0.25s ease;
 }
 
-.admin-sidebar-topbar {
-    display: flex;
-    justify-content: flex-end;
-    padding: 14px 14px 0;
-}
-
 .admin-perfil {
     padding: 30px 20px;
     display: flex;
@@ -125,22 +119,13 @@ html {
     transition: margin-left 0.25s ease;
 }
 
-.admin-sidebar-toggle {
-    width: 44px;
-    height: 44px;
+.admin-sidebar-menu-toggle {
+    width: 100%;
     border: none;
-    border-radius: 10px;
-    background: #111;
-    color: white;
+    background: transparent;
+    font: inherit;
+    text-align: left;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 18px rgba(17, 17, 17, 0.18);
-}
-
-.admin-sidebar-toggle:hover {
-    background: #e60000;
 }
 
 body.admin-sidebar-collapsed .sidebar-admin {
@@ -154,11 +139,6 @@ body.admin-sidebar-collapsed .contenido-admin {
 body.admin-sidebar-collapsed .admin-perfil {
     justify-content: center;
     padding: 24px 10px;
-}
-
-body.admin-sidebar-collapsed .admin-sidebar-topbar {
-    justify-content: center;
-    padding: 14px 0 0;
 }
 
 body.admin-sidebar-collapsed .admin-info,
@@ -434,6 +414,22 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     gap: 12px;
 }
 
+.acciones-header-ficha > .btn-ficha-accion,
+.acciones-header-ficha .admin-form-inline {
+    flex: 1 1 0;
+}
+
+.acciones-header-ficha .admin-form-inline {
+    display: inline-flex;
+}
+
+.acciones-header-ficha .admin-form-inline button.btn-ficha-accion {
+    appearance: none;
+    font: inherit;
+    line-height: 1;
+    width: 100%;
+}
+
 .btn-ficha-accion {
     display: inline-flex;
     align-items: center;
@@ -616,6 +612,13 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     object-fit: cover;
 }
 
+.checkbox-wrapper-ficha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+}
+
 /* Botones de Acción */
 .form-acciones-ficha {
     margin-top: 40px;
@@ -682,6 +685,15 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.ficha-foto-principal-escudo {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    padding: 28px;
+}
+
+.ficha-foto-principal-escudo img {
+    object-fit: contain;
 }
 
 /* Estilos de la Información Derecha */
@@ -1263,14 +1275,6 @@ CREAR PRODUCTO
 ****************************************
 ***************************************/
 
-.contenedor-edit-merchan {
-    display: block;
-    overflow: hidden;
-    /* Esto obliga al contenedor a respetar sus límites */
-    width: auto;
-    margin-left: 20px;
-}
-
 .seccion-producto h3 {
     border-bottom: 2px solid #fb8500;
     color: #fb8500;
@@ -1350,6 +1354,33 @@ EDITAR PRODUCTO
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.galeria-preview-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.galeria-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #94a3b8;
+    text-align: center;
+    padding: 16px;
+}
+
+.galeria-preview-placeholder i {
+    font-size: 2rem;
+    color: #cbd5e1;
+}
+
+.galeria-preview-placeholder span {
+    font-size: 0.9rem;
+    font-weight: 700;
 }
 
 /* Textos y botón a la derecha */
@@ -1505,6 +1536,83 @@ VER PRODUCTO
     background: #f8fafc;
     padding: 15px;
     border-radius: 8px;
+}
+
+@media (max-width: 992px) {
+    .grid-show-merchan {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .marco-foto-show {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .columna-info {
+        text-align: center;
+    }
+
+    .bloque-info-doble {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+
+    .contenedor-badges-tallas {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedor-ficha-merchan {
+        padding: 12px;
+    }
+
+    .pizarra-show {
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .grid-show-merchan {
+        gap: 20px;
+    }
+
+    .marco-foto-show {
+        max-width: 280px;
+    }
+
+    .bloque-info h3 {
+        font-size: 1.45rem;
+    }
+
+    .bloque-info-doble {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .dato {
+        width: 100%;
+    }
+
+    .precio-destacado {
+        font-size: 1.3rem;
+    }
+
+    .contenedor-badges-tallas {
+        gap: 10px;
+    }
+
+    .badge-talla-show {
+        padding: 8px 12px;
+    }
+
+    .descripcion-texto {
+        padding: 14px;
+        text-align: left;
+    }
 }
 
 /******************************************************************/
@@ -1918,26 +2026,38 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     display: flex;
     gap: 40px;
     align-items: flex-start;
-    padding: 20px;
+    padding: 32px;
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf3 100%);
+    border: 1px solid #ece7dc;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .equipo-show-card {
     flex: 1;
     text-align: center;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #eee;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid #e8edf3;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .equipo-show-img {
     max-width: 250px;
+    width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 16px;
+    box-shadow: 0 16px 30px rgba(2, 62, 138, 0.14);
 }
 
 .equipo-show-info {
     flex: 2;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.82);
+    padding: 28px 30px;
+    border-radius: 18px;
+    border: 1px solid #edf2f7;
 }
 
 .equipo-show-title {
@@ -1945,11 +2065,14 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     color: #333;
     border-bottom: 2px solid #fb8500;
     display: inline-block;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
 }
 
 .equipo-show-text {
     font-size: 1.2rem;
-    margin: 15px 0;
+    margin: 18px 0;
+    color: #334155;
 }
 
 .equipo-show-badge {
@@ -1960,15 +2083,60 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     font-size: 1rem;
 }
 
-.equipo-show-separator {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 25px 0;
+@media (max-width: 992px) {
+    .admin-flex-gap-15 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .equipo-show-layout {
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px;
+        align-items: center;
+    }
+
+    .equipo-show-card,
+    .equipo-show-info {
+        width: 100%;
+        max-width: 680px;
+    }
+
+    .equipo-show-img {
+        max-width: 220px;
+    }
+
+    .equipo-show-info {
+        text-align: center;
+    }
 }
 
-.equipo-show-actions {
-    display: flex;
-    gap: 10px;
+@media (max-width: 768px) {
+    .equipo-show-layout {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .equipo-show-card {
+        padding: 16px;
+    }
+
+    .equipo-show-info {
+        padding: 22px 18px;
+    }
+
+    .equipo-show-title {
+        font-size: 1.1rem;
+    }
+
+    .equipo-show-text {
+        font-size: 1rem;
+        margin: 12px 0;
+    }
+
+    .equipo-show-badge {
+        font-size: 0.92rem;
+    }
 }
 
 /* 14.5 Admin - Jugadores */
@@ -2102,6 +2270,146 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     font-weight: 700;
 }
 
+.dashboard-admin-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 28px;
+    padding: 28px 32px;
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at top right, rgba(230, 0, 0, 0.18), transparent 32%),
+        linear-gradient(135deg, #ffffff 0%, #fff6f6 100%);
+    border: 1px solid #f1d7d7;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-admin-kicker {
+    margin: 0 0 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #b91c1c;
+}
+
+.dashboard-admin-hero h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1;
+    color: #111827;
+}
+
+.dashboard-admin-copy {
+    max-width: 640px;
+    margin: 14px 0 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+}
+
+.dashboard-admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+}
+
+.dashboard-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 22px;
+}
+
+.dashboard-admin-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 22px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-admin-card:hover {
+    transform: translateY(-6px);
+    border-color: #fecaca;
+    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.13);
+}
+
+.dashboard-admin-card-media {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.dashboard-admin-card-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.32) 100%);
+}
+
+.dashboard-admin-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.dashboard-admin-card-icon {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #b91c1c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
+}
+
+.dashboard-admin-card-body {
+    padding: 20px 20px 14px;
+}
+
+.dashboard-admin-card-body h3 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    color: #111827;
+}
+
+.dashboard-admin-card-body p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.dashboard-admin-card-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 20px;
+    font-weight: 800;
+    color: #b91c1c;
+}
+
 .admin-code {
     font-family: Consolas, Monaco, monospace;
     font-size: 0.85rem;
@@ -2133,6 +2441,10 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     display: block;
 }
 
+.galeria-admin-card-hidden {
+    display: none;
+}
+
 .galeria-admin-remove {
     display: flex;
     align-items: center;
@@ -2140,6 +2452,35 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     padding: 0 12px;
     font-size: 0.9rem;
     color: #374151;
+}
+
+.galeria-admin-remove-toggle {
+    cursor: pointer;
+}
+
+.galeria-admin-remove-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.galeria-admin-remove-toggle span {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.galeria-admin-remove-toggle input:checked + span {
+    background: #b91c1c;
+    color: #fff;
 }
 
 .galeria-admin-principal,
@@ -2215,6 +2556,12 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 }
 
 @media (max-width: 992px) {
+    .dashboard-admin-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+    }
+
     .sidebar-admin {
         width: 88px;
     }
@@ -2227,11 +2574,6 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     .admin-perfil {
         justify-content: center;
         padding: 24px 10px;
-    }
-
-    .admin-sidebar-topbar {
-        justify-content: center;
-        padding: 14px 0 0;
     }
 
     .admin-info,
@@ -2324,15 +2666,62 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 }
 
 @media (max-width: 768px) {
+    .dashboard-admin-hero {
+        padding: 20px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-admin-copy {
+        font-size: 0.95rem;
+    }
+
+    .dashboard-admin-grid {
+        gap: 16px;
+    }
+
+    .dashboard-admin-card-media {
+        height: 170px;
+    }
+
+    .card-imagen-horizontal {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        padding: 18px;
+    }
+
+    .preview-foto-noticia {
+        width: 100%;
+        max-width: 180px;
+        height: 180px;
+        margin: 0 auto;
+    }
+
+    .info-subida-noticia {
+        text-align: center;
+    }
+
+    .ficha-col-datos-equipo {
+        text-align: center;
+    }
+
+    .ficha-col-datos-equipo h3 {
+        justify-content: center;
+    }
+
+    .ficha-col-datos-jugador {
+        text-align: center;
+    }
+
+    .ficha-col-datos-jugador h3 {
+        justify-content: center;
+    }
+
     .sidebar-admin {
         width: 260px;
         transform: translateX(-100%);
         transition: transform 0.25s ease;
-    }
-
-    .admin-sidebar-topbar {
-        justify-content: flex-end;
-        padding: 14px 14px 0;
     }
 
     .admin-perfil {
@@ -2439,6 +2828,47 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
         height: 90px;
     }
 
+    .info-subida-ficha {
+        width: 100%;
+    }
+
+    .contenedor-ficha-noticia {
+        padding: 0;
+    }
+
+    .noticia-hero-container {
+        height: 240px;
+        margin-bottom: 18px;
+    }
+
+    .noticia-view-title {
+        font-size: 1.7rem;
+        margin-bottom: 16px;
+    }
+
+    .noticia-view-subtitle {
+        font-size: 1rem;
+        margin: 18px 0;
+        padding-left: 12px;
+    }
+
+    .noticia-view-body {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .noticia-view-footer {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 0;
+    }
+
+    .form-acciones-ficha-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .ficha-nombre-principal {
         font-size: 1.45rem;
     }
@@ -2455,6 +2885,19 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 }
 
 @media (max-width: 576px) {
+    .dashboard-admin-hero {
+        padding: 18px 16px;
+    }
+
+    .dashboard-admin-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dashboard-admin-card-media {
+        height: 150px;
+    }
+
     .contenido-admin {
         padding: 12px;
         padding-bottom: 20px;
@@ -2468,6 +2911,18 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     .pizarra-admin,
     .pizarra-ficha {
         padding: 14px;
+    }
+
+    .noticia-hero-container {
+        height: 200px;
+    }
+
+    .noticia-view-title {
+        font-size: 1.45rem;
+    }
+
+    .noticia-placeholder i {
+        font-size: 3.2rem;
     }
 
     .seccion-form-ficha h3 {

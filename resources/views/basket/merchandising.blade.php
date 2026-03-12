@@ -79,7 +79,14 @@
                 </div>
             </div>
         @empty
-            <p>No hay productos disponibles en este momento.</p>
+            <div class="estado-vacio">
+                <div class="estado-vacio-icono">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <h3>Tienda temporalmente sin stock</h3>
+                <p>Estamos preparando nuevos productos oficiales del club. Vuelve en unos dias para ver la nueva coleccion.</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Avisadme cuando haya stock</a>
+            </div>
         @endforelse
         </div>
     </section>

@@ -2,16 +2,11 @@
 
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
-    
-    <header class="header-ficha">
-        <div>
-            <h2>Ficha de Edición</h2>
-            <p>Actualizando a: <strong>{{ $jugador->nombre }} {{ $jugador->apellido }}</strong></p>
-        </div>
-        <a href="{{ route('jugadores.index') }}" class="btn-volver-link">
-            <i class="fas fa-chevron-left"></i> Volver al listado
-        </a>
-    </header>
+    <x-admin-edit-header
+        titulo="Ficha de Edición"
+        :subtitulo="'Actualizando a: <strong>' . e($jugador->nombre . ' ' . $jugador->apellido) . '</strong>'"
+        :backRoute="route('jugadores.index')"
+    />
 
     @if ($errors->any())
     <div class="admin-error-box">
@@ -82,21 +77,26 @@
                 </div>
 
                 <div class="seccion-foto-ficha">
-                    <div class="text-center">
-                        <label>Imagen Actual</label>
-                        <div class="preview-foto">
+                    <div class="card-imagen-horizontal">
+                        <div class="preview-foto-noticia">
                             @if($jugador->imagen_jugador)
                                 <img src="{{ asset('jugadores/' . $jugador->imagen_jugador) }}" alt="Foto actual">
                             @else
                                 <img src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
                             @endif
                         </div>
-                    </div>
-                    
-                    <div class="flex-1">
-                        <label>Subir nueva fotografía</label>
-                        <input type="file" name="imagen_jugador" class="input-ficha input-white">
-                        <p class="input-help-text">Formatos admitidos: JPG o PNG. Se recomienda tamaño cuadrado.</p>
+
+                        <div class="info-subida-noticia">
+                            <h3>Imagen del Jugador</h3>
+                            <p>Para que luzca bien, usa una fotografía vertical o cuadrada.</p>
+
+                            <label for="imagen_jugador" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Cambiar fotografía
+                            </label>
+                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input">
+
+                            <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
+                        </div>
                     </div>
                 </div>
             </div>

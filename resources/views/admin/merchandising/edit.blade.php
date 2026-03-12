@@ -1,16 +1,13 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
-<div class="contenedor-edit-merchan">
-    <header class="header-ficha">
-        <div>
-            <h2>Editar Producto: {{ $item->nombre }}</h2>
-            <p>Introduce los detalles del artículo para la tienda oficial</p>
-        </div>
-        <a href="{{ route('merchandising.index') }}" class="btn-nuevo">
-            <i class="fas fa-arrow-left"></i> Volver al listado
-        </a>
-    </header>
+<div class="contenedor-edit-jugador">
+    <x-admin-edit-header
+        :titulo="'Editar Producto: ' . $item->nombre"
+        subtitulo="Introduce los detalles del artículo para la tienda oficial"
+        :backRoute="route('merchandising.index')"
+        backClass="btn-nuevo"
+    />
 
     @if ($errors->any())
     <div class="alerta-error">
@@ -93,9 +90,11 @@
 
             <div class="form-acciones-ficha">
                 <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">Guardar Cambios</button>
+                <button type="submit" class="btn-actualizar-ficha">
+                    <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
+                </button>
             </div>
         </form>
     </div> 
-</div> 
+</div>
 @endsection

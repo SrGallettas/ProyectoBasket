@@ -26,7 +26,7 @@
                 <p class="ficha-caption">Fotografía Oficial del Club</p>
             </div>
 
-            <div class="seccion-form-ficha ficha-col-datos">
+            <div class="seccion-form-ficha ficha-col-datos ficha-col-datos-jugador">
                 <h3 class="ficha-title-no-margin"><i class="fas fa-id-card"></i> Datos Técnicos</h3>
                 
                 <div class="campo-ficha ficha-info-row ficha-space-bottom">
