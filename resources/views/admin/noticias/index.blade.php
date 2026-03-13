@@ -51,22 +51,32 @@
                     <td>
                         <div class="admin-row-actions">
                             {{-- Botón Ver --}}
-                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion admin-view-btn" title="Ver detalle">
+                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion admin-view-btn" title="Ver detalles de la noticia">
                                 <i class="fas fa-eye"></i>
                             </a>
                             {{-- Botón Editar --}}
-                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion editar" title="Editar">
+                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion editar" title="Editar noticia">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            <form action="{{ route('noticias.toggle-oculto', $noticia->id) }}" method="POST" class="admin-form-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn-accion {{ $noticia->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $noticia->oculto ? 'Mostrar noticia' : 'Ocultar noticia' }}">
+                                    <i class="fas {{ $noticia->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                                </button>
+                            </form>
                             {{-- Formulario Borrar --}}
                             <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion borrar" title="Eliminar">
+                                <button type="submit" class="btn-accion borrar" title="Eliminar noticia">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                         </div>
+                        @if($noticia->oculto)
+                            <span class="badge-oculto-admin">Oculto</span>
+                        @endif
                     </td>
                 </tr>
                 @empty

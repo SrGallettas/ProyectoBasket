@@ -44,6 +44,7 @@ class NoticiaController extends Controller
             'contenido'        => 'required|string',
             'autor'            => 'required|string|max:100',
             'imagen_noticia'   => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
+            'oculto'           => 'nullable|boolean',
         ], [
             // Mensajes personalizados
             'titulo.required'         => '¡Oye! El título es obligatorio para publicar.',
@@ -62,6 +63,7 @@ class NoticiaController extends Controller
         $noticia->contenido = $request->contenido;
         $noticia->autor = $request->autor;
         $noticia->imagen_noticia = $request->imagen_noticia;
+        $noticia->oculto = $request->boolean('oculto');
 
         // LO QUE SE HACE AQUI ES SENCILLO, SI EL SLUG SE REPITE, LE METEMOS UN NÚMERO DETRÁS PARA QUE NO DE ERROR
         $slugBase = Str::slug($request->titulo);
@@ -115,6 +117,7 @@ class NoticiaController extends Controller
             'contenido'        => 'required|string',
             'autor'            => 'required|string|max:100',
             'imagen_noticia'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'oculto'           => 'nullable|boolean',
         ], [
             // Mensajes para el Título
             'titulo.required' => 'El título de la noticia es obligatorio.',
@@ -147,6 +150,7 @@ class NoticiaController extends Controller
         $noticia->subtitulo = $request->subtitulo;
         $noticia->contenido = $request->contenido;
         $noticia->autor = $request->autor;
+        $noticia->oculto = $request->boolean('oculto');
 
         // 4. Lógica del SLUG (Evitar el error de duplicado)
         $slugBase = Str::slug($request->titulo);
@@ -211,6 +215,14 @@ class NoticiaController extends Controller
     {
         $noticia = Noticia::findOrFail($id);
         return view('admin.noticias.show', compact('noticia'));
+    }
+
+    public function toggleOculto(Noticia $noticia)
+    {
+        $noticia->oculto = !$noticia->oculto;
+        $noticia->save();
+
+        return redirect()->route('noticias.index')->with('mensaje', $noticia->oculto ? 'Noticia ocultada de la web publica.' : 'Noticia visible de nuevo en la web publica.');
     }
 
     

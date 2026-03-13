@@ -15,7 +15,7 @@
         @endif
     </div>
 
-    <a href="{{ $backRoute }}" class="{{ $backClass }}">
+    <a href="{{ $backRoute }}" class="{{ $backClass }}" title="{{ $backText }}">
         <i class="{{ $backIcon }}"></i> {{ $backText }}
     </a>
 </header>

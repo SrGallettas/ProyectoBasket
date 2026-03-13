@@ -74,6 +74,14 @@
                         <label>Uso de la imagen</label>
                         <p class="input-help-text">Si subes una nueva imagen, sustituirá la actual del equipo.</p>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto', $equipo->oculto) ? 'checked' : '' }}>
+                            <span>Ocultar equipo de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -101,8 +109,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">
+                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de equipos">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Actualizar equipo">
                     <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
                 </button>
             </div>

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('equipo_visitante_id')->constrained('equipos');
             $table->dateTime('fecha_hora');
             $table->string('lugar')->default('Pabellón Municipal');
-            $table->string('categoria');           
+            $table->string('categoria');
+            $table->boolean('oculto')->default(false);
 
             $table->timestamps();
         });

@@ -57,6 +57,14 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto', $item->oculto) ? 'checked' : '' }}>
+                            <span>Ocultar producto de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- SECCIÓN DE FOTO UNIFICADA Y CENTRADA --}}
@@ -89,8 +97,8 @@
             </div> 
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">
+                <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de productos">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Actualizar producto">
                     <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
                 </button>
             </div>

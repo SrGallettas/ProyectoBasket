@@ -14,17 +14,19 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
-<section class="seccion-partidos-header">
-    <div class="header-contenido">
-        <div class="header-texto">
-            <h1>Próximos Partidos</h1>
-            <p>Consulta el calendario de todos nuestros equipos</p>
-        </div>
-    </div>
-</section>
+<x-public-news-hero
+    badge="CALENDARIO OFICIAL"
+    title="Próximos Partidos"
+    subtitle="Consulta el calendario de todos nuestros equipos."
+/>
 
 <section class="seccion-calendario">
     <div class="rejilla-partidos">
+        @if(session('mensaje'))
+            <div class="partidos-alerta-ok">
+                {{ session('mensaje') }}
+            </div>
+        @endif
         
         {{-- Agrupamos los partidos por su categoría --}}
         @php
@@ -44,8 +46,22 @@
 
                 <div class="rejilla-partido-doble {{ $encuentros->count() === 1 ? 'unico' : '' }}">
                     @foreach($encuentros as $partido)
-                        <div class="tarjeta-partido">
-                            <span class="etiqueta-proximo activo">Próximo</span>
+                        @php
+                            $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                            $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+                            $isFinalizado = !is_null(optional($statsLocal)->puntos_totales) && !is_null(optional($statsVisitante)->puntos_totales);
+                            $puntosLocal = $isFinalizado ? (int) $statsLocal->puntos_totales : null;
+                            $puntosVisitante = $isFinalizado ? (int) $statsVisitante->puntos_totales : null;
+                        @endphp
+                        <div class="tarjeta-partido {{ $partido->oculto ? 'tarjeta-partido-oculto' : '' }}">
+                            <span class="etiqueta-estado {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
+                                {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                            </span>
+                            @auth
+                                @if($partido->oculto)
+                                    <span class="etiqueta-oculto-admin">Oculto</span>
+                                @endif
+                            @endauth
                             <span class="jornada">Encuentro</span>
                             
                             <div class="enfrentamiento">
@@ -55,7 +71,11 @@
                                     <p>{{ $partido->equipoLocal->nombre }}</p>
                                 </div>
 
-                                <span class="vs">VS</span>
+                                @if($isFinalizado)
+                                    <span class="marcador-inline">{{ $puntosLocal }} - {{ $puntosVisitante }}</span>
+                                @else
+                                    <span class="vs">VS</span>
+                                @endif
 
                                 {{-- EQUIPO VISITANTE --}}
                                 <div class="equipo visitante">
@@ -82,6 +102,21 @@
                                     <i class="fa-solid fa-location-dot"></i> 
                                     {{ $partido->lugar }}
                                 </div>
+                            </div>
+
+                            <div class="acciones-partido">
+                                <a href="{{ route('basket.partidos.detalle', $partido->id) }}" class="btn-detalle-partido">
+                                    Ver detalles del partido
+                                </a>
+                                @auth
+                                    <form action="{{ route('basket.partidos.toggle-oculto', $partido->id) }}" method="POST" class="form-ocultar-partido">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn-toggle-oculto-partido">
+                                            {{ $partido->oculto ? 'Mostrar en web' : 'Ocultar en web' }}
+                                        </button>
+                                    </form>
+                                @endauth
                             </div>
                         </div>
                     @endforeach

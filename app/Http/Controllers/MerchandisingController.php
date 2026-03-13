@@ -42,6 +42,7 @@ class MerchandisingController extends Controller
             'talla'          => 'required|array|min:1',
             'imagen_merchan' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'descripcion'    => 'nullable|string',
+            'oculto'         => 'nullable|boolean',
         ], [
             // Mensajes personalizados para que el usuario entienda el error
             'nombre.required' => 'Tienes que poner un nombre al producto.',
@@ -57,6 +58,7 @@ class MerchandisingController extends Controller
         $item->nombre = $request->nombre;
         $item->descripcion = $request->descripcion;
         $item->precio = $request->precio;
+        $item->oculto = $request->boolean('oculto');
 
         
         if ($request->has('talla') && is_array($request->talla)) {
@@ -103,6 +105,7 @@ class MerchandisingController extends Controller
             'talla'          => 'required|array|min:1',
             'imagen_merchan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Nullable al editar
             'descripcion'    => 'nullable|string',
+            'oculto'         => 'nullable|boolean',
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
             'precio.required' => 'El precio es obligatorio.',
@@ -113,6 +116,7 @@ class MerchandisingController extends Controller
         $item->nombre = $request->nombre;
         $item->descripcion = $request->descripcion;
         $item->precio = $request->precio;
+        $item->oculto = $request->boolean('oculto');
 
         // Tallas: Array a String
         if ($request->has('talla')) {
@@ -163,4 +167,12 @@ class MerchandisingController extends Controller
 
     return view('admin.merchandising.show', compact('item', 'tallas'));
 }
+
+    public function toggleOculto(Merchandising $merchandising)
+    {
+        $merchandising->oculto = !$merchandising->oculto;
+        $merchandising->save();
+
+        return redirect()->route('merchandising.index')->with('mensaje', $merchandising->oculto ? 'Producto ocultado de la web publica.' : 'Producto visible de nuevo en la web publica.');
+    }
 }

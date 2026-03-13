@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->text('descripcion')->nullable();
             $table->decimal('precio',8,2);
+            $table->boolean('oculto')->default(false);
             $table->string('imagen_merchan');
             $table->string('talla');
             $table->timestamps();

@@ -9,18 +9,19 @@
 @section('contenido')
 
 {{-- HEADER DE LA SECCIÓN  --}}
-<header class="news-hero">
-    <div class="news-hero-overlay">
-        <div class="news-hero-content">
-            <span class="news-hero-badge">COMUNICADOS OFICIALES</span>
-            <h1>Actualidad Granota</h1>
-            <p>Sigue el día a día de nuestros equipos, crónicas de partidos y eventos del club.</p>
-            <div class="news-hero-divider"></div>
-        </div>
-    </div>
-</header>
+<x-public-news-hero
+    badge="COMUNICADOS OFICIALES"
+    title="Actualidad Granota"
+    subtitle="Sigue el día a día de nuestros equipos, crónicas de partidos y eventos del club."
+/>
 
 <section class="noticias-container-rectangular">
+    @if(session('mensaje'))
+        <div class="public-alert-ok">
+            {{ session('mensaje') }}
+        </div>
+    @endif
+
     {{-- BARRA DE FILTRO --}}
     <div class="noticias-filter-bar">
         <span><i class="fas fa-list-ul"></i> Mostrando últimas noticias del club</span>
@@ -53,6 +54,13 @@
                         <a href="{{ route('noticias.detalle', $noticia->slug) }}" class="btn-leer-noticia">
                             LEER CRÓNICA COMPLETA <i class="fas fa-chevron-right"></i>
                         </a>
+                        @auth
+                            <form action="{{ route('basket.noticias.toggle-oculto', $noticia->id) }}" method="POST" class="public-card-action">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="public-hide-button">Ocultar en web</button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             </article>

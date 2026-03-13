@@ -14,14 +14,21 @@ use App\Http\Controllers\GaleriaController;
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
 Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
 Route::get('equipo', [BasketController::class, 'equipo'])->name('basket.equipo');
+Route::patch('equipo/{equipo}/oculto', [BasketController::class, 'toggleOcultoEquipo'])->name('basket.equipo.toggle-oculto')->middleware('auth');
+Route::patch('jugadores/{jugador}/oculto', [BasketController::class, 'toggleOcultoJugador'])->name('basket.jugadores.toggle-oculto')->middleware('auth');
 Route::get('tienda', [BasketController::class, 'tienda'])->name('basket.tienda');
+Route::patch('tienda/{merchandising}/oculto', [BasketController::class, 'toggleOcultoMerchandising'])->name('basket.tienda.toggle-oculto')->middleware('auth');
 Route::get('clasificacion', [BasketController::class, 'clasificacion'])->name('basket.clasificacion');
 Route::get('estadisticas', [BasketController::class, 'estadisticas'])->name('basket.estadisticas');
 Route::get('partidos', [BasketController::class, 'partidos'])->name('basket.partidos');
+Route::get('partidos/{id}', [BasketController::class, 'partidoDetalle'])->name('basket.partidos.detalle');
+Route::patch('partidos/{partido}/oculto', [BasketController::class, 'toggleOculto'])->name('basket.partidos.toggle-oculto')->middleware('auth');
 Route::get('galeria', [BasketController::class, 'galeria'])->name('basket.galeria');
+Route::patch('galeria/{galeria}/oculto', [BasketController::class, 'toggleOcultoGaleria'])->name('basket.galeria.toggle-oculto')->middleware('auth');
 Route::get('galeria/{slug}', [BasketController::class, 'galeriaDetalle'])->name('basket.galeria.detalle');
 Route::get('contacto', [BasketController::class, 'contacto'])->name('basket.contacto');
 Route::get('noticia', [BasketController::class, 'noticia'])->name('basket.noticias');
+Route::patch('noticia/{noticia}/oculto', [BasketController::class, 'toggleOcultoNoticia'])->name('basket.noticias.toggle-oculto')->middleware('auth');
 Route::get('/noticias/{slug}', [BasketController::class, 'noticia_detalle'])->name('noticias.detalle');
 Route::post('tienda/interes', [BasketController::class, 'enviarInteresMerchan'])->name('basket.tienda.interes');
 
@@ -45,6 +52,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource("jugadores", JugadorController::class);
     Route::resource("noticias", NoticiaController::class);
     Route::resource("merchandising", MerchandisingController::class);
+    Route::patch('equipos/{equipo}/oculto', [EquipoController::class, 'toggleOculto'])->name('equipos.toggle-oculto');
+    Route::patch('jugadores/{jugador}/oculto', [JugadorController::class, 'toggleOculto'])->name('jugadores.toggle-oculto');
+    Route::patch('noticias/{noticia}/oculto', [NoticiaController::class, 'toggleOculto'])->name('noticias.toggle-oculto');
+    Route::patch('merchandising/{merchandising}/oculto', [MerchandisingController::class, 'toggleOculto'])->name('merchandising.toggle-oculto');
     Route::resource('partidos', PartidoController::class);
+    Route::patch('partidos/{partido}/oculto', [PartidoController::class, 'toggleOculto'])->name('partidos.toggle-oculto');
     Route::resource('galerias', GaleriaController::class);
+    Route::patch('galerias/{galeria}/oculto', [GaleriaController::class, 'toggleOculto'])->name('galerias.toggle-oculto');
 });

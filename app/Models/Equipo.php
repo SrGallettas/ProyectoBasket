@@ -11,7 +11,12 @@ class Equipo extends Model
 
     protected $fillable = [
         'nombre', 
-        'categoria', 'imagen_club', 'es_local'
+        'categoria', 'imagen_club', 'es_local', 'oculto'
+    ];
+
+    protected $casts = [
+        'es_local' => 'boolean',
+        'oculto' => 'boolean',
     ];
 
     public function jugadores() {

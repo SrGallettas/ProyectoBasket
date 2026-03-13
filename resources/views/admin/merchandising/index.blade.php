@@ -56,22 +56,32 @@
                     <td>
                         <div class="admin-row-actions">
 
-                            <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" title="Ver Detalles">
+                            <a href="{{ route('merchandising.show', $item->id) }}" class="btn-accion" title="Ver detalles del producto">
                                 <i class="fas fa-eye"></i>
                             </a>
 
-                            <a href="{{ route('merchandising.edit', $item->id) }}" class="btn-accion editar" title="Editar">
+                            <a href="{{ route('merchandising.edit', $item->id) }}" class="btn-accion editar" title="Editar producto">
                                 <i class="fas fa-pen"></i>
                             </a>
+                            <form action="{{ route('merchandising.toggle-oculto', $item->id) }}" method="POST" class="admin-form-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn-accion {{ $item->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $item->oculto ? 'Mostrar producto' : 'Ocultar producto' }}">
+                                    <i class="fas {{ $item->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                                </button>
+                            </form>
                             
                             <form action="{{ route('merchandising.destroy', $item->id) }}" method="POST" onsubmit="return confirm('¿Eliminar producto?')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion borrar" title="Eliminar">
+                                <button type="submit" class="btn-accion borrar" title="Eliminar producto">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </div>
+                        @if($item->oculto)
+                            <span class="badge-oculto-admin">Oculto</span>
+                        @endif
                     </td>
                 </tr>
                 @empty

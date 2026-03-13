@@ -26,10 +26,10 @@
             <tr>
                 <th class="col-fecha">Fecha y Hora</th>
                 <th class="col-categoria">Categoría</th>
-                <th class="text-right col-equipo">Local</th>
+                <th class="text-right col-equipo" style="text-align: right; padding-right: 28px;">Local</th>
                 <th class="text-center col-vs">Encuentro</th>
                 <th class="text-left col-equipo">Visitante</th>
-                <th class="col-lugar">Lugar</th>
+                <th class="text-center col-lugar">Lugar</th>
                 <th class="text-center col-acciones">Acciones</th>
             </tr>
         </thead>
@@ -47,6 +47,9 @@
                 {{-- 2. CATEGORÍA: Con un fondo suave --}}
                 <td class="col-categoria">
                     <span class="badge-categoria-pildora">{{ $partido->categoria }}</span>
+                    @if($partido->oculto)
+                        <span class="badge-oculto-admin">Oculto</span>
+                    @endif
                 </td>
 
                 {{-- 3. LOCAL: Alineado a la derecha para que pegue al VS --}}
@@ -82,18 +85,26 @@
                     <div class="flex-acciones">
                         
                         {{-- Botón Ver --}}
-                        <a href="{{ route('partidos.show', $partido->id) }}" class="btn-accion" title="Ver Detalles">
+                        <a href="{{ route('partidos.show', $partido->id) }}" class="btn-accion" title="Ver detalles del partido">
                             <i class="fas fa-eye"></i>
                         </a>
 
-                        <a href="{{ route('partidos.edit', $partido->id) }}" class="btn-accion editar">
+                        <a href="{{ route('partidos.edit', $partido->id) }}" class="btn-accion editar" title="Editar partido">
                             <i class="fas fa-pen"></i>
                         </a>
+
+                        <form action="{{ route('partidos.toggle-oculto', $partido->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn-accion {{ $partido->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $partido->oculto ? 'Mostrar partido' : 'Ocultar partido' }}">
+                                <i class="fas {{ $partido->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                            </button>
+                        </form>
 
                         <form action="{{ route('partidos.destroy', $partido->id) }}" method="POST" onsubmit="return confirm('¿Eliminar partido?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-accion borrar">
+                            <button type="submit" class="btn-accion borrar" title="Eliminar partido">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>

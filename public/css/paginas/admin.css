@@ -1639,6 +1639,11 @@ VER PRODUCTO
     vertical-align: middle;
 }
 
+.tabla-partidos-ajustada th.col-lugar,
+.tabla-partidos-ajustada th.col-acciones {
+    text-align: center;
+}
+
 /* Control de anchos de columna */
 .col-fecha {
     width: 120px;
@@ -1931,6 +1936,27 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 
 .admin-form-inline {
     margin: 0;
+}
+
+.badge-oculto-admin {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.btn-accion.ocultar {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.btn-accion.mostrar {
+    background: #dcfce7;
+    color: #166534;
 }
 
 .admin-empty-cell {

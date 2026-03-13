@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Partido;
 use App\Models\Equipo;
+use App\Models\PartidoEstadistica;
+use App\Models\PartidoCuarto;
+use Illuminate\Support\Facades\Validator;
 
 class PartidoController extends Controller
 {
@@ -55,6 +58,7 @@ class PartidoController extends Controller
             'fecha_hora'          => 'required|date',
             'lugar'               => 'required|string|max:255',
             'categoria'           => 'required|string',
+            'oculto'              => 'nullable|boolean',
         ], [
             // Mensajes personalizados
             'equipo_local_id.required'     => 'Debes seleccionar el equipo local.',
@@ -77,6 +81,7 @@ class PartidoController extends Controller
         $partido->fecha_hora = $request->fecha_hora;
         $partido->lugar = $request->lugar;
         $partido->categoria = $request->categoria;
+        $partido->oculto = $request->boolean('oculto');
 
         // Nota: Los puntos no los tocamos aquí, se quedan como NULL en la BD
         // porque el partido aún no se ha jugado.
@@ -93,7 +98,7 @@ class PartidoController extends Controller
      */
     public function show($id)
     {
-        $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($id);
+        $partido = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas.cuartos'])->findOrFail($id);
 
         return view('admin.partidos.show', compact('partido'));
     }
@@ -103,7 +108,7 @@ class PartidoController extends Controller
      */
     public function edit(string $id)
     {
-        $partido = Partido::findOrFail($id); // Busca el partido que quieres editar
+        $partido = Partido::with(['estadisticas.cuartos', 'equipoLocal', 'equipoVisitante'])->findOrFail($id); // Busca el partido que quieres editar
         $equipos = Equipo::orderBy('nombre', 'asc')->get(); // Trae todos los equipos para que puedas cambiar el local o visitante si quieres
         return view('admin.partidos.edit', compact('partido', 'equipos')); // Los manda al formulario de edición
     }
@@ -116,13 +121,26 @@ class PartidoController extends Controller
     public function update(Request $request, $id)
     {
         // 1. VALIDACIÓN: Comprobamos que los datos recibidos son correctos.
-        $request->validate([
+        $rules = [
             'equipo_local_id'     => 'required|exists:equipos,id',
             'equipo_visitante_id' => 'required|exists:equipos,id|different:equipo_local_id',
             'fecha_hora'          => 'required|date',
             'lugar'               => 'required|string|max:255',
             'categoria'           => 'required|string',
-        ], [
+            'oculto'              => 'nullable|boolean',
+        ];
+
+        foreach (['local', 'visitante'] as $lado) {
+            foreach ($this->statFields() as $campo) {
+                $rules["stats.$lado.$campo"] = 'nullable|integer|min:0';
+            }
+
+            foreach (array_keys($this->periodLabels()) as $periodo) {
+                $rules["quarters.$lado.$periodo"] = 'nullable|integer|min:0';
+            }
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
             // Mensajes de error personalizados para que el admin sepa qué falla
             'equipo_local_id.required'     => 'El equipo local es obligatorio.',
             'equipo_visitante_id.required'      => 'El equipo visitante es obligatorio.',
@@ -130,6 +148,19 @@ class PartidoController extends Controller
             'fecha_hora.required'          => 'La fecha y hora son obligatorias para el calendario.',
             'lugar.required'               => 'Debes indicar dónde se juega el partido.',
         ]);
+
+        $validator->after(function ($validator) use ($request) {
+            foreach (['local', 'visitante'] as $lado) {
+                $stats = (array) $request->input("stats.$lado", []);
+
+                $this->assertMadeNotGreaterThanAttempted($validator, $stats, $lado, 'fgm', 'fga', 'tiros de campo');
+                $this->assertMadeNotGreaterThanAttempted($validator, $stats, $lado, 't2m', 't2a', 'tiros de 2');
+                $this->assertMadeNotGreaterThanAttempted($validator, $stats, $lado, 't3m', 't3a', 'tiros de 3');
+                $this->assertMadeNotGreaterThanAttempted($validator, $stats, $lado, 'ftm', 'fta', 'tiros libres');
+            }
+        });
+
+        $validator->validate();
 
         // 2. BUSQUEDA: Localizamos el partido por su ID o devolvemos error 404
         $partido = Partido::findOrFail($id);
@@ -140,9 +171,11 @@ class PartidoController extends Controller
         $partido->fecha_hora          = $request->fecha_hora;
         $partido->lugar               = $request->lugar;
         $partido->categoria           = $request->categoria;
+        $partido->oculto              = $request->boolean('oculto');
 
         // 4. PERSISTENCIA: Guardamos los cambios en la base de datos
         $partido->save();
+        $this->syncPartidoStats($partido, $request);
 
         // 5. REDIRECCIÓN: Volvemos al listado con el mensaje de confirmación
         return redirect()->route('partidos.index')->with('mensaje', 'Partido actualizado correctamente.');
@@ -157,5 +190,131 @@ class PartidoController extends Controller
         $partido->delete();
 
         return redirect()->route('partidos.index')->with('mensaje', 'Partido eliminado correctamente del club');
+    }
+
+    public function toggleOculto(Partido $partido)
+    {
+        $partido->oculto = !$partido->oculto;
+        $partido->save();
+
+        $mensaje = $partido->oculto
+            ? 'Partido ocultado de la web publica.'
+            : 'Partido visible de nuevo en la web publica.';
+
+        return redirect()->route('partidos.index')->with('mensaje', $mensaje);
+    }
+
+    private function statFields(): array
+    {
+        return [
+            'fga',
+            'fgm',
+            't2a',
+            't2m',
+            't3a',
+            't3m',
+            'fta',
+            'ftm',
+            'reb_of',
+            'reb_def',
+            'ast',
+            'blk',
+            'tov',
+            'stl',
+            'pf',
+            'tf',
+            'puntos_totales',
+        ];
+    }
+
+    private function periodLabels(): array
+    {
+        return [
+            1 => 'Q1',
+            2 => 'Q2',
+            3 => 'Q3',
+            4 => 'Q4',
+            5 => 'PR',
+        ];
+    }
+
+    private function syncPartidoStats(Partido $partido, Request $request): void
+    {
+        $equiposPorLado = [
+            'local' => (int) $partido->equipo_local_id,
+            'visitante' => (int) $partido->equipo_visitante_id,
+        ];
+
+        foreach ($equiposPorLado as $lado => $equipoId) {
+            $inputStats = (array) $request->input("stats.$lado", []);
+            $payload = [];
+
+            foreach ($this->statFields() as $campo) {
+                $valor = $inputStats[$campo] ?? null;
+                $payload[$campo] = ($valor === '' || $valor === null) ? null : (int) $valor;
+            }
+
+            $hasStats = collect($payload)->filter(static fn ($value) => $value !== null)->isNotEmpty();
+
+            if (!$hasStats) {
+                PartidoEstadistica::where('partido_id', $partido->id)->where('equipo_id', $equipoId)->delete();
+                PartidoCuarto::where('partido_id', $partido->id)->where('equipo_id', $equipoId)->delete();
+                continue;
+            }
+
+            PartidoEstadistica::updateOrCreate(
+                [
+                    'partido_id' => $partido->id,
+                    'equipo_id' => $equipoId,
+                ],
+                $payload
+            );
+
+            $quarterInput = (array) $request->input("quarters.$lado", []);
+            $seenPeriods = [];
+
+            foreach (array_keys($this->periodLabels()) as $periodo) {
+                $valor = $quarterInput[$periodo] ?? null;
+
+                if ($valor === '' || $valor === null) {
+                    PartidoCuarto::where('partido_id', $partido->id)
+                        ->where('equipo_id', $equipoId)
+                        ->where('periodo', $periodo)
+                        ->delete();
+                    continue;
+                }
+
+                PartidoCuarto::updateOrCreate(
+                    [
+                        'partido_id' => $partido->id,
+                        'equipo_id' => $equipoId,
+                        'periodo' => $periodo,
+                    ],
+                    ['puntos' => (int) $valor]
+                );
+
+                $seenPeriods[] = $periodo;
+            }
+
+            PartidoCuarto::where('partido_id', $partido->id)
+                ->where('equipo_id', $equipoId)
+                ->whereNotIn('periodo', $seenPeriods)
+                ->delete();
+        }
+    }
+
+    private function assertMadeNotGreaterThanAttempted($validator, array $stats, string $lado, string $madeKey, string $attemptKey, string $label): void
+    {
+        $made = $stats[$madeKey] ?? null;
+        $attempt = $stats[$attemptKey] ?? null;
+
+        if ($made === null || $attempt === null || $made === '' || $attempt === '') {
+            return;
+        }
+
+        if ((int) $made > (int) $attempt) {
+            $equipoTxt = $lado === 'local' ? 'local' : 'visitante';
+            $validator->errors()->add("stats.$lado.$madeKey", "En el equipo {$equipoTxt}, los anotados de {$label} no pueden superar los intentados.");
+        }
     }
 }

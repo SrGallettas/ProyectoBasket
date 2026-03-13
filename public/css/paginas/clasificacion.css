@@ -25,6 +25,7 @@
 .icono-trofeo {
     font-size: 50px;
     color: #f1c40f;
+    margin-top: 20px;
     /* Color dorado para el trofeo */
 }
 
@@ -135,5 +136,4 @@
 .fila-destacada td strong {
     color: #cf1515;
 }
-
 

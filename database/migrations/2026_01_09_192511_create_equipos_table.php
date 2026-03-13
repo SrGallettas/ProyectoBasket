@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('categoria'); 
             $table->string('imagen_club')->nullable();
             $table->boolean('es_local')->default(false);
+            $table->boolean('oculto')->default(false);
             $table->timestamps();
         });
     }

@@ -52,6 +52,14 @@
                     <input type="text" value="{{ $galeria->slug }}" readonly class="input-ficha">
                     <p class="input-help-text">Se recalcula automáticamente a partir del título.</p>
                 </div>
+
+                <div class="campo-ficha">
+                    <label>Visibilidad en la web</label>
+                    <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                        <input type="checkbox" name="oculto" value="1" {{ old('oculto', $galeria->oculto) ? 'checked' : '' }}>
+                        <span>Ocultar galería de la web pública</span>
+                    </div>
+                </div>
             </div>
 
             <div class="seccion-foto-ficha">
@@ -106,8 +114,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">
+                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de galerias">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Actualizar galeria">
                     <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
                 </button>
             </div>
@@ -156,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <input type="radio" name="selector_principal_nueva" value="${index}" ${checked}>
                             Imagen principal
                         </label>
-                        <button type="button" class="galeria-upload-remove" data-index="${index}">Quitar</button>
+                        <button type="button" class="galeria-upload-remove" data-index="${index}" title="Quitar imagen">Quitar</button>
                     </div>
                 `;
                 preview.appendChild(item);

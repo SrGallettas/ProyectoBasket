@@ -8,7 +8,7 @@
     </div>
     
     @if($rutaNuevo)
-        <a href="{{ $rutaNuevo }}" class="btn-nuevo">
+        <a href="{{ $rutaNuevo }}" class="btn-nuevo" title="{{ $textoNuevo }}">
             <i class="fas fa-plus"></i> {{ $textoNuevo }}
         </a>
     @endif
@@ -23,7 +23,7 @@
                    placeholder="Buscar por nombre..." 
                    value="{{ request('search') }}" 
                    class="input-search">
-            <button type="submit" class="btn-buscar">
+            <button type="submit" class="btn-buscar" title="Buscar">
                 <i class="fas fa-search"></i>
             </button>
         </div>

@@ -8,7 +8,7 @@
             <h2>Añadir Nuevo Jugador</h2>
             <p>Introduce los datos para inscribir al jugador en el club</p>
         </div>
-        <a href="{{ route('jugadores.index') }}" class="btn-nuevo btn-nuevo-secondary">
+        <a href="{{ route('jugadores.index') }}" class="btn-nuevo btn-nuevo-secondary" title="Volver al listado de jugadores">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -80,6 +80,14 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                            <span>Ocultar jugador de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -104,8 +112,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('jugadores.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul">
+                <a href="{{ route('jugadores.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de jugadores">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="Registrar jugador">
                     <i class="fas fa-save"></i> REGISTRAR JUGADOR
                 </button>
             </div>

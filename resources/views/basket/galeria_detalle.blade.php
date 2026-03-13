@@ -7,21 +7,21 @@
 @section('title', $galeria->titulo . ' - Bellreguard Club de Basket')
 
 @section('contenido')
-<section class="seccion-galeria-header seccion-galeria-header-detalle">
-    <div class="header-contenido">
-        <div class="galeria-detalle-nav">
-            <a href="{{ route('basket.galeria') }}" class="galeria-breadcrumb">
-                <i class="fas fa-arrow-left"></i> Volver a la galería
-            </a>
-        </div>
-        <h1>{{ $galeria->titulo }}</h1>
-        <p>{{ $galeria->descripcion }}</p>
-        <div class="stats-galeria">
-            <span><i class="fas fa-images"></i> {{ $galeria->imagenes->count() }} fotos</span>
-            <span><i class="fas fa-calendar-alt"></i> {{ $galeria->created_at->format('d/m/Y') }}</span>
-        </div>
+<x-public-news-hero
+    badge="ALBUM OFICIAL"
+    title="{{ $galeria->titulo }}"
+    subtitle="{{ $galeria->descripcion }}"
+>
+    <div class="galeria-detalle-nav">
+        <a href="{{ route('basket.galeria') }}" class="galeria-breadcrumb">
+            <i class="fas fa-arrow-left"></i> Volver a la galería
+        </a>
     </div>
-</section>
+    <div class="stats-galeria">
+        <span><i class="fas fa-images"></i> {{ $galeria->imagenes->count() }} fotos</span>
+        <span><i class="fas fa-calendar-alt"></i> {{ $galeria->created_at->format('d/m/Y') }}</span>
+    </div>
+</x-public-news-hero>
 
 <section class="contenedor-galeria contenedor-galeria-detalle">
     <div class="galeria-editorial-shell">

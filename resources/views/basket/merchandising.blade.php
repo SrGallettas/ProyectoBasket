@@ -11,17 +11,25 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
-<section class="seccion-merchandising-header">
-        <h1>Merchandising Oficial</h1>
-        <p>Lleva los colores del Bellreguard CB contigo</p>
-        <div class="iconos-merchandising">
-            <i class="fa-solid fa-shirt"></i>
-            <i class="fa-solid fa-hat-cap"></i>
-            <i class="fa-solid fa-bag-shopping"></i>
-        </div>
-    </section>
+<x-public-news-hero
+    badge="TIENDA OFICIAL"
+    title="Merchandising Oficial"
+    subtitle="Lleva los colores del Bellreguard CB contigo."
+>
+    <div class="iconos-merchandising">
+        <i class="fa-solid fa-shirt"></i>
+        <i class="fa-solid fa-hat-cap"></i>
+        <i class="fa-solid fa-bag-shopping"></i>
+    </div>
+</x-public-news-hero>
 
     <section class="productos-oficiales">
+        @if(session('mensaje'))
+            <div class="public-alert-ok">
+                {{ session('mensaje') }}
+            </div>
+        @endif
+
         <div class="merch-intro">
             <span class="merch-kicker">Coleccion oficial</span>
             <h2>Productos Oficiales</h2>
@@ -38,44 +46,52 @@
                     <h3>{{ $item->nombre }}</h3>
                     <p class="descripcion-producto">{{ $item->descripcion }}</p>
                     
-                    {{-- Tallas: se muestran solo si el item las tiene --}}
-                    @if($item->talla)
-                        <div class="bloque-tallas merch-tallas-bloque">
-                            <strong>Tallas:</strong> 
-                            <span class="tallas-texto merch-tallas-texto">
-                                {{ str_replace(',', ', ', $item->talla) }}
-                            </span>
-                        </div>
-                    @endif
+                    @php
+                        $tallas = $item->talla ? explode(',', $item->talla) : [];
+                    @endphp
+
+                    <div class="merch-resumen-compra">
+                        @if($item->talla)
+                            <div class="bloque-tallas merch-tallas-bloque">
+                                <strong>Tallas:</strong> 
+                                <span class="tallas-texto merch-tallas-texto">
+                                    {{ str_replace(',', ', ', $item->talla) }}
+                                </span>
+                            </div>
+                        @endif
+
+                        <span class="precio">{{ number_format($item->precio, 0) }}€</span>
+                    </div>
 
                     <div class="precio-comprar">
-                        {{-- Precio: formateado con el símbolo € --}}
-                        <span class="precio">{{ number_format($item->precio, 0) }}€</span>
-                        @php
-                            $tallas = $item->talla ? explode(',', $item->talla) : [];
-                        @endphp
+                        @if(count($tallas) > 0)
+                            <select class="selector-talla js-talla" required>
+                                <option value="">Selecciona talla</option>
+                                @foreach($tallas as $talla)
+                                    <option value="{{ trim($talla) }}">{{ trim($talla) }}</option>
+                                @endforeach
+                            </select>
+                        @else
+                            <input type="hidden" class="js-talla" value="Sin talla">
+                            <span class="merch-sin-talla">Talla unica</span>
+                        @endif
 
-                        <div class="interes-formulario">
-                            @if(count($tallas) > 0)
-                                <select class="selector-talla js-talla" required>
-                                    <option value="">Selecciona talla</option>
-                                    @foreach($tallas as $talla)
-                                        <option value="{{ trim($talla) }}">{{ trim($talla) }}</option>
-                                    @endforeach
-                                </select>
-                            @else
-                                <input type="hidden" class="js-talla" value="Sin talla">
-                            @endif
-
-                            <button
-                                type="button"
-                                class="boton-comprar js-gmail-interes"
-                                data-producto="{{ $item->nombre }}"
-                            >
-                                ¡Estoy Interesado!
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            class="boton-comprar js-gmail-interes"
+                            data-producto="{{ $item->nombre }}"
+                        >
+                            ¡Estoy Interesado!
+                        </button>
                     </div>
+
+                    @auth
+                        <form action="{{ route('basket.tienda.toggle-oculto', $item->id) }}" method="POST" class="public-card-action merch-hide-action">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="public-hide-button">Ocultar en web</button>
+                        </form>
+                    @endauth
                 </div>
             </div>
         @empty

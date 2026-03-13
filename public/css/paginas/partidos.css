@@ -39,6 +39,16 @@
     margin: 0 auto;
 }
 
+.partidos-alerta-ok {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #e7f8ec;
+    color: #17603a;
+    border: 1px solid #b6e2c5;
+    text-align: center;
+    font-weight: 600;
+}
+
 .caja-equipo {
     background: white;
     border-radius: 12px;
@@ -95,8 +105,12 @@
     text-align: center;
 }
 
-.etiqueta-proximo {
-    background: #4CAF50;
+.tarjeta-partido-oculto {
+    border-color: #d97706;
+    background: #fffaf0;
+}
+
+.etiqueta-estado {
     color: white;
     padding: 3px 8px;
     border-radius: 4px;
@@ -106,12 +120,33 @@
     margin-bottom: 10px;
 }
 
+.etiqueta-estado.proximo {
+    background: #4CAF50;
+}
+
+.etiqueta-estado.finalizado {
+    background: #e60000;
+}
+
 .jornada {
     position: absolute;
     top: 15px;
     right: 15px;
     font-size: 12px;
     color: #999;
+}
+
+.etiqueta-oculto-admin {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #d97706;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .enfrentamiento {
@@ -151,6 +186,20 @@
     font-size: 18px;
 }
 
+.marcador-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
+
 .info-adicional {
     border-top: 1px solid #eee;
     padding-top: 10px;
@@ -173,6 +222,61 @@
 .dato-horario,
 .dato-lugar {
     text-align: center;
+}
+
+.acciones-partido {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-detalle-partido {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-detalle-partido:hover {
+    background: #e60000;
+    transform: translateY(-1px);
+}
+
+.form-ocultar-partido {
+    margin: 0;
+}
+
+.btn-toggle-oculto-partido {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border: 1px solid #d97706;
+    border-radius: 999px;
+    background: #fff;
+    color: #b45309;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-toggle-oculto-partido:hover {
+    background: #d97706;
+    color: #fff;
+    transform: translateY(-1px);
 }
 
 
@@ -254,6 +358,10 @@
     .info-adicional {
         font-size: 13px;
     }
+
+    .marcador-inline {
+        font-size: 22px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -285,7 +393,7 @@
         padding: 12px;
     }
 
-    .etiqueta-proximo {
+    .etiqueta-estado {
         font-size: 11px;
         padding: 3px 7px;
     }
@@ -293,6 +401,10 @@
     .enfrentamiento {
         flex-direction: column;
         gap: 12px;
+    }
+
+    .marcador-inline {
+        font-size: 19px;
     }
 
     .vs {

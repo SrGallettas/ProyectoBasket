@@ -55,20 +55,30 @@
                         </td>
                         <td>
                             <div class="admin-row-actions">
-                                <a href="{{ route('galerias.show', $galeria->id) }}" class="btn-accion admin-view-btn" title="Ver detalle">
+                                <a href="{{ route('galerias.show', $galeria->id) }}" class="btn-accion admin-view-btn" title="Ver detalles de la galeria">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('galerias.edit', $galeria->id) }}" class="btn-accion editar" title="Editar">
+                                <a href="{{ route('galerias.edit', $galeria->id) }}" class="btn-accion editar" title="Editar galeria">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                                <form action="{{ route('galerias.toggle-oculto', $galeria->id) }}" method="POST" class="admin-form-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn-accion {{ $galeria->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $galeria->oculto ? 'Mostrar galeria' : 'Ocultar galeria' }}">
+                                        <i class="fas {{ $galeria->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                                    </button>
+                                </form>
                                 <form action="{{ route('galerias.destroy', $galeria->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta galería?')" class="admin-form-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-accion borrar" title="Eliminar">
+                                    <button type="submit" class="btn-accion borrar" title="Eliminar galeria">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </div>
+                            @if($galeria->oculto)
+                                <span class="badge-oculto-admin">Oculto</span>
+                            @endif
                         </td>
                     </tr>
                 @empty

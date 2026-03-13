@@ -74,6 +74,14 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto', $jugador->oculto) ? 'checked' : '' }}>
+                            <span>Ocultar jugador de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -102,8 +110,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('jugadores.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">
+                <a href="{{ route('jugadores.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de jugadores">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Actualizar jugador">
                     <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
                 </button>
             </div>

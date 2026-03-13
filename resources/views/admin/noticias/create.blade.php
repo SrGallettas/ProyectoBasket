@@ -7,7 +7,7 @@
             <h2>Añadir Nueva Noticia</h2>
             <p>Introduce el contenido editorial para publicarlo en la web del club</p>
         </div>
-        <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary">
+        <a href="{{ route('noticias.index') }}" class="btn-nuevo btn-nuevo-secondary" title="Volver al listado de noticias">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -85,6 +85,14 @@
                         <label>Imagen de portada</label>
                         <p class="input-help-text">Usa preferiblemente una imagen horizontal. Si no subes una personalizada, seguirá la imagen por defecto configurada en el formulario.</p>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                            <span>Ocultar noticia de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -109,8 +117,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo">
+                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de noticias">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo" title="Publicar noticia">
                     <i class="fas fa-save"></i> PUBLICAR NOTICIA
                 </button>
             </div>

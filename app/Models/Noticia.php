@@ -18,5 +18,10 @@ class Noticia extends Model
         'contenido', 
         'imagen_noticia', 
         'autor', 
+        'oculto',
+    ];
+
+    protected $casts = [
+        'oculto' => 'boolean',
     ];
 }

@@ -18,5 +18,10 @@ class Merchandising extends Model
         'talla', 
         'imagen_merchan', 
         'precio', 
+        'oculto',
+    ];
+
+    protected $casts = [
+        'oculto' => 'boolean',
     ];
 }

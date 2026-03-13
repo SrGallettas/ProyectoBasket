@@ -19,7 +19,7 @@
 
     <div class="acciones-header-ficha">
         @if($editRoute)
-            <a href="{{ $editRoute }}" class="btn-ficha-accion btn-ficha-edit">
+            <a href="{{ $editRoute }}" class="btn-ficha-accion btn-ficha-edit" title="Editar elemento">
                 <i class="fas fa-edit"></i>&nbsp;EDITAR
             </a>
         @endif
@@ -28,13 +28,13 @@
             <form action="{{ $deleteRoute }}" method="POST" onsubmit="return confirm('{{ $confirmMessage }}')" class="admin-form-inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-ficha-accion btn-ficha-delete">
+                <button type="submit" class="btn-ficha-accion btn-ficha-delete" title="Eliminar elemento">
                     <i class="fas fa-trash-alt"></i>&nbsp;ELIMINAR
                 </button>
             </form>
         @endif
 
-        <a href="{{ $indexRoute }}" class="btn-ficha-accion btn-ficha-volver {{ $backClass }}">
+        <a href="{{ $indexRoute }}" class="btn-ficha-accion btn-ficha-volver {{ $backClass }}" title="Volver al listado">
             <i class="fas fa-arrow-left"></i>&nbsp;{{ $backText }}
         </a>
     </div>

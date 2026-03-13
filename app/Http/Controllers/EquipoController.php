@@ -41,6 +41,7 @@ class EquipoController extends Controller
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
             'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg',
+            'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
             'nombre.required'    => 'El nombre del equipo es obligatorio.',
@@ -54,6 +55,7 @@ class EquipoController extends Controller
         $equipo->categoria = $request->categoria; // Rellena la categoría
         // Si el checkbox está marcado llega en el request, si no, le asignamos false
         $equipo->es_local = $request->has('es_local');
+        $equipo->oculto = $request->boolean('oculto');
 
         // Si el usuario ha subido una foto...
         if ($request->hasFile('imagen_club')) {
@@ -101,6 +103,7 @@ class EquipoController extends Controller
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
             'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg',
+            'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
             'nombre.required'    => 'El nombre del equipo es obligatorio.',
@@ -108,6 +111,9 @@ class EquipoController extends Controller
             'imagen_club.image'  => 'El archivo debe ser una imagen.',
             'imagen_club.mimes'  => 'Solo se permiten formatos: jpg, jpeg, png.',
         ]);
+
+        $equipo->es_local = $request->has('es_local');
+        $equipo->oculto = $request->boolean('oculto');
 
         // Si has subido una foto NUEVA...
         if ($request->hasFile('imagen_club')) {
@@ -136,5 +142,13 @@ class EquipoController extends Controller
 
         // Retornamos la vista 'show' pasando los datos del equipo
         return view('admin.equipos.show', compact('equipo'));
+    }
+
+    public function toggleOculto(Equipo $equipo)
+    {
+        $equipo->oculto = !$equipo->oculto;
+        $equipo->save();
+
+        return redirect()->route('equipos.index')->with('mensaje', $equipo->oculto ? 'Equipo ocultado de la web publica.' : 'Equipo visible de nuevo en la web publica.');
     }
 }

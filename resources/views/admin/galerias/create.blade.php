@@ -7,7 +7,7 @@
             <h2>Añadir Nueva Galería</h2>
             <p>Organiza un nuevo álbum de imágenes para la web del club</p>
         </div>
-        <a href="{{ route('galerias.index') }}" class="btn-nuevo btn-nuevo-secondary">
+        <a href="{{ route('galerias.index') }}" class="btn-nuevo btn-nuevo-secondary" title="Volver al listado de galerias">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -63,6 +63,14 @@
                         required
                     >{{ old('descripcion') }}</textarea>
                 </div>
+
+                <div class="campo-ficha">
+                    <label>Visibilidad en la web</label>
+                    <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                        <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                        <span>Ocultar galería de la web pública</span>
+                    </div>
+                </div>
             </div>
 
             <div class="seccion-foto-ficha">
@@ -95,8 +103,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo">
+                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de galerias">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo" title="Guardar galeria">
                     <i class="fas fa-save"></i> GUARDAR GALERÍA
                 </button>
             </div>
@@ -143,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <input type="radio" name="selector_principal_nueva" value="${index}" ${checked}>
                             Imagen principal
                         </label>
-                        <button type="button" class="galeria-upload-remove" data-index="${index}">Quitar</button>
+                        <button type="button" class="galeria-upload-remove" data-index="${index}" title="Quitar imagen">Quitar</button>
                     </div>
                 `;
                 preview.appendChild(item);

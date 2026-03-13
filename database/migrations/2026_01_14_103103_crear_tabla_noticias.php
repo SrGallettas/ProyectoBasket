@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('contenido');
             $table->string('imagen_noticia')->nullable();
             $table->string('autor')->nullable();
+            $table->boolean('oculto')->default(false);
             $table->timestamps();
         });
     }

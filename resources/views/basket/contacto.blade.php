@@ -11,15 +11,11 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
-<section class="seccion-contacto-header">
-    <div class="header-contenido">
-        <h1>Contacto</h1>
-        <p>Ponte en contacto con el Bellreguard CB. Estamos aquí para ayudarte</p>
-    </div>
-    <div class="circulo-decorativo c1"></div>
-    <div class="circulo-decorativo c2"></div>
-    <div class="circulo-decorativo c3"></div>
-</section>
+<x-public-news-hero
+    badge="ATENCION OFICIAL"
+    title="Contacto Bellreguard"
+    subtitle="Ponte en contacto con el Bellreguard CB. Estamos aquí para ayudarte."
+/>
 
 <section class="contenedor-contacto">
     <div class="rejilla-contacto">

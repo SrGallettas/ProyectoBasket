@@ -18,6 +18,11 @@ class Jugador extends Model
         'fecha_nacimiento', 
         'posicion', 
         'imagen_jugador',
+        'oculto',
+    ];
+
+    protected $casts = [
+        'oculto' => 'boolean',
     ];
 
     public function equipo() {

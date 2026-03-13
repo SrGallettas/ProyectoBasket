@@ -85,25 +85,36 @@
                     <div class="admin-row-actions">
                         
                         {{-- Botón Ver --}}
-                        <a href="{{ route('jugadores.show', $jugador->id) }}" class="btn-accion admin-view-btn" title="Ver Detalles">
+                        <a href="{{ route('jugadores.show', $jugador->id) }}" class="btn-accion admin-view-btn" title="Ver detalles del jugador">
                             <i class="fas fa-eye"></i>
                         </a>
 
                         {{-- Botón Editar --}}
-                        <a href="{{ route ('jugadores.edit', $jugador->id)}}" class="btn-accion editar admin-no-margin" title="Editar">
+                        <a href="{{ route ('jugadores.edit', $jugador->id)}}" class="btn-accion editar admin-no-margin" title="Editar jugador">
                             <i class="fas fa-pen"></i>
                         </a>
+
+                        <form action="{{ route('jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="admin-form-inline admin-form-inline-flex">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn-accion {{ $jugador->oculto ? 'mostrar' : 'ocultar' }} admin-no-margin" title="{{ $jugador->oculto ? 'Mostrar jugador' : 'Ocultar jugador' }}">
+                                <i class="fas {{ $jugador->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                            </button>
+                        </form>
                         
                         {{-- Formulario Borrar --}}
                         <form action="{{ route ('jugadores.destroy', $jugador->id)}}" method="POST" onsubmit="return confirm('¿Eliminar jugador?')" class="admin-form-inline admin-form-inline-flex">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar">
+                            <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar jugador">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
 
                     </div>
+                    @if($jugador->oculto)
+                        <span class="badge-oculto-admin">Oculto</span>
+                    @endif
                 </td>
             </tr>
             @empty

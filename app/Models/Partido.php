@@ -14,7 +14,12 @@ class Partido extends Model
         'equipo_visitante_id', 
         'fecha_hora', 
         'lugar',
-        'categoria'
+        'categoria',
+        'oculto',
+    ];
+
+    protected $casts = [
+        'oculto' => 'boolean',
     ];
 
     public function equipoLocal()
@@ -27,6 +32,14 @@ class Partido extends Model
     {
         return $this->belongsTo(Equipo::class, 'equipo_visitante_id');
     }
+
+    public function estadisticas()
+    {
+        return $this->hasMany(PartidoEstadistica::class);
+    }
+
+    public function cuartos()
+    {
+        return $this->hasMany(PartidoCuarto::class);
+    }
 }
-
-

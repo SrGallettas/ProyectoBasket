@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('descripcion');
             $table->string('tipo', 50);
+            $table->boolean('oculto')->default(false);
             $table->timestamps();
         });
     }

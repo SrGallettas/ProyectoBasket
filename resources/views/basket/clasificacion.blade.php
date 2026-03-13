@@ -11,15 +11,15 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
-<section class="seccion-clasificacion-header">
-    <div class="header-contenido">
-        <h1>Clasificaciones</h1>
-        <p>Consulta la posición de nuestros equipos en todas las categorías</p>
-        <div class="icono-trofeo">
-            <i class="fas fa-trophy"></i>
-        </div>
+<x-public-news-hero
+    badge="CLASIFICACIONES OFICIALES"
+    title="Tabla de Posiciones"
+    subtitle="Consulta la posición de nuestros equipos en todas las categorías."
+>
+    <div class="icono-trofeo">
+        <i class="fas fa-trophy"></i>
     </div>
-</section>
+</x-public-news-hero>
 
 <section class="contenedor-clasificacion">
     <div class="selector-categorias">

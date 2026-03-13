@@ -7,7 +7,7 @@
             <h2>Nuevo Producto</h2>
             <p>Introduce los detalles del artículo para la tienda oficial</p>
         </div>
-        <a href="{{ route('merchandising.index') }}" class="btn-nuevo">
+        <a href="{{ route('merchandising.index') }}" class="btn-nuevo" title="Volver al listado de productos">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -60,6 +60,14 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                            <span>Ocultar producto de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -85,8 +93,8 @@
             </div> 
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">Guardar Producto</button>
+                <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de productos">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Guardar producto">Guardar Producto</button>
             </div>
         </form>
     </div> 

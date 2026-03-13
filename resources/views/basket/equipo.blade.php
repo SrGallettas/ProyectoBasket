@@ -5,9 +5,11 @@
 @endpush
 
 @section('contenido')
-<section class="seccion-equipo-header">
-    <h1>Nuestro Equipo</h1>
-</section>
+<x-public-news-hero
+    badge="PLANTILLA OFICIAL"
+    title="Nuestro Equipo"
+    subtitle="Conoce a los jugadores y categorías del Bellreguard Club de Basket."
+/>
 
 <section class="navegacion-categorias">
     <div class="botones-categoria">
@@ -21,11 +23,26 @@
 </section>
 
 <section class="equipo-jugadores">
+    @if(session('mensaje'))
+        <div class="public-alert-ok">
+            {{ session('mensaje') }}
+        </div>
+    @endif
+
     @if($equipoMostrar)
         {{-- Título centrado --}}
         <h2 class="equipo-titulo-categoria">
             Equipo {{ $equipoMostrar->categoria }} - {{ $equipoMostrar->nombre }}
         </h2>
+        @auth
+            <div class="public-admin-actions">
+                <form action="{{ route('basket.equipo.toggle-oculto', $equipoMostrar->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="public-hide-button">Ocultar equipo en web</button>
+                </form>
+            </div>
+        @endauth
         
         <div class="rejilla-jugadores">
             @forelse($equipoMostrar->jugadores as $jugador)
@@ -55,6 +72,14 @@
                             <strong>Nacimiento:</strong> 
                             {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'N/A' }}
                         </p>
+
+                        @auth
+                            <form action="{{ route('basket.jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="public-card-action">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="public-hide-button">Ocultar jugador en web</button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             @empty

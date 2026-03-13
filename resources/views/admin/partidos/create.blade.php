@@ -8,7 +8,7 @@
             <h2>Programar Nuevo Partido</h2>
             <p>Configura el próximo encuentro del club</p>
         </div>
-        <a href="{{ route('partidos.index') }}" class="btn-ficha-accion btn-ficha-volver">
+        <a href="{{ route('partidos.index') }}" class="btn-ficha-accion btn-ficha-volver" title="Volver al listado de partidos">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -88,11 +88,18 @@
                     </select>
                 </div>
 
+                    <div class="campo-ficha">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                            Ocultar este partido en la web publica
+                        </label>
+                    </div>
+
                 </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha">
+                <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de partidos">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha" title="Programar partido">
                     <i class="fas fa-save"></i> PROGRAMAR PARTIDO
                 </button>
             </div>

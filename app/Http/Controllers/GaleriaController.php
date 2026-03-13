@@ -51,6 +51,7 @@ class GaleriaController extends Controller
             'imagenes' => 'required|array|min:1',
             'imagenes.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:4096',
             'imagen_principal_nueva' => 'nullable|integer|min:0',
+            'oculto' => 'nullable|boolean',
         ]);
 
         $galeria = Galeria::create([
@@ -59,6 +60,7 @@ class GaleriaController extends Controller
             'carpeta' => $this->generarCarpetaUnica($validated['titulo']),
             'descripcion' => $validated['descripcion'],
             'tipo' => $validated['tipo'],
+            'oculto' => $request->boolean('oculto'),
         ]);
 
         $indicePrincipal = (int) $request->input('imagen_principal_nueva', 0);
@@ -101,6 +103,7 @@ class GaleriaController extends Controller
             'eliminar_imagenes.*' => 'integer',
             'imagen_principal_existente' => 'nullable|integer',
             'imagen_principal_nueva' => 'nullable|integer|min:0',
+            'oculto' => 'nullable|boolean',
         ]);
 
         $galeria->update([
@@ -108,6 +111,7 @@ class GaleriaController extends Controller
             'slug' => $this->generarSlugUnico($validated['titulo'], $galeria->id),
             'descripcion' => $validated['descripcion'],
             'tipo' => $validated['tipo'],
+            'oculto' => $request->boolean('oculto'),
         ]);
 
         $idsAEliminar = collect($request->input('eliminar_imagenes', []))
@@ -159,6 +163,14 @@ class GaleriaController extends Controller
         $galeria->delete();
 
         return redirect()->route('galerias.index')->with('mensaje', 'Galeria eliminada correctamente.');
+    }
+
+    public function toggleOculto(Galeria $galeria)
+    {
+        $galeria->oculto = !$galeria->oculto;
+        $galeria->save();
+
+        return redirect()->route('galerias.index')->with('mensaje', $galeria->oculto ? 'Galeria ocultada de la web publica.' : 'Galeria visible de nuevo en la web publica.');
     }
 
     private function generarSlugUnico(string $titulo, ?int $ignorarId = null): string

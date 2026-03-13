@@ -17,6 +17,11 @@ class Galeria extends Model
         'carpeta',
         'descripcion',
         'tipo',
+        'oculto',
+    ];
+
+    protected $casts = [
+        'oculto' => 'boolean',
     ];
 
     public const TIPOS = [

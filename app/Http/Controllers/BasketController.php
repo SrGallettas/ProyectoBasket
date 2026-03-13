@@ -7,6 +7,7 @@ use App\Models\Noticia;
 use App\Models\Merchandising;
 use App\Models\Partido;
 use App\Models\Galeria;
+use App\Models\Jugador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,22 +15,28 @@ class BasketController extends Controller
 {
     public function inicio()
     {
-        $noticias = Noticia::latest()->take(6)->get();
+        $noticias = Noticia::where('oculto', false)->latest()->take(6)->get();
         return view('basket.inicio', compact("noticias"));
     }
 
     public function equipo(Request $request)
     {
         // 1. Obtenemos los equipos locales para los botones
-        $equiposLocales = Equipo::where('es_local', true)->get();
+        $equiposLocales = Equipo::where('es_local', true)
+            ->where('oculto', false)
+            ->orderBy('categoria')
+            ->get();
 
         // 2. Filtro por categoría (por defecto 'Senior')
         $categoriaSel = $request->get('categoria', 'Senior');
 
         // 3. Buscamos el equipo específico con sus jugadores
         $equipoMostrar = Equipo::where('es_local', true)
+            ->where('oculto', false)
             ->where('categoria', $categoriaSel)
-            ->with('jugadores')
+            ->with(['jugadores' => function ($query) {
+                $query->where('oculto', false)->orderBy('dorsal');
+            }])
             ->first();
 
         return view('basket.equipo', compact('equiposLocales', 'equipoMostrar', 'categoriaSel'));
@@ -37,7 +44,9 @@ class BasketController extends Controller
 
     public function tienda()
     {
-        $merchandising = Merchandising::orderBy('nombre', 'asc')->get();        
+        $merchandising = Merchandising::where('oculto', false)
+            ->orderBy('nombre', 'asc')
+            ->get();
         return view('basket.merchandising', compact('merchandising'));
     }
 
@@ -53,8 +62,56 @@ class BasketController extends Controller
 
     public function partidos()
     {
-        $partidos = Partido::orderBy('created_at', 'asc')->paginate(10);
+        $partidos = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
+            ->where('oculto', false)
+            ->orderBy('fecha_hora', 'asc')
+            ->paginate(10);
         return view('basket.partidos', compact('partidos'));
+    }
+
+    public function partidoDetalle($id)
+    {
+        $partido = Partido::with([
+            'equipoLocal',
+            'equipoVisitante',
+            'estadisticas.cuartos',
+        ])
+            ->where('oculto', false)
+            ->whereKey($id)
+            ->firstOrFail();
+
+        $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+        $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+
+        return view('basket.partido_detalle', compact('partido', 'statsLocal', 'statsVisitante'));
+    }
+
+    public function toggleOcultoEquipo(Equipo $equipo)
+    {
+        $equipo->oculto = !$equipo->oculto;
+        $equipo->save();
+
+        return redirect()->route('basket.equipo')->with('mensaje', $equipo->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+    }
+
+    public function toggleOcultoJugador(Jugador $jugador)
+    {
+        $jugador->oculto = !$jugador->oculto;
+        $jugador->save();
+
+        return redirect()->route('basket.equipo', ['categoria' => optional($jugador->equipo)->categoria])->with('mensaje', $jugador->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+    }
+
+    public function toggleOculto(Partido $partido)
+    {
+        $partido->oculto = !$partido->oculto;
+        $partido->save();
+
+        $mensaje = $partido->oculto
+            ? 'Se ha ocultado correctamente.'
+            : 'Se ha mostrado correctamente.';
+
+        return redirect()->route('basket.partidos')->with('mensaje', $mensaje);
     }
 
     public function galeria()
@@ -64,6 +121,7 @@ class BasketController extends Controller
 
         $galerias = Galeria::with('imagenes')
             ->withCount('imagenes')
+            ->where('oculto', false)
             ->when($tipoSeleccionado !== 'todos', function ($query) use ($tipoSeleccionado) {
                 $query->where('tipo', $tipoSeleccionado);
             })
@@ -76,7 +134,10 @@ class BasketController extends Controller
 
     public function galeriaDetalle($slug)
     {
-        $galeria = Galeria::with('imagenes')->where('slug', $slug)->firstOrFail();
+        $galeria = Galeria::with('imagenes')
+            ->where('oculto', false)
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         return view('basket.galeria_detalle', compact('galeria'));
     }
@@ -88,15 +149,43 @@ class BasketController extends Controller
 
     public function noticia()
     {
-        $noticias = Noticia::orderBy('created_at', 'asc')->paginate(10);
+        $noticias = Noticia::where('oculto', false)
+            ->orderBy('created_at', 'asc')
+            ->paginate(10);
         return view('basket.noticias', compact('noticias'));
     }
 
     public function noticia_detalle($slug)
     {
-        $noticia = Noticia::where('slug', $slug)->firstOrFail();
+        $noticia = Noticia::where('oculto', false)
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         return view('basket.noticias_detalle', compact('noticia'));
+    }
+
+    public function toggleOcultoNoticia(Noticia $noticia)
+    {
+        $noticia->oculto = !$noticia->oculto;
+        $noticia->save();
+
+        return redirect()->route('basket.noticias')->with('mensaje', $noticia->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+    }
+
+    public function toggleOcultoMerchandising(Merchandising $merchandising)
+    {
+        $merchandising->oculto = !$merchandising->oculto;
+        $merchandising->save();
+
+        return redirect()->route('basket.tienda')->with('mensaje', $merchandising->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+    }
+
+    public function toggleOcultoGaleria(Galeria $galeria)
+    {
+        $galeria->oculto = !$galeria->oculto;
+        $galeria->save();
+
+        return redirect()->route('basket.galeria')->with('mensaje', $galeria->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
     public function enviarInteresMerchan(Request $request)

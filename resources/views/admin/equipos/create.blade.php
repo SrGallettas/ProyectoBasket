@@ -7,7 +7,7 @@
             <h2>Añadir Nuevo Equipo</h2>
             <p>Introduce los datos para registrar un nuevo equipo del club</p>
         </div>
-        <a href="{{ route('equipos.index') }}" class="btn-nuevo btn-nuevo-secondary">
+        <a href="{{ route('equipos.index') }}" class="btn-nuevo btn-nuevo-secondary" title="Volver al listado de equipos">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </header>
@@ -77,6 +77,14 @@
                         <label>Uso de la imagen</label>
                         <p class="input-help-text">Puedes subir un escudo propio o dejar la imagen por defecto del formulario por ahora.</p>
                     </div>
+
+                    <div class="campo-ficha">
+                        <label>Visibilidad en la web</label>
+                        <div class="checkbox-wrapper checkbox-wrapper-ficha">
+                            <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
+                            <span>Ocultar equipo de la web pública</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="seccion-foto-ficha">
@@ -101,8 +109,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul">
+                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de equipos">Cancelar</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="Registrar equipo">
                     <i class="fas fa-save"></i> REGISTRAR EQUIPO
                 </button>
             </div>

@@ -7,18 +7,24 @@
 @section('title', 'Galería - Bellreguard Club de Basket')
 
 @section('contenido')
-<section class="seccion-galeria-header">
-    <div class="header-contenido">
-        <h1>Galería Bellreguard CB</h1>
-        <p>Álbumes del club organizados por tipo para que puedas filtrar cada momento.</p>
-        <div class="stats-galeria">
-            <span><i class="fas fa-folder-open"></i> {{ $galerias->total() }} álbumes</span>
-            <span><i class="fas fa-images"></i> {{ $galerias->sum('imagenes_count') }} fotos en esta página</span>
-        </div>
+<x-public-news-hero
+    badge="ARCHIVO OFICIAL"
+    title="Galería Bellreguard CB"
+    subtitle="Álbumes del club organizados por tipo para que puedas filtrar cada momento."
+>
+    <div class="stats-galeria">
+        <span><i class="fas fa-folder-open"></i> {{ $galerias->total() }} álbumes</span>
+        <span><i class="fas fa-images"></i> {{ $galerias->sum('imagenes_count') }} fotos en esta página</span>
     </div>
-</section>
+</x-public-news-hero>
 
 <section class="contenedor-galeria">
+    @if(session('mensaje'))
+        <div class="public-alert-ok">
+            {{ session('mensaje') }}
+        </div>
+    @endif
+
     <div class="filtros-galeria">
         @foreach($tipos as $clave => $label)
             <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
@@ -47,7 +53,16 @@
                     <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion, 120) }}</p>
                     <div class="footer-album">
                         <span class="fecha-album">{{ $galeria->created_at->format('d/m/Y') }}</span>
-                        <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
+                        <div class="public-inline-actions">
+                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
+                            @auth
+                                <form action="{{ route('basket.galeria.toggle-oculto', $galeria->id) }}" method="POST" class="public-card-action">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="public-hide-button">Ocultar en web</button>
+                                </form>
+                            @endauth
+                        </div>
                     </div>
                 </div>
             </div>

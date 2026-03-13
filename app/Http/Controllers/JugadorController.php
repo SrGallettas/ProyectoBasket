@@ -47,7 +47,8 @@ class JugadorController extends Controller
             'posicion'         => 'required|string',
             'fecha_nacimiento' => 'required|date',
             'equipo_id'        => 'required|exists:equipos,id',
-            'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
+            'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'oculto'           => 'nullable|boolean',
         ], [
             'nombre.required'           => 'El nombre es obligatorio.',
             'apellido.required'         => 'El apellido es obligatorio.',
@@ -67,6 +68,7 @@ class JugadorController extends Controller
         $jugador->posicion = $request->posicion;
         $jugador->fecha_nacimiento = $request->fecha_nacimiento;
         $jugador->equipo_id = $request->equipo_id;
+        $jugador->oculto = $request->boolean('oculto');
 
         if ($request->hasFile('imagen_jugador')) {
             $imagen = $request->file('imagen_jugador');
@@ -104,6 +106,7 @@ class JugadorController extends Controller
             'fecha_nacimiento' => 'required|date',
             'equipo_id'        => 'required|exists:equipos,id',
             'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10MB
+            'oculto'           => 'nullable|boolean',
         ], [
             'nombre.required'           => 'El nombre es obligatorio.',
             'apellido.required'         => 'El apellido es obligatorio.',
@@ -124,6 +127,7 @@ class JugadorController extends Controller
         $jugador->posicion = $request->posicion;
         $jugador->fecha_nacimiento = $request->fecha_nacimiento;
         $jugador->equipo_id = $request->equipo_id;
+        $jugador->oculto = $request->boolean('oculto');
 
         if ($request->hasFile('imagen_jugador')) {
             // 1. Definir la ruta de la imagen antigua
@@ -172,6 +176,14 @@ class JugadorController extends Controller
         // Usamos with('equipo') para traer también los datos del equipo al que pertenece
         $jugador = Jugador::with('equipo')->findOrFail($id);
         return view('admin.jugadores.show', compact('jugador'));
+    }
+
+    public function toggleOculto(Jugador $jugador)
+    {
+        $jugador->oculto = !$jugador->oculto;
+        $jugador->save();
+
+        return redirect()->route('jugadores.index')->with('mensaje', $jugador->oculto ? 'Jugador ocultado de la web publica.' : 'Jugador visible de nuevo en la web publica.');
     }
 
 }
