@@ -68,6 +68,101 @@
             </div>
         </div>
 
+        {{-- ───── GRÁFICO ESTADÍSTICAS ESTILO FLASHSCORE ───── --}}
+        @php
+            $barWidth = function ($a, $b) {
+                $total = $a + $b;
+                if ($total === 0) return [50, 50];
+                return [round(($a / $total) * 100), round(($b / $total) * 100)];
+            };
+
+            $pctNum = function ($made, $attempted) use ($safe) {
+                $made = $safe($made);
+                $attempted = $safe($attempted);
+                return $attempted === 0 ? 0 : round(($made / $attempted) * 100, 1);
+            };
+
+            $rebLocal = $safe($statsLocal->reb_of) + $safe($statsLocal->reb_def);
+            $rebVis   = $safe($statsVisitante->reb_of) + $safe($statsVisitante->reb_def);
+
+            $grafStats = [
+                // ── Tiros de campo ──
+                ['label' => 'T. campo intentados',  'local' => $safe($statsLocal->fga),  'vis' => $safe($statsVisitante->fga),  'fmt' => '', 'sep' => 'Tiros de campo'],
+                ['label' => 'T. campo anotados',    'local' => $safe($statsLocal->fgm),  'vis' => $safe($statsVisitante->fgm),  'fmt' => ''],
+                ['label' => '% Tiros de campo',     'local' => $pctNum($statsLocal->fgm, $statsLocal->fga),  'vis' => $pctNum($statsVisitante->fgm, $statsVisitante->fga),  'fmt' => '%'],
+                // ── Tiros de 2 ──
+                ['label' => 'T. de 2 intentados',   'local' => $safe($statsLocal->t2a),  'vis' => $safe($statsVisitante->t2a),  'fmt' => '', 'sep' => 'Tiros de 2 puntos'],
+                ['label' => 'T. de 2 anotados',     'local' => $safe($statsLocal->t2m),  'vis' => $safe($statsVisitante->t2m),  'fmt' => ''],
+                ['label' => '% Tiros de 2',         'local' => $pctNum($statsLocal->t2m, $statsLocal->t2a),  'vis' => $pctNum($statsVisitante->t2m, $statsVisitante->t2a),  'fmt' => '%'],
+                // ── Tiros de 3 ──
+                ['label' => 'T. de 3 intentados',   'local' => $safe($statsLocal->t3a),  'vis' => $safe($statsVisitante->t3a),  'fmt' => '', 'sep' => 'Tiros de 3 puntos'],
+                ['label' => 'T. de 3 anotados',     'local' => $safe($statsLocal->t3m),  'vis' => $safe($statsVisitante->t3m),  'fmt' => ''],
+                ['label' => '% Tiros de 3',         'local' => $pctNum($statsLocal->t3m, $statsLocal->t3a),  'vis' => $pctNum($statsVisitante->t3m, $statsVisitante->t3a),  'fmt' => '%'],
+                // ── Tiros libres ──
+                ['label' => 'T. libres intentados', 'local' => $safe($statsLocal->fta),  'vis' => $safe($statsVisitante->fta),  'fmt' => '', 'sep' => 'Tiros libres'],
+                ['label' => 'T. libres anotados',   'local' => $safe($statsLocal->ftm),  'vis' => $safe($statsVisitante->ftm),  'fmt' => ''],
+                ['label' => '% Tiros libres',       'local' => $pctNum($statsLocal->ftm, $statsLocal->fta),  'vis' => $pctNum($statsVisitante->ftm, $statsVisitante->fta),  'fmt' => '%'],
+                // ── Rebotes ──
+                ['label' => 'Rebotes totales',   'local' => $rebLocal, 'vis' => $rebVis, 'fmt' => '', 'sep' => 'Rebotes'],
+                ['label' => 'Reb. ofensivos',    'local' => $safe($statsLocal->reb_of),  'vis' => $safe($statsVisitante->reb_of),  'fmt' => ''],
+                ['label' => 'Reb. defensivos',   'local' => $safe($statsLocal->reb_def), 'vis' => $safe($statsVisitante->reb_def), 'fmt' => ''],
+                // ── Otras ──
+                ['label' => 'Asistencias',    'local' => $safe($statsLocal->ast), 'vis' => $safe($statsVisitante->ast), 'fmt' => '', 'sep' => 'Otras'],
+                ['label' => 'Tapones',        'local' => $safe($statsLocal->blk), 'vis' => $safe($statsVisitante->blk), 'fmt' => ''],
+                ['label' => 'Recuperaciones', 'local' => $safe($statsLocal->stl), 'vis' => $safe($statsVisitante->stl), 'fmt' => ''],
+                ['label' => 'Pérdidas',       'local' => $safe($statsLocal->tov), 'vis' => $safe($statsVisitante->tov), 'fmt' => ''],
+                ['label' => 'Faltas',         'local' => $safe($statsLocal->pf),  'vis' => $safe($statsVisitante->pf),  'fmt' => ''],
+            ];
+        @endphp
+
+        <div class="grafico-estadisticas-wrap">
+            <div class="grafico-titulo">
+                <span class="grafico-titulo-equipo">{{ $partido->equipoLocal->nombre }}</span>
+                <span>Estadísticas</span>
+                <span class="grafico-titulo-equipo">{{ $partido->equipoVisitante->nombre }}</span>
+            </div>
+
+            @foreach ($grafStats as $stat)
+                @php
+                    [$wL, $wV] = $barWidth($stat['local'], $stat['vis']);
+                    $isWinnerLocal = $stat['local'] > $stat['vis'];
+                    $isWinnerVis   = $stat['vis'] > $stat['local'];
+                    $displayLocal = $stat['local'] . $stat['fmt'];
+                    $displayVis   = $stat['vis'] . $stat['fmt'];
+                @endphp
+
+                {{-- Separador de sección --}}
+                @if (!empty($stat['sep']))
+                    <div class="grafico-separador">{{ $stat['sep'] }}</div>
+                @endif
+
+                <div class="grafico-fila">
+                    {{-- Valor local --}}
+                    <div class="grafico-valor grafico-valor-local {{ $isWinnerLocal ? 'grafico-ganador' : '' }}">
+                        {{ $displayLocal }}
+                    </div>
+
+                    {{-- Barra local (crece hacia la derecha, pegada al label) --}}
+                    <div class="grafico-barra-container-local">
+                        <div class="grafico-barra grafico-barra-local" style="width: {{ $wL }}%"></div>
+                    </div>
+
+                    {{-- Etiqueta central --}}
+                    <div class="grafico-label">{{ $stat['label'] }}</div>
+
+                    {{-- Barra visitante (crece hacia la izquierda, pegada al label) --}}
+                    <div class="grafico-barra-container-visitante">
+                        <div class="grafico-barra grafico-barra-visitante" style="width: {{ $wV }}%"></div>
+                    </div>
+
+                    {{-- Valor visitante --}}
+                    <div class="grafico-valor grafico-valor-visitante {{ $isWinnerVis ? 'grafico-ganador' : '' }}">
+                        {{ $displayVis }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
         <div class="tabla-estadisticas-wrap">
             <table class="tabla-estadisticas-comparada">
                 <thead>
@@ -112,7 +207,7 @@
         </div>
 
         <div class="tabla-cuartos-wrap">
-            <h2>Puntos por partes</h2>
+            <h2 class=puntos-por-parte>Puntos por partes</h2>
             <table class="tabla-cuartos">
                 <thead>
                     <tr>
