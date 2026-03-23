@@ -115,9 +115,15 @@ body.menu-movil-abierto {
 }
 
 .navegacion-izquierda {
+    color: black;
+    text-decoration: none;
+}
+
+.navegacion-izquierda {
     display: flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none;
 }
 
 .logo-navegacion {
@@ -341,7 +347,10 @@ body.menu-movil-abierto {
     align-items: center;
     gap: 12px;
     margin-bottom: 15px;
+    text-decoration:none;
+    color: white;
 }
+
 
 .logo-footer img {
     width: 50px;
@@ -670,4 +679,44 @@ body.menu-movil-abierto {
 .admin-editing-text {
     color: #666;
     margin: 0;
+}
+
+/***PAGINACION***/
+
+/* Contenedor principal de la paginación */
+.contenedor-paginacion nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Estilo de los enlaces (botones) */
+.contenedor-paginacion .pagination {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.contenedor-paginacion .page-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #023e8a;
+    /* Tu azul */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.contenedor-paginacion .page-link:hover {
+    background-color: #0077b6;
+}
+
+/* Estilo para cuando el botón está desactivado */
+.contenedor-paginacion .disabled .page-link {
+    background-color: #ccc;
+    cursor: not-allowed;
 }

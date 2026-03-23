@@ -21,7 +21,7 @@ class NoticiaController extends Controller
                       ->orWhere('subtitulo', 'like', '%' . $search . '%');
             })
             ->orderBy('created_at', 'desc') // Normalmente las noticias se ven mejor de las nuevas a las viejas
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         // 3. Retornamos la vista con los datos necesarios para el componente

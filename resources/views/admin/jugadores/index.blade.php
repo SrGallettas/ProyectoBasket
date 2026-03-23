@@ -112,9 +112,6 @@
                         </form>
 
                     </div>
-                    @if($jugador->oculto)
-                        <span class="badge-oculto-admin">Oculto</span>
-                    @endif
                 </td>
             </tr>
             @empty

@@ -47,9 +47,6 @@
                 {{-- 2. CATEGORÍA: Con un fondo suave --}}
                 <td class="col-categoria">
                     <span class="badge-categoria-pildora">{{ $partido->categoria }}</span>
-                    @if($partido->oculto)
-                        <span class="badge-oculto-admin">Oculto</span>
-                    @endif
                 </td>
 
                 {{-- 3. LOCAL: Alineado a la derecha para que pegue al VS --}}

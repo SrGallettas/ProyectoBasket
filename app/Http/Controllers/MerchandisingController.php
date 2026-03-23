@@ -20,7 +20,7 @@ class MerchandisingController extends Controller
                       ->orWhere('descripcion', 'like', '%' . $search . '%');
             })
             ->orderBy('nombre', 'asc')
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString(); // Mantiene el parámetro ?search= en la paginación
 
         // 3. Mandamos los datos y la variable $search para la "X" de limpiar búsqueda

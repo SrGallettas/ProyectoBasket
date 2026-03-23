@@ -45,7 +45,7 @@
         @endauth
         
         <div class="rejilla-jugadores">
-            @forelse($equipoMostrar->jugadores as $jugador)
+            @forelse($jugadores as $jugador)
                 <div class="tarjeta-jugador">
                     <div class="foto-jugador">
                         @if($jugador->imagen_jugador)
@@ -89,7 +89,12 @@
                     </div>
                 </div>
             @endforelse
-        </div>        
+        </div>
+
+        <div class="contenedor-paginacion">
+            {{ $jugadores->links() }}
+        </div>
+
     @else
         <div class="contenedor-mensaje-vacio">
             <div class="alerta-basket">

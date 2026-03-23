@@ -13,6 +13,13 @@
     /* Un poco más de aire */
 }
 
+.contenedor-paginacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    width: 100%;
+}
+
 .seccion-equipo-header h1 {
     font-size: 36px;
     /* Un poco más grande para impactar */
@@ -211,8 +218,16 @@
 
 
 /* Migrado de inline */
-.equipo-titulo-categoria { text-align: center; margin-bottom: 40px; width: 100%; text-transform: uppercase; }
-.full-grid-column { grid-column: 1 / -1; }
+.equipo-titulo-categoria {
+    text-align: center;
+    margin-bottom: 40px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.full-grid-column {
+    grid-column: 1 / -1;
+}
 
 @media (max-width: 992px) {
     .seccion-equipo-header {

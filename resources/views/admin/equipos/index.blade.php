@@ -73,9 +73,6 @@
                         </form>
         
                     </div>
-                    @if($equipo->oculto)
-                        <span class="badge-oculto-admin">Oculto</span>
-                    @endif
                 </td>
             </tr>
             @empty

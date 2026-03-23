@@ -75,10 +75,9 @@
         @endforelse
     </div>
 
-    @if($galerias->hasPages())
-        <div class="contenedor-paginacion-galeria">
+        <div class="contenedor-paginacion">
             {{ $galerias->links() }}
         </div>
-    @endif
+
 </section>
 @endsection

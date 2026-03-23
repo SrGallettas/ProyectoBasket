@@ -28,7 +28,7 @@ class PartidoController extends Controller
                     });
             })
             ->orderBy('fecha_hora', 'desc') // Los más recientes primero
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         // 3. Retornamos la vista de partidos (asegúrate de crear la carpeta admin/partidos)

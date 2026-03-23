@@ -25,7 +25,7 @@ class GaleriaController extends Controller
                 });
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         return view('admin.galerias.index', [

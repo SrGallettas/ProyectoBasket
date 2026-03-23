@@ -105,6 +105,10 @@
             </div>
         @endforelse
         </div>
+
+        <div class="contenedor-paginacion">
+            {{ $merchandising->links() }}
+        </div>
     </section>
 
 

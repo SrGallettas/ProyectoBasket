@@ -1,13 +1,13 @@
 <nav class="barra-navegacion" data-nav>
 
     {{-- 1. LOGO Y TEXTO --}}
-    <div class="navegacion-izquierda">
+    <a href="{{ url('/') }}" class="navegacion-izquierda">
         <img src="{{ asset('img/basket.jpeg') }}" class="logo-navegacion" alt="Logo Bellreguard" />
         <div class="titulo-navegacion">
             <h3>Bellreguard</h3>
             <span>Club de Basket</span>
         </div>
-    </div>
+    </a>
 
     <button type="button" class="boton-menu-movil" data-nav-toggle aria-label="Abrir menu" aria-expanded="false">
         <span></span>

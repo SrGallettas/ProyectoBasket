@@ -30,23 +30,30 @@ class BasketController extends Controller
         // 2. Filtro por categoría (por defecto 'Senior')
         $categoriaSel = $request->get('categoria', 'Senior');
 
-        // 3. Buscamos el equipo específico con sus jugadores
+        // 3. Buscamos el equipo específico
         $equipoMostrar = Equipo::where('es_local', true)
             ->where('oculto', false)
             ->where('categoria', $categoriaSel)
-            ->with(['jugadores' => function ($query) {
-                $query->where('oculto', false)->orderBy('dorsal');
-            }])
             ->first();
 
-        return view('basket.equipo', compact('equiposLocales', 'equipoMostrar', 'categoriaSel'));
+        // 4. Paginamos los jugadores (1 por página)
+        $jugadores = null;
+        if ($equipoMostrar) {
+            $jugadores = $equipoMostrar->jugadores()
+                ->where('oculto', false)
+                ->orderBy('dorsal')
+                ->paginate(9)
+                ->withQueryString();
+        }
+
+        return view('basket.equipo', compact('equiposLocales', 'equipoMostrar', 'categoriaSel', 'jugadores'));
     }
 
     public function tienda()
     {
         $merchandising = Merchandising::where('oculto', false)
             ->orderBy('nombre', 'asc')
-            ->get();
+            ->paginate(9);
         return view('basket.merchandising', compact('merchandising'));
     }
 
@@ -150,8 +157,8 @@ class BasketController extends Controller
     public function noticia()
     {
         $noticias = Noticia::where('oculto', false)
-            ->orderBy('created_at', 'asc')
-            ->paginate(10);
+            ->latest()
+            ->paginate(5);
         return view('basket.noticias', compact('noticias'));
     }
 

@@ -79,9 +79,6 @@
                                 </button>
                             </form>
                         </div>
-                        @if($item->oculto)
-                            <span class="badge-oculto-admin">Oculto</span>
-                        @endif
                     </td>
                 </tr>
                 @empty

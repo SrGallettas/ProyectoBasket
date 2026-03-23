@@ -57,11 +57,6 @@
                             <span class="etiqueta-estado {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
                                 {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
                             </span>
-                            @auth
-                                @if($partido->oculto)
-                                    <span class="etiqueta-oculto-admin">Oculto</span>
-                                @endif
-                            @endauth
                             <span class="jornada">Encuentro</span>
                             
                             <div class="enfrentamiento">

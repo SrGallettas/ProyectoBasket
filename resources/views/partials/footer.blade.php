@@ -1,13 +1,13 @@
 <footer class="pie-pagina">
     <div class="rejilla-footer">
         <div class="footer-col info-club">
-            <div class="logo-footer">
+            <a href="{{ url('/') }}" class="logo-footer">
                 <img src="{{ asset('img/basket.jpeg') }}" alt="Logo Bellreguard" />
                 <div class="texto-logo-footer">
                     <h3>Bellreguard</h3>
                     <span>Club de Basket</span>
                 </div>
-            </div>
+            </a>
             <p class="descripcion-breve">Fomentando el baloncesto y sus valores en nuestra comunidad desde hace años.</p>
         </div>
 
