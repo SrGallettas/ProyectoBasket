@@ -9,6 +9,7 @@ use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\GaleriaController;
+use App\Http\Controllers\ClasificacionController;
 
 
 // --- 1. RUTAS PÚBLICAS (Ahora gestionadas por BasketController) ---
@@ -58,6 +59,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::patch('merchandising/{merchandising}/oculto', [MerchandisingController::class, 'toggleOculto'])->name('merchandising.toggle-oculto');
     Route::resource('partidos', PartidoController::class);
     Route::patch('partidos/{partido}/oculto', [PartidoController::class, 'toggleOculto'])->name('partidos.toggle-oculto');
+    Route::resource('clasificaciones', ClasificacionController::class)->parameters(['clasificaciones' => 'clasificacion']);
+    Route::post('clasificaciones/{clasificacion}/recalcular', [ClasificacionController::class, 'recalcular'])->name('clasificaciones.recalcular');
     Route::resource('galerias', GaleriaController::class);
     Route::patch('galerias/{galeria}/oculto', [GaleriaController::class, 'toggleOculto'])->name('galerias.toggle-oculto');
 });

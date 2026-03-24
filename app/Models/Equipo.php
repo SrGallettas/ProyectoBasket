@@ -22,4 +22,9 @@ class Equipo extends Model
     public function jugadores() {
         return $this->hasMany(Jugador::class);
     }
+
+    public function clasificaciones()
+    {
+        return $this->belongsToMany(Clasificacion::class, 'clasificacion_equipo')->withTimestamps();
+    }
 }

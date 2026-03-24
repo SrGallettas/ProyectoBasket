@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Partido;
 use App\Models\Equipo;
+use App\Models\Clasificacion;
 use App\Models\PartidoEstadistica;
 use App\Models\PartidoCuarto;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PartidoController extends Controller
 {
@@ -18,7 +20,7 @@ class PartidoController extends Controller
         $search = $request->input('search');
 
         // 2. Consulta: Buscamos por nombre de equipo local o visitante
-        $partidos = Partido::with(['equipoLocal', 'equipoVisitante'])
+        $partidos = Partido::with(['equipoLocal', 'equipoVisitante', 'clasificacion'])
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('equipoLocal', function ($q) use ($search) {
                     $q->where('nombre', 'like', '%' . $search . '%');
@@ -41,9 +43,10 @@ class PartidoController extends Controller
     {
         // 1. Traemos todos los equipos ordenados por nombre
         $equipos = Equipo::orderBy('nombre', 'asc')->get();
+        $clasificaciones = Clasificacion::with('equipos')->orderBy('nombre', 'asc')->get();
 
         // 2. Enviamos los equipos a la vista de partidos
-        return view('admin.partidos.create', compact('equipos'));
+        return view('admin.partidos.create', compact('equipos', 'clasificaciones'));
     }
     /**
      * Store a newly created resource in storage.
@@ -58,6 +61,9 @@ class PartidoController extends Controller
             'fecha_hora'          => 'required|date',
             'lugar'               => 'required|string|max:255',
             'categoria'           => 'required|string',
+            'tipo_partido'        => 'required|in:liga,amistoso',
+            'clasificacion_id'    => 'nullable|exists:clasificaciones,id',
+            'jornada'             => 'nullable|integer|min:1',
             'oculto'              => 'nullable|boolean',
         ], [
             // Mensajes personalizados
@@ -70,7 +76,10 @@ class PartidoController extends Controller
             'fecha_hora.date'              => 'El formato de fecha y hora no es correcto.',
             'lugar.required'               => 'Debes indicar el lugar del partido (pabellón).',
             'categoria.required' => 'Debes seleccionar una categoría para el partido.',
+            'tipo_partido.required' => 'Debes indicar si el partido es de liga o amistoso.',
         ]);
+
+        $this->validateLigaAssignment($request);
 
         // 2. CREACIÓN DEL OBJETO (Igual que hiciste con Jugador)
         $partido = new Partido();
@@ -81,6 +90,9 @@ class PartidoController extends Controller
         $partido->fecha_hora = $request->fecha_hora;
         $partido->lugar = $request->lugar;
         $partido->categoria = $request->categoria;
+        $partido->tipo_partido = $request->tipo_partido;
+        $partido->clasificacion_id = $request->tipo_partido === 'liga' ? $request->clasificacion_id : null;
+        $partido->jornada = $request->tipo_partido === 'liga' ? $request->jornada : null;
         $partido->oculto = $request->boolean('oculto');
 
         // Nota: Los puntos no los tocamos aquí, se quedan como NULL en la BD
@@ -110,7 +122,8 @@ class PartidoController extends Controller
     {
         $partido = Partido::with(['estadisticas.cuartos', 'equipoLocal', 'equipoVisitante'])->findOrFail($id); // Busca el partido que quieres editar
         $equipos = Equipo::orderBy('nombre', 'asc')->get(); // Trae todos los equipos para que puedas cambiar el local o visitante si quieres
-        return view('admin.partidos.edit', compact('partido', 'equipos')); // Los manda al formulario de edición
+        $clasificaciones = Clasificacion::with('equipos')->orderBy('nombre', 'asc')->get();
+        return view('admin.partidos.edit', compact('partido', 'equipos', 'clasificaciones')); // Los manda al formulario de edición
     }
 
     /**
@@ -127,6 +140,9 @@ class PartidoController extends Controller
             'fecha_hora'          => 'required|date',
             'lugar'               => 'required|string|max:255',
             'categoria'           => 'required|string',
+            'tipo_partido'        => 'required|in:liga,amistoso',
+            'clasificacion_id'    => 'nullable|exists:clasificaciones,id',
+            'jornada'             => 'nullable|integer|min:1',
             'oculto'              => 'nullable|boolean',
         ];
 
@@ -161,6 +177,7 @@ class PartidoController extends Controller
         });
 
         $validator->validate();
+        $this->validateLigaAssignment($request);
 
         // 2. BUSQUEDA: Localizamos el partido por su ID o devolvemos error 404
         $partido = Partido::findOrFail($id);
@@ -171,6 +188,9 @@ class PartidoController extends Controller
         $partido->fecha_hora          = $request->fecha_hora;
         $partido->lugar               = $request->lugar;
         $partido->categoria           = $request->categoria;
+        $partido->tipo_partido        = $request->tipo_partido;
+        $partido->clasificacion_id    = $request->tipo_partido === 'liga' ? $request->clasificacion_id : null;
+        $partido->jornada             = $request->tipo_partido === 'liga' ? $request->jornada : null;
         $partido->oculto              = $request->boolean('oculto');
 
         // 4. PERSISTENCIA: Guardamos los cambios en la base de datos
@@ -315,6 +335,35 @@ class PartidoController extends Controller
         if ((int) $made > (int) $attempt) {
             $equipoTxt = $lado === 'local' ? 'local' : 'visitante';
             $validator->errors()->add("stats.$lado.$madeKey", "En el equipo {$equipoTxt}, los anotados de {$label} no pueden superar los intentados.");
+        }
+    }
+
+    private function validateLigaAssignment(Request $request): void
+    {
+        $tipo = $request->input('tipo_partido');
+
+        if ($tipo !== 'liga') {
+            return;
+        }
+
+        $request->validate([
+            'clasificacion_id' => 'required|exists:clasificaciones,id',
+            'jornada' => 'required|integer|min:1',
+        ], [
+            'clasificacion_id.required' => 'En partidos de liga debes seleccionar una clasificación.',
+            'jornada.required' => 'En partidos de liga debes indicar la jornada.',
+        ]);
+
+        $clasificacion = Clasificacion::with('equipos:id')->findOrFail((int) $request->input('clasificacion_id'));
+        $equiposClasificacion = $clasificacion->equipos->pluck('id')->map(static fn ($id) => (int) $id)->all();
+
+        $equipoLocalId = (int) $request->input('equipo_local_id');
+        $equipoVisitanteId = (int) $request->input('equipo_visitante_id');
+
+        if (!in_array($equipoLocalId, $equiposClasificacion, true) || !in_array($equipoVisitanteId, $equiposClasificacion, true)) {
+            throw ValidationException::withMessages([
+                'clasificacion_id' => 'Los dos equipos deben pertenecer a la clasificación seleccionada.',
+            ]);
         }
     }
 }

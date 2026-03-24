@@ -75,18 +75,41 @@
                     </div>
 
                     <div class="campo-ficha">
-                    <label>Categoría</label>
-                    <select name="categoria" class="input-ficha">
-                        <option value="" disabled selected>Selecciona categoría...</option>
-                        
-                        {{-- Ahora usamos $nombre_categoria en todo el bucle --}}
-                        @foreach(['Senior A', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $nombre_categoria)
-                            <option value="{{ $nombre_categoria }}" {{ old('categoria') == $nombre_categoria ? 'selected' : '' }}>
-                                {{ $nombre_categoria }}
-                            </option>
-                        @endforeach 
-                    </select>
-                </div>
+                        <label>Categoría</label>
+                        <select name="categoria" class="input-ficha">
+                            <option value="" disabled {{ old('categoria') ? '' : 'selected' }}>Selecciona categoría...</option>
+                            @foreach(['Senior A', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $nombre_categoria)
+                                <option value="{{ $nombre_categoria }}" {{ old('categoria') == $nombre_categoria ? 'selected' : '' }}>
+                                    {{ $nombre_categoria }}
+                                </option>
+                            @endforeach 
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Tipo de partido</label>
+                        <select name="tipo_partido" class="input-ficha" data-tipo-partido>
+                            <option value="liga" {{ old('tipo_partido', 'liga') === 'liga' ? 'selected' : '' }}>Liga</option>
+                            <option value="amistoso" {{ old('tipo_partido') === 'amistoso' ? 'selected' : '' }}>Amistoso</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha" data-campo-liga>
+                        <label>Clasificación (liga)</label>
+                        <select name="clasificacion_id" class="input-ficha">
+                            <option value="" {{ old('clasificacion_id') ? '' : 'selected' }}>Selecciona clasificación...</option>
+                            @foreach($clasificaciones as $clasificacion)
+                                <option value="{{ $clasificacion->id }}" {{ (int) old('clasificacion_id') === (int) $clasificacion->id ? 'selected' : '' }}>
+                                    {{ $clasificacion->nombre }}{{ $clasificacion->temporada ? ' · ' . $clasificacion->temporada : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha" data-campo-liga>
+                        <label>Jornada</label>
+                        <input type="number" name="jornada" min="1" class="input-ficha" value="{{ old('jornada') }}" placeholder="Ej. 3">
+                    </div>
 
                     <div class="campo-ficha">
                         <label style="display:flex; align-items:center; gap:8px;">
@@ -106,4 +129,24 @@
         </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tipoSelect = document.querySelector('[data-tipo-partido]');
+    const camposLiga = document.querySelectorAll('[data-campo-liga]');
+
+    if (!tipoSelect || camposLiga.length === 0) {
+        return;
+    }
+
+    const toggleCampos = () => {
+        const esLiga = tipoSelect.value === 'liga';
+        camposLiga.forEach((campo) => {
+            campo.style.display = esLiga ? '' : 'none';
+        });
+    };
+
+    toggleCampos();
+    tipoSelect.addEventListener('change', toggleCampos);
+});
+</script>
 @endsection

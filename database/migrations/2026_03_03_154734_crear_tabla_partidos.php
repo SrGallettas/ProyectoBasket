@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('equipo_local_id')->constrained('equipos');
             $table->foreignId('equipo_visitante_id')->constrained('equipos');
+            $table->foreignId('clasificacion_id')->nullable()->constrained('clasificaciones')->nullOnDelete();
             $table->dateTime('fecha_hora');
             $table->string('lugar')->default('Pabellón Municipal');
             $table->string('categoria');
+            $table->string('tipo_partido')->default('liga');
+            $table->unsignedInteger('jornada')->nullable();
             $table->boolean('oculto')->default(false);
 
             $table->timestamps();

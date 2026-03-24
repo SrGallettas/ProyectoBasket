@@ -15,11 +15,15 @@ class Partido extends Model
         'fecha_hora', 
         'lugar',
         'categoria',
+        'tipo_partido',
+        'clasificacion_id',
+        'jornada',
         'oculto',
     ];
 
     protected $casts = [
         'oculto' => 'boolean',
+        'jornada' => 'integer',
     ];
 
     public function equipoLocal()
@@ -41,5 +45,10 @@ class Partido extends Model
     public function cuartos()
     {
         return $this->hasMany(PartidoCuarto::class);
+    }
+
+    public function clasificacion()
+    {
+        return $this->belongsTo(Clasificacion::class);
     }
 }

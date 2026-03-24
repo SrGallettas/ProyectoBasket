@@ -8,6 +8,8 @@ use App\Models\Merchandising;
 use App\Models\Partido;
 use App\Models\Galeria;
 use App\Models\Jugador;
+use App\Models\Clasificacion;
+use App\Models\ClasificacionFila;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -59,7 +61,83 @@ class BasketController extends Controller
 
     public function clasificacion()
     {
-        return view('basket.clasificacion');
+        $clasificaciones = Clasificacion::orderByDesc('activa')->orderBy('nombre')->get();
+        $clasificacionSeleccionada = null;
+
+        if ($clasificaciones->isNotEmpty()) {
+            $clasificacionId = request('clasificacion_id');
+
+            if ($clasificacionId) {
+                $clasificacionSeleccionada = $clasificaciones->firstWhere('id', (int) $clasificacionId);
+            }
+
+            if (!$clasificacionSeleccionada) {
+                $clasificacionSeleccionada = $clasificaciones->firstWhere('activa', true) ?: $clasificaciones->first();
+            }
+        }
+
+        $jornadas = collect();
+        $jornadaSeleccionada = null;
+        $filas = collect();
+        $partidosJornada = collect();
+
+        if ($clasificacionSeleccionada) {
+            $jornadasClasificacion = ClasificacionFila::where('clasificacion_id', $clasificacionSeleccionada->id)
+                ->whereNotNull('jornada')
+                ->distinct()
+                ->orderBy('jornada')
+                ->pluck('jornada');
+
+            $jornadasPartidos = Partido::where('clasificacion_id', $clasificacionSeleccionada->id)
+                ->where('tipo_partido', 'liga')
+                ->whereNotNull('jornada')
+                ->where('oculto', false)
+                ->distinct()
+                ->orderBy('jornada')
+                ->pluck('jornada');
+
+            $jornadas = $jornadasClasificacion
+                ->merge($jornadasPartidos)
+                ->map(fn ($jornada) => (int) $jornada)
+                ->filter(fn ($jornada) => $jornada > 0)
+                ->unique()
+                ->sort()
+                ->values();
+
+            $jornadaSeleccionada = request('jornada');
+            if ($jornadaSeleccionada !== null) {
+                $jornadaSeleccionada = (int) $jornadaSeleccionada;
+            } elseif ($jornadas->isNotEmpty()) {
+                $jornadaSeleccionada = (int) $jornadas->last();
+            }
+
+            if ($jornadaSeleccionada) {
+                $filas = ClasificacionFila::with('equipo')
+                    ->where('clasificacion_id', $clasificacionSeleccionada->id)
+                    ->where('jornada', $jornadaSeleccionada)
+                    ->orderByDesc('pts')
+                    ->orderByDesc('diff')
+                    ->orderByDesc('pf')
+                    ->get();
+
+                $partidosJornada = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
+                    ->where('clasificacion_id', $clasificacionSeleccionada->id)
+                    ->where('tipo_partido', 'liga')
+                    ->where('jornada', $jornadaSeleccionada)
+                    ->where('oculto', false)
+                    ->orderBy('fecha_hora')
+                    ->get();
+            }
+        }
+
+        return view('basket.clasificacion', compact(
+            'clasificaciones',
+            'clasificacionSeleccionada',
+            'jornadas',
+            'jornadaSeleccionada',
+            'filas',
+            'partidosJornada'
+        ));
     }
 
     public function estadisticas()

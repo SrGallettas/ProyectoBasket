@@ -73,7 +73,7 @@
                         <select name="equipo_local_id" required class="input-ficha">
                             @foreach($equipos as $equipo)
                                 {{-- Cargamos el valor de la base de datos directamente --}}
-                                <option value="{{ $equipo->id }}" {{ $partido->equipo_local_id == $equipo->id ? 'selected' : '' }}>
+                                <option value="{{ $equipo->id }}" {{ (int) old('equipo_local_id', $partido->equipo_local_id) === (int) $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
                                 </option>
                             @endforeach
@@ -84,7 +84,7 @@
                         <label>Equipo Visitante</label>
                         <select name="equipo_visitante_id" required class="input-ficha">
                             @foreach($equipos as $equipo)
-                                <option value="{{ $equipo->id }}" {{ $partido->equipo_visitante_id == $equipo->id ? 'selected' : '' }}>
+                                <option value="{{ $equipo->id }}" {{ (int) old('equipo_visitante_id', $partido->equipo_visitante_id) === (int) $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
                                 </option>
                             @endforeach
@@ -100,24 +100,49 @@
                         <label>Fecha y Hora</label>
                         {{-- Formateamos el valor para que el input datetime-local lo acepte --}}
                         <input type="datetime-local" name="fecha_hora" 
-                               value="{{ \Carbon\Carbon::parse($partido->fecha_hora)->format('Y-m-d\TH:i') }}" 
+                               value="{{ old('fecha_hora', \Carbon\Carbon::parse($partido->fecha_hora)->format('Y-m-d\TH:i')) }}" 
                                required class="input-ficha">
                     </div>
 
                     <div class="campo-ficha">
                         <label>Lugar / Pabellón</label>
-                        <input type="text" name="lugar" value="{{ $partido->lugar }}" required class="input-ficha">
+                        <input type="text" name="lugar" value="{{ old('lugar', $partido->lugar) }}" required class="input-ficha">
                     </div>
 
                     <div class="campo-ficha">
                         <label>Categoría</label>
                         <select name="categoria" required class="input-ficha">
                             @foreach(['Senior A', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $cat)
-                                <option value="{{ $cat }}" {{ $partido->categoria == $cat ? 'selected' : '' }}>
+                                <option value="{{ $cat }}" {{ old('categoria', $partido->categoria) == $cat ? 'selected' : '' }}>
                                     {{ $cat }}
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Tipo de partido</label>
+                        <select name="tipo_partido" class="input-ficha" data-tipo-partido>
+                            <option value="liga" {{ old('tipo_partido', $partido->tipo_partido ?? 'liga') === 'liga' ? 'selected' : '' }}>Liga</option>
+                            <option value="amistoso" {{ old('tipo_partido', $partido->tipo_partido) === 'amistoso' ? 'selected' : '' }}>Amistoso</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha" data-campo-liga>
+                        <label>Clasificación (liga)</label>
+                        <select name="clasificacion_id" class="input-ficha">
+                            <option value="" {{ old('clasificacion_id', $partido->clasificacion_id) ? '' : 'selected' }}>Selecciona clasificación...</option>
+                            @foreach($clasificaciones as $clasificacion)
+                                <option value="{{ $clasificacion->id }}" {{ (int) old('clasificacion_id', $partido->clasificacion_id) === (int) $clasificacion->id ? 'selected' : '' }}>
+                                    {{ $clasificacion->nombre }}{{ $clasificacion->temporada ? ' · ' . $clasificacion->temporada : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha" data-campo-liga>
+                        <label>Jornada</label>
+                        <input type="number" name="jornada" min="1" class="input-ficha" value="{{ old('jornada', $partido->jornada) }}" placeholder="Ej. 3">
                     </div>
 
                     <div class="campo-ficha">
@@ -198,4 +223,24 @@
         </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tipoSelect = document.querySelector('[data-tipo-partido]');
+    const camposLiga = document.querySelectorAll('[data-campo-liga]');
+
+    if (!tipoSelect || camposLiga.length === 0) {
+        return;
+    }
+
+    const toggleCampos = () => {
+        const esLiga = tipoSelect.value === 'liga';
+        camposLiga.forEach((campo) => {
+            campo.style.display = esLiga ? '' : 'none';
+        });
+    };
+
+    toggleCampos();
+    tipoSelect.addEventListener('change', toggleCampos);
+});
+</script>
 @endsection

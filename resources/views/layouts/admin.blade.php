@@ -46,6 +46,10 @@
                     <i class="fas fa-calendar-alt"></i><span>Partidos</span>
                 </a>
 
+                <a href="{{ route('clasificaciones.index') }}" class="item-admin {{ request()->is('admin/clasificaciones*') ? 'activo' : '' }}">
+                    <i class="fas fa-trophy"></i><span>Clasificaciones</span>
+                </a>
+
                 <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
                     <i class="fas fa-images"></i><span>Galerías</span>
                 </a>

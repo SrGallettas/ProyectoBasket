@@ -39,6 +39,13 @@
             'icono' => 'fas fa-calendar-alt',
         ],
         [
+            'titulo' => 'Clasificaciones',
+            'texto' => 'Ligas, jornadas y tabla de posiciones por temporada.',
+            'ruta' => route('clasificaciones.index'),
+            'imagen' => asset('img/partidos.png'),
+            'icono' => 'fas fa-trophy',
+        ],
+        [
             'titulo' => 'Galerías',
             'texto' => 'Álbumes, portadas e imágenes del club.',
             'ruta' => route('galerias.index'),

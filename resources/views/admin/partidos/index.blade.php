@@ -47,6 +47,15 @@
                 {{-- 2. CATEGORÍA: Con un fondo suave --}}
                 <td class="col-categoria">
                     <span class="badge-categoria-pildora">{{ $partido->categoria }}</span>
+                    <div class="admin-subtle-text" style="margin-top: 6px;">
+                        {{ ucfirst($partido->tipo_partido ?? 'liga') }}
+                        @if($partido->tipo_partido === 'liga' && $partido->jornada)
+                            · J{{ $partido->jornada }}
+                        @endif
+                        @if($partido->tipo_partido === 'liga' && $partido->clasificacion)
+                            · {{ $partido->clasificacion->nombre }}
+                        @endif
+                    </div>
                 </td>
 
                 {{-- 3. LOCAL: Alineado a la derecha para que pegue al VS --}}

@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/clasificacion.css') }}" />
 @endpush
 
+@use('Carbon\Carbon')
+
 {{-- TÍTULO DE LA PESTAÑA --}}
 @section('title', 'Inicio - Bellreguard Club de Basket')
 
@@ -22,87 +24,177 @@
 </x-public-news-hero>
 
 <section class="contenedor-clasificacion">
-    <div class="selector-categorias">
-        <button class="btn-cat activo">Senior</button>
-        <button class="btn-cat">Junior</button>
-        <button class="btn-cat">Cadete</button>
-        <button class="btn-cat">Infantil</button>
-        <button class="btn-cat">Alevín</button>
-    </div>
+    @if($clasificaciones->isNotEmpty())
+        <form method="GET" action="{{ route('basket.clasificacion') }}" class="selector-categorias">
+            <label class="selector-field">
+                <span>Competición</span>
+                <select name="clasificacion_id" class="btn-cat selector-input">
+                    @foreach($clasificaciones as $clasificacion)
+                        <option value="{{ $clasificacion->id }}" @selected((int) optional($clasificacionSeleccionada)->id === (int) $clasificacion->id)>
+                            {{ $clasificacion->nombre }}{{ $clasificacion->temporada ? ' · ' . $clasificacion->temporada : '' }}
+                        </option>
+                    @endforeach
+                </select>
+            </label>
 
-    <div class="tabla-contenedor">
-        <div class="tabla-header">
-            <i class="fas fa-trophy"></i> Liga Senior - Temporada 2023/24
+            <label class="selector-field">
+                <span>Jornada</span>
+                <select name="jornada" class="btn-cat selector-input">
+                    @if($jornadas->isEmpty())
+                        <option value="">Sin jornadas</option>
+                    @else
+                        @foreach($jornadas as $jornada)
+                            <option value="{{ $jornada }}" @selected((int) $jornadaSeleccionada === (int) $jornada)>Jornada {{ $jornada }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </label>
+
+            <button type="submit" class="btn-cat activo">Ver jornada</button>
+        </form>
+
+        <div class="tabla-contenedor">
+            <div class="tabla-header">
+                <i class="fas fa-trophy"></i>
+                {{ $clasificacionSeleccionada->nombre }}
+                @if($clasificacionSeleccionada->temporada)
+                    - Temporada {{ $clasificacionSeleccionada->temporada }}
+                @endif
+                @if($jornadaSeleccionada)
+                    · Jornada {{ $jornadaSeleccionada }}
+                @endif
+            </div>
+            <div class="tabla-scroll">
+                <table class="tabla-clasificacion">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Equipo</th>
+                            <th>PJ</th>
+                            <th>PG</th>
+                            <th>PP</th>
+                            <th>PF</th>
+                            <th>PC</th>
+                            <th>Diff</th>
+                            <th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($filas as $idx => $fila)
+                            @php
+                                $nombreEquipo = optional($fila->equipo)->nombre ?? 'Equipo';
+                                $escudoEquipo = optional($fila->equipo)->imagen_club
+                                    ? asset('escudos/' . $fila->equipo->imagen_club)
+                                    : asset('img/club_14.png');
+                            @endphp
+                            <tr class="{{ str_contains(strtolower($nombreEquipo), 'bellreguard') ? 'fila-destacada' : '' }}">
+                                <td><strong>{{ $idx + 1 }}</strong></td>
+                                <td>
+                                    <div class="equipo-columna">
+                                        <img src="{{ $escudoEquipo }}" alt="Escudo {{ $nombreEquipo }}" loading="lazy">
+                                        <span>{{ $nombreEquipo }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $fila->pj }}</td>
+                                <td>{{ $fila->pg }}</td>
+                                <td>{{ $fila->pp }}</td>
+                                <td>{{ $fila->pf }}</td>
+                                <td>{{ $fila->pc }}</td>
+                                <td>{{ $fila->diff }}</td>
+                                <td><strong>{{ $fila->pts }}</strong></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9">Todavía no hay clasificación calculada para esta jornada.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="tabla-scroll">
-            <table class="tabla-clasificacion">
-                <thead>
-                    <tr>
-                        <th>Pos</th>
-                        <th>Equipo</th>
-                        <th>PJ</th>
-                        <th>PG</th>
-                        <th>PP</th>
-                        <th>PF</th>
-                        <th>PC</th>
-                        <th>Pts</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>1</strong></td>
-                        <td>Valencia BC</td>
-                        <td>18</td>
-                        <td>15</td>
-                        <td>3</td>
-                        <td>1456</td>
-                        <td>1298</td>
-                        <td><strong>33</strong></td>
-                    </tr>
-                    <tr class="fila-destacada">
-                        <td><strong>2</strong></td>
-                        <td>Bellreguard CB</td>
-                        <td>18</td>
-                        <td>13</td>
-                        <td>5</td>
-                        <td>1389</td>
-                        <td>1267</td>
-                        <td><strong>31</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>3</strong></td>
-                        <td>Alicante Club</td>
-                        <td>18</td>
-                        <td>12</td>
-                        <td>6</td>
-                        <td>1334</td>
-                        <td>1289</td>
-                        <td><strong>30</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>4</strong></td>
-                        <td>Castellón Basket</td>
-                        <td>18</td>
-                        <td>10</td>
-                        <td>8</td>
-                        <td>1278</td>
-                        <td>1301</td>
-                        <td><strong>28</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>5</strong></td>
-                        <td>Gandia Sports</td>
-                        <td>18</td>
-                        <td>8</td>
-                        <td>10</td>
-                        <td>1234</td>
-                        <td>1356</td>
-                        <td><strong>26</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <section class="jornada-partidos">
+            <div class="tabla-header jornada-header">
+                <i class="fas fa-calendar-alt"></i>
+                Partidos de la jornada
+                @if($jornadaSeleccionada)
+                    <span class="jornada-pill">J{{ $jornadaSeleccionada }}</span>
+                @endif
+            </div>
+
+            <div class="partidos-jornada-grid">
+                @forelse($partidosJornada as $partido)
+                    @php
+                        $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                        $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+                        $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
+                        $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
+                        $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
+                        $escudoLocal = optional($partido->equipoLocal)->imagen_club
+                            ? asset('escudos/' . $partido->equipoLocal->imagen_club)
+                            : asset('img/club_14.png');
+                        $escudoVisitante = optional($partido->equipoVisitante)->imagen_club
+                            ? asset('escudos/' . $partido->equipoVisitante->imagen_club)
+                            : asset('img/club_14.png');
+                    @endphp
+
+                    <article class="partido-jornada-card">
+                        <div class="partido-jornada-top">
+                            <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
+                                {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                            </span>
+                            <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
+                        </div>
+
+                        <div class="partido-jornada-equipos">
+                            <div class="club-mini">
+                                <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
+                                <p>{{ $nombreLocal }}</p>
+                            </div>
+
+                            @if($isFinalizado)
+                                <div class="marcador-jornada">
+                                    {{ (int) $statsLocal->puntos_totales }} - {{ (int) $statsVisitante->puntos_totales }}
+                                </div>
+                            @else
+                                <div class="marcador-jornada pendiente">VS</div>
+                            @endif
+
+                            <div class="club-mini">
+                                <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
+                                <p>{{ $nombreVisitante }}</p>
+                            </div>
+                        </div>
+
+                        <p class="partido-lugar">
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{ $partido->lugar }}
+                        </p>
+                    </article>
+                @empty
+                    <div class="partidos-vacio">
+                        <i class="fa-regular fa-calendar-xmark"></i>
+                        <p>No hay partidos públicos para esta jornada.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
+    @else
+        <div class="tabla-contenedor">
+            <div class="tabla-header">
+                <i class="fas fa-info-circle"></i> Sin clasificaciones disponibles
+            </div>
+            <div class="tabla-scroll">
+                <table class="tabla-clasificacion">
+                    <tbody>
+                        <tr>
+                            <td>El club todavía no ha publicado ninguna clasificación.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    @endif
 </section>
 
 @endsection
