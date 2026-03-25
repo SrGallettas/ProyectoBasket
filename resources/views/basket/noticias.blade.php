@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
 @endpush
 
-@section('titulo', 'Noticias - Bellreguard Basket')
+@section('title', 'Noticias - Bellreguard Basket')
 
 @section('contenido')
 
@@ -32,7 +32,7 @@
             <article class="noticia-row">
                 {{-- Imagen --}}
                 <div class="noticia-img-box">
-                    <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}">
+                    <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     <div class="noticia-category-tag">BASKET</div>
                 </div>
                 

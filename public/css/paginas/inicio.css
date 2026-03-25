@@ -4,6 +4,10 @@
  * *
  *******************************************************************************/
 
+body.pagina-inicio {
+    background: #fff;
+}
+
 .seccion-hero {
     background: #e60000;
     color: white;
@@ -358,4 +362,109 @@
         width: 100%;
         min-width: 0;
     }
+}
+
+/* =========================
+   Modo oscuro SOLO Inicio
+   ========================= */
+html[data-theme="dark"] .seccion-hero {
+    background: radial-gradient(circle at 20% 16%, #7f1d1d 0%, #1f2937 48%, #020617 100%);
+}
+
+html[data-theme="dark"] .boton-principal {
+    background: #f8fafc;
+    color: #991b1b;
+}
+
+html[data-theme="dark"] .boton-principal:hover {
+    background: #ffffff;
+    box-shadow: 0 10px 22px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .boton-secundario {
+    background: rgba(15, 23, 42, 0.36);
+    border-color: rgba(226, 232, 240, 0.42);
+}
+
+html[data-theme="dark"] .boton-secundario:hover {
+    background: rgba(15, 23, 42, 0.62);
+}
+
+html[data-theme="dark"] .seccion-noticias {
+    background: linear-gradient(180deg, #0b1120 0%, #111827 100%);
+}
+
+html[data-theme="dark"] .seccion-noticias h2,
+html[data-theme="dark"] .patrocinadores h2 {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .subtitulo {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .tarjeta-noticia {
+    background: linear-gradient(180deg, #1e293b 0%, #111827 100%);
+    border-color: #334155;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.5);
+}
+
+html[data-theme="dark"] .tarjeta-noticia:hover {
+    box-shadow: 0 20px 40px rgba(2, 6, 23, 0.7);
+}
+
+html[data-theme="dark"] .contenedor-img {
+    background-color: #0f172a;
+}
+
+html[data-theme="dark"] .info-tarjeta .fecha {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .info-tarjeta h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .info-tarjeta p {
+    color: #d1d5db;
+}
+
+html[data-theme="dark"] .info-tarjeta a {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .inicio-cta-link {
+    background: #b91c1c;
+}
+
+html[data-theme="dark"] .inicio-cta-link:hover {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .patrocinadores {
+    background: #111827;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .patrocinadores .subtitulo {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .patrocinador {
+    background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+    border-color: #374151;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .patrocinador:hover {
+    border-color: #ef4444;
+}
+
+html[data-theme="dark"] .patrocinador img {
+    filter: grayscale(0.15) brightness(1.04);
+    opacity: 0.95;
+}
+
+html[data-theme="dark"] body.pagina-inicio {
+    background: #111827;
 }

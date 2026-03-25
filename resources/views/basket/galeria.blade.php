@@ -39,7 +39,7 @@
             <div class="tarjeta-album">
                 <div class="imagen-album">
                     @if($galeria->portada)
-                        <img src="{{ asset('galerias/' . $galeria->portada->archivo) }}" alt="{{ $galeria->titulo }}">
+                        <img src="{{ asset('galerias/' . $galeria->portada->archivo) }}" alt="{{ $galeria->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     @else
                         <div class="album-placeholder">
                             <i class="fas fa-image"></i>

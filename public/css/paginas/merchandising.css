@@ -275,6 +275,152 @@
 .merch-tallas-bloque { margin-bottom: 15px; font-size: 0.9rem; }
 .merch-tallas-texto { background: #eee; padding: 2px 6px; border-radius: 4px; }
 
+.pie-pagina {
+    margin-top: 0;
+}
+
+/* =========================
+   Modo oscuro SOLO Tienda
+   ========================= */
+html[data-theme="dark"] .public-news-hero {
+    background: radial-gradient(circle at 22% 12%, #7f1d1d 0%, #1f2937 45%, #020617 100%);
+}
+
+html[data-theme="dark"] .public-news-hero-badge {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .public-news-hero h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .public-news-hero p {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .public-news-hero-divider {
+    background: #f87171;
+}
+
+html[data-theme="dark"] .iconos-merchandising {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .productos-oficiales {
+    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+}
+
+html[data-theme="dark"] .public-alert-ok {
+    background: #052e1a;
+    border-color: #166534;
+    color: #bbf7d0;
+}
+
+html[data-theme="dark"] .merch-kicker {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .productos-oficiales h2 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .merch-subtitulo {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .tarjeta-producto {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .tarjeta-producto img {
+    background: #0b1220;
+}
+
+html[data-theme="dark"] .info-producto h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .descripcion-producto {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .precio {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .selector-talla {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .selector-talla:focus {
+    outline: none;
+    border-color: #ef4444;
+}
+
+html[data-theme="dark"] .merch-sin-talla {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .boton-comprar {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .boton-comprar:hover {
+    background: #ef4444;
+}
+
+html[data-theme="dark"] .public-hide-button {
+    background: #111827;
+    border-color: #f59e0b;
+    color: #fbbf24;
+}
+
+html[data-theme="dark"] .public-hide-button:hover {
+    background: #f59e0b;
+    color: #111827;
+}
+
+html[data-theme="dark"] .merch-tallas-texto {
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .contacto-pedido {
+    background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+}
+
+html[data-theme="dark"] .boton-contacto {
+    background: #111827;
+    color: #fca5a5;
+    border: 1px solid #374151;
+}
+
+html[data-theme="dark"] .boton-contacto:hover {
+    background: #1f2937;
+}
+
+html[data-theme="dark"] .productos-oficiales .pagination .page-link {
+    background: #1d4ed8;
+    border-color: #1e40af;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .productos-oficiales .pagination .page-link:hover {
+    background: #2563eb;
+}
+
+html[data-theme="dark"] .productos-oficiales .pagination .disabled .page-link,
+html[data-theme="dark"] .productos-oficiales .pagination .page-item.disabled .page-link {
+    background: #334155;
+    color: #94a3b8;
+}
+
 @media (max-width: 992px) {
     .seccion-merchandising-header,
     .productos-oficiales,

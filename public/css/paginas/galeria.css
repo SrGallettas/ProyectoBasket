@@ -452,6 +452,188 @@
     right: 24px;
 }
 
+.pie-pagina {
+    margin-top: 0;
+}
+
+/* =========================
+   Modo oscuro SOLO Galeria
+   ========================= */
+html[data-theme="dark"] .public-news-hero {
+    background: radial-gradient(circle at 22% 12%, #7f1d1d 0%, #1f2937 45%, #020617 100%);
+}
+
+html[data-theme="dark"] .public-news-hero-badge {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .public-news-hero h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .public-news-hero p {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .public-news-hero-divider {
+    background: #f87171;
+}
+
+html[data-theme="dark"] .stats-galeria {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .contenedor-galeria {
+    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    border-radius: 14px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+html[data-theme="dark"] .public-alert-ok {
+    background: #052e1a;
+    border-color: #166534;
+    color: #bbf7d0;
+}
+
+html[data-theme="dark"] .filtros-galeria {
+    background: #0f172a;
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.45);
+    border: 1px solid #1f2937;
+}
+
+html[data-theme="dark"] .btn-filtro {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn-filtro.activo {
+    background: #dc2626;
+    color: #fff;
+}
+
+html[data-theme="dark"] .tarjeta-album {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .album-placeholder {
+    background: #111827;
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .badge-fotos {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .tipo-album {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .info-album h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .info-album p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .footer-album {
+    border-top-color: #334155;
+}
+
+html[data-theme="dark"] .fecha-album {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .btn-ver-album {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .btn-ver-album:hover {
+    background: #ef4444;
+}
+
+html[data-theme="dark"] .public-hide-button {
+    background: #111827;
+    border-color: #f59e0b;
+    color: #fbbf24;
+}
+
+html[data-theme="dark"] .public-hide-button:hover {
+    background: #f59e0b;
+    color: #111827;
+}
+
+html[data-theme="dark"] .galeria-empty-state {
+    background: #0f172a;
+    color: #cbd5e1;
+    border: 1px solid #1f2937;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .galeria-empty-state i {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .galeria-breadcrumb {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .galeria-editorial-shell {
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .galeria-kicker {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .galeria-editorial-intro h2 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .galeria-editorial-intro p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .foto-galeria-card {
+    background: #0b1220;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.6);
+}
+
+html[data-theme="dark"] .lightbox-cerrar,
+html[data-theme="dark"] .lightbox-nav {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid #334155;
+}
+
+html[data-theme="dark"] .lightbox-meta {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .contenedor-galeria .pagination .page-link {
+    background: #1d4ed8;
+    border-color: #1e40af;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .contenedor-galeria .pagination .page-link:hover {
+    background: #2563eb;
+}
+
+html[data-theme="dark"] .contenedor-galeria .pagination .disabled .page-link,
+html[data-theme="dark"] .contenedor-galeria .pagination .page-item.disabled .page-link {
+    background: #334155;
+    color: #94a3b8;
+}
+
 @media (max-width: 768px) {
     .seccion-galeria-header {
         padding: 42px 18px;

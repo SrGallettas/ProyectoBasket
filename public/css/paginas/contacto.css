@@ -246,6 +246,101 @@
 /* Migrado de inline */
 .mapa-iframe-no-border { border: 0; }
 
+.pie-pagina {
+    margin-top: 0;
+}
+
+/* =========================
+   Modo oscuro SOLO Contacto
+   ========================= */
+html[data-theme="dark"] .public-news-hero {
+    background: radial-gradient(circle at 22% 12%, #7f1d1d 0%, #1f2937 45%, #020617 100%);
+}
+
+html[data-theme="dark"] .public-news-hero-badge {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .public-news-hero h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .public-news-hero p {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .public-news-hero-divider {
+    background: #f87171;
+}
+
+html[data-theme="dark"] .contenedor-contacto {
+    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    border-radius: 14px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+html[data-theme="dark"] .bloque-sobre-nosotros,
+html[data-theme="dark"] .tarjeta-contacto-mini {
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .titulo-con-icono i,
+html[data-theme="dark"] .icono-contacto-rojo {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .bloque-sobre-nosotros h2,
+html[data-theme="dark"] .detalles-contacto h4,
+html[data-theme="dark"] .titulo-mapa-centrado h2 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .bloque-sobre-nosotros p,
+html[data-theme="dark"] .detalles-contacto p,
+html[data-theme="dark"] .titulo-mapa-centrado p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .dato-principal {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .detalles-contacto small {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .iconos-redes-contacto a {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .iconos-redes-contacto a:hover {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .mapa-placeholder {
+    border-color: #334155;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .info-flotante-mapa {
+    background: #111827;
+    border-left-color: #ef4444;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .info-flotante-mapa i {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .info-flotante-mapa span {
+    color: #f8fafc;
+}
+
 @media (max-width: 992px) {
     .seccion-contacto-header {
         padding: 60px 24px;

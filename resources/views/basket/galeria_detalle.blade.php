@@ -41,7 +41,7 @@
                     data-src="{{ asset('galerias/' . $imagen->archivo) }}"
                     data-alt="{{ $galeria->titulo }} - Foto {{ $index + 1 }}"
                 >
-                    <img src="{{ asset('galerias/' . $imagen->archivo) }}" alt="{{ $galeria->titulo }} - Foto {{ $index + 1 }}">
+                    <img src="{{ asset('galerias/' . $imagen->archivo) }}" alt="{{ $galeria->titulo }} - Foto {{ $index + 1 }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     <span class="foto-galeria-overlay">
                         <i class="fas fa-expand"></i> Ver foto
                     </span>

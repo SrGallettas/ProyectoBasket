@@ -299,6 +299,171 @@
     font-weight: 600;
 }
 
+.pie-pagina {
+    margin-top: 0;
+}
+
+/* =========================
+   Modo oscuro SOLO Clasificacion
+   ========================= */
+html[data-theme="dark"] .public-news-hero {
+    background: radial-gradient(circle at 20% 12%, #7f1d1d 0%, #1f2937 46%, #020617 100%);
+}
+
+html[data-theme="dark"] .public-news-hero-badge {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .public-news-hero h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .public-news-hero p {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .public-news-hero-divider {
+    background: #f87171;
+}
+
+html[data-theme="dark"] .icono-trofeo {
+    color: #fde68a;
+}
+
+html[data-theme="dark"] .selector-categorias {
+    background: #0f172a;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+    border: 1px solid #1f2937;
+}
+
+html[data-theme="dark"] .selector-field span {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .btn-cat {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn-cat:hover:not(.activo) {
+    background: #273449;
+    border-color: #475569;
+}
+
+html[data-theme="dark"] .btn-cat.activo {
+    background: #dc2626;
+    border-color: #ef4444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .tabla-contenedor,
+html[data-theme="dark"] .jornada-partidos {
+    background: #0f172a;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+    border: 1px solid #1f2937;
+}
+
+html[data-theme="dark"] .tabla-header {
+    background: linear-gradient(120deg, #b91c1c, #991b1b);
+}
+
+html[data-theme="dark"] .tabla-clasificacion th {
+    background: #111827;
+    color: #cbd5e1;
+    border-bottom-color: #334155;
+}
+
+html[data-theme="dark"] .tabla-clasificacion td {
+    color: #e5e7eb;
+    border-bottom-color: #1f2937;
+}
+
+html[data-theme="dark"] .equipo-columna img {
+    border-color: #334155;
+    background: #0b1220;
+}
+
+html[data-theme="dark"] .fila-destacada td {
+    background: #3a1115;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .fila-destacada td strong {
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .fila-destacada td:first-child {
+    border-left-color: #ef4444;
+}
+
+html[data-theme="dark"] .tabla-clasificacion tr:hover td {
+    background: #131f32;
+}
+
+html[data-theme="dark"] .partidos-jornada-grid {
+    background: #111827;
+}
+
+html[data-theme="dark"] .partido-jornada-card {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .estado-partido.finalizado {
+    background: #3f1418;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .estado-partido.proximo {
+    background: #10281d;
+    color: #bbf7d0;
+}
+
+html[data-theme="dark"] .partido-fecha {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .club-mini img {
+    border-color: #334155;
+    background: #0b1220;
+}
+
+html[data-theme="dark"] .club-mini p {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .marcador-jornada {
+    background: #111827;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .marcador-jornada.pendiente {
+    background: #3f1418;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .partido-lugar {
+    color: #cbd5e1;
+    border-top-color: #334155;
+}
+
+html[data-theme="dark"] .partido-lugar i {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .partidos-vacio {
+    background: #111827;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .partidos-vacio i {
+    color: #94a3b8;
+}
+
 @media (max-width: 768px) {
     .contenedor-clasificacion {
         margin-top: -18px;

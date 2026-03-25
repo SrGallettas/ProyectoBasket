@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
 @endpush
 
-@section('titulo', $noticia->titulo . ' - Bellreguard Basket')
+@section('title', $noticia->titulo . ' - Bellreguard Basket')
 
 @section('contenido')
 <article class="articulo-noticia">
@@ -31,7 +31,7 @@
 
     {{-- Contenedor de Imagen con Efecto --}}
     <div class="articulo-imagen-wrap">
-        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}">
+        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
     </div>
 
     {{-- Cuerpo del Artículo --}}

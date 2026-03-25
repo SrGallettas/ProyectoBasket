@@ -108,7 +108,7 @@ class BasketController extends Controller
             if ($jornadaSeleccionada !== null) {
                 $jornadaSeleccionada = (int) $jornadaSeleccionada;
             } elseif ($jornadas->isNotEmpty()) {
-                $jornadaSeleccionada = (int) $jornadas->last();
+                $jornadaSeleccionada = (int) $jornadas->first();
             }
 
             if ($jornadaSeleccionada) {

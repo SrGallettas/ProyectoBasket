@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin - Bellreguard CB</title>
+    <script>
+        (function () {
+            const key = 'bb_theme';
+            const saved = localStorage.getItem(key);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/paginas/admin.css') }}" />
     @stack('styles')
@@ -59,6 +68,10 @@
                 <button type="button" class="item-admin admin-sidebar-menu-toggle" id="admin-sidebar-toggle" aria-label="Desplegar u ocultar menú">
                     <i class="fas fa-bars"></i><span>Abrir o cerrar menú</span>
                 </button>
+
+                <button type="button" class="item-admin admin-theme-toggle" id="admin-theme-toggle" aria-label="Cambiar modo oscuro">
+                    <i class="fa-regular fa-moon"></i><span>Cambiar tema</span>
+                </button>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
                     <i class="fas fa-door-open"></i><span>Volver a la Web</span>
@@ -79,6 +92,9 @@
                     <strong>Panel Admin</strong>
                     <span>Bellreguard CB</span>
                 </div>
+                <button type="button" class="admin-mobile-theme-toggle" id="admin-mobile-theme-toggle" aria-label="Cambiar modo oscuro">
+                    <i class="fa-regular fa-moon"></i>
+                </button>
             </div>
             @yield('contenido_admin')
         </main>
@@ -89,9 +105,33 @@
             const body = document.body;
             const desktopToggle = document.getElementById('admin-sidebar-toggle');
             const mobileToggle = document.getElementById('admin-mobile-toggle');
+            const desktopThemeToggle = document.getElementById('admin-theme-toggle');
+            const mobileThemeToggle = document.getElementById('admin-mobile-theme-toggle');
             const mobileBackdrop = document.getElementById('admin-mobile-backdrop');
             const storageKey = 'admin-sidebar-collapsed';
+            const themeStorageKey = 'bb_theme';
             const mobileBreakpoint = 768;
+
+            const actualizarBotonesTema = () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const icono = isDark ? 'fa-sun' : 'fa-moon';
+                const label = isDark ? 'Activar modo claro' : 'Activar modo oscuro';
+
+                [desktopThemeToggle, mobileThemeToggle].forEach((boton) => {
+                    if (!boton) return;
+                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${boton.id === 'admin-theme-toggle' ? '<span>Cambiar tema</span>' : ''}`;
+                    boton.setAttribute('aria-label', label);
+                    boton.setAttribute('title', label);
+                });
+            };
+
+            const toggleTema = () => {
+                const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+                const nuevoTema = temaActual === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', nuevoTema);
+                localStorage.setItem(themeStorageKey, nuevoTema);
+                actualizarBotonesTema();
+            };
 
             if (window.innerWidth > mobileBreakpoint && localStorage.getItem(storageKey) === '1') {
                 body.classList.add('admin-sidebar-collapsed');
@@ -121,6 +161,9 @@
                 body.classList.toggle('admin-mobile-sidebar-open');
             });
 
+            desktopThemeToggle?.addEventListener('click', toggleTema);
+            mobileThemeToggle?.addEventListener('click', toggleTema);
+
             mobileBackdrop?.addEventListener('click', closeMobileMenu);
 
             document.querySelectorAll('.menu-admin a').forEach((link) => {
@@ -142,6 +185,8 @@
                     body.classList.add('admin-sidebar-collapsed');
                 }
             });
+
+            actualizarBotonesTema();
         });
     </script>
 </body>

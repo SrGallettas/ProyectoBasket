@@ -20,7 +20,8 @@ html {
 
 .admin-mobile-toggle,
 .admin-mobile-backdrop,
-.admin-mobile-header {
+.admin-mobile-header,
+.admin-mobile-theme-toggle {
     display: none;
 }
 
@@ -126,6 +127,25 @@ html {
     font: inherit;
     text-align: left;
     cursor: pointer;
+}
+
+.admin-theme-toggle {
+    width: 100%;
+    border: none;
+    background: transparent;
+}
+
+.admin-theme-toggle:hover {
+    background: #333;
+}
+
+.admin-theme-toggle:focus {
+    outline: none;
+}
+
+.admin-theme-toggle:focus-visible {
+    outline: 2px solid rgba(248, 113, 113, 0.75);
+    outline-offset: 2px;
 }
 
 body.admin-sidebar-collapsed .sidebar-admin {
@@ -2798,6 +2818,25 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
         color: #a1a1aa;
     }
 
+    .admin-mobile-theme-toggle {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 10px;
+        background: transparent;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .admin-mobile-theme-toggle:hover {
+        background: #333;
+    }
+
     .admin-mobile-backdrop {
         position: fixed;
         inset: 0;
@@ -2955,4 +2994,175 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
         min-height: 42px;
         padding: 12px 16px;
     }
+}
+
+/* =========================
+   Modo oscuro SOLO Admin
+   ========================= */
+html[data-theme="dark"] body {
+    background: #020617;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .contenido-admin {
+    background: #020617;
+}
+
+html[data-theme="dark"] .admin-mobile-header {
+    background: #0f172a;
+}
+
+html[data-theme="dark"] .admin-mobile-toggle,
+html[data-theme="dark"] .admin-mobile-theme-toggle {
+    background: transparent;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .admin-mobile-theme-toggle:hover {
+    background: #1f2937;
+}
+
+html[data-theme="dark"] .header-admin h1,
+html[data-theme="dark"] .header-admin h2,
+html[data-theme="dark"] .header-ficha h2,
+html[data-theme="dark"] .admin-editing-text {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .header-admin p,
+html[data-theme="dark"] .header-ficha p,
+html[data-theme="dark"] .admin-subtle-text,
+html[data-theme="dark"] .admin-help-text {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .pizarra-admin,
+html[data-theme="dark"] .pizarra-ficha,
+html[data-theme="dark"] .pizarra-show,
+html[data-theme="dark"] .dashboard-admin-hero,
+html[data-theme="dark"] .dashboard-admin-card,
+html[data-theme="dark"] .galeria-admin-card,
+html[data-theme="dark"] .galeria-upload-item {
+    background: #0f172a;
+    border-color: #1f2937;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .dashboard-admin-copy,
+html[data-theme="dark"] .dashboard-admin-card-body p,
+html[data-theme="dark"] .admin-code {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .dashboard-admin-kicker,
+html[data-theme="dark"] .dashboard-admin-card-footer {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .dashboard-admin-badge {
+    background: #111827;
+}
+
+html[data-theme="dark"] .dashboard-admin-card-body h3,
+html[data-theme="dark"] .noticia-view-title,
+html[data-theme="dark"] .bloque-info h3,
+html[data-theme="dark"] .label-ficha,
+html[data-theme="dark"] .info-subida-noticia h3,
+html[data-theme="dark"] .nombre-producto {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .tabla-admin th {
+    background: #111827;
+    color: #cbd5e1;
+    border-bottom-color: #334155;
+}
+
+html[data-theme="dark"] .tabla-admin td,
+html[data-theme="dark"] .tabla-partidos-ajustada td {
+    background: #0f172a;
+    border-bottom-color: #1f2937;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .titulo-row,
+html[data-theme="dark"] .fecha-admin,
+html[data-theme="dark"] .txt-dia,
+html[data-theme="dark"] .nombre-equipo,
+html[data-theme="dark"] .ficha-nombre-principal,
+html[data-theme="dark"] .ficha-valor-azul,
+html[data-theme="dark"] .ficha-date-text,
+html[data-theme="dark"] .noticia-view-body,
+html[data-theme="dark"] .precio-texto,
+html[data-theme="dark"] .descripcion-texto {
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .autor-row,
+html[data-theme="dark"] .txt-hora,
+html[data-theme="dark"] .admin-empty-cell,
+html[data-theme="dark"] .ficha-caption,
+html[data-theme="dark"] .ficha-meta-footer,
+html[data-theme="dark"] .nota-subida,
+html[data-theme="dark"] .input-help-text,
+html[data-theme="dark"] .noticia-view-footer .meta-item {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .campo label,
+html[data-theme="dark"] .campo-ficha label {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .campo input,
+html[data-theme="dark"] .campo select,
+html[data-theme="dark"] .input-ficha,
+html[data-theme="dark"] .admin-textarea,
+html[data-theme="dark"] .input-search,
+html[data-theme="dark"] .input-white {
+    background: #111827;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .campo-checkbox .checkbox-wrapper,
+html[data-theme="dark"] .input-grupal,
+html[data-theme="dark"] .seccion-foto-ficha,
+html[data-theme="dark"] .card-imagen-horizontal,
+html[data-theme="dark"] .descripcion-texto,
+html[data-theme="dark"] .noticia-hero-container,
+html[data-theme="dark"] .vs-decorativo,
+html[data-theme="dark"] .badge-talla-show,
+html[data-theme="dark"] .badge-talla,
+html[data-theme="dark"] .admin-badge-light,
+html[data-theme="dark"] .admin-badge-neutral {
+    background: #111827;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn-cancelar-ficha,
+html[data-theme="dark"] .btn-volver-link,
+html[data-theme="dark"] .admin-link-cancel {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .btn-cancelar-ficha:hover {
+    background: #1f2937;
+}
+
+html[data-theme="dark"] .btn-subir-discreto,
+html[data-theme="dark"] .btn-cambiar-foto {
+    background: #1f2937;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn-subir-discreto:hover,
+html[data-theme="dark"] .btn-cambiar-foto:hover {
+    background: #273449;
+}
+
+html[data-theme="dark"] .admin-mobile-backdrop {
+    background: rgba(2, 6, 23, 0.72);
 }

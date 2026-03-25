@@ -6,7 +6,7 @@
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('title', 'Contacto - Bellreguard Club de Basket')
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')

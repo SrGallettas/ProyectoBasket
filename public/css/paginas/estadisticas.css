@@ -319,6 +319,153 @@
     border-radius: 0 5px 5px 0;
 }
 
+.pie-pagina {
+    margin-top: 0;
+}
+
+/* =========================
+   Modo oscuro SOLO Estadisticas
+   ========================= */
+html[data-theme="dark"] .public-news-hero {
+    background: radial-gradient(circle at 22% 12%, #7f1d1d 0%, #1f2937 45%, #020617 100%);
+}
+
+html[data-theme="dark"] .public-news-hero-badge {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .public-news-hero h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .public-news-hero p {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .public-news-hero-divider {
+    background: #f87171;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas {
+    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    border-radius: 14px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio {
+    background: linear-gradient(180deg, #1e293b 0%, #111827 100%);
+    border-color: #334155;
+    box-shadow: 0 16px 34px rgba(2, 6, 23, 0.5);
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio-icono {
+    background: #3f1418;
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio-accion {
+    background: #dc2626;
+    border-color: #ef4444;
+}
+
+html[data-theme="dark"] .contenedor-estadisticas .estado-vacio-accion:hover {
+    background: #ef4444;
+}
+
+html[data-theme="dark"] .estadisticas-partido-head,
+html[data-theme="dark"] .tabla-estadisticas-wrap,
+html[data-theme="dark"] .tabla-cuartos-wrap,
+html[data-theme="dark"] .grafico-estadisticas-wrap {
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .equipo-head {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .marcador-head strong {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .marcador-head small {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .grafico-titulo,
+html[data-theme="dark"] .grafico-separador {
+    background: #111827;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .grafico-fila {
+    border-bottom-color: #1f2937;
+}
+
+html[data-theme="dark"] .grafico-label {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .grafico-valor {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .grafico-ganador {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .grafico-barra-container-local,
+html[data-theme="dark"] .grafico-barra-container-visitante {
+    background: #1f2937;
+}
+
+html[data-theme="dark"] .grafico-barra-local {
+    background: #ef4444;
+}
+
+html[data-theme="dark"] .grafico-barra-visitante {
+    background: #334155;
+}
+
+html[data-theme="dark"] .tabla-estadisticas-comparada th,
+html[data-theme="dark"] .tabla-cuartos th {
+    background: #111827;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .tabla-estadisticas-comparada th,
+html[data-theme="dark"] .tabla-estadisticas-comparada td,
+html[data-theme="dark"] .tabla-cuartos th,
+html[data-theme="dark"] .tabla-cuartos td {
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .tabla-estadisticas-comparada tbody tr:nth-child(even) {
+    background: #111827;
+}
+
+html[data-theme="dark"] .tabla-estadisticas-comparada .separador-row td {
+    background: #1f2937;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .tabla-cuartos-wrap h2 {
+    color: #f8fafc;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .grafico-fila {

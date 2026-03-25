@@ -112,6 +112,7 @@ body.menu-movil-abierto {
     gap: 28px;
     justify-content: space-between;
     width: 100%;
+    grid-column: 2;
 }
 
 .navegacion-izquierda {
@@ -154,6 +155,8 @@ body.menu-movil-abierto {
     justify-content: center;
     flex-direction: column;
     gap: 5px;
+    grid-column: 3;
+    justify-self: end;
 }
 
 .boton-menu-movil span {
@@ -175,6 +178,8 @@ body.menu-movil-abierto {
 .login-seccion {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
     min-width: max-content;
 }
 
@@ -207,6 +212,30 @@ body.menu-movil-abierto {
     letter-spacing: 0.5px;
     text-decoration: none;
     display: inline-block;
+}
+
+.boton-tema-nav {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #cf1515;
+    border-radius: 999px;
+    background: #e60000;
+    color: #fff;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.boton-tema-nav:hover {
+    background: #cf1515;
+    border-color: #b01212;
+    box-shadow: 0 6px 14px rgba(230, 0, 0, 0.28);
+    transform: translateY(-1px);
 }
 
 .boton-inicio-sesion {
@@ -341,13 +370,12 @@ body.menu-movil-abierto {
     /* Evita que se compriman demasiado */
 }
 
-/* Columna del Logo */
 .logo-footer {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 15px;
-    text-decoration:none;
+    text-decoration: none;
     color: white;
 }
 
@@ -376,7 +404,6 @@ body.menu-movil-abierto {
     line-height: 1.6;
 }
 
-/* Títulos de columnas */
 .footer-col h4 {
     font-size: 18px;
     margin-bottom: 20px;
@@ -394,7 +421,6 @@ body.menu-movil-abierto {
     background: #e60000;
 }
 
-/* Listas de enlaces */
 .lista-footer {
     list-style: none;
     padding: 0;
@@ -419,7 +445,6 @@ body.menu-movil-abierto {
     /* Desplazamiento suave */
 }
 
-/* Iconos de contacto */
 .contacto-items li i {
     color: #e60000;
     margin-right: 10px;
@@ -427,7 +452,6 @@ body.menu-movil-abierto {
     text-align: center;
 }
 
-/* Redes Sociales */
 .redes-iconos {
     display: flex;
     gap: 15px;
@@ -451,7 +475,6 @@ body.menu-movil-abierto {
     transform: translateY(-5px);
 }
 
-/* Parte Inferior (Copyright) */
 .footer-bottom {
     border-top: 1px solid #333;
     margin-top: 40px;
@@ -526,6 +549,8 @@ body.menu-movil-abierto {
     .login-seccion {
         width: 100%;
         padding-top: 8px;
+        justify-content: stretch;
+        flex-wrap: wrap;
     }
 
     .login-seccion > a,
@@ -719,4 +744,94 @@ body.menu-movil-abierto {
 .contenedor-paginacion .disabled .page-link {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+/* =========================
+   Tema oscuro (global base)
+   ========================= */
+html[data-theme="dark"] body {
+    background: #020617;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .barra-navegacion {
+    background: #0f172a;
+    box-shadow: 0 2px 12px rgba(2, 6, 23, 0.5);
+}
+
+html[data-theme="dark"] .titulo-navegacion h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .titulo-navegacion span {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .menu-navegacion a {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .menu-navegacion a:hover,
+html[data-theme="dark"] .menu-navegacion a.activo {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .boton-menu-movil {
+    background: #1e293b;
+}
+
+html[data-theme="dark"] .boton-menu-movil span {
+    background: #e2e8f0;
+}
+
+html[data-theme="dark"] .boton-tema-nav {
+    background: #ef4444;
+    border-color: #f87171;
+}
+
+html[data-theme="dark"] .boton-tema-nav:hover {
+    background: #dc2626;
+    border-color: #fca5a5;
+}
+
+html[data-theme="dark"] .panel-navegacion {
+    background: #0f172a;
+    border-top-color: #1f2937;
+}
+
+html[data-theme="dark"] .menu-navegacion li a {
+    background: #111827;
+}
+
+html[data-theme="dark"] .pie-pagina {
+    background: #0f172a;
+    border-top-color: #ef4444;
+}
+
+html[data-theme="dark"] .descripcion-breve,
+html[data-theme="dark"] .lista-footer li,
+html[data-theme="dark"] .copy {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .lista-footer a {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .lista-footer a:hover {
+    color: #fda4af;
+}
+
+html[data-theme="dark"] .redes-iconos a {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .redes-iconos a:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .footer-bottom {
+    border-top-color: #334155;
 }

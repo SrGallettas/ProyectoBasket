@@ -49,9 +49,9 @@
                 <div class="tarjeta-jugador">
                     <div class="foto-jugador">
                         @if($jugador->imagen_jugador)
-                            <img src="{{ asset('jugadores/' . $jugador->imagen_jugador) }}" alt="{{ $jugador->nombre }}">
+                            <img src="{{ asset('jugadores/' . basename($jugador->imagen_jugador)) }}" alt="{{ $jugador->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                         @else
-                            <img src="{{ asset('img/basket.jpeg') }}" alt="Sin foto" class="foto-defecto">
+                            <img src="{{ asset('img/club_14.png') }}" alt="Sin foto" class="foto-defecto">
                         @endif
                         {{-- Badge del dorsal sobre la foto --}}
                         <div class="dorsal-badge">#{{ $jugador->dorsal ?? '00' }}</div>

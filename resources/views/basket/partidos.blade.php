@@ -9,7 +9,7 @@
 @use('Carbon\Carbon') 
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('title', 'Partidos - Bellreguard Club de Basket')
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
