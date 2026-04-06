@@ -20,15 +20,16 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        $remember = $request->boolean('remember');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()->intended('admin'); // Te lleva al admin
         }
 
         return back()->withErrors([
             'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ]);
+        ])->withInput($request->only('email', 'remember'));
     }
 
     // Cierra la sesión

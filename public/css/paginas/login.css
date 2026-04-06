@@ -92,7 +92,26 @@
     box-shadow: 0 0 0 3px rgba(207, 21, 21, 0.1);
 }
 
+.login-opciones {
+    display: flex;
+    align-items: center;
+    margin: -4px 0 18px;
+}
 
+.recordarme-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.recordarme-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #cf1515;
+}
 
 .btn-acceder {
     width: 100%;
@@ -161,4 +180,73 @@
     position: relative;
 }
 
+/* =========================
+   Modo oscuro SOLO Login
+   ========================= */
+html[data-theme="dark"] .contenedor-login {
+    background: #0b1220;
+}
 
+html[data-theme="dark"] .caja-login {
+    background: #111827;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .login-header h1 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .login-header p {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .grupo-input label {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .input-icono i {
+    color: #64748b;
+}
+
+html[data-theme="dark"] .input-icono input {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .input-icono input::placeholder {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .input-icono input:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+html[data-theme="dark"] .recordarme-label {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .recordarme-label input[type="checkbox"] {
+    accent-color: #ef4444;
+}
+
+html[data-theme="dark"] .btn-acceder {
+    background: #dc2626;
+}
+
+html[data-theme="dark"] .btn-acceder:hover {
+    background: #b91c1c;
+}
+
+html[data-theme="dark"] .login-footer {
+    border-top-color: #334155;
+}
+
+html[data-theme="dark"] .login-footer p {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .login-decoracion {
+    background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%);
+}

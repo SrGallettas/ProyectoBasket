@@ -50,6 +50,19 @@
                     </div>
                 </div>
 
+                <div class="login-opciones">
+                    <label class="recordarme-label" for="remember">
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                            value="1"
+                            {{ old('remember') ? 'checked' : '' }}
+                        >
+                        Recordarme
+                    </label>
+                </div>
+
                 {{-- Botón de Acción Principal --}}
                 <button type="submit" class="btn-acceder">
                     Iniciar Sesión <i class="fas fa-sign-in-alt"></i>

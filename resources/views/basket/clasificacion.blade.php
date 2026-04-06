@@ -40,11 +40,12 @@
             <label class="selector-field">
                 <span>Jornada</span>
                 <select name="jornada" class="btn-cat selector-input">
+                    <option value="general" @selected($modoGeneral ?? false)>General</option>
                     @if($jornadas->isEmpty())
-                        <option value="">Sin jornadas</option>
+                        <option value="" disabled>Sin jornadas</option>
                     @else
                         @foreach($jornadas as $jornada)
-                            <option value="{{ $jornada }}" @selected((int) $jornadaSeleccionada === (int) $jornada)>Jornada {{ $jornada }}</option>
+                            <option value="{{ $jornada }}" @selected(!($modoGeneral ?? false) && (int) $jornadaSeleccionada === (int) $jornada)>Jornada {{ $jornada }}</option>
                         @endforeach
                     @endif
                 </select>
@@ -60,8 +61,13 @@
                 @if($clasificacionSeleccionada->temporada)
                     - Temporada {{ $clasificacionSeleccionada->temporada }}
                 @endif
-                @if($jornadaSeleccionada)
+                @if($modoGeneral ?? false)
+                    · General
+                @elseif($jornadaSeleccionada)
                     · Jornada {{ $jornadaSeleccionada }}
+                @endif
+                @if($jornadaClasificacionMostrada && (int) $jornadaClasificacionMostrada !== (int) $jornadaSeleccionada)
+                    <small>(tabla calculada hasta jornada {{ $jornadaClasificacionMostrada }})</small>
                 @endif
             </div>
             <div class="tabla-scroll">
@@ -105,7 +111,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9">Todavía no hay clasificación calculada para esta jornada.</td>
+                                <td colspan="9">Todavía no hay clasificación calculada para esta competición.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -116,8 +122,12 @@
         <section class="jornada-partidos">
             <div class="tabla-header jornada-header">
                 <i class="fas fa-calendar-alt"></i>
-                Partidos de la jornada
-                @if($jornadaSeleccionada)
+                @if($modoGeneral ?? false)
+                    Todos los partidos
+                @else
+                    Partidos de la jornada
+                @endif
+                @if(!($modoGeneral ?? false) && $jornadaSeleccionada)
                     <span class="jornada-pill">J{{ $jornadaSeleccionada }}</span>
                 @endif
             </div>
@@ -174,7 +184,7 @@
                 @empty
                     <div class="partidos-vacio">
                         <i class="fa-regular fa-calendar-xmark"></i>
-                        <p>No hay partidos públicos para esta jornada.</p>
+                        <p>{{ ($modoGeneral ?? false) ? 'No hay partidos públicos para esta competición.' : 'No hay partidos públicos para esta jornada.' }}</p>
                     </div>
                 @endforelse
             </div>

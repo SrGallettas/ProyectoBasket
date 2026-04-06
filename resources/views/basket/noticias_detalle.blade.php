@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    {{-- Footer con CTA y Compartir --}}
+    {{-- Footer --}}
     <footer class="articulo-footer">
         <div class="caja-compartir">
             <h3>¿Te ha gustado esta noticia?</h3>
@@ -52,7 +52,7 @@
                 <a href="#" class="social-link wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             </div>
         </div>
-        
+
         <div class="navegacion-final">
             <a href="{{ route('noticias.index') }}" class="btn-regresar-lista">
                 <i class="fas fa-arrow-left"></i> Volver a todas las noticias

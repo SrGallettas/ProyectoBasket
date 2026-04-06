@@ -549,8 +549,12 @@ body.menu-movil-abierto {
     .login-seccion {
         width: 100%;
         padding-top: 8px;
-        justify-content: stretch;
+        justify-content: center;
         flex-wrap: wrap;
+    }
+
+    .login-seccion > .boton-tema-nav {
+        margin: 0 auto;
     }
 
     .login-seccion > a,

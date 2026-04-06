@@ -3059,6 +3059,10 @@ html[data-theme="dark"] .dashboard-admin-card-footer {
     color: #fca5a5;
 }
 
+html[data-theme="dark"] .dashboard-admin-hero h1 {
+    color: #f8fafc;
+}
+
 html[data-theme="dark"] .dashboard-admin-badge {
     background: #111827;
 }
