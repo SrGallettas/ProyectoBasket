@@ -88,9 +88,9 @@
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
                             @if($jugador->imagen_jugador)
-                                <img src="{{ asset('jugadores/' . $jugador->imagen_jugador) }}" alt="Foto actual" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                                <img id="jugador-edit-preview" src="{{ $jugador->imagen_jugador_url }}" alt="Foto actual" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                             @else
-                                <img src="{{ asset('img/club_14.png') }}" alt="Foto por defecto">
+                                <img id="jugador-edit-preview" src="{{ asset('img/club_14.png') }}" alt="Foto por defecto">
                             @endif
                         </div>
 
@@ -101,7 +101,7 @@
                             <label for="imagen_jugador" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Cambiar fotografía
                             </label>
-                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input">
+                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input" accept="image/*" data-image-input="#jugador-edit-preview">
 
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>

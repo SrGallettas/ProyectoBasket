@@ -89,9 +89,7 @@
                         @forelse($filas as $idx => $fila)
                             @php
                                 $nombreEquipo = optional($fila->equipo)->nombre ?? 'Equipo';
-                                $escudoEquipo = optional($fila->equipo)->imagen_club
-                                    ? asset('escudos/' . $fila->equipo->imagen_club)
-                                    : asset('img/club_14.png');
+                                $escudoEquipo = optional($fila->equipo)->imagen_club_url ?? asset('img/club_14.png');
                             @endphp
                             <tr class="{{ str_contains(strtolower($nombreEquipo), 'bellreguard') ? 'fila-destacada' : '' }}">
                                 <td><strong>{{ $idx + 1 }}</strong></td>
@@ -132,62 +130,113 @@
                 @endif
             </div>
 
-            <div class="partidos-jornada-grid">
-                @forelse($partidosJornada as $partido)
-                    @php
-                        $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
-                        $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
-                        $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
-                        $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
-                        $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
-                        $escudoLocal = optional($partido->equipoLocal)->imagen_club
-                            ? asset('escudos/' . $partido->equipoLocal->imagen_club)
-                            : asset('img/club_14.png');
-                        $escudoVisitante = optional($partido->equipoVisitante)->imagen_club
-                            ? asset('escudos/' . $partido->equipoVisitante->imagen_club)
-                            : asset('img/club_14.png');
-                    @endphp
+            @if(($modoGeneral ?? false) && $partidosJornada->isNotEmpty())
+                @foreach($partidosJornada->groupBy(fn ($partido) => (int) ($partido->jornada ?? 0)) as $jornadaGrupo => $partidosGrupo)
+                    <div class="jornada-bloque">
+                        <div class="jornada-bloque-titulo">Jornada {{ $jornadaGrupo }}</div>
+                        <div class="partidos-jornada-grid">
+                            @foreach($partidosGrupo as $partido)
+                                @php
+                                    $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                                    $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+                                    $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
+                                    $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
+                                    $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
+                                    $escudoLocal = optional($partido->equipoLocal)->imagen_club_url ?? asset('img/club_14.png');
+                                    $escudoVisitante = optional($partido->equipoVisitante)->imagen_club_url ?? asset('img/club_14.png');
+                                @endphp
 
-                    <article class="partido-jornada-card">
-                        <div class="partido-jornada-top">
-                            <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
-                                {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
-                            </span>
-                            <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
+                                <article class="partido-jornada-card">
+                                    <div class="partido-jornada-top">
+                                        <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
+                                            {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                                        </span>
+                                        <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
+                                    </div>
+
+                                    <div class="partido-jornada-equipos">
+                                        <div class="club-mini">
+                                            <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
+                                            <p>{{ $nombreLocal }}</p>
+                                        </div>
+
+                                        @if($isFinalizado)
+                                            <div class="marcador-jornada">
+                                                {{ (int) $statsLocal->puntos_totales }} - {{ (int) $statsVisitante->puntos_totales }}
+                                            </div>
+                                        @else
+                                            <div class="marcador-jornada pendiente">VS</div>
+                                        @endif
+
+                                        <div class="club-mini">
+                                            <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
+                                            <p>{{ $nombreVisitante }}</p>
+                                        </div>
+                                    </div>
+
+                                    <p class="partido-lugar">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        {{ $partido->lugar }}
+                                    </p>
+                                </article>
+                            @endforeach
                         </div>
-
-                        <div class="partido-jornada-equipos">
-                            <div class="club-mini">
-                                <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
-                                <p>{{ $nombreLocal }}</p>
-                            </div>
-
-                            @if($isFinalizado)
-                                <div class="marcador-jornada">
-                                    {{ (int) $statsLocal->puntos_totales }} - {{ (int) $statsVisitante->puntos_totales }}
-                                </div>
-                            @else
-                                <div class="marcador-jornada pendiente">VS</div>
-                            @endif
-
-                            <div class="club-mini">
-                                <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
-                                <p>{{ $nombreVisitante }}</p>
-                            </div>
-                        </div>
-
-                        <p class="partido-lugar">
-                            <i class="fa-solid fa-location-dot"></i>
-                            {{ $partido->lugar }}
-                        </p>
-                    </article>
-                @empty
-                    <div class="partidos-vacio">
-                        <i class="fa-regular fa-calendar-xmark"></i>
-                        <p>{{ ($modoGeneral ?? false) ? 'No hay partidos públicos para esta competición.' : 'No hay partidos públicos para esta jornada.' }}</p>
                     </div>
-                @endforelse
-            </div>
+                @endforeach
+            @elseif($partidosJornada->isNotEmpty())
+                <div class="partidos-jornada-grid">
+                    @foreach($partidosJornada as $partido)
+                        @php
+                            $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                            $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+                            $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
+                            $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
+                            $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
+                            $escudoLocal = optional($partido->equipoLocal)->imagen_club_url ?? asset('img/club_14.png');
+                            $escudoVisitante = optional($partido->equipoVisitante)->imagen_club_url ?? asset('img/club_14.png');
+                        @endphp
+
+                        <article class="partido-jornada-card">
+                            <div class="partido-jornada-top">
+                                <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
+                                    {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                                </span>
+                                <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
+                            </div>
+
+                            <div class="partido-jornada-equipos">
+                                <div class="club-mini">
+                                    <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
+                                    <p>{{ $nombreLocal }}</p>
+                                </div>
+
+                                @if($isFinalizado)
+                                    <div class="marcador-jornada">
+                                        {{ (int) $statsLocal->puntos_totales }} - {{ (int) $statsVisitante->puntos_totales }}
+                                    </div>
+                                @else
+                                    <div class="marcador-jornada pendiente">VS</div>
+                                @endif
+
+                                <div class="club-mini">
+                                    <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
+                                    <p>{{ $nombreVisitante }}</p>
+                                </div>
+                            </div>
+
+                            <p class="partido-lugar">
+                                <i class="fa-solid fa-location-dot"></i>
+                                {{ $partido->lugar }}
+                            </p>
+                        </article>
+                    @endforeach
+                </div>
+            @else
+                <div class="partidos-vacio">
+                    <i class="fa-regular fa-calendar-xmark"></i>
+                    <p>{{ ($modoGeneral ?? false) ? 'No hay partidos públicos para esta competición.' : 'No hay partidos públicos para esta jornada.' }}</p>
+                </div>
+            @endif
         </section>
     @else
         <div class="tabla-contenedor">

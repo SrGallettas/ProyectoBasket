@@ -97,7 +97,7 @@
                 <div class="galeria-admin-grid" data-existing-gallery-grid>
                     @forelse($galeria->imagenes as $imagen)
                         <div class="galeria-admin-card" data-existing-image-card>
-                            <img src="{{ asset('galerias/' . $imagen->archivo) }}" alt="Imagen {{ $galeria->titulo }}">
+                            <img src="{{ $imagen->image_url }}" alt="Imagen {{ $galeria->titulo }}">
                             <label class="galeria-admin-principal">
                                 <input type="radio" name="imagen_principal_existente" value="{{ $imagen->id }}" @checked($imagen->es_principal)>
                                 Imagen principal

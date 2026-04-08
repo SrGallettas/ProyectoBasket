@@ -33,7 +33,7 @@
             @forelse ($noticias as $noticia)
                 <div class="tarjeta-noticia">
                     <div class="contenedor-img">
-                        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" />
+                        <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" />
                     </div>
                     
                     <div class="info-tarjeta">

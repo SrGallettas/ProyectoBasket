@@ -34,7 +34,7 @@
                 <tr>
                     <td class="td-img">
                         @if($noticia->imagen_noticia)
-                            <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="Imagen Noticia" class="admin-thumb-60">
+                            <img src="{{ $noticia->imagen_noticia_url }}" alt="Imagen Noticia" class="admin-thumb-60">
                         @else
                             <div class="sin-foto"><i class="fas fa-image"></i></div>
                         @endif

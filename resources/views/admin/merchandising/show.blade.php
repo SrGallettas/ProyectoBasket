@@ -19,7 +19,7 @@
             <div class="columna-foto">
                 <div class="marco-foto-show">
                     @if($item->imagen_merchan)
-                        <img src="{{ asset('merchandising/' . $item->imagen_merchan) }}" alt="{{ $item->nombre }}">
+                        <img src="{{ $item->imagen_merchan_url }}" alt="{{ $item->nombre }}">
                     @else
                         <img src="{{ asset('img/basket.jpeg') }}" alt="Sin imagen">
                     @endif

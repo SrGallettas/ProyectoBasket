@@ -93,7 +93,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img src="{{ asset('img/club_14.png') }}" alt="Imagen por defecto">
+                            <img id="jugador-create-preview" src="{{ asset('img/club_14.png') }}" alt="Imagen por defecto">
                         </div>
 
                         <div class="info-subida-noticia">
@@ -103,7 +103,7 @@
                             <label for="imagen_jugador" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Seleccionar fotografía
                             </label>
-                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input">
+                            <input type="file" name="imagen_jugador" id="imagen_jugador" class="hidden-file-input" accept="image/*" data-image-input="#jugador-create-preview">
 
                             <span class="nota-subida">Formatos: JPG o PNG. La foto se guardará en public/jugadores.</span>
                         </div>

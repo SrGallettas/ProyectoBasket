@@ -73,7 +73,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
+                            <img id="merch-create-preview" src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
                         </div>
 
                         <div class="info-subida-noticia">
@@ -83,7 +83,7 @@
                             <label for="imagen_merchan" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Seleccionar fotografía
                             </label>
-                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input">
+                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input" accept="image/*" data-image-input="#merch-create-preview">
 
                             <span class="nota-subida">La foto es obligatoria y se guardará en public/merchandising.</span>
                         </div>

@@ -43,7 +43,7 @@
                 <td>
                     <div class="contenedor-escudo admin-photo-frame">
                         @if($jugador->imagen_jugador)
-                            <img src="{{ asset('jugadores/' . $jugador->imagen_jugador) }}" alt="Foto" class="admin-photo-fill" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                            <img src="{{ $jugador->imagen_jugador_url }}" alt="Foto" class="admin-photo-fill" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                         @else
                             <img src="{{ asset('img/club_14.png') }}" alt="Sin foto" class="admin-photo-fill">
                         @endif

@@ -25,7 +25,7 @@
         <div class="galeria-admin-grid galeria-admin-grid-show">
             @forelse($galeria->imagenes as $imagen)
                 <div class="galeria-admin-card galeria-admin-card-static">
-                    <img src="{{ asset('galerias/' . $imagen->archivo) }}" alt="Imagen {{ $galeria->titulo }}">
+                    <img src="{{ $imagen->image_url }}" alt="Imagen {{ $galeria->titulo }}">
                 </div>
             @empty
                 <div class="noticia-placeholder">

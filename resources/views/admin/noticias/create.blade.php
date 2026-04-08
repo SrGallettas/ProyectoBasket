@@ -98,7 +98,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto de la noticia">
+                            <img id="noticia-create-preview" src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto de la noticia">
                         </div>
 
                         <div class="info-subida-noticia">
@@ -108,7 +108,7 @@
                             <label for="imagen_noticia" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Seleccionar imagen
                             </label>
-                            <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input" required>
+                            <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input" accept="image/*" data-image-input="#noticia-create-preview" required>
 
                             <span class="nota-subida">Formatos: JPG, PNG o WEBP. La imagen se guardará en public/noticias.</span>
                         </div>

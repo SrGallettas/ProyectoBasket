@@ -110,7 +110,8 @@ class PartidoController extends Controller
      */
     public function show($id)
     {
-        $partido = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas.cuartos'])->findOrFail($id);
+        $partido = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas', 'cuartos'])->findOrFail($id);
+        $this->attachQuarterStatsToPartido($partido);
 
         return view('admin.partidos.show', compact('partido'));
     }
@@ -120,7 +121,8 @@ class PartidoController extends Controller
      */
     public function edit(string $id)
     {
-        $partido = Partido::with(['estadisticas.cuartos', 'equipoLocal', 'equipoVisitante'])->findOrFail($id); // Busca el partido que quieres editar
+        $partido = Partido::with(['estadisticas', 'cuartos', 'equipoLocal', 'equipoVisitante'])->findOrFail($id); // Busca el partido que quieres editar
+        $this->attachQuarterStatsToPartido($partido);
         $equipos = Equipo::orderBy('nombre', 'asc')->get(); // Trae todos los equipos para que puedas cambiar el local o visitante si quieres
         $clasificaciones = Clasificacion::with('equipos')->orderBy('nombre', 'asc')->get();
         return view('admin.partidos.edit', compact('partido', 'equipos', 'clasificaciones')); // Los manda al formulario de edición
@@ -364,6 +366,19 @@ class PartidoController extends Controller
             throw ValidationException::withMessages([
                 'clasificacion_id' => 'Los dos equipos deben pertenecer a la clasificación seleccionada.',
             ]);
+        }
+    }
+
+    private function attachQuarterStatsToPartido(Partido $partido): void
+    {
+        foreach ($partido->estadisticas as $estadistica) {
+            $estadistica->setRelation(
+                'cuartos',
+                $partido->cuartos
+                    ->where('equipo_id', (int) $estadistica->equipo_id)
+                    ->sortBy('periodo')
+                    ->values()
+            );
         }
     }
 }

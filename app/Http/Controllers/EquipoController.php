@@ -40,7 +40,7 @@ class EquipoController extends Controller
         $request->validate([
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
-            'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg',
+            'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
@@ -48,6 +48,7 @@ class EquipoController extends Controller
             'categoria.required' => 'La categoría es obligatoria.',
             'imagen_club.image'  => 'El archivo debe ser una imagen.',
             'imagen_club.mimes'  => 'Solo se permiten formatos: jpg, jpeg, png.',
+            'imagen_club.max'    => 'La imagen es demasiado pesada (máximo 2MB).',
         ]);
 
         $equipo = new Equipo(); // Crea un objeto equipo vacío
@@ -62,7 +63,7 @@ class EquipoController extends Controller
             $imagen = $request->file('imagen_club'); // Captura la foto
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension(); // Le pone un nombre único (ej: 123456.jpg)
 
-            $imagen->move(public_path('escudos'), $nombreImagen); // Mueve la foto a la carpeta public/escudos
+            $imagen->storeAs('escudos', $nombreImagen, 'public');
 
             $equipo->imagen_club = $nombreImagen; // Guarda solo el nombre de la foto en la base de datos
         }
@@ -76,10 +77,19 @@ class EquipoController extends Controller
     {
         $equipo = Equipo::findOrFail($id); // Busca el equipo por su ID o da error si no existe
 
-        // Si el equipo tiene foto, la borramos de la carpeta pública
-        if ($equipo->imagen_club && file_exists(public_path('escudos/' . $equipo->imagen_club))) {
-            unlink(public_path('escudos/' . $equipo->imagen_club));
+        $tienePartidosAsociados = $equipo->partidosComoLocal()->exists()
+            || $equipo->partidosComoVisitante()->exists();
+
+        if ($tienePartidosAsociados) {
+            return redirect()
+                ->route('equipos.index')
+                ->withErrors([
+                    'delete' => 'No puedes eliminar este equipo porque tiene partidos asociados.',
+                ]);
         }
+
+        // Si el equipo tiene foto, la borramos de la carpeta pública
+        $this->deleteStoredImage($equipo->imagen_club, 'escudos');
 
         $equipo->delete(); // Borra el registro de la base de datos
         return redirect()->route('equipos.index'); // Vuelve al listado
@@ -102,7 +112,7 @@ class EquipoController extends Controller
         $request->validate([
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
-            'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg',
+            'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
@@ -110,6 +120,7 @@ class EquipoController extends Controller
             'categoria.required' => 'La categoría es obligatoria.',
             'imagen_club.image'  => 'El archivo debe ser una imagen.',
             'imagen_club.mimes'  => 'Solo se permiten formatos: jpg, jpeg, png.',
+            'imagen_club.max'    => 'La imagen es demasiado pesada (máximo 2MB).',
         ]);
 
         $equipo->es_local = $request->has('es_local');
@@ -118,13 +129,11 @@ class EquipoController extends Controller
         // Si has subido una foto NUEVA...
         if ($request->hasFile('imagen_club')) {
             // Borramos la foto VIEJA para no dejar basura en el servidor
-            if ($equipo->imagen_club && file_exists(public_path('escudos/' . $equipo->imagen_club))) {
-                unlink(public_path('escudos/' . $equipo->imagen_club));
-            }
+            $this->deleteStoredImage($equipo->imagen_club, 'escudos');
 
             $imagen = $request->file('imagen_club'); // Captura la foto nueva
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension(); // Nombre nuevo
-            $imagen->move(public_path('escudos'), $nombreImagen); // La guarda en public/escudos
+            $imagen->storeAs('escudos', $nombreImagen, 'public');
 
             $equipo->imagen_club = $nombreImagen; // Actualiza el nombre de la foto en la base de datos
         }
@@ -150,5 +159,14 @@ class EquipoController extends Controller
         $equipo->save();
 
         return redirect()->route('equipos.index')->with('mensaje', $equipo->oculto ? 'Equipo ocultado de la web publica.' : 'Equipo visible de nuevo en la web publica.');
+    }
+
+    private function deleteStoredImage(?string $filename, string $directory): void
+    {
+        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+            return;
+        }
+
+        Storage::disk('public')->delete($directory . '/' . ltrim($filename, '/'));
     }
 }

@@ -34,7 +34,7 @@
         <h2 class="equipo-titulo-categoria">
             Equipo {{ $equipoMostrar->categoria }} - {{ $equipoMostrar->nombre }}
         </h2>
-        @auth
+        @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
             <div class="public-admin-actions">
                 <form action="{{ route('basket.equipo.toggle-oculto', $equipoMostrar->id) }}" method="POST">
                     @csrf
@@ -42,14 +42,14 @@
                     <button type="submit" class="public-hide-button">Ocultar equipo en web</button>
                 </form>
             </div>
-        @endauth
+        @endif
         
         <div class="rejilla-jugadores">
             @forelse($jugadores as $jugador)
                 <div class="tarjeta-jugador">
                     <div class="foto-jugador">
                         @if($jugador->imagen_jugador)
-                            <img src="{{ asset('jugadores/' . basename($jugador->imagen_jugador)) }}" alt="{{ $jugador->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                            <img src="{{ $jugador->imagen_jugador_url }}" alt="{{ $jugador->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                         @else
                             <img src="{{ asset('img/club_14.png') }}" alt="Sin foto" class="foto-defecto">
                         @endif
@@ -73,13 +73,13 @@
                             {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'N/A' }}
                         </p>
 
-                        @auth
+                        @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
                             <form action="{{ route('basket.jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="public-card-action">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="public-hide-button">Ocultar jugador en web</button>
                             </form>
-                        @endauth
+                        @endif
                     </div>
                 </div>
             @empty

@@ -15,7 +15,7 @@
         {{-- Contenedor de Imagen con el placeholder por si falla --}}
         <div class="noticia-hero-container">
             @if($noticia->imagen_noticia)
-                <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" class="noticia-img-main">
+                <img src="{{ $noticia->imagen_noticia_url }}" class="noticia-img-main">
             @else
                 <div class="noticia-placeholder">
                     <i class="fas fa-image"></i>

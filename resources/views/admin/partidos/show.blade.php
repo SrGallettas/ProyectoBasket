@@ -21,7 +21,7 @@
                 {{-- Equipo Local --}}
                 <div class="equipo-detalle">
                     <div class="escudo-grande">
-                        <img src="{{ asset('escudos/' . $partido->equipoLocal->imagen_club) }}" alt="Escudo Local">
+                        <img src="{{ $partido->equipoLocal->imagen_club_url }}" alt="Escudo Local">
                     </div>
                     <span class="nombre-equipo-gigante">{{ $partido->equipoLocal->nombre }}</span>
                     <span class="rol-equipo">LOCAL</span>
@@ -34,7 +34,7 @@
                 {{-- Equipo Visitante --}}
                 <div class="equipo-detalle">
                     <div class="escudo-grande">
-                        <img src="{{ asset('escudos/' . $partido->equipoVisitante->imagen_club) }}" alt="Escudo Visitante">
+                        <img src="{{ $partido->equipoVisitante->imagen_club_url }}" alt="Escudo Visitante">
                     </div>
                     <span class="nombre-equipo-gigante">{{ $partido->equipoVisitante->nombre }}</span>
                     <span class="rol-equipo">VISITANTE</span>

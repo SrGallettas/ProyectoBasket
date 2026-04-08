@@ -18,7 +18,7 @@
             <div class="seccion-form-ficha ficha-col-foto">
                 <div class="ficha-foto-principal">
                     @if($jugador->imagen_jugador)
-                        <img src="{{ asset('jugadores/' . $jugador->imagen_jugador) }}" alt="Foto oficial" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                        <img src="{{ $jugador->imagen_jugador_url }}" alt="Foto oficial" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     @else
                         <img src="{{ asset('img/club_14.png') }}" alt="Sin foto">
                     @endif

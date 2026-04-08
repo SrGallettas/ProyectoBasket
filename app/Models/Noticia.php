@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Noticia extends Model
 {
@@ -24,4 +25,17 @@ class Noticia extends Model
     protected $casts = [
         'oculto' => 'boolean',
     ];
+
+    public function getImagenNoticiaUrlAttribute(): string
+    {
+        if (!$this->imagen_noticia || $this->imagen_noticia === 'club_14.png') {
+            return asset('img/club_14.png');
+        }
+
+        if ($this->imagen_noticia === 'basket.jpeg') {
+            return asset('img/basket.jpeg');
+        }
+
+        return '/storage/noticias/' . ltrim($this->imagen_noticia, '/');
+    }
 }

@@ -30,7 +30,7 @@
 
                 {{-- Campo: Email --}}
                 <div class="grupo-input">
-                    <label for="email">Email del Administrador</label>
+                    <label for="email">Email de acceso</label>
                     <div class="input-icono">
                         <i class="fas fa-envelope"></i>
                         <input type="email" id="email" name="email" placeholder="admin@bellreguard.com" value="{{ old('email') }}" required autofocus>

@@ -96,7 +96,8 @@
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
                             <img
-                                src="{{ $noticia->imagen_noticia ? asset('noticias/' . $noticia->imagen_noticia) : asset('img/basket.jpeg') }}"
+                                id="noticia-edit-preview"
+                                src="{{ $noticia->imagen_noticia_url }}"
                                 alt="Imagen actual de la noticia"
                             >
                         </div>
@@ -108,7 +109,7 @@
                             <label for="imagen_noticia" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Cambiar imagen
                             </label>
-                            <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input">
+                            <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input" accept="image/*" data-image-input="#noticia-edit-preview">
 
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>

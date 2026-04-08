@@ -17,7 +17,7 @@
             <div class="seccion-form-ficha ficha-col-foto">
                 <div class="ficha-foto-principal ficha-foto-principal-escudo">
                     @if($equipo->imagen_club)
-                        <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo del {{ $equipo->nombre }}">
+                        <img src="{{ $equipo->imagen_club_url }}" alt="Escudo del {{ $equipo->nombre }}">
                     @else
                         <img src="{{ asset('img/club_14.png') }}" alt="Escudo no disponible">
                     @endif

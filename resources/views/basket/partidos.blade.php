@@ -62,7 +62,7 @@
                             <div class="enfrentamiento">
                                 {{-- EQUIPO LOCAL --}}
                                 <div class="equipo local">
-                                    <img src="{{ asset('escudos/' . $partido->equipoLocal->imagen_club) }}" alt="{{ $partido->equipoLocal->nombre }}">
+                                    <img src="{{ $partido->equipoLocal->imagen_club_url }}" alt="{{ $partido->equipoLocal->nombre }}">
                                     <p>{{ $partido->equipoLocal->nombre }}</p>
                                 </div>
 
@@ -74,7 +74,7 @@
 
                                 {{-- EQUIPO VISITANTE --}}
                                 <div class="equipo visitante">
-                                    <img src="{{ asset('escudos/' . $partido->equipoVisitante->imagen_club) }}" alt="{{ $partido->equipoVisitante->nombre }}">
+                                    <img src="{{ $partido->equipoVisitante->imagen_club_url }}" alt="{{ $partido->equipoVisitante->nombre }}">
                                     <p>{{ $partido->equipoVisitante->nombre }}</p>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <a href="{{ route('basket.partidos.detalle', $partido->id) }}" class="btn-detalle-partido">
                                     Ver detalles del partido
                                 </a>
-                                @auth
+                                @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
                                     <form action="{{ route('basket.partidos.toggle-oculto', $partido->id) }}" method="POST" class="form-ocultar-partido">
                                         @csrf
                                         @method('PATCH')
@@ -111,7 +111,7 @@
                                             {{ $partido->oculto ? 'Mostrar en web' : 'Ocultar en web' }}
                                         </button>
                                     </form>
-                                @endauth
+                                @endif
                             </div>
                         </div>
                     @endforeach

@@ -6,6 +6,7 @@ use App\Models\Galeria;
 use App\Models\ImagenGaleria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class GaleriaController extends Controller
 {
@@ -196,19 +197,13 @@ class GaleriaController extends Controller
     {
         $imagenesGuardadas = [];
         $hayImagenPrincipalActual = $galeria->imagenes()->where('es_principal', true)->exists();
-        $directorioGaleria = $this->directorioGaleria($galeria);
-
         foreach ($imagenes as $imagen) {
             if (!$imagen) {
                 continue;
             }
 
-            if (!is_dir($directorioGaleria)) {
-                mkdir($directorioGaleria, 0755, true);
-            }
-
             $nombreImagen = time() . '_' . Str::random(8) . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move($directorioGaleria, $nombreImagen);
+            $imagen->storeAs('galerias/' . $galeria->carpeta, $nombreImagen, 'public');
 
             $imagenesGuardadas[] = $galeria->imagenes()->create([
                 'archivo' => $galeria->carpeta . '/' . $nombreImagen,
@@ -229,11 +224,7 @@ class GaleriaController extends Controller
 
     private function borrarArchivoImagen(string $archivo): void
     {
-        $ruta = public_path('galerias/' . $archivo);
-
-        if (file_exists($ruta)) {
-            unlink($ruta);
-        }
+        Storage::disk('public')->delete('galerias/' . ltrim($archivo, '/'));
     }
 
     private function generarCarpetaUnica(string $titulo): string
@@ -253,19 +244,15 @@ class GaleriaController extends Controller
 
     private function directorioGaleria(Galeria $galeria): string
     {
-        return public_path('galerias/' . $galeria->carpeta);
+        return 'galerias/' . $galeria->carpeta;
     }
 
     private function borrarCarpetaGaleriaSiExiste(Galeria $galeria): void
     {
         $directorio = $this->directorioGaleria($galeria);
 
-        if (is_dir($directorio)) {
-            $archivos = array_diff(scandir($directorio), ['.', '..']);
-
-            if (empty($archivos)) {
-                rmdir($directorio);
-            }
+        if (Storage::disk('public')->exists($directorio) && empty(Storage::disk('public')->files($directorio))) {
+            Storage::disk('public')->deleteDirectory($directorio);
         }
     }
 

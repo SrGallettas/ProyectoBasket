@@ -18,6 +18,15 @@
     </div>
 @endif
 
+@if($errors->has('delete'))
+    <div class="cuadro-errores-admin">
+        <strong>No se pudo completar la acción:</strong>
+        <ul>
+            <li>{{ $errors->first('delete') }}</li>
+        </ul>
+    </div>
+@endif
+
 <div class="pizarra-admin">
     <table class="tabla-admin">
         <thead>
@@ -36,7 +45,7 @@
                 <td>
                     <div class="contenedor-escudo">
                         {{-- Muestra la foto guardada en la carpeta public/escudos --}}
-                        <img src="{{ asset('escudos/' . $equipo->imagen_club) }}" alt="Escudo" width="60" height="60" class="admin-img-contain">
+                        <img src="{{ $equipo->imagen_club_url }}" alt="Escudo" width="60" height="60" class="admin-img-contain">
                     </div>
                 </td>
                 <td><strong>{{ $equipo->nombre }}</strong></td>

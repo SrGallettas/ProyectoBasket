@@ -88,7 +88,8 @@
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
                             <img
-                                src="{{ $equipo->imagen_club ? asset('escudos/' . $equipo->imagen_club) : asset('img/basket.jpeg') }}"
+                                id="equipo-edit-preview"
+                                src="{{ $equipo->imagen_club_url }}"
                                 alt="Imagen actual del equipo"
                             >
                         </div>
@@ -100,7 +101,7 @@
                             <label for="imagen_club" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Cambiar imagen
                             </label>
-                            <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input">
+                            <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input" accept="image/*" data-image-input="#equipo-edit-preview">
 
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>

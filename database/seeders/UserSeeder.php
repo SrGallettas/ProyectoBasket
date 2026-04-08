@@ -13,16 +13,33 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Usuario fijo para acceso conocido al panel.
+        // Usuario admin fijo para acceso completo al panel.
         User::updateOrCreate(
             ['email' => 'admin@bellreguard.com'],
             [
                 'name' => 'Admin Bellreguard',
+                'role' => User::ROLE_ADMIN,
                 'password' => Hash::make('12345678'),
             ]
         );
 
-        // Usuarios de apoyo para poblar la tabla de administración.
-        User::factory()->count(5)->create();
+        // Usuario entrenador fijo para probar los permisos limitados.
+        User::updateOrCreate(
+            ['email' => 'coach@bellreguard.com'],
+            [
+                'name' => 'Coach Bellreguard',
+                'role' => User::ROLE_COACH,
+                'password' => Hash::make('12345678'),
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'editor@bellreguard.com'],
+            [
+                'name' => 'Editor Bellreguard',
+                'role' => User::ROLE_EDITOR,
+                'password' => Hash::make('12345678'),
+            ]
+        );
     }
 }

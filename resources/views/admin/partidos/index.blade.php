@@ -62,7 +62,7 @@
                 <td class="text-right col-equipo">
                     <div class="contenedor-equipo-tabla reverse">
                         <span class="nombre-equipo">{{ $partido->equipoLocal->nombre }}</span>
-                        <img src="{{ asset('escudos/' . $partido->equipoLocal->imagen_club) }}" class="escudo-tabla-ajustado">
+                        <img src="{{ $partido->equipoLocal->imagen_club_url }}" class="escudo-tabla-ajustado">
                     </div>
                 </td>
 
@@ -74,7 +74,7 @@
                 {{-- 5. VISITANTE: Alineado a la izquierda --}}
                 <td class="text-left col-equipo">
                     <div class="contenedor-equipo-tabla">
-                        <img src="{{ asset('escudos/' . $partido->equipoVisitante->imagen_club) }}" class="escudo-tabla-ajustado">
+                        <img src="{{ $partido->equipoVisitante->imagen_club_url }}" class="escudo-tabla-ajustado">
                         <span class="nombre-equipo">{{ $partido->equipoVisitante->nombre }}</span>
                     </div>
                 </td>

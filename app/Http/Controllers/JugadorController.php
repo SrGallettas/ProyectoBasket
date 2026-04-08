@@ -77,7 +77,7 @@ class JugadorController extends Controller
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
 
             // MOVER a public/jugadores (Igual que en equipos)
-            $imagen->move(public_path('jugadores'), $nombreImagen);
+            $imagen->storeAs('jugadores', $nombreImagen, 'public');
 
             // Guardamos solo el nombre del archivo en la BD
             $jugador->imagen_jugador = $nombreImagen;
@@ -131,17 +131,12 @@ class JugadorController extends Controller
 
         if ($request->hasFile('imagen_jugador')) {
             // 1. Definir la ruta de la imagen antigua
-            $rutaAntigua = public_path('jugadores/' . $jugador->imagen_jugador);
-
-            // 2. Borrar la foto anterior si existe
-            if ($jugador->imagen_jugador && file_exists($rutaAntigua)) {
-                unlink($rutaAntigua);
-            }
+            $this->deleteStoredImage($jugador->imagen_jugador, 'jugadores');
 
             // 3. Guardar la nueva foto usando MOVE (igual que en equipos)
             $imagen = $request->file('imagen_jugador');
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move(public_path('jugadores'), $nombreImagen);
+            $imagen->storeAs('jugadores', $nombreImagen, 'public');
 
             $jugador->imagen_jugador = $nombreImagen;
         }
@@ -157,12 +152,7 @@ class JugadorController extends Controller
         $jugador = Jugador::findOrFail($id);
 
         // 2. Definimos la ruta de su imagen
-        $rutaImagen = public_path('jugadores/' . $jugador->imagen_jugador);
-
-        // 3. Si tiene imagen y el archivo existe físicamente, lo borramos
-        if ($jugador->imagen_jugador && file_exists($rutaImagen)) {
-            unlink($rutaImagen);
-        }
+        $this->deleteStoredImage($jugador->imagen_jugador, 'jugadores');
 
         // 4. Borramos el registro de la base de datos
         $jugador->delete();
@@ -184,6 +174,15 @@ class JugadorController extends Controller
         $jugador->save();
 
         return redirect()->route('jugadores.index')->with('mensaje', $jugador->oculto ? 'Jugador ocultado de la web publica.' : 'Jugador visible de nuevo en la web publica.');
+    }
+
+    private function deleteStoredImage(?string $filename, string $directory): void
+    {
+        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+            return;
+        }
+
+        Storage::disk('public')->delete($directory . '/' . ltrim(basename($filename), '/'));
     }
 
 }

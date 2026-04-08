@@ -32,7 +32,7 @@
             <article class="noticia-row">
                 {{-- Imagen --}}
                 <div class="noticia-img-box">
-                    <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                    <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     <div class="noticia-category-tag">BASKET</div>
                 </div>
                 
@@ -54,13 +54,13 @@
                         <a href="{{ route('noticias.detalle', $noticia->slug) }}" class="btn-leer-noticia">
                             LEER CRÓNICA COMPLETA <i class="fas fa-chevron-right"></i>
                         </a>
-                        @auth
+                        @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                             <form action="{{ route('basket.noticias.toggle-oculto', $noticia->id) }}" method="POST" class="public-card-action">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="public-hide-button">Ocultar en web</button>
                             </form>
-                        @endauth
+                        @endif
                     </div>
                 </div>
             </article>

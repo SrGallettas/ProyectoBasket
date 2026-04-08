@@ -73,9 +73,9 @@
                         {{-- Lado izquierdo: La miniatura --}}
                         <div class="preview-foto-noticia">
                             @if($item->imagen_merchan)
-                                <img src="{{ asset('merchandising/' . $item->imagen_merchan) }}" alt="Foto actual">
+                                <img id="merch-edit-preview" src="{{ $item->imagen_merchan_url }}" alt="Foto actual">
                             @else
-                                <img src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
+                                <img id="merch-edit-preview" src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
                             @endif
                         </div>
 
@@ -87,7 +87,7 @@
                             <label for="imagen_merchan" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Cambiar fotografía
                             </label>
-                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input">
+                            <input type="file" name="imagen_merchan" id="imagen_merchan" class="hidden-file-input" accept="image/*" data-image-input="#merch-edit-preview">
                             
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>

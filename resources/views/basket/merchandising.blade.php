@@ -40,7 +40,7 @@
         @forelse($merchandising as $item)
             <div class="tarjeta-producto">
                 {{-- Imagen: cargada desde la carpeta de merchandising --}}
-                <img src="{{ asset('merchandising/' . $item->imagen_merchan) }}" alt="{{ $item->nombre }}" />
+                <img src="{{ $item->imagen_merchan_url }}" alt="{{ $item->nombre }}" />
                 
                 <div class="info-producto">
                     <h3>{{ $item->nombre }}</h3>
@@ -85,13 +85,13 @@
                         </button>
                     </div>
 
-                    @auth
+                    @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                         <form action="{{ route('basket.tienda.toggle-oculto', $item->id) }}" method="POST" class="public-card-action merch-hide-action">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="public-hide-button">Ocultar en web</button>
                         </form>
-                    @endauth
+                    @endif
                 </div>
             </div>
         @empty

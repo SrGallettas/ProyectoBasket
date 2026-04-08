@@ -39,7 +39,7 @@
             <div class="tarjeta-album">
                 <div class="imagen-album">
                     @if($galeria->portada)
-                        <img src="{{ asset('galerias/' . $galeria->portada->archivo) }}" alt="{{ $galeria->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                        <img src="{{ $galeria->portada?->image_url ?? asset('img/club_14.png') }}" alt="{{ $galeria->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     @else
                         <div class="album-placeholder">
                             <i class="fas fa-image"></i>
@@ -55,13 +55,13 @@
                         <span class="fecha-album">{{ $galeria->created_at->format('d/m/Y') }}</span>
                         <div class="public-inline-actions">
                             <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
-                            @auth
+                            @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                                 <form action="{{ route('basket.galeria.toggle-oculto', $galeria->id) }}" method="POST" class="public-card-action">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="public-hide-button">Ocultar en web</button>
                                 </form>
-                            @endauth
+                            @endif
                         </div>
                     </div>
                 </div>

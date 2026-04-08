@@ -33,7 +33,7 @@
                     <tr>
                         <td class="td-img">
                             @if($galeria->imagenes->first())
-                                <img src="{{ asset('galerias/' . $galeria->imagenes->first()->archivo) }}" alt="Portada {{ $galeria->titulo }}" class="admin-thumb-60">
+                                <img src="{{ $galeria->imagenes->first()->image_url }}" alt="Portada {{ $galeria->titulo }}" class="admin-thumb-60">
                             @else
                                 <div class="sin-foto"><i class="fas fa-image"></i></div>
                             @endif

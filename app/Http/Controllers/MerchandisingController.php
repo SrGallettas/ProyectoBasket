@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Merchandising;
+use Illuminate\Support\Facades\Storage;
 
 class MerchandisingController extends Controller
 {
@@ -75,7 +76,7 @@ class MerchandisingController extends Controller
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
 
             // MOVER a public/jugadores (Igual que en equipos)
-            $imagen->move(public_path('merchandising'), $nombreImagen);
+            $imagen->storeAs('merchandising', $nombreImagen, 'public');
 
             // Guardamos solo el nombre del archivo en la BD
             $item->imagen_merchan = $nombreImagen;
@@ -126,15 +127,12 @@ class MerchandisingController extends Controller
         // Gestión de Imagen
         if ($request->hasFile('imagen_merchan')) {
             // Borrar la foto anterior si existe
-            $rutaAntigua = public_path('merchandising/' . $item->imagen_merchan);
-            if ($item->imagen_merchan && file_exists($rutaAntigua)) {
-                unlink($rutaAntigua);
-            }
+            $this->deleteStoredImage($item->imagen_merchan, 'merchandising');
 
             // Subir la nueva
             $imagen = $request->file('imagen_merchan');
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move(public_path('merchandising'), $nombreImagen);
+            $imagen->storeAs('merchandising', $nombreImagen, 'public');
             $item->imagen_merchan = $nombreImagen;
         }
 
@@ -148,10 +146,7 @@ class MerchandisingController extends Controller
         $item = Merchandising::findOrFail($id);
 
         // Borrar archivo físico
-        $rutaImagen = public_path('merchandising/' . $item->imagen_merchan);
-        if ($item->imagen_merchan && file_exists($rutaImagen)) {
-            unlink($rutaImagen);
-        }
+        $this->deleteStoredImage($item->imagen_merchan, 'merchandising');
 
         $item->delete();
         return redirect()->route('merchandising.index')->with('mensaje', 'Producto eliminado correctamente');
@@ -174,5 +169,14 @@ class MerchandisingController extends Controller
         $merchandising->save();
 
         return redirect()->route('merchandising.index')->with('mensaje', $merchandising->oculto ? 'Producto ocultado de la web publica.' : 'Producto visible de nuevo en la web publica.');
+    }
+
+    private function deleteStoredImage(?string $filename, string $directory): void
+    {
+        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+            return;
+        }
+
+        Storage::disk('public')->delete($directory . '/' . ltrim($filename, '/'));
     }
 }

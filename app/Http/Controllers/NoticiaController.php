@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Noticia;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class NoticiaController extends Controller
 {
@@ -85,7 +86,7 @@ class NoticiaController extends Controller
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
 
             // MOVER a public/jugadores 
-            $imagen->move(public_path('noticias'), $nombreImagen);
+            $imagen->storeAs('noticias', $nombreImagen, 'public');
 
             // Guardamos solo el nombre del archivo en la BD
             $noticia->imagen_noticia = $nombreImagen;
@@ -167,17 +168,12 @@ class NoticiaController extends Controller
         // 5. Gestión de la IMAGEN
         if ($request->hasFile('imagen_noticia')) {
             // 1. Definir la ruta de la imagen antigua
-            $rutaAntigua = public_path('noticias/' . $noticia->imagen_noticia);
-
-            // 2. Borrar la foto anterior si existe
-            if ($noticia->imagen_noticia && file_exists($rutaAntigua)) {
-                unlink($rutaAntigua);
-            }
+            $this->deleteStoredImage($noticia->imagen_noticia, 'noticias');
 
             // 3. Guardar la nueva foto usando MOVE (igual que en equipos)
             $imagen = $request->file('imagen_noticia');
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move(public_path('noticias'), $nombreImagen);
+            $imagen->storeAs('noticias', $nombreImagen, 'public');
 
             $noticia->imagen_noticia = $nombreImagen;
         }
@@ -197,12 +193,7 @@ class NoticiaController extends Controller
         $noticia = Noticia::findOrFail($id);
 
         // 2. Definimos la ruta de su imagen
-        $rutaImagen = public_path('noticias/' . $noticia->imagen_noticia);
-
-        // 3. Si tiene imagen y el archivo existe físicamente, lo borramos
-        if ($noticia->imagen_noticia && file_exists($rutaImagen)) {
-            unlink($rutaImagen);
-        }
+        $this->deleteStoredImage($noticia->imagen_noticia, 'noticias');
 
         // 4. Borramos el registro de la base de datos
         $noticia->delete();
@@ -223,6 +214,15 @@ class NoticiaController extends Controller
         $noticia->save();
 
         return redirect()->route('noticias.index')->with('mensaje', $noticia->oculto ? 'Noticia ocultada de la web publica.' : 'Noticia visible de nuevo en la web publica.');
+    }
+
+    private function deleteStoredImage(?string $filename, string $directory): void
+    {
+        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+            return;
+        }
+
+        Storage::disk('public')->delete($directory . '/' . ltrim($filename, '/'));
     }
 
     

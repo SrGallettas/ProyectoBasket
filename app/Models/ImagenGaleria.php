@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class ImagenGaleria extends Model
 {
@@ -20,5 +21,14 @@ class ImagenGaleria extends Model
     public function galeria()
     {
         return $this->belongsTo(Galeria::class);
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        if (!$this->archivo) {
+            return asset('img/club_14.png');
+        }
+
+        return '/storage/galerias/' . ltrim($this->archivo, '/');
     }
 }

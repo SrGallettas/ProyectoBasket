@@ -20,13 +20,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    @php($adminUser = auth()->user())
     <div class="contenedor-admin">
         <aside class="sidebar-admin" id="admin-sidebar">
             <div class="admin-perfil">
                 <img src="{{ asset('img/basket.jpeg') }}" alt="Logo Admin">
                 <div class="admin-info">
                     <h4>Panel Admin</h4>
-                    <span>Bellreguard CB</span>
+                    <span>{{ $adminUser?->name }} · {{ \App\Models\User::ROLES[$adminUser?->role] ?? 'Usuario' }}</span>
                 </div>
             </div>
 
@@ -39,17 +40,25 @@
                     <i class="fas fa-users"></i><span>Jugadores</span>
                 </a>
 
-                <a href="{{ route('equipos.index') }}" class="item-admin {{ request()->is('admin/equipos*') ? 'activo' : '' }}">
-                    <i class="fas fa-tshirt"></i><span>Equipos</span>
-                </a>
+                @if($adminUser?->isAdmin())
+                    <a href="{{ route('usuarios.index') }}" class="item-admin {{ request()->is('admin/usuarios*') ? 'activo' : '' }}">
+                        <i class="fas fa-user-shield"></i><span>Usuarios</span>
+                    </a>
 
-                <a href="{{ route('noticias.index') }}" class="item-admin {{ request()->is('admin/noticias*') ? 'activo' : '' }}">
-                    <i class="fas fa-newspaper"></i><span>Noticias</span>
-                </a>
+                    <a href="{{ route('equipos.index') }}" class="item-admin {{ request()->is('admin/equipos*') ? 'activo' : '' }}">
+                        <i class="fas fa-tshirt"></i><span>Equipos</span>
+                    </a>
+                @endif
 
-                <a href="{{ route('merchandising.index') }}" class="item-admin {{ request()->is('admin/merchandising*') ? 'activo' : '' }}">
-                    <i class="fas fa-shopping-bag"></i><span>Merchandising</span>
-                </a>
+                @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
+                    <a href="{{ route('noticias.index') }}" class="item-admin {{ request()->is('admin/noticias*') ? 'activo' : '' }}">
+                        <i class="fas fa-newspaper"></i><span>Noticias</span>
+                    </a>
+
+                    <a href="{{ route('merchandising.index') }}" class="item-admin {{ request()->is('admin/merchandising*') ? 'activo' : '' }}">
+                        <i class="fas fa-shopping-bag"></i><span>Merchandising</span>
+                    </a>
+                @endif
 
                 <a href="{{ route('partidos.index') }}" class="item-admin {{ request()->is('admin/partidos*') ? 'activo' : '' }}">
                     <i class="fas fa-calendar-alt"></i><span>Partidos</span>
@@ -59,9 +68,11 @@
                     <i class="fas fa-trophy"></i><span>Clasificaciones</span>
                 </a>
 
-                <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
-                    <i class="fas fa-images"></i><span>Galerías</span>
-                </a>
+                @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
+                    <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
+                        <i class="fas fa-images"></i><span>Galerías</span>
+                    </a>
+                @endif
 
                 <div class="separador-admin"></div>
 
@@ -76,6 +87,13 @@
                 <a href="{{ url('/') }}" class="item-admin volver-web">
                     <i class="fas fa-door-open"></i><span>Volver a la Web</span>
                 </a>
+
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="item-admin volver-web" style="width:100%; border:none; text-align:left;">
+                        <i class="fas fa-right-from-bracket"></i><span>Cerrar sesión</span>
+                    </button>
+                </form>
 
                 
 </nav>
@@ -184,6 +202,26 @@
                 } else if (localStorage.getItem(storageKey) === '1') {
                     body.classList.add('admin-sidebar-collapsed');
                 }
+            });
+
+            document.querySelectorAll('[data-image-input]').forEach((input) => {
+                input.addEventListener('change', function (event) {
+                    const selector = event.currentTarget.getAttribute('data-image-input');
+                    const preview = selector ? document.querySelector(selector) : null;
+                    const file = event.currentTarget.files && event.currentTarget.files[0];
+
+                    if (!preview || !file || !file.type.startsWith('image/')) {
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (loadEvent) {
+                        if (loadEvent.target && loadEvent.target.result) {
+                            preview.src = loadEvent.target.result;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
 
             actualizarBotonesTema();

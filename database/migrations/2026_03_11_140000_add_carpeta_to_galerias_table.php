@@ -17,7 +17,7 @@ return new class extends Migration
 
         $galerias = DB::table('galerias')->get();
         $carpetasUsadas = [];
-        $basePath = public_path('galerias');
+        $basePath = storage_path('app/public/galerias');
 
         if (!File::exists($basePath)) {
             File::makeDirectory($basePath, 0755, true);
@@ -61,9 +61,8 @@ return new class extends Migration
             }
         }
 
-        DB::statement("ALTER TABLE galerias MODIFY carpeta VARCHAR(255) NOT NULL");
-
         Schema::table('galerias', function (Blueprint $table) {
+            $table->string('carpeta')->nullable(false)->change();
             $table->unique('carpeta');
         });
     }

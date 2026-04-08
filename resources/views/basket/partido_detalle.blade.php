@@ -53,7 +53,7 @@
     @else
         <div class="estadisticas-partido-head">
             <div class="equipo-head">
-                <img src="{{ asset('escudos/' . $partido->equipoLocal->imagen_club) }}" alt="{{ $partido->equipoLocal->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                <img src="{{ $partido->equipoLocal->imagen_club_url }}" alt="{{ $partido->equipoLocal->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                 <span>{{ $partido->equipoLocal->nombre }}</span>
             </div>
 
@@ -63,7 +63,7 @@
             </div>
 
             <div class="equipo-head">
-                <img src="{{ asset('escudos/' . $partido->equipoVisitante->imagen_club) }}" alt="{{ $partido->equipoVisitante->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                <img src="{{ $partido->equipoVisitante->imagen_club_url }}" alt="{{ $partido->equipoVisitante->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                 <span>{{ $partido->equipoVisitante->nombre }}</span>
             </div>
         </div>

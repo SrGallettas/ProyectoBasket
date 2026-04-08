@@ -90,7 +90,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto">
+                            <img id="equipo-create-preview" src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto">
                         </div>
 
                         <div class="info-subida-noticia">
@@ -100,7 +100,7 @@
                             <label for="imagen_club" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> Seleccionar imagen
                             </label>
-                            <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input">
+                            <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input" accept="image/*" data-image-input="#equipo-create-preview">
 
                             <span class="nota-subida">Formatos: JPG o PNG. La imagen se guardará en public/escudos.</span>
                         </div>

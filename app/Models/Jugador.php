@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Jugador extends Model
 {
@@ -27,5 +28,18 @@ class Jugador extends Model
 
     public function equipo() {
         return $this->belongsTo(Equipo::class);
+    }
+
+    public function getImagenJugadorUrlAttribute(): string
+    {
+        if (!$this->imagen_jugador || $this->imagen_jugador === 'club_14.png') {
+            return asset('img/club_14.png');
+        }
+
+        if ($this->imagen_jugador === 'basket.jpeg') {
+            return asset('img/basket.jpeg');
+        }
+
+        return '/storage/jugadores/' . ltrim(basename($this->imagen_jugador), '/');
     }
 }

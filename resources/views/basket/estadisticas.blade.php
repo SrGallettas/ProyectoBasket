@@ -31,7 +31,7 @@
 
         @if($equipoSeleccionado)
             @php
-                $escudo = $equipoSeleccionado->imagen_club ? asset('escudos/' . $equipoSeleccionado->imagen_club) : asset('img/club_14.png');
+                $escudo = $equipoSeleccionado?->imagen_club_url ?? asset('img/club_14.png');
             @endphp
             <article class="stats-team-panel">
                 <header class="stats-team-head">

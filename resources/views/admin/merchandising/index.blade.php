@@ -36,7 +36,7 @@
                     <td>
                         <div class="contenedor-foto-tabla">
                             @if($item->imagen_merchan)
-                                <img src="{{ asset('merchandising/' . $item->imagen_merchan) }}" alt="{{ $item->nombre }}" class="img-merchan-tabla">
+                                <img src="{{ $item->imagen_merchan_url }}" alt="{{ $item->nombre }}" class="img-merchan-tabla">
                             @else
                                 <div class="sin-foto-mini"><i class="fas fa-tshirt"></i></div>
                             @endif

@@ -335,7 +335,8 @@ class BasketController extends Controller
         $partido = Partido::with([
             'equipoLocal',
             'equipoVisitante',
-            'estadisticas.cuartos',
+            'estadisticas',
+            'cuartos',
         ])
             ->where('oculto', false)
             ->whereKey($id)
@@ -343,6 +344,9 @@ class BasketController extends Controller
 
         $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
         $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+
+        $this->attachQuarterStats($partido, $statsLocal, (int) $partido->equipo_local_id);
+        $this->attachQuarterStats($partido, $statsVisitante, (int) $partido->equipo_visitante_id);
 
         return view('basket.partido_detalle', compact('partido', 'statsLocal', 'statsVisitante'));
     }
@@ -452,11 +456,13 @@ class BasketController extends Controller
     public function enviarInteresMerchan(Request $request)
     {
         $validated = $request->validate([
-            'producto_id' => 'required|exists:merchandising,id',
+            'producto_id' => 'required|integer',
             'talla' => 'nullable|string|max:20',
         ]);
 
-        $producto = Merchandising::findOrFail($validated['producto_id']);
+        $producto = Merchandising::whereKey($validated['producto_id'])
+            ->where('oculto', false)
+            ->firstOrFail();
         $talla = $validated['talla'] ?? 'Sin talla especificada';
         $tallasDisponibles = $producto->talla
             ? array_map('trim', explode(',', $producto->talla))
@@ -481,5 +487,20 @@ class BasketController extends Controller
         });
 
         return back()->with('mensaje', 'Tu interés se ha enviado correctamente.');
+    }
+
+    private function attachQuarterStats(Partido $partido, ?PartidoEstadistica $estadistica, int $equipoId): void
+    {
+        if (!$estadistica) {
+            return;
+        }
+
+        $estadistica->setRelation(
+            'cuartos',
+            $partido->cuartos
+                ->where('equipo_id', $equipoId)
+                ->sortBy('periodo')
+                ->values()
+        );
     }
 }

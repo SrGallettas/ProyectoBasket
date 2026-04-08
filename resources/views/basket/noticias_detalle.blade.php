@@ -31,7 +31,7 @@
 
     {{-- Contenedor de Imagen con Efecto --}}
     <div class="articulo-imagen-wrap">
-        <img src="{{ asset('noticias/' . $noticia->imagen_noticia) }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+        <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
     </div>
 
     {{-- Cuerpo del Artículo --}}
