@@ -32,8 +32,8 @@
                 @forelse($galerias as $galeria)
                     <tr>
                         <td class="td-img">
-                            @if($galeria->imagenes->first())
-                                <img src="{{ $galeria->imagenes->first()->image_url }}" alt="Portada {{ $galeria->titulo }}" class="admin-thumb-60">
+                            @if($galeria->portada)
+                                <img src="{{ $galeria->portada->image_url }}" alt="Portada {{ $galeria->titulo }}" class="admin-thumb-60">
                             @else
                                 <div class="sin-foto"><i class="fas fa-image"></i></div>
                             @endif

@@ -21,6 +21,7 @@ class EquipoSeeder extends Seeder
                     'categoria' => $categoria,
                     'imagen_club' => 'club_14.png',
                     'es_local' => true,
+                    'oculto' => false,
                 ]);
             }
         }

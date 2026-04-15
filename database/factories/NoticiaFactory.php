@@ -27,6 +27,7 @@ class NoticiaFactory extends Factory
             'slug' => $slugBase . '-' . Str::lower(Str::random(6)),
             'imagen_noticia' => 'club_14.png',
             'autor' => $this->faker->name(),
+            'oculto' => false,
             'created_at' => now(),
         ];
     }

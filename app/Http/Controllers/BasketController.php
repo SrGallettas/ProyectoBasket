@@ -12,6 +12,7 @@ use App\Models\Clasificacion;
 use App\Models\ClasificacionFila;
 use App\Models\PartidoCuarto;
 use App\Models\PartidoEstadistica;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,28 +20,95 @@ class BasketController extends Controller
 {
     public function inicio()
     {
+        $ahora = Carbon::now();
+
+        $partidosClub = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
+            ->where('oculto', false)
+            ->where(function ($query) {
+                $query->whereHas('equipoLocal', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                })->orWhereHas('equipoVisitante', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                });
+            })
+            ->orderBy('fecha_hora', 'asc')
+            ->get();
+
+        $partidosSeniorA = $partidosClub->filter(fn (Partido $partido) => $this->matchIncludesPreferredLocalTeam(
+            $partido,
+            ['CB Bellreguard Senior A'],
+            ['Senior A']
+        ));
+
+        $partidosSeniorB = $partidosClub->filter(fn (Partido $partido) => $this->matchIncludesPreferredLocalTeam(
+            $partido,
+            ['CB Bellreguard Senior B'],
+            ['Senior B']
+        ));
+
+        $resolverProximoPartido = function ($partidos) use ($ahora) {
+            return $partidos
+                ->filter(function (Partido $partido) use ($ahora) {
+                    $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                    $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+                    $sinResultadoFinal = optional($statsLocal)->puntos_totales === null
+                        || optional($statsVisitante)->puntos_totales === null;
+
+                    return $sinResultadoFinal
+                        && Carbon::parse($partido->fecha_hora)->greaterThanOrEqualTo($ahora);
+                })
+                ->sortBy('fecha_hora')
+                ->first();
+        };
+
+        $resolverUltimoResultado = function ($partidos) {
+            return $partidos
+                ->filter(function (Partido $partido) {
+                    $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                    $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+
+                    return optional($statsLocal)->puntos_totales !== null
+                        && optional($statsVisitante)->puntos_totales !== null;
+                })
+                ->sortByDesc('fecha_hora')
+                ->first();
+        };
+
+        $proximoPartido = $resolverProximoPartido($partidosSeniorA)
+            ?? $resolverProximoPartido($partidosSeniorB);
+
+        $ultimoResultado = $resolverUltimoResultado($partidosSeniorA)
+            ?? $resolverUltimoResultado($partidosSeniorB);
+
         $noticias = Noticia::where('oculto', false)->latest()->take(6)->get();
-        return view('basket.inicio', compact("noticias"));
+        return view('basket.inicio', compact('noticias', 'proximoPartido', 'ultimoResultado'));
     }
 
     public function equipo(Request $request)
     {
-        // 1. Obtenemos los equipos locales para los botones
         $equiposLocales = Equipo::where('es_local', true)
             ->where('oculto', false)
+            ->whereHas('jugadores', function ($query) {
+                $query->where('oculto', false);
+            })
             ->orderBy('categoria')
             ->get();
 
-        // 2. Filtro por categoría (por defecto 'Senior')
-        $categoriaSel = $request->get('categoria', 'Senior');
+        $categorias = $equiposLocales
+            ->pluck('categoria')
+            ->filter()
+            ->unique()
+            ->values();
 
-        // 3. Buscamos el equipo específico
-        $equipoMostrar = Equipo::where('es_local', true)
-            ->where('oculto', false)
+        $categoriaSel = (string) $request->get('categoria', '');
+        if ($categoriaSel === '' || !$categorias->contains($categoriaSel)) {
+            $categoriaSel = (string) ($categorias->first() ?? 'Senior');
+        }
+
+        $equipoMostrar = $equiposLocales
             ->where('categoria', $categoriaSel)
             ->first();
 
-        // 4. Paginamos los jugadores (1 por página)
         $jugadores = null;
         if ($equipoMostrar) {
             $jugadores = $equipoMostrar->jugadores()
@@ -50,7 +118,12 @@ class BasketController extends Controller
                 ->withQueryString();
         }
 
-        return view('basket.equipo', compact('equiposLocales', 'equipoMostrar', 'categoriaSel', 'jugadores'));
+        return view('basket.equipo', compact(
+            'categorias',
+            'equipoMostrar',
+            'categoriaSel',
+            'jugadores'
+        ));
     }
 
     public function tienda()
@@ -95,7 +168,7 @@ class BasketController extends Controller
             $jornadasPartidos = Partido::where('clasificacion_id', $clasificacionSeleccionada->id)
                 ->where('tipo_partido', 'liga')
                 ->whereNotNull('jornada')
-                ->where('oculto', false)
+                ->where('oculto_en_clasificacion', false)
                 ->distinct()
                 ->orderBy('jornada')
                 ->pluck('jornada');
@@ -152,7 +225,7 @@ class BasketController extends Controller
                 ->when(!$modoGeneral, function ($query) use ($jornadaSeleccionada) {
                     $query->where('jornada', $jornadaSeleccionada);
                 })
-                ->where('oculto', false)
+                ->where('oculto_en_clasificacion', false)
                 ->orderBy('jornada')
                 ->orderBy('fecha_hora')
                 ->get();
@@ -187,7 +260,11 @@ class BasketController extends Controller
                 $equipoSeleccionado = $equiposLocales->firstWhere('id', (int) $equipoId);
             }
             if (!$equipoSeleccionado) {
-                $equipoSeleccionado = $equiposLocales->first();
+                $equipoSeleccionado = $this->resolvePreferredLocalTeam(
+                    $equiposLocales,
+                    ['CB Bellreguard Senior A'],
+                    ['Senior A']
+                ) ?: $equiposLocales->first();
             }
         }
 
@@ -321,10 +398,45 @@ class BasketController extends Controller
         return view('basket.estadisticas', compact('equiposLocales', 'equipoSeleccionado', 'resumenTemporada'));
     }
 
+    private function matchIncludesPreferredLocalTeam(Partido $partido, array $preferredNames, array $preferredCategories): bool
+    {
+        foreach ([$partido->equipoLocal, $partido->equipoVisitante] as $equipo) {
+            if (!$equipo || !$equipo->es_local) {
+                continue;
+            }
+
+            if ($this->teamMatchesPreference($equipo, $preferredNames, $preferredCategories)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function resolvePreferredLocalTeam($equiposLocales, array $preferredNames, array $preferredCategories): ?Equipo
+    {
+        return $equiposLocales->first(
+            fn (Equipo $equipo) => $this->teamMatchesPreference($equipo, $preferredNames, $preferredCategories)
+        );
+    }
+
+    private function teamMatchesPreference(Equipo $equipo, array $preferredNames, array $preferredCategories): bool
+    {
+        return in_array((string) $equipo->nombre, $preferredNames, true)
+            || in_array((string) $equipo->categoria, $preferredCategories, true);
+    }
+
     public function partidos()
     {
         $partidos = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
             ->where('oculto', false)
+            ->where(function ($query) {
+                $query->whereHas('equipoLocal', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                })->orWhereHas('equipoVisitante', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                });
+            })
             ->orderBy('fecha_hora', 'asc')
             ->paginate(10);
         return view('basket.partidos', compact('partidos'));
@@ -339,6 +451,13 @@ class BasketController extends Controller
             'cuartos',
         ])
             ->where('oculto', false)
+            ->where(function ($query) {
+                $query->whereHas('equipoLocal', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                })->orWhereHas('equipoVisitante', function ($teamQuery) {
+                    $teamQuery->where('es_local', true);
+                });
+            })
             ->whereKey($id)
             ->firstOrFail();
 
@@ -457,13 +576,13 @@ class BasketController extends Controller
     {
         $validated = $request->validate([
             'producto_id' => 'required|integer',
-            'talla' => 'nullable|string|max:20',
+            'talla' => 'required|string|max:20',
         ]);
 
         $producto = Merchandising::whereKey($validated['producto_id'])
             ->where('oculto', false)
             ->firstOrFail();
-        $talla = $validated['talla'] ?? 'Sin talla especificada';
+        $talla = trim($validated['talla']);
         $tallasDisponibles = $producto->talla
             ? array_map('trim', explode(',', $producto->talla))
             : [];
@@ -471,6 +590,12 @@ class BasketController extends Controller
         if (!empty($tallasDisponibles) && !in_array($talla, $tallasDisponibles, true)) {
             return back()->withErrors([
                 'talla' => 'Selecciona una talla valida para este producto.'
+            ])->withInput();
+        }
+
+        if (empty($tallasDisponibles) && $talla !== 'Sin talla') {
+            return back()->withErrors([
+                'talla' => 'La talla seleccionada no es valida para este producto.'
             ])->withInput();
         }
 

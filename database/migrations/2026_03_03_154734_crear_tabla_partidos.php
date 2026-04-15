@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tipo_partido')->default('liga');
             $table->unsignedInteger('jornada')->nullable();
             $table->boolean('oculto')->default(false);
+            $table->boolean('oculto_en_clasificacion')->default(false);
 
             $table->timestamps();
         });

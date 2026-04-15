@@ -31,6 +31,7 @@
 .navegacion-categorias {
     padding: 30px 40px;
     text-align: center;
+    background: #fff;
 }
 
 .botones-categoria {
@@ -237,7 +238,7 @@
    Modo oscuro SOLO Equipos
    ========================= */
 html[data-theme="dark"] .navegacion-categorias {
-    background: #020617;
+    background: #0b1120;
 }
 
 html[data-theme="dark"] .public-news-hero {
@@ -276,7 +277,7 @@ html[data-theme="dark"] .boton-categoria:hover {
 }
 
 html[data-theme="dark"] .equipo-jugadores {
-    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    background: #0b1120;
 }
 
 html[data-theme="dark"] .equipo-titulo-categoria {

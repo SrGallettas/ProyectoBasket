@@ -44,7 +44,7 @@
                         <label>Categoría</label>
                         <select name="categoria" required class="input-ficha input-white">
                             <option value="" disabled {{ old('categoria', $equipo->categoria) == '' ? 'selected' : '' }}>Selecciona...</option>
-                            @foreach(['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $categoria)
+                            @foreach($categoryOptions as $categoria)
                                 <option value="{{ $categoria }}" {{ old('categoria', $equipo->categoria) == $categoria ? 'selected' : '' }}>
                                     {{ $categoria }}
                                 </option>

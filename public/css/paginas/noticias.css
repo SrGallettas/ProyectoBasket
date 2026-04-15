@@ -438,7 +438,7 @@ html[data-theme="dark"] .public-news-hero-divider {
 }
 
 html[data-theme="dark"] .noticias-container-rectangular {
-    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    background: #0b1120;
     border-radius: 14px;
     padding-top: 24px;
     padding-bottom: 24px;

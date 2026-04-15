@@ -4,11 +4,20 @@
 @php
     $adminCards = [
         [
+            'titulo' => 'Usuarios',
+            'texto' => 'Cuentas internas del panel, accesos y roles de gestión.',
+            'ruta' => route('usuarios.index'),
+            'imagen' => asset('img/usuarios.png'),
+            'icono' => 'fas fa-user-shield',
+            'visible' => auth()->user()?->role === \App\Models\User::ROLE_ADMIN,
+        ],
+        [
             'titulo' => 'Jugadores',
             'texto' => 'Altas, fichas, dorsales y asignaciones de equipo.',
             'ruta' => route('jugadores.index'),
             'imagen' => asset('img/jugadores.png'),
             'icono' => 'fas fa-users',
+            'visible' => true,
         ],
         [
             'titulo' => 'Equipos',
@@ -16,6 +25,7 @@
             'ruta' => route('equipos.index'),
             'imagen' => asset('img/equipo.png'),
             'icono' => 'fas fa-tshirt',
+            'visible' => true,
         ],
         [
             'titulo' => 'Noticias',
@@ -23,6 +33,7 @@
             'ruta' => route('noticias.index'),
             'imagen' => asset('img/noticias.png'),
             'icono' => 'fas fa-newspaper',
+            'visible' => true,
         ],
         [
             'titulo' => 'Merchandising',
@@ -30,6 +41,7 @@
             'ruta' => route('merchandising.index'),
             'imagen' => asset('img/merchan.png'),
             'icono' => 'fas fa-shopping-bag',
+            'visible' => true,
         ],
         [
             'titulo' => 'Partidos',
@@ -37,13 +49,15 @@
             'ruta' => route('partidos.index'),
             'imagen' => asset('img/partidos.png'),
             'icono' => 'fas fa-calendar-alt',
+            'visible' => true,
         ],
         [
             'titulo' => 'Clasificaciones',
             'texto' => 'Ligas, jornadas y tabla de posiciones por temporada.',
             'ruta' => route('clasificaciones.index'),
-            'imagen' => asset('img/partidos.png'),
+            'imagen' => asset('img/clasificacion.png'),
             'icono' => 'fas fa-trophy',
+            'visible' => true,
         ],
         [
             'titulo' => 'Galerías',
@@ -51,6 +65,7 @@
             'ruta' => route('galerias.index'),
             'imagen' => asset('img/galeria.png'),
             'icono' => 'fas fa-images',
+            'visible' => true,
         ],
     ];
 @endphp
@@ -70,6 +85,8 @@
 
 <section class="dashboard-admin-grid">
     @foreach($adminCards as $card)
+        @continue(!($card['visible'] ?? true))
+
         <a href="{{ $card['ruta'] }}" class="dashboard-admin-card">
             <div class="dashboard-admin-card-media">
                 <img src="{{ $card['imagen'] }}" alt="{{ $card['titulo'] }}">

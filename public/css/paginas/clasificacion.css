@@ -353,7 +353,7 @@ html[data-theme="dark"] .icono-trofeo {
 }
 
 html[data-theme="dark"] .selector-categorias {
-    background: #0f172a;
+    background: #0b1120;
     box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
     border: 1px solid #1f2937;
 }
@@ -381,7 +381,7 @@ html[data-theme="dark"] .btn-cat.activo {
 
 html[data-theme="dark"] .tabla-contenedor,
 html[data-theme="dark"] .jornada-partidos {
-    background: #0f172a;
+    background: #0b1120;
     box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
     border: 1px solid #1f2937;
 }

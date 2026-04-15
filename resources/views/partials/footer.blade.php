@@ -2,7 +2,7 @@
     <div class="rejilla-footer">
         <div class="footer-col info-club">
             <a href="{{ url('/') }}" class="logo-footer">
-                <img src="{{ asset('img/basket.jpeg') }}" alt="Logo Bellreguard" />
+                <img src="{{ asset('img/club_14.png') }}" alt="Logo Bellreguard" />
                 <div class="texto-logo-footer">
                     <h3>Bellreguard</h3>
                     <span>Club de Basket</span>
@@ -32,9 +32,9 @@
 
         <div class="footer-col">
             <h4>Síguenos</h4>
-            <div class="redes-iconos">
+<div class="redes-iconos">
     <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.instagram.com/basquetbellreguard/" title="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
     <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
 </div>
         </div>

@@ -9,6 +9,7 @@ use App\Models\Clasificacion;
 use App\Models\PartidoEstadistica;
 use App\Models\PartidoCuarto;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class PartidoController extends Controller
@@ -65,6 +66,7 @@ class PartidoController extends Controller
             'clasificacion_id'    => 'nullable|exists:clasificaciones,id',
             'jornada'             => 'nullable|integer|min:1',
             'oculto'              => 'nullable|boolean',
+            'oculto_en_clasificacion' => 'nullable|boolean',
         ], [
             // Mensajes personalizados
             'equipo_local_id.required'     => 'Debes seleccionar el equipo local.',
@@ -94,6 +96,9 @@ class PartidoController extends Controller
         $partido->clasificacion_id = $request->tipo_partido === 'liga' ? $request->clasificacion_id : null;
         $partido->jornada = $request->tipo_partido === 'liga' ? $request->jornada : null;
         $partido->oculto = $request->boolean('oculto');
+        $partido->oculto_en_clasificacion = $request->tipo_partido === 'liga'
+            ? $request->boolean('oculto_en_clasificacion')
+            : false;
 
         // Nota: Los puntos no los tocamos aquí, se quedan como NULL en la BD
         // porque el partido aún no se ha jugado.
@@ -146,6 +151,7 @@ class PartidoController extends Controller
             'clasificacion_id'    => 'nullable|exists:clasificaciones,id',
             'jornada'             => 'nullable|integer|min:1',
             'oculto'              => 'nullable|boolean',
+            'oculto_en_clasificacion' => 'nullable|boolean',
         ];
 
         foreach (['local', 'visitante'] as $lado) {
@@ -194,6 +200,9 @@ class PartidoController extends Controller
         $partido->clasificacion_id    = $request->tipo_partido === 'liga' ? $request->clasificacion_id : null;
         $partido->jornada             = $request->tipo_partido === 'liga' ? $request->jornada : null;
         $partido->oculto              = $request->boolean('oculto');
+        $partido->oculto_en_clasificacion = $request->tipo_partido === 'liga'
+            ? $request->boolean('oculto_en_clasificacion')
+            : false;
 
         // 4. PERSISTENCIA: Guardamos los cambios en la base de datos
         $partido->save();
@@ -208,8 +217,11 @@ class PartidoController extends Controller
     public function destroy($id)
     {
         $partido = Partido::findOrFail($id);
-
-        $partido->delete();
+        DB::transaction(function () use ($partido) {
+            $partido->estadisticas()->delete();
+            $partido->cuartos()->delete();
+            $partido->delete();
+        });
 
         return redirect()->route('partidos.index')->with('mensaje', 'Partido eliminado correctamente del club');
     }
@@ -222,6 +234,18 @@ class PartidoController extends Controller
         $mensaje = $partido->oculto
             ? 'Partido ocultado de la web publica.'
             : 'Partido visible de nuevo en la web publica.';
+
+        return redirect()->route('partidos.index')->with('mensaje', $mensaje);
+    }
+
+    public function toggleOcultoClasificacion(Partido $partido)
+    {
+        $partido->oculto_en_clasificacion = !$partido->oculto_en_clasificacion;
+        $partido->save();
+
+        $mensaje = $partido->oculto_en_clasificacion
+            ? 'Partido ocultado de la clasificación pública.'
+            : 'Partido visible de nuevo en la clasificación pública.';
 
         return redirect()->route('partidos.index')->with('mensaje', $mensaje);
     }

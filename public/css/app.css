@@ -754,7 +754,7 @@ body.menu-movil-abierto {
    Tema oscuro (global base)
    ========================= */
 html[data-theme="dark"] body {
-    background: #020617;
+    background: #0b1120;
     color: #e5e7eb;
 }
 

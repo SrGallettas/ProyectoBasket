@@ -31,7 +31,9 @@ class EquipoController extends Controller
     // Muestra el formulario para crear un equipo nuevo
     public function create()
     {
-        return view('admin.equipos.create'); // Carga la vista del formulario
+        $categoryOptions = $this->categoryOptions();
+
+        return view('admin.equipos.create', compact('categoryOptions')); // Carga la vista del formulario
     }
 
     // Guarda el equipo nuevo cuando pulsas "Enviar" o "Guardar"
@@ -99,7 +101,13 @@ class EquipoController extends Controller
     public function edit($id)
     {
         $equipo = Equipo::findOrFail($id); // Busca los datos del equipo que quieres editar
-        return view('admin.equipos.edit', compact('equipo')); // Los manda al formulario de edición
+        $categoryOptions = $this->categoryOptions();
+
+        if (!in_array($equipo->categoria, $categoryOptions, true)) {
+            $categoryOptions[] = $equipo->categoria;
+        }
+
+        return view('admin.equipos.edit', compact('equipo', 'categoryOptions')); // Los manda al formulario de edición
     }
 
     // Actualiza los datos del equipo cuando guardas los cambios en el Edit
@@ -168,5 +176,20 @@ class EquipoController extends Controller
         }
 
         Storage::disk('public')->delete($directory . '/' . ltrim($filename, '/'));
+    }
+
+    private function categoryOptions(): array
+    {
+        $bases = ['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín'];
+        $suffixes = ['A', 'B', 'C', 'D'];
+        $options = [];
+
+        foreach ($bases as $base) {
+            foreach ($suffixes as $suffix) {
+                $options[] = $base . ' ' . $suffix;
+            }
+        }
+
+        return $options;
     }
 }

@@ -9,127 +9,152 @@ use App\Models\Partido;
 use App\Models\PartidoCuarto;
 use App\Models\PartidoEstadistica;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class LigaSimulacionSeeder extends Seeder
 {
-    private const CLASIFICACION_NOMBRE = 'SIM Liga 10 Equipos';
-    private const EQUIPO_PREFIX = 'SIM L10';
+    private const TEMPORADA = '2026-2027';
+
+    private const LIGAS = [
+        [
+            'nombre' => 'SIM Liga Senior A',
+            'categoria' => 'Senior A',
+            'prefijo' => 'SIM SA',
+            'equipo_local' => 'CB Bellreguard Senior A',
+        ],
+        [
+            'nombre' => 'SIM Liga Senior B',
+            'categoria' => 'Senior B',
+            'prefijo' => 'SIM SB',
+            'equipo_local' => 'CB Bellreguard Senior B',
+        ],
+    ];
 
     public function run(): void
     {
-        DB::transaction(function () {
-            $this->cleanupPreviousSimulation();
+        DB::transaction(function (): void {
+            foreach (self::LIGAS as $indiceLiga => $config) {
+                $this->cleanupPreviousSimulation($config['nombre'], $config['prefijo']);
 
-            $clasificacion = Clasificacion::create([
-                'nombre' => self::CLASIFICACION_NOMBRE,
-                'categoria' => 'Senior',
-                'temporada' => '2026-2027',
-                'activa' => false,
-            ]);
+                $clasificacion = Clasificacion::create([
+                    'nombre' => $config['nombre'],
+                    'categoria' => $config['categoria'],
+                    'temporada' => self::TEMPORADA,
+                    'activa' => $indiceLiga === 0,
+                ]);
 
-            $equipos = $this->createSimulationTeams();
-            $clasificacion->equipos()->sync($equipos->pluck('id')->all());
+                $equipos = $this->createSimulationTeams($config);
+                $clasificacion->equipos()->sync($equipos->pluck('id')->all());
 
-            $jornadas = $this->buildDoubleRoundRobin($equipos->pluck('id')->all());
-            $inicioLiga = now()->subDays(140)->startOfDay();
+                $jornadas = $this->buildDoubleRoundRobin($equipos->pluck('id')->all());
+                $inicioLiga = now()->subDays(180 - ($indiceLiga * 10))->startOfDay();
 
-            foreach ($jornadas as $idxJornada => $partidosJornada) {
-                $numeroJornada = $idxJornada + 1;
+                foreach ($jornadas as $indiceJornada => $partidosJornada) {
+                    $numeroJornada = $indiceJornada + 1;
 
-                foreach ($partidosJornada as $idxPartido => $duelo) {
-                    [$localId, $visitanteId] = $duelo;
+                    foreach ($partidosJornada as $indicePartido => $duelo) {
+                        [$localId, $visitanteId] = $duelo;
 
-                    $fecha = (clone $inicioLiga)
-                        ->addDays(($numeroJornada - 1) * 7)
-                        ->addHours(10 + ($idxPartido * 2));
+                        $fecha = (clone $inicioLiga)
+                            ->addDays(($numeroJornada - 1) * 7)
+                            ->addHours(17 + ($indicePartido * 2));
 
-                    $partido = Partido::create([
-                        'equipo_local_id' => $localId,
-                        'equipo_visitante_id' => $visitanteId,
-                        'clasificacion_id' => $clasificacion->id,
-                        'fecha_hora' => $fecha,
-                        'lugar' => 'Pabellón Simulado ' . str_pad((string) $numeroJornada, 2, '0', STR_PAD_LEFT),
-                        'categoria' => 'Senior',
-                        'tipo_partido' => 'liga',
-                        'jornada' => $numeroJornada,
-                        'oculto' => false,
-                    ]);
+                        $partido = Partido::create([
+                            'equipo_local_id' => $localId,
+                            'equipo_visitante_id' => $visitanteId,
+                            'clasificacion_id' => $clasificacion->id,
+                            'fecha_hora' => $fecha,
+                            'lugar' => sprintf('Pabellón %s J%02d', $config['categoria'], $numeroJornada),
+                            'categoria' => $config['categoria'],
+                            'tipo_partido' => 'liga',
+                            'jornada' => $numeroJornada,
+                            'oculto' => false,
+                        ]);
 
-                    $statsLocal = $this->generateTeamStats();
-                    $statsVisitante = $this->generateTeamStats();
+                        [$statsLocal, $statsVisitante] = $this->generateBalancedMatchStats();
 
-                    PartidoEstadistica::create(array_merge($statsLocal, [
-                        'partido_id' => $partido->id,
-                        'equipo_id' => $localId,
-                    ]));
-
-                    PartidoEstadistica::create(array_merge($statsVisitante, [
-                        'partido_id' => $partido->id,
-                        'equipo_id' => $visitanteId,
-                    ]));
-
-                    $usarProrroga = abs($statsLocal['puntos_totales'] - $statsVisitante['puntos_totales']) <= 6 && random_int(1, 100) <= 15;
-                    $periodos = $usarProrroga ? [1, 2, 3, 4, 5] : [1, 2, 3, 4];
-                    $cuartosLocal = $this->splitPointsByPeriods($statsLocal['puntos_totales'], $periodos);
-                    $cuartosVisitante = $this->splitPointsByPeriods($statsVisitante['puntos_totales'], $periodos);
-
-                    foreach ($periodos as $periodo) {
-                        PartidoCuarto::create([
+                        PartidoEstadistica::create(array_merge($statsLocal, [
                             'partido_id' => $partido->id,
                             'equipo_id' => $localId,
-                            'periodo' => $periodo,
-                            'puntos' => $cuartosLocal[$periodo] ?? 0,
-                        ]);
+                        ]));
 
-                        PartidoCuarto::create([
+                        PartidoEstadistica::create(array_merge($statsVisitante, [
                             'partido_id' => $partido->id,
                             'equipo_id' => $visitanteId,
-                            'periodo' => $periodo,
-                            'puntos' => $cuartosVisitante[$periodo] ?? 0,
-                        ]);
+                        ]));
+
+                        $usarProrroga = abs($statsLocal['puntos_totales'] - $statsVisitante['puntos_totales']) <= 5
+                            && random_int(1, 100) <= 12;
+                        $periodos = $usarProrroga ? [1, 2, 3, 4, 5] : [1, 2, 3, 4];
+
+                        $cuartosLocal = $this->splitPointsByPeriods($statsLocal['puntos_totales'], $periodos);
+                        $cuartosVisitante = $this->splitPointsByPeriods($statsVisitante['puntos_totales'], $periodos);
+
+                        foreach ($periodos as $periodo) {
+                            PartidoCuarto::create([
+                                'partido_id' => $partido->id,
+                                'equipo_id' => $localId,
+                                'periodo' => $periodo,
+                                'puntos' => $cuartosLocal[$periodo] ?? 0,
+                            ]);
+
+                            PartidoCuarto::create([
+                                'partido_id' => $partido->id,
+                                'equipo_id' => $visitanteId,
+                                'periodo' => $periodo,
+                                'puntos' => $cuartosVisitante[$periodo] ?? 0,
+                            ]);
+                        }
                     }
                 }
-            }
 
-            $this->recalculateClasificacion($clasificacion);
+                $this->recalculateClasificacion($clasificacion);
+            }
         });
     }
 
-    private function cleanupPreviousSimulation(): void
+    private function cleanupPreviousSimulation(string $nombreClasificacion, string $prefijoEquipos): void
     {
-        $clasificacion = Clasificacion::where('nombre', self::CLASIFICACION_NOMBRE)->first();
-        if ($clasificacion) {
-            $equipoIds = $clasificacion->equipos()->pluck('equipos.id')->all();
-            Partido::where('clasificacion_id', $clasificacion->id)->delete();
-            ClasificacionFila::where('clasificacion_id', $clasificacion->id)->delete();
-            $clasificacion->equipos()->detach();
-            $clasificacion->delete();
+        $clasificacion = Clasificacion::where('nombre', $nombreClasificacion)->first();
+        if (!$clasificacion) {
+            return;
+        }
 
-            if (!empty($equipoIds)) {
-                Equipo::whereIn('id', $equipoIds)
-                    ->where('nombre', 'like', self::EQUIPO_PREFIX . '%')
-                    ->delete();
-            }
+        $equipoIds = $clasificacion->equipos()->pluck('equipos.id')->all();
+
+        Partido::where('clasificacion_id', $clasificacion->id)->delete();
+        ClasificacionFila::where('clasificacion_id', $clasificacion->id)->delete();
+        $clasificacion->equipos()->detach();
+        $clasificacion->delete();
+
+        if (!empty($equipoIds)) {
+            Equipo::whereIn('id', $equipoIds)
+                ->where('nombre', 'like', $prefijoEquipos . '%')
+                ->orWhere(function ($query) use ($equipoIds, $prefijoEquipos) {
+                    $query->whereIn('id', $equipoIds)
+                        ->where('nombre', 'like', 'CB Bellreguard Senior %');
+                })
+                ->delete();
         }
     }
 
-    private function createSimulationTeams()
+    private function createSimulationTeams(array $config): Collection
     {
         $equipos = collect();
 
         $equipos->push(Equipo::create([
-            'nombre' => self::EQUIPO_PREFIX . ' Bellreguard',
-            'categoria' => 'Senior',
+            'nombre' => $config['equipo_local'],
+            'categoria' => $config['categoria'],
             'imagen_club' => null,
             'es_local' => true,
             'oculto' => false,
         ]));
 
-        for ($i = 1; $i <= 9; $i++) {
+        for ($i = 1; $i <= 8; $i++) {
             $equipos->push(Equipo::create([
-                'nombre' => self::EQUIPO_PREFIX . ' Rival ' . $i,
-                'categoria' => 'Senior',
+                'nombre' => sprintf('%s Rival %d', $config['prefijo'], $i),
+                'categoria' => $config['categoria'],
                 'imagen_club' => null,
                 'es_local' => false,
                 'oculto' => false,
@@ -153,6 +178,7 @@ class LigaSimulacionSeeder extends Seeder
 
         for ($round = 0; $round < $numRounds; $round++) {
             $matches = [];
+
             for ($i = 0; $i < $half; $i++) {
                 $home = $ids[$i];
                 $away = $ids[$numTeams - 1 - $i];
@@ -161,12 +187,11 @@ class LigaSimulacionSeeder extends Seeder
                     continue;
                 }
 
-                if ($round % 2 === 0) {
-                    $matches[] = [$home, $away];
-                } else {
-                    $matches[] = [$away, $home];
-                }
+                $matches[] = $round % 2 === 0
+                    ? [$home, $away]
+                    : [$away, $home];
             }
+
             $rounds[] = $matches;
 
             $fixed = array_shift($ids);
@@ -187,29 +212,48 @@ class LigaSimulacionSeeder extends Seeder
         return array_merge($rounds, $returnRounds);
     }
 
+    private function generateBalancedMatchStats(): array
+    {
+        $statsLocal = $this->generateTeamStats();
+        $statsVisitante = $this->generateTeamStats();
+
+        if ($statsLocal['puntos_totales'] === $statsVisitante['puntos_totales']) {
+            $favorecerLocal = random_int(0, 1) === 1;
+            if ($favorecerLocal) {
+                $statsLocal['ftm']++;
+                $statsLocal['fta']++;
+                $statsLocal['puntos_totales']++;
+            } else {
+                $statsVisitante['ftm']++;
+                $statsVisitante['fta']++;
+                $statsVisitante['puntos_totales']++;
+            }
+        }
+
+        return [$statsLocal, $statsVisitante];
+    }
+
     private function generateTeamStats(): array
     {
-        $fga = random_int(50, 82);
-        $t3a = random_int(14, min(36, $fga - 8));
-        $t2a = max(8, $fga - $t3a);
+        $fga = random_int(52, 80);
+        $t3a = random_int(14, min(34, $fga - 10));
+        $t2a = max(10, $fga - $t3a);
 
-        $t2m = random_int((int) floor($t2a * 0.38), (int) floor($t2a * 0.62));
-        $t3m = random_int((int) floor($t3a * 0.24), (int) floor($t3a * 0.46));
+        $t2m = random_int((int) floor($t2a * 0.40), (int) floor($t2a * 0.61));
+        $t3m = random_int((int) floor($t3a * 0.26), (int) floor($t3a * 0.44));
         $fgm = $t2m + $t3m;
 
-        $fta = random_int(8, 30);
-        $ftm = random_int((int) floor($fta * 0.58), (int) floor($fta * 0.90));
+        $fta = random_int(10, 28);
+        $ftm = random_int((int) floor($fta * 0.62), (int) floor($fta * 0.88));
 
-        $rebOf = random_int(6, 18);
-        $rebDef = random_int(18, 37);
-        $ast = random_int(8, 26);
-        $blk = random_int(1, 9);
-        $tov = random_int(7, 22);
-        $stl = random_int(4, 16);
-        $pf = random_int(10, 28);
-        $tf = random_int(0, 3);
-
-        $puntos = ($t2m * 2) + ($t3m * 3) + $ftm;
+        $rebOf = random_int(6, 16);
+        $rebDef = random_int(19, 34);
+        $ast = random_int(9, 24);
+        $blk = random_int(1, 8);
+        $tov = random_int(8, 19);
+        $stl = random_int(4, 13);
+        $pf = random_int(12, 26);
+        $tf = random_int(0, 2);
 
         return [
             'fgm' => $fgm,
@@ -228,7 +272,7 @@ class LigaSimulacionSeeder extends Seeder
             'stl' => $stl,
             'pf' => $pf,
             'tf' => $tf,
-            'puntos_totales' => $puntos,
+            'puntos_totales' => ($t2m * 2) + ($t3m * 3) + $ftm,
         ];
     }
 
@@ -327,14 +371,11 @@ class LigaSimulacionSeeder extends Seeder
                     $acumulado[$localId]['pts'] += 2;
                     $acumulado[$visitanteId]['pp']++;
                     $acumulado[$visitanteId]['pts'] += 1;
-                } elseif ($puntosVisitante > $puntosLocal) {
+                } else {
                     $acumulado[$visitanteId]['pg']++;
                     $acumulado[$visitanteId]['pts'] += 2;
                     $acumulado[$localId]['pp']++;
                     $acumulado[$localId]['pts'] += 1;
-                } else {
-                    $acumulado[$localId]['pts'] += 1;
-                    $acumulado[$visitanteId]['pts'] += 1;
                 }
             }
 

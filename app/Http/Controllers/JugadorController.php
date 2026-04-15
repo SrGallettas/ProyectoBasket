@@ -6,6 +6,7 @@ use App\Models\Jugador;
 use App\Models\Equipo; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class JugadorController extends Controller
 {
@@ -33,7 +34,11 @@ class JugadorController extends Controller
     // Muestra el formulario (pasando los equipos)
     public function create()
     {
-        $equipos = Equipo::all(); // Necesitamos los equipos para el <select>
+        $equipos = Equipo::where('es_local', true)
+            ->orderBy('categoria')
+            ->orderBy('nombre')
+            ->get();
+
         return view('admin.jugadores.create', compact('equipos'));
     }
 
@@ -46,7 +51,10 @@ class JugadorController extends Controller
             'dorsal'           => 'required|integer|min:0|max:99',
             'posicion'         => 'required|string',
             'fecha_nacimiento' => 'required|date',
-            'equipo_id'        => 'required|exists:equipos,id',
+            'equipo_id'        => [
+                'required',
+                Rule::exists('equipos', 'id')->where(fn ($query) => $query->where('es_local', true)),
+            ],
             'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'oculto'           => 'nullable|boolean',
         ], [
@@ -90,7 +98,10 @@ class JugadorController extends Controller
     public function edit($id)
     {
         $jugador = Jugador::findOrFail($id);
-        $equipos = Equipo::all(); // Para el desplegable de cambio de equipo
+        $equipos = Equipo::where('es_local', true)
+            ->orderBy('categoria')
+            ->orderBy('nombre')
+            ->get();
 
         return view('admin.jugadores.edit', compact('jugador', 'equipos'));
     }
@@ -104,7 +115,10 @@ class JugadorController extends Controller
             'dorsal'           => 'required|integer|min:0|max:99',
             'posicion'         => 'required|string',
             'fecha_nacimiento' => 'required|date',
-            'equipo_id'        => 'required|exists:equipos,id',
+            'equipo_id'        => [
+                'required',
+                Rule::exists('equipos', 'id')->where(fn ($query) => $query->where('es_local', true)),
+            ],
             'imagen_jugador'   => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10MB
             'oculto'           => 'nullable|boolean',
         ], [

@@ -55,6 +55,7 @@ Route::middleware(['auth', 'role:admin,coach,editor'])->prefix('admin')->group(f
     Route::patch('jugadores/{jugador}/oculto', [JugadorController::class, 'toggleOculto'])->name('jugadores.toggle-oculto');
     Route::resource('partidos', PartidoController::class);
     Route::patch('partidos/{partido}/oculto', [PartidoController::class, 'toggleOculto'])->name('partidos.toggle-oculto');
+    Route::patch('partidos/{partido}/oculto-clasificacion', [PartidoController::class, 'toggleOcultoClasificacion'])->name('partidos.toggle-oculto-clasificacion');
     Route::resource('clasificaciones', ClasificacionController::class)
         ->parameters(['clasificaciones' => 'clasificacion'])
         ->only(['index', 'show']);

@@ -118,6 +118,13 @@
                         </label>
                     </div>
 
+                    <div class="campo-ficha" data-campo-liga>
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" name="oculto_en_clasificacion" value="1" {{ old('oculto_en_clasificacion') ? 'checked' : '' }}>
+                            Ocultar este partido en clasificación
+                        </label>
+                    </div>
+
                 </div>
 
             <div class="form-acciones-ficha">

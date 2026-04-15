@@ -62,7 +62,9 @@
                 <td class="text-right col-equipo">
                     <div class="contenedor-equipo-tabla reverse">
                         <span class="nombre-equipo">{{ $partido->equipoLocal->nombre }}</span>
-                        <img src="{{ $partido->equipoLocal->imagen_club_url }}" class="escudo-tabla-ajustado">
+                        <span class="admin-shield-frame">
+                            <img src="{{ $partido->equipoLocal->imagen_club_url }}" class="escudo-tabla-ajustado" alt="Escudo {{ $partido->equipoLocal->nombre }}">
+                        </span>
                     </div>
                 </td>
 
@@ -74,7 +76,9 @@
                 {{-- 5. VISITANTE: Alineado a la izquierda --}}
                 <td class="text-left col-equipo">
                     <div class="contenedor-equipo-tabla">
-                        <img src="{{ $partido->equipoVisitante->imagen_club_url }}" class="escudo-tabla-ajustado">
+                        <span class="admin-shield-frame">
+                            <img src="{{ $partido->equipoVisitante->imagen_club_url }}" class="escudo-tabla-ajustado" alt="Escudo {{ $partido->equipoVisitante->nombre }}">
+                        </span>
                         <span class="nombre-equipo">{{ $partido->equipoVisitante->nombre }}</span>
                     </div>
                 </td>
@@ -102,10 +106,24 @@
                         <form action="{{ route('partidos.toggle-oculto', $partido->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn-accion {{ $partido->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $partido->oculto ? 'Mostrar partido' : 'Ocultar partido' }}">
+                            <button type="submit" class="btn-accion {{ $partido->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $partido->oculto ? 'Mostrar en Partidos' : 'Ocultar de Partidos' }}">
                                 <i class="fas {{ $partido->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                             </button>
                         </form>
+
+                        @if($partido->tipo_partido === 'liga' && $partido->clasificacion_id)
+                            <form action="{{ route('partidos.toggle-oculto-clasificacion', $partido->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button
+                                    type="submit"
+                                    class="btn-accion {{ $partido->oculto_en_clasificacion ? 'mostrar' : 'ocultar' }}"
+                                    title="{{ $partido->oculto_en_clasificacion ? 'Mostrar en Clasificación' : 'Ocultar de Clasificación' }}"
+                                >
+                                    <i class="fas fa-trophy"></i>
+                                </button>
+                            </form>
+                        @endif
 
                         <form action="{{ route('partidos.destroy', $partido->id) }}" method="POST" onsubmit="return confirm('¿Eliminar partido?')">
                             @csrf

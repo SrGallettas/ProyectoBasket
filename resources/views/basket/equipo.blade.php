@@ -13,10 +13,10 @@
 
 <section class="navegacion-categorias">
     <div class="botones-categoria">
-        @foreach($equiposLocales as $eq)
-            <a href="{{ route('basket.equipo', ['categoria' => $eq->categoria]) }}" 
-               class="boton-categoria {{ $categoriaSel == $eq->categoria ? 'activo' : '' }}">
-               {{ $eq->categoria }}
+        @foreach($categorias as $categoria)
+            <a href="{{ route('basket.equipo', ['categoria' => $categoria]) }}" 
+               class="boton-categoria {{ $categoriaSel == $categoria ? 'activo' : '' }}">
+               {{ $categoria }}
             </a>
         @endforeach
     </div>

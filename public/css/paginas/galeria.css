@@ -486,7 +486,7 @@ html[data-theme="dark"] .stats-galeria {
 }
 
 html[data-theme="dark"] .contenedor-galeria {
-    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    background: #0b1120;
     border-radius: 14px;
     padding-top: 24px;
     padding-bottom: 24px;

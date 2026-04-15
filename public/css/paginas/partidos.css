@@ -300,7 +300,7 @@ html[data-theme="dark"] .public-news-hero-divider {
 }
 
 html[data-theme="dark"] .seccion-calendario {
-    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    background: #0b1120;
 }
 
 html[data-theme="dark"] .partidos-alerta-ok {

@@ -135,6 +135,15 @@ html {
     background: transparent;
 }
 
+.admin-logout-toggle {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
 .admin-theme-toggle:hover {
     background: #333;
 }
@@ -1720,10 +1729,22 @@ VER PRODUCTO
 
 .escudo-tabla-ajustado {
     width: 35px;
-    /* Tamaño fijo para que no deforme la fila */
     height: 35px;
     object-fit: contain;
-    /* Evita que la imagen se estire */
+    display: block;
+}
+
+.admin-shield-frame {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
 .nombre-equipo {

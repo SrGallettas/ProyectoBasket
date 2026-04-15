@@ -13,7 +13,9 @@ class JugadorSeeder extends Seeder
      */
     public function run(): void
     {
-        Equipo::query()->each(function (Equipo $equipo): void {
+        Equipo::query()
+            ->where('es_local', true)
+            ->each(function (Equipo $equipo): void {
             Jugador::factory()->count(6)->create([
                 'equipo_id' => $equipo->id,
             ]);

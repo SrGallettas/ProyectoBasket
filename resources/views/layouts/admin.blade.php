@@ -24,7 +24,7 @@
     <div class="contenedor-admin">
         <aside class="sidebar-admin" id="admin-sidebar">
             <div class="admin-perfil">
-                <img src="{{ asset('img/basket.jpeg') }}" alt="Logo Admin">
+                <img src="{{ asset('img/club_14.png') }}" alt="Logo Admin">
                 <div class="admin-info">
                     <h4>Panel Admin</h4>
                     <span>{{ $adminUser?->name }} · {{ \App\Models\User::ROLES[$adminUser?->role] ?? 'Usuario' }}</span>
@@ -90,7 +90,7 @@
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="item-admin volver-web" style="width:100%; border:none; text-align:left;">
+                    <button type="submit" class="item-admin volver-web admin-logout-toggle">
                         <i class="fas fa-right-from-bracket"></i><span>Cerrar sesión</span>
                     </button>
                 </form>

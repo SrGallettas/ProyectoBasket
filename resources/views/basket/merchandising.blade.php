@@ -128,18 +128,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     botones.forEach(function (boton) {
         boton.addEventListener('click', function () {
-            const contenedor = boton.closest('.interes-formulario');
+            const contenedor = boton.closest('.precio-comprar');
             const tallaInput = contenedor ? contenedor.querySelector('.js-talla') : null;
             const talla = tallaInput ? tallaInput.value.trim() : 'Sin talla';
 
             if (tallaInput && tallaInput.tagName === 'SELECT' && !talla) {
-                alert('Selecciona una talla antes de continuar.');
+                tallaInput.reportValidity();
+                tallaInput.focus();
                 return;
             }
 
             const producto = boton.dataset.producto || 'Producto';
             const asunto = `Interés ${producto}`;
-            const cuerpo = `Hola Bellreguard CB,\n\nEstoy interesado en el producto: ${producto}.\nMe gustaría pedirlo en la talla: ${talla}.\n\nGracias.`;
+            const cuerpo = `Hola Bellreguard CB,\n\nEstoy interesado en el producto: ${producto}.\nTalla: ${talla}.\n\nGracias.`;
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=admin@bellreguard.com&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
             window.open(gmailUrl, '_blank');

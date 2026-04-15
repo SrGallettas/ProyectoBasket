@@ -2,7 +2,7 @@
 
     {{-- 1. LOGO Y TEXTO --}}
     <a href="{{ url('/') }}" class="navegacion-izquierda">
-        <img src="{{ asset('img/basket.jpeg') }}" class="logo-navegacion" alt="Logo Bellreguard" />
+        <img src="{{ asset('img/club_14.png') }}" class="logo-navegacion" alt="Logo Bellreguard" />
         <div class="titulo-navegacion">
             <h3>Bellreguard</h3>
             <span>Club de Basket</span>

@@ -33,6 +33,7 @@ class MerchandisingFactory extends Factory
             'precio' => $this->faker->randomFloat(2, 10, 60), // Precio entre 10 y 60
             'imagen_merchan' => 'club_14.png',
             'talla' => $this->faker->randomElement(['S', 'M', 'L', 'XL', 'XXL', 'Talla Única', 'Sin Talla']),
+            'oculto' => false,
         ];
     }
 }

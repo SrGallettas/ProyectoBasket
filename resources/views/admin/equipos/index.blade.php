@@ -43,9 +43,9 @@
             @forelse($equipos as $equipo)
             <tr>
                 <td>
-                    <div class="contenedor-escudo">
+                    <div class="contenedor-escudo admin-photo-frame">
                         {{-- Muestra la foto guardada en la carpeta public/escudos --}}
-                        <img src="{{ $equipo->imagen_club_url }}" alt="Escudo" width="60" height="60" class="admin-img-contain">
+                        <img src="{{ $equipo->imagen_club_url }}" alt="Escudo" width="60" height="60" class="admin-img-contain admin-photo-fill">
                     </div>
                 </td>
                 <td><strong>{{ $equipo->nombre }}</strong></td>

@@ -309,7 +309,7 @@ html[data-theme="dark"] .iconos-merchandising {
 }
 
 html[data-theme="dark"] .productos-oficiales {
-    background: linear-gradient(180deg, #020617 0%, #111827 100%);
+    background: #0b1120;
 }
 
 html[data-theme="dark"] .public-alert-ok {

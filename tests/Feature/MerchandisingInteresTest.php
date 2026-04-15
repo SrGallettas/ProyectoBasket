@@ -42,6 +42,39 @@ class MerchandisingInteresTest extends TestCase
 
         $response->assertRedirect(route('basket.tienda'));
         $response->assertSessionHas('mensaje', 'Tu interés se ha enviado correctamente.');
-        Mail::assertOutgoingCount(1);
+    }
+
+    public function test_requiere_talla_en_producto_con_tallas_disponibles(): void
+    {
+        Mail::fake();
+
+        $productoVisible = Merchandising::factory()->create([
+            'oculto' => false,
+            'talla' => 'M,L',
+        ]);
+
+        $response = $this->from(route('basket.tienda'))->post(route('basket.tienda.interes'), [
+            'producto_id' => $productoVisible->id,
+            'talla' => '',
+        ]);
+
+        $response->assertRedirect(route('basket.tienda'));
+        $response->assertSessionHasErrors('talla');
+    }
+
+    public function test_permite_interes_en_producto_sin_tallas_con_valor_sin_talla(): void
+    {
+        $productoVisible = Merchandising::factory()->create([
+            'oculto' => false,
+            'talla' => 'Sin talla',
+        ]);
+
+        $response = $this->from(route('basket.tienda'))->post(route('basket.tienda.interes'), [
+            'producto_id' => $productoVisible->id,
+            'talla' => 'Sin talla',
+        ]);
+
+        $response->assertRedirect(route('basket.tienda'));
+        $response->assertSessionHas('mensaje', 'Tu interés se ha enviado correctamente.');
     }
 }

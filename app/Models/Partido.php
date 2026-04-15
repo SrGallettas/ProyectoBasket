@@ -19,10 +19,12 @@ class Partido extends Model
         'clasificacion_id',
         'jornada',
         'oculto',
+        'oculto_en_clasificacion',
     ];
 
     protected $casts = [
         'oculto' => 'boolean',
+        'oculto_en_clasificacion' => 'boolean',
         'jornada' => 'integer',
     ];
 

@@ -23,6 +23,7 @@ class EquipoFactory extends Factory
             "categoria" => $this->faker->randomElement(['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín']),
             "imagen_club" => 'club_14.png',
             "es_local" => true,
+            "oculto" => false,
         ];
     }
 }
