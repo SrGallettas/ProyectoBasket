@@ -48,6 +48,29 @@
                     </div>
                 </header>
 
+                <div class="stats-record-grid">
+                    <div class="stats-record-card">
+                        <span>Partidos jugados</span>
+                        <strong>{{ (int) ($resumenTemporada['pj'] ?? 0) }}</strong>
+                        <small>Liga regular</small>
+                    </div>
+                    <div class="stats-record-card">
+                        <span>Victorias</span>
+                        <strong>{{ (int) ($resumenTemporada['victorias'] ?? 0) }}</strong>
+                        <small>Partidos ganados</small>
+                    </div>
+                    <div class="stats-record-card">
+                        <span>Derrotas</span>
+                        <strong>{{ (int) ($resumenTemporada['derrotas'] ?? 0) }}</strong>
+                        <small>Partidos perdidos</small>
+                    </div>
+                    <div class="stats-record-card">
+                        <span>Porcentaje</span>
+                        <strong>{{ isset($resumenTemporada['porcentaje_victorias']) && $resumenTemporada['porcentaje_victorias'] !== null ? number_format($resumenTemporada['porcentaje_victorias'], 1) . '%' : '-' }}</strong>
+                        <small>Victorias sobre PJ</small>
+                    </div>
+                </div>
+
                 <div class="stats-shooting-grid">
                     @php
                         $pctFg = isset($resumenTemporada['porcentajes']['fg']) && $resumenTemporada['porcentajes']['fg'] !== null ? number_format($resumenTemporada['porcentajes']['fg'], 1) . '%' : '-';
@@ -99,7 +122,7 @@
                         <div class="stats-quarter-item"><span>Q2</span><strong>{{ $resumenTemporada['totales']['q2'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q2'] ?? 0, 1) }}</small></div>
                         <div class="stats-quarter-item"><span>Q3</span><strong>{{ $resumenTemporada['totales']['q3'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q3'] ?? 0, 1) }}</small></div>
                         <div class="stats-quarter-item"><span>Q4</span><strong>{{ $resumenTemporada['totales']['q4'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q4'] ?? 0, 1) }}</small></div>
-                        <div class="stats-quarter-item"><span>PR</span><strong>{{ $resumenTemporada['totales']['pr'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pr'] ?? 0, 1) }}</small></div>
+                        <div class="stats-quarter-item"><span>PR</span><strong>{{ $resumenTemporada['totales']['pr'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pr'] ?? 0, 1) }} · {{ (int) ($resumenTemporada['partidos_con_prorroga'] ?? 0) }} partidos</small></div>
                     </div>
                 </div>
             </article>

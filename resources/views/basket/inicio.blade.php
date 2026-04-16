@@ -7,6 +7,17 @@
 
 @use('Carbon\Carbon')
 
+@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('meta_description', 'Descubre el Bellreguard Club de Basket: próximos partidos, último resultado, noticias del club y toda la actualidad del baloncesto en Bellreguard.')
+@section('canonical', route('basket.inicio'))
+@section('og_title', 'Bellreguard Club de Basket | Partidos, noticias y actualidad')
+@section('og_description', 'Consulta los próximos partidos, el último resultado y las noticias del Bellreguard Club de Basket desde la portada oficial del club.')
+@section('og_url', route('basket.inicio'))
+@section('og_image', asset('img/principal-2.png'))
+@section('og_image_alt', 'Jugadores y ambiente del Bellreguard Club de Basket')
+@section('twitter_image', asset('img/principal-2.png'))
+@section('twitter_image_alt', 'Jugadores y ambiente del Bellreguard Club de Basket')
+
 {{-- ESTO PASA PORQUE TENEMOS LA VARIABLE TITULO DE NOTICIAS, Y COMO HAY DOS VARIABLES QUE SE LLAMAN IGUAL, NOS TOCA CAMBIARLO --}}
 @php $titulo = 'Inicio - Bellreguard Club de Basket'; @endphp
 
@@ -68,6 +79,52 @@
             }, 6000);
         });
     </script>
+
+    <section class="inicio-club-cta">
+        <div class="inicio-club-cta-card">
+            <div class="inicio-club-cta-copy">
+                <p class="inicio-kicker">Únete al club</p>
+                <h2>¿Quieres jugar con nosotros esta temporada?</h2>
+                <p>
+                    Si buscas equipo, quieres traer a tu hijo o simplemente conocer mejor el club,
+                    te ayudamos a encontrar la categoría adecuada y resolver cualquier duda.
+                </p>
+                <div class="inicio-club-cta-actions">
+                    <a href="{{ route('basket.contacto') }}" class="boton-principal">Contactar con el club</a>
+                </div>
+            </div>
+
+            <div class="inicio-club-cta-aside">
+                <div class="inicio-club-cta-pill">
+                    <i class="fa-solid fa-basketball"></i>
+                    <span>Pruebas, cantera y equipos del club</span>
+                </div>
+                <ul class="inicio-club-cta-list">
+                    <li><i class="fa-solid fa-check"></i> Información clara sobre categorías y equipos</li>
+                    <li><i class="fa-solid fa-check"></i> Contacto directo con el club</li>
+                    <li><i class="fa-solid fa-check"></i> Acceso rápido a próximos partidos y actualidad</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="inicio-club-stats">
+        <div class="inicio-club-stats-header">
+            <p class="inicio-kicker">Sobre el club</p>
+            <h2>Un proyecto deportivo con actividad real</h2>
+            <p>Estas cifras salen del contenido público que ya tiene el club en la web y ayudan a mostrar que la portada está viva.</p>
+        </div>
+
+        <div class="inicio-club-stats-grid">
+            @foreach ($clubStats as $stat)
+                <article class="inicio-club-stat-card">
+                    <strong>{{ $stat['valor'] }}</strong>
+                    <h3>{{ $stat['etiqueta'] }}</h3>
+                    <p>{{ $stat['texto'] }}</p>
+                </article>
+            @endforeach
+        </div>
+    </section>
 
     @php
         $cardsPartidos = collect([
@@ -167,35 +224,162 @@
         </div>
     </section>
 
+    @if($clasificacionInicio && $clasificacionInicioFilas->isNotEmpty())
+        <section class="inicio-mini-clasificacion">
+            <div class="inicio-mini-clasificacion-header">
+                <div>
+                    <p class="inicio-kicker">Clasificación</p>
+                    <h2>Así va la competición</h2>
+                    <p>
+                        {{ $clasificacionInicio->nombre }}
+                        @if($clasificacionInicio->temporada)
+                            · Temporada {{ $clasificacionInicio->temporada }}
+                        @endif
+                    </p>
+                </div>
+            </div>
+
+            <div class="inicio-mini-clasificacion-card">
+                <table class="inicio-mini-clasificacion-table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Equipo</th>
+                            <th>PJ</th>
+                            <th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($clasificacionInicioFilas as $fila)
+                            @php
+                                $equipoFila = $fila->equipo;
+                                $esFilaClub = (bool) optional($equipoFila)->es_local
+                                    || str_contains(strtolower((string) optional($equipoFila)->nombre), 'bellreguard');
+                            @endphp
+                            <tr class="{{ $esFilaClub ? 'is-club-row' : '' }}">
+                                <td><strong>{{ $fila->posicion_home }}</strong></td>
+                                <td>
+                                    <div class="inicio-mini-clasificacion-team">
+                                        <img src="{{ optional($equipoFila)->imagen_club_url ?? asset('img/club_14.png') }}" alt="{{ optional($equipoFila)->nombre ?? 'Equipo' }}">
+                                        <span>{{ optional($equipoFila)->nombre ?? 'Equipo' }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $fila->pj }}</td>
+                                <td><strong>{{ $fila->pts }}</strong></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="inicio-cta-wrap">
+                <a href="{{ route('basket.clasificacion') }}" class="inicio-mini-clasificacion-link">Ver clasificación completa</a>
+            </div>
+        </section>
+    @endif
+
+    @if($galeriasDestacadas->isNotEmpty())
+        <section class="inicio-galeria-destacada">
+            <div class="inicio-galeria-header">
+                <p class="inicio-kicker">Vida del club</p>
+                <h2>Imágenes que enseñan el ambiente Bellreguard</h2>
+                <p>Una selección de álbumes recientes para que la portada también muestre lo que pasa dentro y fuera de la pista.</p>
+            </div>
+
+            <div class="inicio-galeria-grid">
+                @foreach($galeriasDestacadas as $index => $galeria)
+                    <article class="inicio-galeria-card {{ $index === 0 ? 'is-featured' : '' }}">
+                        <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-media">
+                            @if($galeria->portada)
+                                <img
+                                    src="{{ $galeria->portada?->image_url ?? asset('img/club_14.png') }}"
+                                    alt="{{ $galeria->titulo }}"
+                                    onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';"
+                                >
+                            @else
+                                <img
+                                    src="{{ asset('img/club_14.png') }}"
+                                    alt="Galería sin portada"
+                                >
+                            @endif
+                            <span class="inicio-galeria-badge">{{ $galeria->imagenes_count }} fotos</span>
+                        </a>
+
+                        <div class="inicio-galeria-copy">
+                            <span class="inicio-galeria-type">{{ \App\Models\Galeria::TIPOS[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
+                            <h3>{{ $galeria->titulo }}</h3>
+                            <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: 'Revive este álbum destacado del Bellreguard Club de Basket.', $index === 0 ? 150 : 110) }}</p>
+                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-link">Ver álbum</a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+
+            <div class="inicio-cta-wrap">
+                <a href="{{ route('basket.galeria') }}" class="inicio-cta-link">Ver toda la galería</a>
+            </div>
+        </section>
+    @endif
+
     <section class="seccion-noticias">
+        @php
+            $noticiaPrincipal = $noticias->first();
+            $noticiasSecundarias = $noticias->skip(1)->take(4);
+        @endphp
+
         <h2>Últimas Noticias</h2>
         <p class="subtitulo">Mantente al día con todas las novedades del club</p>
         
-        <div class="rejilla-noticias">
-            @forelse ($noticias as $noticia)
-                <div class="tarjeta-noticia">
-                    <div class="contenedor-img">
-                        <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" />
+        @if($noticiaPrincipal)
+            <div class="noticias-destacadas-layout">
+                <article class="noticia-principal-home">
+                    <a href="{{ route('noticias.detalle', $noticiaPrincipal->slug) }}" class="noticia-principal-media">
+                        <img src="{{ $noticiaPrincipal->imagen_noticia_url }}" alt="{{ $noticiaPrincipal->titulo }}" />
+                    </a>
+
+                    <div class="noticia-principal-copy">
+                        <div class="noticia-principal-meta">
+                            <span class="fecha">{{ $noticiaPrincipal->created_at->format('d M, Y') }}</span>
+                            @if($noticiaPrincipal->autor)
+                                <span class="noticia-autor">{{ $noticiaPrincipal->autor }}</span>
+                            @endif
+                        </div>
+
+                        <h3>{{ $noticiaPrincipal->titulo }}</h3>
+                        <p>{{ Str::limit($noticiaPrincipal->subtitulo ?: strip_tags($noticiaPrincipal->contenido), 180) }}</p>
+                        <a href="{{ route('noticias.detalle', $noticiaPrincipal->slug) }}" class="noticia-principal-link">Leer noticia destacada</a>
                     </div>
-                    
-                    <div class="info-tarjeta">
-                        <span class="fecha">{{ $noticia->created_at->format('d M, Y') }}</span>
-                        <h3>{{ $noticia->titulo }}</h3>
-                        <p>{{ Str::limit($noticia->subtitulo, 80) }}</p>
-                        <a href="{{ route('noticias.detalle', $noticia->slug) }}">Leer más →</a>
+                </article>
+
+                @if($noticiasSecundarias->isNotEmpty())
+                    <div class="noticias-secundarias-grid">
+                        @foreach ($noticiasSecundarias as $noticia)
+                            <article class="tarjeta-noticia tarjeta-noticia-secundaria">
+                                <a href="{{ route('noticias.detalle', $noticia->slug) }}" class="contenedor-img">
+                                    <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" />
+                                </a>
+                                
+                                <div class="info-tarjeta">
+                                    <span class="fecha">{{ $noticia->created_at->format('d M, Y') }}</span>
+                                    <h3>{{ $noticia->titulo }}</h3>
+                                    <p>{{ Str::limit($noticia->subtitulo ?: strip_tags($noticia->contenido), 95) }}</p>
+                                    <a href="{{ route('noticias.detalle', $noticia->slug) }}">Leer más →</a>
+                                </div>
+                            </article>
+                        @endforeach
                     </div>
+                @endif
+            </div>
+        @else
+            <div class="estado-vacio">
+                <div class="estado-vacio-icono">
+                    <i class="fas fa-newspaper"></i>
                 </div>
-            @empty
-                <div class="estado-vacio">
-                    <div class="estado-vacio-icono">
-                        <i class="fas fa-newspaper"></i>
-                    </div>
-                    <h3>Sin noticias publicadas por ahora</h3>
-                    <p>En cuanto tengamos novedades del club, las veras aqui en primer plano.</p>
-                    <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
-                </div>
-            @endforelse
-        </div>
+                <h3>Sin noticias publicadas por ahora</h3>
+                <p>En cuanto tengamos novedades del club, las veras aqui en primer plano.</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
+            </div>
+        @endif
 
         @if($noticias->isNotEmpty())
             <div class="inicio-cta-wrap">
@@ -206,14 +390,33 @@
 
 
     <section class="patrocinadores">
-        <h2>Nuestros Patrocinadores</h2>
+        @php
+            $patrocinadoresHome = collect([
+                'Patrocinador 1',
+                'Patrocinador 2',
+                'Patrocinador 3',
+                'Patrocinador 4',
+                'Patrocinador 5',
+                'Patrocinador 6',
+            ]);
+        @endphp
+
+        <div class="patrocinadores-header">
+            <p class="inicio-kicker">Red de apoyo</p>
+            <h2>Nuestros Patrocinadores</h2>
+            <p class="subtitulo">Empresas y colaboradores que ayudan a sostener el baloncesto del club y su actividad durante la temporada.</p>
+        </div>
+
         <div class="rejilla-patrocinadores">
-            {{-- Bucle de Blade para mostrar 6 patrocinadores --}}
-            @for ($i = 1; $i <= 6; $i++)
-                <div class="patrocinador">
-                    <img src="{{ asset('img/logo_nike.png') }}" alt="Patrocinador {{ $i }}">
-                </div>
-            @endfor
+            @foreach ($patrocinadoresHome as $patrocinador)
+                <article class="patrocinador">
+                    <img src="{{ asset('img/club_14.png') }}" alt="{{ $patrocinador }}">
+                </article>
+            @endforeach
+        </div>
+
+        <div class="inicio-cta-wrap">
+            <a href="{{ route('basket.contacto') }}" class="inicio-cta-link">Quiero colaborar con el club</a>
         </div>
     </section>
 

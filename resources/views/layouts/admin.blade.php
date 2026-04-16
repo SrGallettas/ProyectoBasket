@@ -36,17 +36,27 @@
                     <i class="fas fa-home"></i><span>Inicio</span>
                 </a>
 
-                <a href="{{ route('jugadores.index') }}" class="item-admin {{ request()->is('admin/jugadores*') ? 'activo' : '' }}">
-                    <i class="fas fa-users"></i><span>Jugadores</span>
-                </a>
+                @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
+                    <a href="{{ route('equipos.index') }}" class="item-admin {{ request()->is('admin/equipos*') ? 'activo' : '' }}">
+                        <i class="fas fa-tshirt"></i><span>Equipos</span>
+                    </a>
+
+                    <a href="{{ route('jugadores.index') }}" class="item-admin {{ request()->is('admin/jugadores*') ? 'activo' : '' }}">
+                        <i class="fas fa-users"></i><span>Jugadores</span>
+                    </a>
+
+                    <a href="{{ route('partidos.index') }}" class="item-admin {{ request()->is('admin/partidos*') ? 'activo' : '' }}">
+                        <i class="fas fa-calendar-alt"></i><span>Partidos</span>
+                    </a>
+
+                    <a href="{{ route('clasificaciones.index') }}" class="item-admin {{ request()->is('admin/clasificaciones*') ? 'activo' : '' }}">
+                        <i class="fas fa-trophy"></i><span>Clasificaciones</span>
+                    </a>
+                @endif
 
                 @if($adminUser?->isAdmin())
                     <a href="{{ route('usuarios.index') }}" class="item-admin {{ request()->is('admin/usuarios*') ? 'activo' : '' }}">
                         <i class="fas fa-user-shield"></i><span>Usuarios</span>
-                    </a>
-
-                    <a href="{{ route('equipos.index') }}" class="item-admin {{ request()->is('admin/equipos*') ? 'activo' : '' }}">
-                        <i class="fas fa-tshirt"></i><span>Equipos</span>
                     </a>
                 @endif
 
@@ -58,17 +68,7 @@
                     <a href="{{ route('merchandising.index') }}" class="item-admin {{ request()->is('admin/merchandising*') ? 'activo' : '' }}">
                         <i class="fas fa-shopping-bag"></i><span>Merchandising</span>
                     </a>
-                @endif
 
-                <a href="{{ route('partidos.index') }}" class="item-admin {{ request()->is('admin/partidos*') ? 'activo' : '' }}">
-                    <i class="fas fa-calendar-alt"></i><span>Partidos</span>
-                </a>
-
-                <a href="{{ route('clasificaciones.index') }}" class="item-admin {{ request()->is('admin/clasificaciones*') ? 'activo' : '' }}">
-                    <i class="fas fa-trophy"></i><span>Clasificaciones</span>
-                </a>
-
-                @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                     <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
                         <i class="fas fa-images"></i><span>Galerías</span>
                     </a>
@@ -227,5 +227,6 @@
             actualizarBotonesTema();
         });
     </script>
+    @stack('scripts')
 </body>
 </html>

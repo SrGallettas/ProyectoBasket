@@ -4,12 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'Bellreguard Club de Basket')</title>
+    <meta name="description" content="@yield('meta_description', 'Web oficial del Bellreguard Club de Basket con noticias, partidos, clasificación, equipo y actualidad del club.')" />
+    <link rel="canonical" href="@yield('canonical', url()->current())" />
+
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:type" content="@yield('og_type', 'website')" />
+    <meta property="og:site_name" content="Bellreguard Club de Basket" />
+    <meta property="og:title" content="@yield('og_title', View::yieldContent('title', 'Bellreguard Club de Basket'))" />
+    <meta property="og:description" content="@yield('og_description', View::yieldContent('meta_description', 'Web oficial del Bellreguard Club de Basket con noticias, partidos, clasificación, equipo y actualidad del club.'))" />
+    <meta property="og:url" content="@yield('og_url', url()->current())" />
+    <meta property="og:image" content="@yield('og_image', asset('img/principal-1.png'))" />
+    <meta property="og:image:alt" content="@yield('og_image_alt', 'Bellreguard Club de Basket')" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@yield('twitter_title', View::yieldContent('og_title', View::yieldContent('title', 'Bellreguard Club de Basket')))" />
+    <meta name="twitter:description" content="@yield('twitter_description', View::yieldContent('og_description', View::yieldContent('meta_description', 'Web oficial del Bellreguard Club de Basket con noticias, partidos, clasificación, equipo y actualidad del club.')))" />
+    <meta name="twitter:image" content="@yield('twitter_image', View::yieldContent('og_image', asset('img/principal-1.png')))" />
+    <meta name="twitter:image:alt" content="@yield('twitter_image_alt', View::yieldContent('og_image_alt', 'Bellreguard Club de Basket'))" />
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     @stack('styles')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="{{ request()->routeIs('basket.inicio') ? 'pagina-inicio' : '' }}">
 

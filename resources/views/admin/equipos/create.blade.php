@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
+@php($mostrarFotoPlantilla = old('es_local'))
 <div class="contenedor-edit-jugador">
     <header class="header-ficha">
         <div>
@@ -105,6 +106,28 @@
                             <span class="nota-subida">Formatos: JPG o PNG. La imagen se guardará en public/escudos.</span>
                         </div>
                     </div>
+
+                    <div
+                        class="card-imagen-horizontal"
+                        id="foto-plantilla-card"
+                        @unless($mostrarFotoPlantilla) style="display: none;" @endunless
+                    >
+                        <div class="preview-foto-noticia">
+                            <img id="equipo-plantilla-create-preview" src="{{ asset('img/equipo.png') }}" alt="Foto de plantilla por defecto">
+                        </div>
+
+                        <div class="info-subida-noticia">
+                            <h3>Foto de Plantilla</h3>
+                            <p>Esta imagen se usará en la cabecera pública de la página Equipo para esta categoría.</p>
+
+                            <label for="foto_plantilla" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Seleccionar foto
+                            </label>
+                            <input type="file" name="foto_plantilla" id="foto_plantilla" class="hidden-file-input" accept="image/*" data-image-input="#equipo-plantilla-create-preview">
+
+                            <span class="nota-subida">Formatos: JPG, PNG o WEBP. Si no subes nada se usará la imagen general por defecto.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -118,3 +141,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const localCheckbox = document.getElementById('es_local');
+    const plantillaCard = document.getElementById('foto-plantilla-card');
+    const plantillaInput = document.getElementById('foto_plantilla');
+
+    if (!localCheckbox || !plantillaCard) {
+        return;
+    }
+
+    const togglePlantillaCard = () => {
+        const isLocal = localCheckbox.checked;
+        plantillaCard.style.display = isLocal ? '' : 'none';
+
+        if (!isLocal && plantillaInput) {
+            plantillaInput.value = '';
+        }
+    };
+
+    localCheckbox.addEventListener('change', togglePlantillaCard);
+    togglePlantillaCard();
+});
+</script>
+@endpush

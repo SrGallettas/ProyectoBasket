@@ -2,6 +2,7 @@
 
 @section('contenido_admin')
 @php
+    $adminUser = auth()->user();
     $adminCards = [
         [
             'titulo' => 'Usuarios',
@@ -9,7 +10,7 @@
             'ruta' => route('usuarios.index'),
             'imagen' => asset('img/usuarios.png'),
             'icono' => 'fas fa-user-shield',
-            'visible' => auth()->user()?->role === \App\Models\User::ROLE_ADMIN,
+            'visible' => $adminUser?->role === \App\Models\User::ROLE_ADMIN,
         ],
         [
             'titulo' => 'Jugadores',
@@ -17,7 +18,7 @@
             'ruta' => route('jugadores.index'),
             'imagen' => asset('img/jugadores.png'),
             'icono' => 'fas fa-users',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
             'titulo' => 'Equipos',
@@ -25,7 +26,7 @@
             'ruta' => route('equipos.index'),
             'imagen' => asset('img/equipo.png'),
             'icono' => 'fas fa-tshirt',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
             'titulo' => 'Noticias',
@@ -33,7 +34,7 @@
             'ruta' => route('noticias.index'),
             'imagen' => asset('img/noticias.png'),
             'icono' => 'fas fa-newspaper',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]),
         ],
         [
             'titulo' => 'Merchandising',
@@ -41,7 +42,7 @@
             'ruta' => route('merchandising.index'),
             'imagen' => asset('img/merchan.png'),
             'icono' => 'fas fa-shopping-bag',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]),
         ],
         [
             'titulo' => 'Partidos',
@@ -49,7 +50,7 @@
             'ruta' => route('partidos.index'),
             'imagen' => asset('img/partidos.png'),
             'icono' => 'fas fa-calendar-alt',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
             'titulo' => 'Clasificaciones',
@@ -57,7 +58,7 @@
             'ruta' => route('clasificaciones.index'),
             'imagen' => asset('img/clasificacion.png'),
             'icono' => 'fas fa-trophy',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
             'titulo' => 'Galerías',
@@ -65,7 +66,7 @@
             'ruta' => route('galerias.index'),
             'imagen' => asset('img/galeria.png'),
             'icono' => 'fas fa-images',
-            'visible' => true,
+            'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]),
         ],
     ];
 @endphp

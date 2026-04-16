@@ -47,6 +47,41 @@ class AdminRoleAccessTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_un_editor_solo_puede_acceder_a_los_modulos_editoriales(): void
+    {
+        $editor = User::factory()->create([
+            'role' => User::ROLE_EDITOR,
+        ]);
+
+        $this->actingAs($editor)
+            ->get(route('noticias.index'))
+            ->assertOk();
+
+        $this->actingAs($editor)
+            ->get(route('merchandising.index'))
+            ->assertOk();
+
+        $this->actingAs($editor)
+            ->get(route('galerias.index'))
+            ->assertOk();
+
+        $this->actingAs($editor)
+            ->get(route('equipos.index'))
+            ->assertForbidden();
+
+        $this->actingAs($editor)
+            ->get(route('jugadores.index'))
+            ->assertForbidden();
+
+        $this->actingAs($editor)
+            ->get(route('partidos.index'))
+            ->assertForbidden();
+
+        $this->actingAs($editor)
+            ->get(route('clasificaciones.index'))
+            ->assertForbidden();
+    }
+
     public function test_un_coach_si_puede_entrar_a_gestion_de_equipos(): void
     {
         $coach = User::factory()->create([

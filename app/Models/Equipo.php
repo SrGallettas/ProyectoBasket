@@ -12,7 +12,7 @@ class Equipo extends Model
 
     protected $fillable = [
         'nombre', 
-        'categoria', 'imagen_club', 'es_local', 'oculto'
+        'categoria', 'imagen_club', 'foto_plantilla', 'es_local', 'oculto'
     ];
 
     protected $casts = [
@@ -50,5 +50,14 @@ class Equipo extends Model
         }
 
         return '/storage/escudos/' . ltrim($this->imagen_club, '/');
+    }
+
+    public function getFotoPlantillaUrlAttribute(): string
+    {
+        if (!$this->foto_plantilla) {
+            return asset('img/equipo.png');
+        }
+
+        return '/storage/equipos/plantillas/' . ltrim($this->foto_plantilla, '/');
     }
 }

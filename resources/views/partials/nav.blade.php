@@ -1,4 +1,17 @@
 <nav class="barra-navegacion" data-nav>
+    @php
+        $navLinks = [
+            ['label' => 'Inicio', 'href' => url('/'), 'active' => request()->routeIs('basket.inicio')],
+            ['label' => 'Equipo', 'href' => route('basket.equipo'), 'active' => request()->routeIs('basket.equipo')],
+            ['label' => 'Tienda', 'href' => route('basket.tienda'), 'active' => request()->routeIs('basket.tienda')],
+            ['label' => 'Clasificación', 'href' => route('basket.clasificacion'), 'active' => request()->routeIs('basket.clasificacion')],
+            ['label' => 'Estadísticas', 'href' => route('basket.estadisticas'), 'active' => request()->routeIs('basket.estadisticas')],
+            ['label' => 'Partidos', 'href' => route('basket.partidos'), 'active' => request()->routeIs('basket.partidos', 'basket.partidos.*')],
+            ['label' => 'Noticias', 'href' => route('basket.noticias'), 'active' => request()->routeIs('basket.noticias', 'basket.noticias.*', 'noticias.detalle')],
+            ['label' => 'Galería', 'href' => route('basket.galeria'), 'active' => request()->routeIs('basket.galeria', 'basket.galeria.*')],
+            ['label' => 'Contacto', 'href' => route('basket.contacto'), 'active' => request()->routeIs('basket.contacto')],
+        ];
+    @endphp
 
     {{-- 1. LOGO Y TEXTO --}}
     <a href="{{ url('/') }}" class="navegacion-izquierda">
@@ -18,15 +31,13 @@
     {{-- 2. MENÚ DE ENLACES (Centrado o distribuido) --}}
     <div class="panel-navegacion" data-nav-panel>
         <ul class="menu-navegacion">
-            <li><a href="{{ url('/') }}">Inicio</a></li>
-            <li><a href="{{ route('basket.equipo') }}">Equipo</a></li>
-            <li><a href="{{ route('basket.tienda') }}">Tienda</a></li>
-            <li><a href="{{ route('basket.clasificacion') }}">Clasificación</a></li>
-            <li><a href="{{ route('basket.estadisticas') }}">Estadísticas</a></li>
-            <li><a href="{{ route('basket.partidos') }}">Partidos</a></li>
-            <li><a href="{{ route('basket.noticias') }}">Noticias</a></li>
-            <li><a href="{{ route('basket.galeria') }}">Galería</a></li>
-            <li><a href="{{ route('basket.contacto') }}">Contacto</a></li>
+            @foreach ($navLinks as $link)
+                <li>
+                    <a href="{{ $link['href'] }}" class="{{ $link['active'] ? 'activo' : '' }}" @if($link['active']) aria-current="page" @endif>
+                        {{ $link['label'] }}
+                    </a>
+                </li>
+            @endforeach
         </ul>
 
         {{-- 3. BOTÓN LOGIN / LOGOUT --}}

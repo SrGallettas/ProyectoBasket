@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
+@php($mostrarFotoPlantilla = old('es_local', $equipo->es_local))
 <div class="contenedor-edit-jugador">
     <x-admin-edit-header
         :titulo="'Editar Equipo: ' . $equipo->nombre"
@@ -106,6 +107,32 @@
                             <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
                         </div>
                     </div>
+
+                    <div
+                        class="card-imagen-horizontal"
+                        id="foto-plantilla-card"
+                        @unless($mostrarFotoPlantilla) style="display: none;" @endunless
+                    >
+                        <div class="preview-foto-noticia">
+                            <img
+                                id="equipo-plantilla-edit-preview"
+                                src="{{ $equipo->foto_plantilla_url }}"
+                                alt="Foto de plantilla del equipo"
+                            >
+                        </div>
+
+                        <div class="info-subida-noticia">
+                            <h3>Foto de Plantilla</h3>
+                            <p>Esta imagen aparecerá en la cabecera pública de la página Equipo cuando se seleccione este equipo.</p>
+
+                            <label for="foto_plantilla" class="btn-cambiar-foto">
+                                <i class="fas fa-camera"></i> Cambiar foto
+                            </label>
+                            <input type="file" name="foto_plantilla" id="foto_plantilla" class="hidden-file-input" accept="image/*" data-image-input="#equipo-plantilla-edit-preview">
+
+                            <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la foto de plantilla actual.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -119,3 +146,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const localCheckbox = document.getElementById('es_local');
+    const plantillaCard = document.getElementById('foto-plantilla-card');
+    const plantillaInput = document.getElementById('foto_plantilla');
+
+    if (!localCheckbox || !plantillaCard) {
+        return;
+    }
+
+    const togglePlantillaCard = () => {
+        const isLocal = localCheckbox.checked;
+        plantillaCard.style.display = isLocal ? '' : 'none';
+
+        if (!isLocal && plantillaInput) {
+            plantillaInput.value = '';
+        }
+    };
+
+    localCheckbox.addEventListener('change', togglePlantillaCard);
+    togglePlantillaCard();
+});
+</script>
+@endpush

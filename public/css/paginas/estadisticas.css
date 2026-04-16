@@ -91,7 +91,11 @@
 .stats-team-identidad img {
     width: 56px;
     height: 56px;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
 }
 
 .stats-team-identidad h3 {
@@ -122,6 +126,38 @@
 .stats-team-pill span {
     font-size: 0.8rem;
     opacity: 0.9;
+}
+
+.stats-record-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.stats-record-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 12px 14px;
+}
+
+.stats-record-card span {
+    display: block;
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+.stats-record-card strong {
+    display: block;
+    margin-top: 4px;
+    color: #111827;
+    font-size: 1.45rem;
+}
+
+.stats-record-card small {
+    color: #b91c1c;
+    font-weight: 700;
 }
 
 .stats-shooting-grid {
@@ -716,6 +752,12 @@ html[data-theme="dark"] .stats-team-identidad p {
     color: #cbd5e1;
 }
 
+html[data-theme="dark"] .stats-team-identidad img {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .stats-record-card,
 html[data-theme="dark"] .stats-shot-card,
 html[data-theme="dark"] .stats-kpi,
 html[data-theme="dark"] .stats-quarters {
@@ -723,6 +765,7 @@ html[data-theme="dark"] .stats-quarters {
     border-color: #334155;
 }
 
+html[data-theme="dark"] .stats-record-card strong,
 html[data-theme="dark"] .stats-shot-card h4,
 html[data-theme="dark"] .stats-kpi strong,
 html[data-theme="dark"] .stats-quarters h4,
@@ -730,10 +773,15 @@ html[data-theme="dark"] .stats-quarter-item strong {
     color: #f8fafc;
 }
 
+html[data-theme="dark"] .stats-record-card span,
 html[data-theme="dark"] .stats-shot-card p,
 html[data-theme="dark"] .stats-kpi span,
 html[data-theme="dark"] .stats-quarter-item span {
     color: #cbd5e1;
+}
+
+html[data-theme="dark"] .stats-record-card small {
+    color: #fca5a5;
 }
 
 html[data-theme="dark"] .stats-quarter-item {

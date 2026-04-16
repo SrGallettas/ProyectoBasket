@@ -25,6 +25,13 @@
                 <p class="ficha-caption">Escudo Oficial del Club</p>
             </div>
 
+            <div class="seccion-form-ficha ficha-col-foto">
+                <div class="ficha-foto-principal">
+                    <img src="{{ $equipo->foto_plantilla_url }}" alt="Foto de plantilla de {{ $equipo->nombre }}">
+                </div>
+                <p class="ficha-caption">Foto de plantilla para la cabecera pública</p>
+            </div>
+
             <div class="seccion-form-ficha ficha-col-datos ficha-col-datos-equipo">
                 <h3 class="ficha-title-no-margin"><i class="fas fa-shield-alt"></i> Datos del Equipo</h3>
 

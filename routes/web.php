@@ -44,11 +44,12 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middle
 // --- 3. PANEL DE ADMINISTRACIÓN (PROTEGIDO) ---
 // Todo lo que esté aquí dentro requiere estar logueado
 Route::middleware(['auth', 'role:admin,coach,editor'])->prefix('admin')->group(function () {
-
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+});
 
+Route::middleware(['auth', 'role:admin,coach'])->prefix('admin')->group(function () {
     Route::resource("equipos", EquipoController::class);
     Route::patch('equipos/{equipo}/oculto', [EquipoController::class, 'toggleOculto'])->name('equipos.toggle-oculto');
     Route::resource("jugadores", JugadorController::class);

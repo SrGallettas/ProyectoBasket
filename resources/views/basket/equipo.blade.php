@@ -5,20 +5,29 @@
 @endpush
 
 @section('contenido')
-<x-public-news-hero
-    badge="PLANTILLA OFICIAL"
-    title="Nuestro Equipo"
-    subtitle="Conoce a los jugadores y categorías del Bellreguard Club de Basket."
-/>
+@php
+    $imagenEquipoHero = $equipoMostrar?->foto_plantilla_url ?? asset('img/equipo.png');
+@endphp
 
-<section class="navegacion-categorias">
-    <div class="botones-categoria">
-        @foreach($categorias as $categoria)
-            <a href="{{ route('basket.equipo', ['categoria' => $categoria]) }}" 
-               class="boton-categoria {{ $categoriaSel == $categoria ? 'activo' : '' }}">
-               {{ $categoria }}
-            </a>
-        @endforeach
+<section class="equipo-hero">
+    <div class="equipo-hero-media">
+        <img src="{{ $imagenEquipoHero }}" alt="Plantilla y equipos del Bellreguard Club de Basket">
+        <div class="equipo-hero-overlay"></div>
+    </div>
+
+    <div class="equipo-hero-content">
+        <span class="equipo-hero-badge">PLANTILLA OFICIAL</span>
+        <h1>Cantera y equipos del Bellreguard CB</h1>
+        <p>Descubre las categorías del club y consulta la plantilla disponible de cada equipo local.</p>
+
+        <div class="botones-categoria">
+            @foreach($categorias as $categoria)
+                <a href="{{ route('basket.equipo', ['categoria' => $categoria]) }}" 
+                class="boton-categoria {{ $categoriaSel == $categoria ? 'activo' : '' }}">
+                {{ $categoria }}
+                </a>
+            @endforeach
+        </div>
     </div>
 </section>
 
@@ -30,10 +39,22 @@
     @endif
 
     @if($equipoMostrar)
-        {{-- Título centrado --}}
-        <h2 class="equipo-titulo-categoria">
-            Equipo {{ $equipoMostrar->categoria }} - {{ $equipoMostrar->nombre }}
-        </h2>
+        <div class="equipo-resumen">
+            <div class="equipo-resumen-copy">
+                <h2 class="equipo-titulo-categoria">{{ $equipoMostrar->nombre }}</h2>
+                <p>Consulta la plantilla disponible de esta categoría y revisa los jugadores publicados actualmente en la web del club.</p>
+            </div>
+            <div class="equipo-resumen-stats">
+                <div class="equipo-resumen-stat">
+                    <strong>{{ $jugadores?->total() ?? 0 }}</strong>
+                    <span>Jugadores</span>
+                </div>
+                <div class="equipo-resumen-stat">
+                    <strong>{{ $equipoMostrar->categoria }}</strong>
+                    <span>Categoría</span>
+                </div>
+            </div>
+        </div>
         @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
             <div class="public-admin-actions">
                 <form action="{{ route('basket.equipo.toggle-oculto', $equipoMostrar->id) }}" method="POST">

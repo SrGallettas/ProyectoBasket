@@ -43,6 +43,7 @@ class EquipoController extends Controller
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
             'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_plantilla' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
@@ -51,6 +52,9 @@ class EquipoController extends Controller
             'imagen_club.image'  => 'El archivo debe ser una imagen.',
             'imagen_club.mimes'  => 'Solo se permiten formatos: jpg, jpeg, png.',
             'imagen_club.max'    => 'La imagen es demasiado pesada (máximo 2MB).',
+            'foto_plantilla.image' => 'La foto de plantilla debe ser una imagen.',
+            'foto_plantilla.mimes' => 'La foto de plantilla solo admite jpg, jpeg, png o webp.',
+            'foto_plantilla.max' => 'La foto de plantilla es demasiado pesada (máximo 4MB).',
         ]);
 
         $equipo = new Equipo(); // Crea un objeto equipo vacío
@@ -68,6 +72,15 @@ class EquipoController extends Controller
             $imagen->storeAs('escudos', $nombreImagen, 'public');
 
             $equipo->imagen_club = $nombreImagen; // Guarda solo el nombre de la foto en la base de datos
+        }
+
+        if ($equipo->es_local && $request->hasFile('foto_plantilla')) {
+            $imagenPlantilla = $request->file('foto_plantilla');
+            $nombreImagenPlantilla = 'plantilla_' . time() . '.' . $imagenPlantilla->getClientOriginalExtension();
+
+            $imagenPlantilla->storeAs('equipos/plantillas', $nombreImagenPlantilla, 'public');
+
+            $equipo->foto_plantilla = $nombreImagenPlantilla;
         }
 
         $equipo->save(); // Guarda el equipo en la base de datos
@@ -92,6 +105,7 @@ class EquipoController extends Controller
 
         // Si el equipo tiene foto, la borramos de la carpeta pública
         $this->deleteStoredImage($equipo->imagen_club, 'escudos');
+        $this->deleteStoredImage($equipo->foto_plantilla, 'equipos/plantillas');
 
         $equipo->delete(); // Borra el registro de la base de datos
         return redirect()->route('equipos.index'); // Vuelve al listado
@@ -121,6 +135,7 @@ class EquipoController extends Controller
             'nombre'      => 'required|string|min:5|max:255',
             'categoria'   => 'required|string',
             'imagen_club' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_plantilla' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'oculto'      => 'nullable|boolean',
         ], [
             'nombre.min'      => 'El título debe tener al menos 5 caracteres.',
@@ -129,6 +144,9 @@ class EquipoController extends Controller
             'imagen_club.image'  => 'El archivo debe ser una imagen.',
             'imagen_club.mimes'  => 'Solo se permiten formatos: jpg, jpeg, png.',
             'imagen_club.max'    => 'La imagen es demasiado pesada (máximo 2MB).',
+            'foto_plantilla.image' => 'La foto de plantilla debe ser una imagen.',
+            'foto_plantilla.mimes' => 'La foto de plantilla solo admite jpg, jpeg, png o webp.',
+            'foto_plantilla.max' => 'La foto de plantilla es demasiado pesada (máximo 4MB).',
         ]);
 
         $equipo->es_local = $request->has('es_local');
@@ -144,6 +162,21 @@ class EquipoController extends Controller
             $imagen->storeAs('escudos', $nombreImagen, 'public');
 
             $equipo->imagen_club = $nombreImagen; // Actualiza el nombre de la foto en la base de datos
+        }
+
+        if (!$equipo->es_local && $equipo->foto_plantilla) {
+            $this->deleteStoredImage($equipo->foto_plantilla, 'equipos/plantillas');
+            $equipo->foto_plantilla = null;
+        }
+
+        if ($equipo->es_local && $request->hasFile('foto_plantilla')) {
+            $this->deleteStoredImage($equipo->foto_plantilla, 'equipos/plantillas');
+
+            $imagenPlantilla = $request->file('foto_plantilla');
+            $nombreImagenPlantilla = 'plantilla_' . time() . '.' . $imagenPlantilla->getClientOriginalExtension();
+            $imagenPlantilla->storeAs('equipos/plantillas', $nombreImagenPlantilla, 'public');
+
+            $equipo->foto_plantilla = $nombreImagenPlantilla;
         }
 
         $equipo->save(); // Guarda los cambios finales

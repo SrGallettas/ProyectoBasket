@@ -80,8 +80,103 @@ class BasketController extends Controller
         $ultimoResultado = $resolverUltimoResultado($partidosSeniorA)
             ?? $resolverUltimoResultado($partidosSeniorB);
 
+        $equiposActivos = Equipo::where('es_local', true)
+            ->where('oculto', false)
+            ->count();
+
+        $jugadoresActivos = Jugador::where('oculto', false)
+            ->whereHas('equipo', function ($query) {
+                $query->where('es_local', true)->where('oculto', false);
+            })
+            ->count();
+
+        $clubStats = collect([
+            [
+                'valor' => $equiposActivos,
+                'etiqueta' => 'Equipos activos',
+                'texto' => 'Categorías y grupos del club con presencia pública en la web.',
+            ],
+            [
+                'valor' => $jugadoresActivos,
+                'etiqueta' => 'Jugadores visibles',
+                'texto' => 'Plantilla actual mostrada entre todos los equipos del Bellreguard.',
+            ],
+            [
+                'valor' => $partidosClub->count(),
+                'etiqueta' => 'Partidos publicados',
+                'texto' => 'Encuentros del club disponibles para consultar en calendario y resultados.',
+            ],
+            [
+                'valor' => Noticia::where('oculto', false)->count(),
+                'etiqueta' => 'Noticias activas',
+                'texto' => 'Contenido del club ya publicado para seguir la actualidad del proyecto.',
+            ],
+        ]);
+
+        $galeriasDestacadas = Galeria::with('imagenes')
+            ->withCount('imagenes')
+            ->where('oculto', false)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $clasificacionInicio = null;
+        $clasificacionInicioFilas = collect();
+        $clasificacionInicioFilaClub = null;
+
+        $clasificacionActiva = Clasificacion::orderByDesc('activa')->orderBy('nombre')->first();
+
+        if ($clasificacionActiva) {
+            $jornadaClasificacionInicio = ClasificacionFila::where('clasificacion_id', $clasificacionActiva->id)
+                ->whereNotNull('jornada')
+                ->max('jornada');
+
+            $filasClasificacionInicio = ClasificacionFila::with('equipo')
+                ->where('clasificacion_id', $clasificacionActiva->id)
+                ->when($jornadaClasificacionInicio, function ($query) use ($jornadaClasificacionInicio) {
+                    $query->where('jornada', $jornadaClasificacionInicio);
+                })
+                ->orderByDesc('pts')
+                ->orderByDesc('diff')
+                ->orderByDesc('pf')
+                ->get()
+                ->values();
+
+            if ($filasClasificacionInicio->isNotEmpty()) {
+                $filasConPosicion = $filasClasificacionInicio->map(function (ClasificacionFila $fila, int $index) {
+                    $fila->setAttribute('posicion_home', $index + 1);
+                    return $fila;
+                });
+
+                $clasificacionInicio = $clasificacionActiva;
+                $clasificacionInicioFilas = $filasConPosicion->take(5)->values();
+                $clasificacionInicioFilaClub = $filasConPosicion->first(function (ClasificacionFila $fila) {
+                    return (bool) optional($fila->equipo)->es_local
+                        || str_contains(strtolower((string) optional($fila->equipo)->nombre), 'bellreguard');
+                });
+
+                if (
+                    $clasificacionInicioFilaClub
+                    && !$clasificacionInicioFilas->contains(fn (ClasificacionFila $fila) => $fila->id === $clasificacionInicioFilaClub->id)
+                ) {
+                    $clasificacionInicioFilas = $clasificacionInicioFilas
+                        ->concat([$clasificacionInicioFilaClub])
+                        ->values();
+                }
+            }
+        }
+
         $noticias = Noticia::where('oculto', false)->latest()->take(6)->get();
-        return view('basket.inicio', compact('noticias', 'proximoPartido', 'ultimoResultado'));
+        return view('basket.inicio', compact(
+            'noticias',
+            'proximoPartido',
+            'ultimoResultado',
+            'clubStats',
+            'galeriasDestacadas',
+            'clasificacionInicio',
+            'clasificacionInicioFilas',
+            'clasificacionInicioFilaClub'
+        ));
     }
 
     public function equipo(Request $request)
@@ -269,6 +364,23 @@ class BasketController extends Controller
         }
 
         if ($equipoSeleccionado) {
+            $partidosLigaCompletados = Partido::with('estadisticas')
+                ->where('tipo_partido', 'liga')
+                ->whereNotNull('jornada')
+                ->where(function ($query) use ($equipoSeleccionado) {
+                    $query->where('equipo_local_id', $equipoSeleccionado->id)
+                        ->orWhere('equipo_visitante_id', $equipoSeleccionado->id);
+                })
+                ->get()
+                ->filter(function (Partido $partido) {
+                    $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
+                    $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
+
+                    return optional($statsLocal)->puntos_totales !== null
+                        && optional($statsVisitante)->puntos_totales !== null;
+                })
+                ->values();
+
             $stats = PartidoEstadistica::query()
                 ->selectRaw('
                     COUNT(partido_estadisticas.id) as pj,
@@ -306,6 +418,15 @@ class BasketController extends Controller
                 ->groupBy('periodo')
                 ->pluck('puntos', 'periodo');
 
+            $prorrogasRaw = PartidoCuarto::query()
+                ->selectRaw('SUM(puntos) as puntos, COUNT(DISTINCT partido_cuartos.partido_id) as partidos')
+                ->join('partidos', 'partidos.id', '=', 'partido_cuartos.partido_id')
+                ->where('partidos.tipo_partido', 'liga')
+                ->whereNotNull('partidos.jornada')
+                ->where('partido_cuartos.equipo_id', $equipoSeleccionado->id)
+                ->where('partido_cuartos.periodo', 5)
+                ->first();
+
             $pj = (int) ($stats->pj ?? 0);
             $divisor = $pj > 0 ? $pj : 1;
 
@@ -334,9 +455,25 @@ class BasketController extends Controller
             $q3 = (int) ($cuartosRaw[3] ?? 0);
             $q4 = (int) ($cuartosRaw[4] ?? 0);
             $pr = (int) ($cuartosRaw[5] ?? 0);
+            $partidosConProrroga = (int) ($prorrogasRaw->partidos ?? 0);
+            $divisorProrroga = $partidosConProrroga > 0 ? $partidosConProrroga : 1;
+
+            $victorias = $partidosLigaCompletados->filter(function (Partido $partido) use ($equipoSeleccionado) {
+                $statsEquipo = $partido->estadisticas->firstWhere('equipo_id', $equipoSeleccionado->id);
+                $statsRival = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id === $equipoSeleccionado->id ? $partido->equipo_visitante_id : $partido->equipo_local_id);
+
+                return (int) optional($statsEquipo)->puntos_totales > (int) optional($statsRival)->puntos_totales;
+            })->count();
+
+            $derrotas = max(0, $pj - $victorias);
+            $porcentajeVictorias = $pj > 0 ? round(($victorias / $pj) * 100, 1) : null;
 
             $resumenTemporada = [
                 'pj' => $pj,
+                'victorias' => $victorias,
+                'derrotas' => $derrotas,
+                'porcentaje_victorias' => $porcentajeVictorias,
+                'partidos_con_prorroga' => $partidosConProrroga,
                 'totales' => [
                     'pts' => $pts,
                     'fga' => $fga,
@@ -381,7 +518,7 @@ class BasketController extends Controller
                     'q2' => round($q2 / $divisor, 1),
                     'q3' => round($q3 / $divisor, 1),
                     'q4' => round($q4 / $divisor, 1),
-                    'pr' => round($pr / $divisor, 1),
+                    'pr' => round($pr / $divisorProrroga, 1),
                 ],
                 'porcentajes' => [
                     'fg' => $fga > 0 ? round(($fgm / $fga) * 100, 1) : null,
