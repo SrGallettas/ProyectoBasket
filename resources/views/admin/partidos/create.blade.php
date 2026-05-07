@@ -34,13 +34,32 @@
                 {{-- SECCIÓN EQUIPOS --}}
                 <div class="seccion-form-ficha seccion-personal">
                     <h3><i class="fas fa-handshake"></i> Equipos del Encuentro</h3>
+
+                    <div class="campo-ficha">
+                        <label>Categoría</label>
+                        <select name="categoria" class="input-ficha" data-categoria-partido>
+                            <option value="" disabled {{ old('categoria') ? '' : 'selected' }}>Selecciona categoría...</option>
+                            @foreach(['Senior', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $nombre_categoria)
+                                <option value="{{ $nombre_categoria }}" {{ old('categoria') == $nombre_categoria ? 'selected' : '' }}>
+                                    {{ $nombre_categoria }}
+                                </option>
+                            @endforeach 
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" data-mostrar-todos-equipos>
+                            Mostrar todos los equipos
+                        </label>
+                    </div>
                     
                     <div class="campo-ficha">
                         <label>Equipo Local</label>
-                        <select name="equipo_local_id" class="input-ficha">
-                            <option value="" disabled selected>Selecciona equipo local...</option>
+                        <select name="equipo_local_id" class="input-ficha" data-equipo-local>
+                            <option value="" disabled {{ old('equipo_local_id') ? '' : 'selected' }}>Selecciona equipo local...</option>
                             @foreach($equipos as $equipo)
-                                <option value="{{ $equipo->id }}" {{ old('equipo_local_id') == $equipo->id ? 'selected' : '' }}>
+                                <option value="{{ $equipo->id }}" data-categoria="{{ $equipo->categoria }}" {{ old('equipo_local_id') == $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
                                 </option>
                             @endforeach
@@ -49,10 +68,10 @@
 
                     <div class="campo-ficha">
                         <label>Equipo Visitante</label>
-                        <select name="equipo_visitante_id" class="input-ficha">
-                            <option value="" disabled selected>Selecciona equipo visitante...</option>
+                        <select name="equipo_visitante_id" class="input-ficha" data-equipo-visitante>
+                            <option value="" disabled {{ old('equipo_visitante_id') ? '' : 'selected' }}>Selecciona equipo visitante...</option>
                             @foreach($equipos as $equipo)
-                                <option value="{{ $equipo->id }}" {{ old('equipo_visitante_id') == $equipo->id ? 'selected' : '' }}>
+                                <option value="{{ $equipo->id }}" data-categoria="{{ $equipo->categoria }}" {{ old('equipo_visitante_id') == $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
                                 </option>
                             @endforeach
@@ -75,18 +94,6 @@
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Categoría</label>
-                        <select name="categoria" class="input-ficha">
-                            <option value="" disabled {{ old('categoria') ? '' : 'selected' }}>Selecciona categoría...</option>
-                            @foreach(['Senior', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $nombre_categoria)
-                                <option value="{{ $nombre_categoria }}" {{ old('categoria') == $nombre_categoria ? 'selected' : '' }}>
-                                    {{ $nombre_categoria }}
-                                </option>
-                            @endforeach 
-                        </select>
-                    </div>
-
-                    <div class="campo-ficha">
                         <label>Tipo de partido</label>
                         <select name="tipo_partido" class="input-ficha" data-tipo-partido>
                             <option value="liga" {{ old('tipo_partido', 'liga') === 'liga' ? 'selected' : '' }}>Liga</option>
@@ -96,7 +103,7 @@
 
                     <div class="campo-ficha" data-campo-liga>
                         <label>Clasificación (liga)</label>
-                        <select name="clasificacion_id" class="input-ficha">
+                        <select name="clasificacion_id" class="input-ficha" data-clasificacion-partido>
                             <option value="" {{ old('clasificacion_id') ? '' : 'selected' }}>Selecciona clasificación...</option>
                             @foreach($clasificaciones as $clasificacion)
                                 <option value="{{ $clasificacion->id }}" {{ (int) old('clasificacion_id') === (int) $clasificacion->id ? 'selected' : '' }}>
@@ -140,6 +147,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tipoSelect = document.querySelector('[data-tipo-partido]');
     const camposLiga = document.querySelectorAll('[data-campo-liga]');
+    const categoriaSelect = document.querySelector('[data-categoria-partido]');
+    const equipoLocalSelect = document.querySelector('[data-equipo-local]');
+    const equipoVisitanteSelect = document.querySelector('[data-equipo-visitante]');
+    const clasificacionSelect = document.querySelector('[data-clasificacion-partido]');
+    const mostrarTodosEquiposCheckbox = document.querySelector('[data-mostrar-todos-equipos]');
 
     if (!tipoSelect || camposLiga.length === 0) {
         return;
@@ -154,6 +166,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
     toggleCampos();
     tipoSelect.addEventListener('change', toggleCampos);
+
+    // Filtra los equipos del formulario para que solo salgan
+    // los de la categoría elegida en ese momento.
+    const filtrarEquiposPorCategoria = (select, categoriaActiva, mostrarTodos = false) => {
+        if (!select) {
+            return;
+        }
+
+        Array.from(select.options).forEach((option, index) => {
+            if (index === 0) {
+                option.hidden = false;
+                option.disabled = false;
+                return;
+            }
+
+            const coincideCategoria = mostrarTodos || option.dataset.categoria === categoriaActiva;
+            option.hidden = !coincideCategoria;
+            option.disabled = !coincideCategoria;
+        });
+
+        const selectedOption = select.options[select.selectedIndex];
+        if (selectedOption && selectedOption.dataset.categoria && selectedOption.dataset.categoria !== categoriaActiva) {
+            if (!mostrarTodos) {
+                select.selectedIndex = 0;
+            }
+        }
+    };
+
+    const syncEquiposByCategoria = () => {
+        const categoriaActiva = categoriaSelect?.value || '';
+        const mostrarTodos = !!mostrarTodosEquiposCheckbox?.checked;
+
+        filtrarEquiposPorCategoria(equipoLocalSelect, categoriaActiva, mostrarTodos);
+        filtrarEquiposPorCategoria(equipoVisitanteSelect, categoriaActiva, mostrarTodos);
+    };
+
+    syncEquiposByCategoria();
+    categoriaSelect?.addEventListener('change', syncEquiposByCategoria);
+    mostrarTodosEquiposCheckbox?.addEventListener('change', syncEquiposByCategoria);
 });
 </script>
 @endsection

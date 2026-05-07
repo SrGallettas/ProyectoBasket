@@ -426,6 +426,46 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     background: #5a6268;
 }
 
+.clasificacion-filtros {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.clasificacion-filtro-btn {
+    border: 1px solid #d6dbe4;
+    background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+    color: #223047;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 8px 18px rgba(26, 43, 72, 0.08);
+}
+
+.clasificacion-filtro-btn:hover {
+    transform: translateY(-1px);
+    border-color: #9bb4d3;
+    box-shadow: 0 10px 22px rgba(26, 43, 72, 0.12);
+}
+
+.clasificacion-filtro-btn.is-active {
+    background: linear-gradient(135deg, #163a63 0%, #255286 100%);
+    color: #fff;
+    border-color: #163a63;
+    box-shadow: 0 12px 24px rgba(22, 58, 99, 0.22);
+}
+
+.clasificacion-acciones-masa {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
 
 /*******************************************************************************
  * *

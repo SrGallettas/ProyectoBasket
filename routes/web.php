@@ -152,6 +152,19 @@
 
   Route::middleware(['auth', 'role:admin,coach'])->prefix('admin')->group(function () {
 
+      Route::middleware(['role:admin'])->group(function () {
+          // Estas rutas van antes que "show" para que "/create" no choque
+          // con el comodín "/{clasificacion}".
+          Route::resource('clasificaciones', ClasificacionController::class)
+              ->parameters(['clasificaciones' => 'clasificacion'])
+              ->except(['index', 'show']);
+          // Aquí el admin sí puede crear, actualizar y borrar clasificaciones.
+
+          Route::post('clasificaciones/{clasificacion}/recalcular',
+      [ClasificacionController::class, 'recalcular'])->name('clasificaciones.recalcular');
+          // Recalcula la clasificación usando los resultados de partidos.
+      });
+
       Route::resource("equipos", EquipoController::class);
       // Crea automáticamente las rutas CRUD de equipos:
       // index, create, store, show, edit, update, destroy
@@ -189,21 +202,11 @@
   // ======================================================
   // 5. RUTAS DE ADMIN SOLO PARA ADMIN
   // ======================================================
-
   Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
       Route::resource("usuarios", UserController::class)->except(['show']);
       // CRUD de usuarios.
       // "except(['show'])" significa que no existe la ruta para ver un usuario en detalle.
-
-      Route::resource('clasificaciones', ClasificacionController::class)
-          ->parameters(['clasificaciones' => 'clasificacion'])
-          ->except(['index', 'show']);
-      // Aquí el admin sí puede crear, actualizar y borrar clasificaciones.
-
-      Route::post('clasificaciones/{clasificacion}/recalcular',
-  [ClasificacionController::class, 'recalcular'])->name('clasificaciones.recalcular');
-      // Recalcula la clasificación usando los resultados de partidos.
   });
 
 

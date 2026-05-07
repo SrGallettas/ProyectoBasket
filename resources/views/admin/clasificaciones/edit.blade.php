@@ -26,6 +26,8 @@
 
             @php
                 $equiposSeleccionados = old('equipos', $clasificacion->equipos->pluck('id')->all());
+                // Reutilizamos las categorías reales de equipos para que el selector sea consistente.
+                $categoriasDisponibles = $equipos->pluck('categoria')->filter()->unique()->sort()->values();
             @endphp
 
             <div class="grid-formulario-fichas">
@@ -39,7 +41,14 @@
 
                     <div class="campo-ficha">
                         <label>Categoría</label>
-                        <input type="text" name="categoria" class="input-ficha" value="{{ old('categoria', $clasificacion->categoria) }}">
+                        <select name="categoria" class="input-ficha" data-categoria-clasificacion>
+                            <option value="" {{ old('categoria', $clasificacion->categoria) ? '' : 'selected' }}>Sin categoría</option>
+                            @foreach($categoriasDisponibles as $categoria)
+                                <option value="{{ $categoria }}" {{ old('categoria', $clasificacion->categoria) === $categoria ? 'selected' : '' }}>
+                                    {{ $categoria }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="campo-ficha">
@@ -59,10 +68,18 @@
                     <h3><i class="fas fa-users"></i> Equipos incluidos</h3>
                     <p style="margin-bottom: 14px; color: #666;">Selecciona los equipos que competirán en esta clasificación.</p>
 
-                    <div class="campo-ficha" style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <button type="button" class="btn-buscar" data-filtro-tipo="todos">Todos</button>
-                        <button type="button" class="btn-buscar" data-filtro-tipo="local">Solo locales</button>
-                        <button type="button" class="btn-buscar" data-filtro-tipo="visitante">Solo visitantes</button>
+                    <div class="clasificacion-filtros">
+                        <button type="button" class="clasificacion-filtro-btn is-active" data-filtro-tipo="todos">Todos</button>
+                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="local">Locales</button>
+                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="visitante">Visitantes</button>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>Buscar equipo</label>
+                        <input type="text" class="input-ficha" placeholder="Escribe para filtrar equipos..." data-buscar-equipo>
+                    </div>
+
+                    <div class="clasificacion-acciones-masa">
                         <button type="button" class="btn-limpiar" data-select-all>Seleccionar todos</button>
                         <button type="button" class="btn-limpiar" data-clear-all>Limpiar</button>
                     </div>
@@ -71,7 +88,7 @@
                         <label>Equipos</label>
                         <div class="input-ficha" style="max-height: 380px; overflow:auto;">
                             @foreach($equipos as $equipo)
-                                <label style="display:flex; align-items:center; gap:8px; padding:6px 0;" data-equipo-item data-tipo="{{ $equipo->es_local ? 'local' : 'visitante' }}">
+                                <label style="display:flex; align-items:center; gap:8px; padding:6px 0;" data-equipo-item data-tipo="{{ $equipo->es_local ? 'local' : 'visitante' }}" data-categoria="{{ $equipo->categoria }}" data-nombre="{{ mb_strtolower($equipo->nombre) }}">
                                     <input type="checkbox" name="equipos[]" value="{{ $equipo->id }}" @checked(in_array($equipo->id, $equiposSeleccionados, true))>
                                     <span>
                                         {{ $equipo->nombre }} ({{ $equipo->categoria }}) · {{ $equipo->es_local ? 'Local' : 'Visitante' }}
@@ -98,17 +115,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnsFiltro = Array.from(document.querySelectorAll('[data-filtro-tipo]'));
     const btnSelectAll = document.querySelector('[data-select-all]');
     const btnClearAll = document.querySelector('[data-clear-all]');
+    const categoriaSelect = document.querySelector('[data-categoria-clasificacion]');
+    const buscarInput = document.querySelector('[data-buscar-equipo]');
+    let filtroTipoActivo = 'todos';
 
-    const filtrar = (tipo) => {
+    // En edición se usa el mismo filtro combinado que en creación.
+    const filtrar = () => {
+        const categoriaActiva = categoriaSelect?.value || '';
+        const busqueda = (buscarInput?.value || '').trim().toLowerCase();
+
         items.forEach((item) => {
-            const mostrar = tipo === 'todos' || item.dataset.tipo === tipo;
+            const coincideTipo = filtroTipoActivo === 'todos' || item.dataset.tipo === filtroTipoActivo;
+            const coincideCategoria = categoriaActiva === '' || item.dataset.categoria === categoriaActiva;
+            const coincideTexto = busqueda === '' || (item.dataset.nombre || '').includes(busqueda);
+            const mostrar = coincideTipo && coincideCategoria && coincideTexto;
             item.style.display = mostrar ? 'flex' : 'none';
         });
     };
 
     btnsFiltro.forEach((btn) => {
         btn.addEventListener('click', function () {
-            filtrar(this.dataset.filtroTipo);
+            filtroTipoActivo = this.dataset.filtroTipo;
+            btnsFiltro.forEach((item) => item.classList.remove('is-active'));
+            this.classList.add('is-active');
+            filtrar();
         });
     });
 
@@ -127,6 +157,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (checkbox) checkbox.checked = false;
         });
     });
+
+    categoriaSelect?.addEventListener('change', filtrar);
+    buscarInput?.addEventListener('input', filtrar);
+    filtrar();
 });
 </script>
 @endsection

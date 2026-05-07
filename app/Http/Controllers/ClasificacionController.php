@@ -424,4 +424,5 @@ class ClasificacionController extends Controller
 
         return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', 'Clasificación recalculada correctamente.');
     }
+
 }
