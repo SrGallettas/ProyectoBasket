@@ -112,7 +112,7 @@
                     <div class="campo-ficha">
                         <label>Categoría</label>
                         <select name="categoria" required class="input-ficha">
-                            @foreach(['Senior A', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $cat)
+                            @foreach(['Senior', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $cat)
                                 <option value="{{ $cat }}" {{ old('categoria', $partido->categoria) == $cat ? 'selected' : '' }}>
                                     {{ $cat }}
                                 </option>

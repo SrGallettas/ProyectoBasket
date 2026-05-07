@@ -38,7 +38,7 @@
 
                     <div class="campo-ficha">
                         <label>Categoría</label>
-                        <input type="text" name="categoria" class="input-ficha" value="{{ old('categoria') }}" placeholder="Senior A, Junior...">
+                        <input type="text" name="categoria" class="input-ficha" value="{{ old('categoria') }}" placeholder="Senior, Junior...">
                     </div>
 
                     <div class="campo-ficha">

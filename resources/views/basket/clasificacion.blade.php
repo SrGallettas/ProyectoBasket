@@ -1,6 +1,7 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico de la clasificación pública --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/clasificacion.css') }}" />
 @endpush
@@ -13,6 +14,7 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
+{{-- Hero principal de clasificaciones --}}
 <x-public-news-hero
     badge="CLASIFICACIONES OFICIALES"
     title="Tabla de Posiciones"
@@ -23,8 +25,10 @@
     </div>
 </x-public-news-hero>
 
+{{-- Contenido principal: selector, tabla y partidos de la competición --}}
 <section class="contenedor-clasificacion">
     @if($clasificaciones->isNotEmpty())
+        {{-- Selector de competición y jornada --}}
         <form method="GET" action="{{ route('basket.clasificacion') }}" class="selector-categorias">
             <label class="selector-field">
                 <span>Competición</span>
@@ -54,6 +58,7 @@
             <button type="submit" class="btn-cat activo">Ver jornada</button>
         </form>
 
+        {{-- Tabla principal de clasificación --}}
         <div class="tabla-contenedor">
             <div class="tabla-header">
                 <i class="fas fa-trophy"></i>
@@ -87,6 +92,7 @@
                     </thead>
                     <tbody>
                         @forelse($filas as $idx => $fila)
+                            {{-- Datos rápidos del equipo para la fila de la tabla --}}
                             @php
                                 $nombreEquipo = optional($fila->equipo)->nombre ?? 'Equipo';
                                 $escudoEquipo = optional($fila->equipo)->imagen_club_url ?? asset('img/club_14.png');
@@ -117,6 +123,7 @@
             </div>
         </div>
 
+        {{-- Bloque de partidos de la jornada o de toda la competición --}}
         <section class="jornada-partidos">
             <div class="tabla-header jornada-header">
                 <i class="fas fa-calendar-alt"></i>
@@ -130,12 +137,14 @@
                 @endif
             </div>
 
+            {{-- En modo general se agrupan los partidos por jornada --}}
             @if(($modoGeneral ?? false) && $partidosJornada->isNotEmpty())
                 @foreach($partidosJornada->groupBy(fn ($partido) => (int) ($partido->jornada ?? 0)) as $jornadaGrupo => $partidosGrupo)
                     <div class="jornada-bloque">
                         <div class="jornada-bloque-titulo">Jornada {{ $jornadaGrupo }}</div>
                         <div class="partidos-jornada-grid">
                             @foreach($partidosGrupo as $partido)
+                                {{-- Datos del partido para pintar estado, escudos y marcador --}}
                                 @php
                                     $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                                     $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
@@ -184,8 +193,10 @@
                     </div>
                 @endforeach
             @elseif($partidosJornada->isNotEmpty())
+                {{-- Si no es modo general, se muestran solo los partidos de la jornada seleccionada --}}
                 <div class="partidos-jornada-grid">
                     @foreach($partidosJornada as $partido)
+                        {{-- Datos del partido para pintar estado, escudos y marcador --}}
                         @php
                             $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                             $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
@@ -232,6 +243,7 @@
                     @endforeach
                 </div>
             @else
+                {{-- Estado vacío cuando no hay partidos públicos --}}
                 <div class="partidos-vacio">
                     <i class="fa-regular fa-calendar-xmark"></i>
                     <p>{{ ($modoGeneral ?? false) ? 'No hay partidos públicos para esta competición.' : 'No hay partidos públicos para esta jornada.' }}</p>
@@ -239,6 +251,7 @@
             @endif
         </section>
     @else
+        {{-- Estado vacío si el club aún no ha publicado clasificaciones --}}
         <div class="tabla-contenedor">
             <div class="tabla-header">
                 <i class="fas fa-info-circle"></i> Sin clasificaciones disponibles

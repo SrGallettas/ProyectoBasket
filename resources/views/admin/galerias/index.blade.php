@@ -16,16 +16,34 @@
         </div>
     @endif
 
+    @php
+        // Alterna asc/desc cuando se vuelve a pulsar la misma cabecera.
+        $nextDirection = function (string $column) use ($sort, $direction) {
+            return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+        };
+
+        // La flecha solo aparece cuando ya hay una ordenación activa.
+        $hasActiveSort = request()->has('sort');
+
+        $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+            if (!$hasActiveSort || $sort !== $column) {
+                return '';
+            }
+
+            return $direction === 'asc' ? ' ▲' : ' ▼';
+        };
+    @endphp
+
     <div class="pizarra-admin">
         <table class="tabla-admin">
             <thead>
                 <tr>
                     <th>Portada</th>
-                    <th>Título</th>
-                    <th>Tipo</th>
-                    <th>Imágenes</th>
-                    <th>Slug</th>
-                    <th class="text-center">Acciones</th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Título{!! $sortIndicator('titulo') !!}</a></th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'tipo', 'direction' => $nextDirection('tipo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Tipo{!! $sortIndicator('tipo') !!}</a></th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'imagenes_count', 'direction' => $nextDirection('imagenes_count')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Imágenes{!! $sortIndicator('imagenes_count') !!}</a></th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'slug', 'direction' => $nextDirection('slug')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Slug{!! $sortIndicator('slug') !!}</a></th>
+                    <th class="text-center"><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('oculto') !!}</a></th>
                 </tr>
             </thead>
             <tbody>

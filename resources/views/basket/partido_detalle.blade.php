@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS reutilizado para la parte visual de estadísticas --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
 @endpush
@@ -7,6 +9,7 @@
 @section('title', 'Detalle Partido - Bellreguard Club de Basket')
 
 @section('contenido')
+{{-- Helpers locales para limpiar nulos, calcular porcentajes y leer cuartos --}}
 @php
     $safe = fn ($value) => is_null($value) ? 0 : (int) $value;
 
@@ -34,14 +37,17 @@
     };
 @endphp
 
+{{-- Hero principal del detalle del partido --}}
 <x-public-news-hero
     badge="DETALLE OFICIAL"
     title="Detalle del partido"
     subtitle="{{ $partido->equipoLocal->nombre }} vs {{ $partido->equipoVisitante->nombre }}"
 />
 
+{{-- Contenido principal del partido: marcador, gráfico, tabla y cuartos --}}
 <section class="contenedor-estadisticas">
     @if(!$statsLocal || !$statsVisitante)
+        {{-- Estado vacío si el partido aún no tiene estadísticas completas --}}
         <div class="estado-vacio">
             <div class="estado-vacio-icono">
                 <i class="fas fa-chart-bar"></i>
@@ -51,6 +57,7 @@
             <a href="{{ route('basket.partidos') }}" class="estado-vacio-accion">Volver a partidos</a>
         </div>
     @else
+        {{-- Cabecera con escudos, marcador final y fecha del encuentro --}}
         <div class="estadisticas-partido-head">
             <div class="equipo-head">
                 <img src="{{ $partido->equipoLocal->imagen_club_url }}" alt="{{ $partido->equipoLocal->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
@@ -68,7 +75,7 @@
             </div>
         </div>
 
-        {{-- ───── GRÁFICO ESTADÍSTICAS ESTILO FLASHSCORE ───── --}}
+        {{-- Preparación de datos para el gráfico comparativo tipo Flashscore --}}
         @php
             $barWidth = function ($a, $b) {
                 $total = $a + $b;
@@ -115,6 +122,7 @@
             ];
         @endphp
 
+        {{-- Gráfico comparativo de métricas entre local y visitante --}}
         <div class="grafico-estadisticas-wrap">
             <div class="grafico-titulo">
                 <span class="grafico-titulo-equipo">{{ $partido->equipoLocal->nombre }}</span>
@@ -131,7 +139,7 @@
                     $displayVis   = $stat['vis'] . $stat['fmt'];
                 @endphp
 
-                {{-- Separador de sección --}}
+                {{-- Separador visual entre bloques de estadísticas --}}
                 @if (!empty($stat['sep']))
                     <div class="grafico-separador">{{ $stat['sep'] }}</div>
                 @endif
@@ -163,6 +171,7 @@
             @endforeach
         </div>
 
+        {{-- Tabla comparativa completa de métricas del partido --}}
         <div class="tabla-estadisticas-wrap">
             <table class="tabla-estadisticas-comparada">
                 <thead>
@@ -206,6 +215,7 @@
             </table>
         </div>
 
+        {{-- Tabla final con los puntos por cuarto y prórroga --}}
         <div class="tabla-cuartos-wrap">
             <h2 class=puntos-por-parte>Puntos por partes</h2>
             <table class="tabla-cuartos">

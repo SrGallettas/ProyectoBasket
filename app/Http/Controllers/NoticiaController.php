@@ -2,52 +2,109 @@
 
 namespace App\Http\Controllers;
 
+// Request permite leer lo que llega desde formularios o por la URL.
 use Illuminate\Http\Request;
+
+// Modelo principal de este controlador.
+// Representa las noticias guardadas en la base de datos.
 use App\Models\Noticia;
+
+// Str se usa para generar slugs limpios a partir del título.
 use Illuminate\Support\Str;
+
+// Storage permite borrar imágenes antiguas del disco.
 use Illuminate\Support\Facades\Storage;
 
 class NoticiaController extends Controller
 {
-
+    /*
+     * LISTADO DE NOTICIAS
+     *
+     * Este método se usa en el panel admin para mostrar
+     * todas las noticias guardadas.
+     * También permite buscar por título, autor o subtítulo.
+     *
+     * Flujo:
+     * 1. leer el texto del buscador
+     * 2. construir la consulta
+     * 3. si hay búsqueda, filtrar resultados
+     * 4. ordenar por fecha de creación
+     * 5. paginar y enviar a la vista
+     */
     public function index(Request $request)
     {
-        // 1. Capturamos el término de búsqueda
+        // Recogemos el texto que el usuario escribe en el buscador.
         $search = $request->input('search');
+        $sort = (string) $request->input('sort', 'created_at');
+        $direction = strtolower((string) $request->input('direction', 'desc')) === 'asc' ? 'asc' : 'desc';
 
-        // 2. Consulta: Filtramos por título, autor o subtítulo si hay búsqueda
-        $noticias = Noticia::when($search, function($query) use ($search) {
-                $query->where('titulo', 'like', '%' . $search . '%')
-                      ->orWhere('autor', 'like', '%' . $search . '%')
-                      ->orWhere('subtitulo', 'like', '%' . $search . '%');
-            })
-            ->orderBy('created_at', 'desc') // Normalmente las noticias se ven mejor de las nuevas a las viejas
+        // Limitamos las columnas ordenables que puede pedir la vista.
+        $sortableColumns = [
+            'titulo' => 'titulo',
+            'autor' => 'autor',
+            'created_at' => 'created_at',
+            'oculto' => 'oculto',
+        ];
+
+        $sortColumn = $sortableColumns[$sort] ?? 'created_at';
+
+        // Construimos la consulta de noticias.
+        // Si existe búsqueda, filtramos por varios campos de texto.
+        $noticias = Noticia::when($search, function ($query) use ($search) {
+            $query->where('titulo', 'like', '%' . $search . '%')
+                ->orWhere('autor', 'like', '%' . $search . '%')
+                ->orWhere('subtitulo', 'like', '%' . $search . '%');
+        });
+
+        // En texto ignoramos mayúsculas para ordenar de forma natural.
+        if (in_array($sortColumn, ['titulo', 'autor'], true)) {
+            $noticias->orderByRaw('LOWER(' . $sortColumn . ') ' . $direction);
+        } else {
+            $noticias->orderBy($sortColumn, $direction);
+        }
+
+        $noticias = $noticias
+            ->orderBy('created_at', 'desc') // las más nuevas primero
             ->paginate(9)
             ->withQueryString();
 
-        // 3. Retornamos la vista con los datos necesarios para el componente
-        return view('admin.noticias.index', compact('noticias', 'search'));
+        // Enviamos resultados y texto buscado a la vista.
+        return view('admin.noticias.index', compact('noticias', 'search', 'sort', 'direction'));
     }
 
-    // Muestra el formulario 
+    /*
+     * FORMULARIO DE CREACIÓN
+     *
+     * Este método no guarda nada.
+     * Solo devuelve la vista para crear una noticia nueva.
+     */
     public function create()
     {
         return view('admin.noticias.create');
     }
 
-
-    // Guarda la noticia en la base de datos
+    /*
+     * GUARDAR NOTICIA NUEVA
+     *
+     * Este método procesa el formulario de creación.
+     *
+     * Qué hace:
+     * 1. valida los campos obligatorios
+     * 2. crea una noticia nueva
+     * 3. genera un slug único
+     * 4. guarda la imagen subida
+     * 5. guarda el registro en base de datos
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'titulo'           => 'required|string|min:5|max:255',
-            'subtitulo'        => 'required|string|max:500',
-            'contenido'        => 'required|string',
-            'autor'            => 'required|string|max:100',
-            'imagen_noticia'   => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
-            'oculto'           => 'nullable|boolean',
+            'titulo'         => 'required|string|min:5|max:255',
+            'subtitulo'      => 'required|string|max:500',
+            'contenido'      => 'required|string',
+            'autor'          => 'required|string|max:100',
+            'imagen_noticia' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'oculto'         => 'nullable|boolean',
         ], [
-            // Mensajes personalizados
             'titulo.required'         => '¡Oye! El título es obligatorio para publicar.',
             'titulo.min'              => 'El título es muy corto, pon al menos 5 caracteres.',
             'subtitulo.required'      => 'Debes poner un breve resumen o subtítulo.',
@@ -58,20 +115,26 @@ class NoticiaController extends Controller
             'imagen_noticia.max'      => 'La foto pesa demasiado, el máximo son 2MB.',
         ]);
 
+        // Creamos una instancia vacía del modelo.
         $noticia = new Noticia();
+
+        // Asignamos los datos básicos que llegan desde el formulario.
         $noticia->titulo = $request->titulo;
         $noticia->subtitulo = $request->subtitulo;
         $noticia->contenido = $request->contenido;
         $noticia->autor = $request->autor;
         $noticia->imagen_noticia = $request->imagen_noticia;
+
+        // Campo booleano para decidir si la noticia se ve o no en la web pública.
         $noticia->oculto = $request->boolean('oculto');
 
-        // LO QUE SE HACE AQUI ES SENCILLO, SI EL SLUG SE REPITE, LE METEMOS UN NÚMERO DETRÁS PARA QUE NO DE ERROR
+        // Generamos un slug a partir del título.
+        // Si ya existe, añadimos un número al final para que sea único.
         $slugBase = Str::slug($request->titulo);
         $slug = $slugBase;
         $contador = 1;
 
-        // Comprobamos si ya existe ese slug y añadimos un número si es necesario
+        // Comprobamos si ya existe ese slug y añadimos un número si es necesario.
         while (Noticia::where('slug', $slug)->exists()) {
             $slug = $slugBase . '-' . $contador;
             $contador++;
@@ -79,98 +142,106 @@ class NoticiaController extends Controller
 
         $noticia->slug = $slug;
 
+        // Si el usuario ha subido una imagen, la guardamos en disco.
         if ($request->hasFile('imagen_noticia')) {
             $imagen = $request->file('imagen_noticia');
 
-            // Creamos un nombre único con el tiempo actual
+            // Se genera un nombre único con time() para evitar nombres repetidos.
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
 
-            // MOVER a public/jugadores 
+            // Se guarda en storage/app/public/noticias.
             $imagen->storeAs('noticias', $nombreImagen, 'public');
 
-            // Guardamos solo el nombre del archivo en la BD
+            // En la base de datos guardamos solo el nombre del archivo.
             $noticia->imagen_noticia = $nombreImagen;
         } else {
+            // Si no llega imagen, se usa una imagen por defecto.
             $noticia->imagen_noticia = 'basket.jpeg';
         }
 
-
         $noticia->save();
+
         return redirect()->route('noticias.index')->with('mensaje', 'Noticia creada correctamente');
     }
 
-    // EDIT
+    /*
+     * FORMULARIO DE EDICIÓN
+     *
+     * Busca una noticia ya existente y carga la vista de edición.
+     */
     public function edit($id)
     {
-
+        // Busca la noticia o lanza 404 si no existe.
         $noticia = Noticia::findOrFail($id);
+
         return view('admin.noticias.edit', compact('noticia'));
     }
 
-
-
-    // UPDATE
+    /*
+     * ACTUALIZAR NOTICIA
+     *
+     * Este método guarda cambios sobre una noticia ya existente.
+     *
+     * Qué hace:
+     * 1. valida los datos
+     * 2. busca la noticia
+     * 3. actualiza campos básicos
+     * 4. recalcula el slug evitando duplicados
+     * 5. si llega una imagen nueva, borra la anterior y guarda la nueva
+     * 6. guarda el registro actualizado
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'titulo'           => 'required|string|min:5|max:255',
-            'subtitulo'        => 'required|string|max:500',
-            'contenido'        => 'required|string',
-            'autor'            => 'required|string|max:100',
-            'imagen_noticia'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'oculto'           => 'nullable|boolean',
+            'titulo'         => 'required|string|min:5|max:255',
+            'subtitulo'      => 'required|string|max:500',
+            'contenido'      => 'required|string',
+            'autor'          => 'required|string|max:100',
+            'imagen_noticia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'oculto'         => 'nullable|boolean',
         ], [
-            // Mensajes para el Título
             'titulo.required' => 'El título de la noticia es obligatorio.',
             'titulo.string'   => 'El título debe ser un texto válido.',
             'titulo.min'      => 'El título es demasiado corto (mínimo 5 caracteres).',
             'titulo.max'      => 'El título no puede superar los 255 caracteres.',
-
-            // Mensajes para el Subtítulo
             'subtitulo.required' => 'La entradilla o resumen es obligatoria.',
             'subtitulo.max'      => 'El resumen es demasiado largo (máximo 500 caracteres).',
-
-            // Mensajes para el Contenido
             'contenido.required' => 'El cuerpo de la noticia no puede estar vacío.',
-
-            // Mensajes para el Autor
             'autor.required' => 'Debes indicar quién es el autor de la noticia.',
             'autor.max'      => 'El nombre del autor no debe superar los 100 caracteres.',
-
-            // Mensajes para la Imagen
             'imagen_noticia.image' => 'El archivo debe ser una imagen real.',
             'imagen_noticia.mimes' => 'Formatos permitidos: jpeg, png, jpg o webp.',
             'imagen_noticia.max'   => 'La imagen es muy pesada. El máximo permitido son 2MB.',
         ]);
 
-        // 2. Buscar la noticia
+        // Buscamos la noticia actual.
         $noticia = Noticia::findOrFail($id);
 
-        // 3. Actualizar campos básicos
+        // Actualizamos los campos básicos.
         $noticia->titulo = $request->titulo;
         $noticia->subtitulo = $request->subtitulo;
         $noticia->contenido = $request->contenido;
         $noticia->autor = $request->autor;
         $noticia->oculto = $request->boolean('oculto');
 
-        // 4. Lógica del SLUG (Evitar el error de duplicado)
+        // Generamos de nuevo el slug a partir del título.
+        // La noticia actual se excluye de la comprobación para no chocar consigo misma.
         $slugBase = Str::slug($request->titulo);
         $slug = $slugBase;
         $contador = 1;
 
-        // Buscamos si el slug existe, pero ignoramos la noticia que estamos editando actualmente
+        // Si el slug ya existe en otra noticia, se añade un número al final.
         while (Noticia::where('slug', $slug)->where('id', '!=', $id)->exists()) {
             $slug = $slugBase . '-' . $contador;
             $contador++;
         }
+
         $noticia->slug = $slug;
 
-        // 5. Gestión de la IMAGEN
+        // Si llega una nueva imagen, primero se borra la antigua y luego se guarda la nueva.
         if ($request->hasFile('imagen_noticia')) {
-            // 1. Definir la ruta de la imagen antigua
             $this->deleteStoredImage($noticia->imagen_noticia, 'noticias');
 
-            // 3. Guardar la nueva foto usando MOVE (igual que en equipos)
             $imagen = $request->file('imagen_noticia');
             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
             $imagen->storeAs('noticias', $nombreImagen, 'public');
@@ -178,53 +249,82 @@ class NoticiaController extends Controller
             $noticia->imagen_noticia = $nombreImagen;
         }
 
-        // 6. Guardar cambios
+        // Guardamos los cambios finales en la base de datos.
         $noticia->save();
 
         return redirect()->route('noticias.index')->with('mensaje', 'Noticia actualizada correctamente');
     }
 
-
-
-    // DELETE/ DESTROY 
+    /*
+     * ELIMINAR NOTICIA
+     *
+     * Este método borra la imagen asociada del disco
+     * y después elimina el registro de la base de datos.
+     */
     public function destroy($id)
     {
-        // 1. Buscamos al jugador o lanzamos error 404 si no existe
+        // Busca la noticia o lanza 404 si no existe.
         $noticia = Noticia::findOrFail($id);
 
-        // 2. Definimos la ruta de su imagen
+        // Si tiene imagen propia, se elimina del disco.
         $this->deleteStoredImage($noticia->imagen_noticia, 'noticias');
 
-        // 4. Borramos el registro de la base de datos
+        // Finalmente se borra el registro.
         $noticia->delete();
 
-        // 5. Redirigimos con un mensaje de éxito
         return redirect()->route('noticias.index')->with('mensaje', 'Noticia eliminada correctamente');
     }
 
+    /*
+     * VER DETALLE DE NOTICIA
+     *
+     * Carga una noticia concreta para mostrarla en la vista de detalle.
+     */
     public function show($id)
     {
+        // Busca la noticia o lanza 404 si no existe.
         $noticia = Noticia::findOrFail($id);
+
         return view('admin.noticias.show', compact('noticia'));
     }
 
+    /*
+     * OCULTAR / MOSTRAR NOTICIA
+     *
+     * No borra la noticia.
+     * Solo cambia el booleano "oculto" para controlar si se ve o no en la web pública.
+     */
     public function toggleOculto(Noticia $noticia)
     {
+        // Invertimos el valor actual.
         $noticia->oculto = !$noticia->oculto;
         $noticia->save();
 
-        return redirect()->route('noticias.index')->with('mensaje', $noticia->oculto ? 'Noticia ocultada de la web publica.' : 'Noticia visible de nuevo en la web publica.');
+        return redirect()->route('noticias.index')->with(
+            'mensaje',
+            $noticia->oculto
+                ? 'Noticia ocultada de la web publica.'
+                : 'Noticia visible de nuevo en la web publica.'
+        );
     }
 
+    /*
+     * BORRAR IMAGEN DEL DISCO
+     *
+     * Este helper centraliza el borrado físico de archivos.
+     *
+     * Protecciones:
+     * - si no hay nombre de archivo, no hace nada
+     * - si la imagen es una imagen por defecto, no se borra
+     */
     private function deleteStoredImage(?string $filename, string $directory): void
     {
+        // Estas imágenes se consideran de sistema y no deben borrarse.
         if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
             return;
         }
 
+        // Se elimina el archivo dentro del disco "public".
         Storage::disk('public')->delete($directory . '/' . ltrim($filename, '/'));
     }
-
-    
-
 }

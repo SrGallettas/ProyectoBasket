@@ -19,18 +19,78 @@
     </div>
 @endif
 
+@php
+    // Alterna asc/desc cuando el usuario pulsa varias veces una cabecera.
+    $nextDirection = function (string $column) use ($sort, $direction) {
+        return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+    };
+
+    // Solo pintamos la flecha si ya hay una ordenación activa en la URL.
+    $hasActiveSort = request()->has('sort');
+
+    $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+        if (!$hasActiveSort || $sort !== $column) {
+            return '';
+        }
+
+        return $direction === 'asc' ? ' ▲' : ' ▼';
+    };
+@endphp
+
 <div class="pizarra-admin">
     {{-- Añadimos una clase única a la tabla para no romper otras del sitio --}}
     <table class="tabla-admin tabla-partidos-ajustada">
         <thead>
             <tr>
-                <th class="col-fecha">Fecha y Hora</th>
-                <th class="col-categoria">Categoría</th>
-                <th class="text-right col-equipo" style="text-align: right; padding-right: 28px;">Local</th>
+                <th class="col-fecha">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'fecha_hora', 'direction' => $nextDirection('fecha_hora')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Fecha y Hora{!! $sortIndicator('fecha_hora') !!}
+                    </a>
+                </th>
+                <th class="col-categoria">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Categoría{!! $sortIndicator('categoria') !!}
+                    </a>
+                </th>
+                <th class="text-right col-equipo" style="text-align: right; padding-right: 28px;">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'equipo_local', 'direction' => $nextDirection('equipo_local')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Local{!! $sortIndicator('equipo_local') !!}
+                    </a>
+                </th>
                 <th class="text-center col-vs">Encuentro</th>
-                <th class="text-left col-equipo">Visitante</th>
-                <th class="text-center col-lugar">Lugar</th>
-                <th class="text-center col-acciones">Acciones</th>
+                <th class="text-left col-equipo">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'equipo_visitante', 'direction' => $nextDirection('equipo_visitante')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Visitante{!! $sortIndicator('equipo_visitante') !!}
+                    </a>
+                </th>
+                <th class="text-center col-lugar">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'lugar', 'direction' => $nextDirection('lugar')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Lugar{!! $sortIndicator('lugar') !!}
+                    </a>
+                </th>
+                <th class="text-center col-acciones">
+                    <a
+                        href="{{ route('partidos.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Acciones{!! $sortIndicator('oculto') !!}
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>

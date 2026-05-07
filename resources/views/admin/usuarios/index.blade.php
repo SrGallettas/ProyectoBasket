@@ -26,15 +26,33 @@
     </div>
 @endif
 
+@php
+    // Alterna asc/desc al volver a pulsar la misma cabecera.
+    $nextDirection = function (string $column) use ($sort, $direction) {
+        return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+    };
+
+    // La flecha solo aparece si la vista ya tiene un sort activo en la URL.
+    $hasActiveSort = request()->has('sort');
+
+    $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+        if (!$hasActiveSort || $sort !== $column) {
+            return '';
+        }
+
+        return $direction === 'asc' ? ' ▲' : ' ▼';
+    };
+@endphp
+
 <div class="pizarra-admin">
     <table class="tabla-admin">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Creado</th>
-                <th>Acciones</th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'name', 'direction' => $nextDirection('name')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Nombre{!! $sortIndicator('name') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'email', 'direction' => $nextDirection('email')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Email{!! $sortIndicator('email') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'role', 'direction' => $nextDirection('role')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Rol{!! $sortIndicator('role') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Creado{!! $sortIndicator('created_at') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('created_at') !!}</a></th>
             </tr>
         </thead>
         <tbody>

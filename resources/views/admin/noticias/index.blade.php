@@ -19,14 +19,32 @@
         </div>
     @endif
 
+    @php
+        // Alterna asc/desc cuando el usuario pulsa varias veces la misma cabecera.
+        $nextDirection = function (string $column) use ($sort, $direction) {
+            return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+        };
+
+        // La flecha solo se enseña cuando ya hay una ordenación activa.
+        $hasActiveSort = request()->has('sort');
+
+        $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+            if (!$hasActiveSort || $sort !== $column) {
+                return '';
+            }
+
+            return $direction === 'asc' ? ' ▲' : ' ▼';
+        };
+    @endphp
+
     <div class="pizarra-admin">
         <table class="tabla-admin">
             <thead>
                 <tr>
                     <th>Imagen</th>
-                    <th>Título / Autor</th>
-                    <th>Fecha</th>
-                    <th class="text-center">Acciones</th>
+                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Título / Autor{!! $sortIndicator('titulo') !!}</a></th>
+                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Fecha{!! $sortIndicator('created_at') !!}</a></th>
+                    <th class="text-center"><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('oculto') !!}</a></th>
                 </tr>
             </thead>
             <tbody>

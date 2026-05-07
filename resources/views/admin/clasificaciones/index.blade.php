@@ -15,16 +15,76 @@
     </div>
 @endif
 
+@php
+    // Alterna asc/desc cuando se vuelve a pulsar una cabecera.
+    $nextDirection = function (string $column) use ($sort, $direction) {
+        return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+    };
+
+    // La flecha solo se enseña cuando ya hay una ordenación pedida por URL.
+    $hasActiveSort = request()->has('sort');
+
+    $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+        if (!$hasActiveSort || $sort !== $column) {
+            return '';
+        }
+
+        return $direction === 'asc' ? ' ▲' : ' ▼';
+    };
+@endphp
+
 <div class="pizarra-admin">
     <table class="tabla-admin">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Temporada</th>
-                <th>Equipos</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Nombre{!! $sortIndicator('nombre') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Categoría{!! $sortIndicator('categoria') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'temporada', 'direction' => $nextDirection('temporada')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Temporada{!! $sortIndicator('temporada') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'equipos_count', 'direction' => $nextDirection('equipos_count')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Equipos{!! $sortIndicator('equipos_count') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'activa', 'direction' => $nextDirection('activa')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Estado{!! $sortIndicator('activa') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Acciones{!! $sortIndicator('created_at') !!}
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>

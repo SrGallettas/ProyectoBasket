@@ -18,10 +18,10 @@ class LigaSimulacionSeeder extends Seeder
 
     private const LIGAS = [
         [
-            'nombre' => 'SIM Liga Senior A',
-            'categoria' => 'Senior A',
-            'prefijo' => 'SIM SA',
-            'equipo_local' => 'CB Bellreguard Senior A',
+            'nombre' => 'SIM Liga Senior',
+            'categoria' => 'Senior',
+            'prefijo' => 'SIM S',
+            'equipo_local' => 'CB Bellreguard Senior',
         ],
         [
             'nombre' => 'SIM Liga Senior B',

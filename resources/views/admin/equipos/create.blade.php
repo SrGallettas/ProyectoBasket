@@ -38,7 +38,7 @@
                             type="text"
                             name="nombre"
                             value="{{ old('nombre') }}"
-                            placeholder="Ej: Senior A"
+                            placeholder="Ej: Senior"
                             required
                             class="input-ficha"
                         >

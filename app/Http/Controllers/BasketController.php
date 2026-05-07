@@ -18,10 +18,30 @@ use Illuminate\Support\Facades\Mail;
 
 class BasketController extends Controller
 {
+    /*
+     * PORTADA PRINCIPAL
+     *
+     * Este método prepara todos los datos que necesita la pagina de inicio.
+     * No solo carga una tabla: mezcla información de varios modelos.
+     *
+     * Qué construye:
+     * - próximo partido destacado
+     * - último resultado destacado
+     * - cifras generales del club
+     * - galerías para enseñar en portada
+     * - una mini clasificación
+     * - últimas noticias
+     *
+     * Idea importante:
+     * el controlador hace la lógica de negocio y deja la vista casi lista para pintar.
+     */
     public function inicio()
     {
         $ahora = Carbon::now();
 
+        // Primero se buscan los partidos públicos del club.
+        // "oculto = false" significa que sí se pueden enseñar en la web.
+        // Además solo interesan partidos donde intervenga un equipo local del Bellreguard.
         $partidosClub = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
             ->where('oculto', false)
             ->where(function ($query) {
@@ -34,18 +54,22 @@ class BasketController extends Controller
             ->orderBy('fecha_hora', 'asc')
             ->get();
 
-        $partidosSeniorA = $partidosClub->filter(fn (Partido $partido) => $this->matchIncludesPreferredLocalTeam(
+        // La portada prioriza al Senior como equipo principal del club.
+        $partidosSenior = $partidosClub->filter(fn (Partido $partido) => $this->matchIncludesPreferredLocalTeam(
             $partido,
-            ['CB Bellreguard Senior A'],
-            ['Senior A']
+            ['CB Bellreguard Senior'],
+            ['Senior']
         ));
 
+        // Si el Senior no tiene datos útiles, se cae al Senior B.
         $partidosSeniorB = $partidosClub->filter(fn (Partido $partido) => $this->matchIncludesPreferredLocalTeam(
             $partido,
             ['CB Bellreguard Senior B'],
             ['Senior B']
         ));
 
+        // Esta función local busca el siguiente partido pendiente de jugar o sin resultado final.
+        // Para considerarlo "pendiente", al menos uno de los dos equipos debe seguir sin puntos_totales.
         $resolverProximoPartido = function ($partidos) use ($ahora) {
             return $partidos
                 ->filter(function (Partido $partido) use ($ahora) {
@@ -61,6 +85,8 @@ class BasketController extends Controller
                 ->first();
         };
 
+        // Esta otra función local hace lo contrario:
+        // busca el último partido que sí esté cerrado y tenga marcador definitivo.
         $resolverUltimoResultado = function ($partidos) {
             return $partidos
                 ->filter(function (Partido $partido) {
@@ -74,10 +100,10 @@ class BasketController extends Controller
                 ->first();
         };
 
-        $proximoPartido = $resolverProximoPartido($partidosSeniorA)
+        $proximoPartido = $resolverProximoPartido($partidosSenior)
             ?? $resolverProximoPartido($partidosSeniorB);
 
-        $ultimoResultado = $resolverUltimoResultado($partidosSeniorA)
+        $ultimoResultado = $resolverUltimoResultado($partidosSenior)
             ?? $resolverUltimoResultado($partidosSeniorB);
 
         $equiposActivos = Equipo::where('es_local', true)
@@ -90,6 +116,8 @@ class BasketController extends Controller
             })
             ->count();
 
+        // Estas cifras alimentan las tarjetas resumen de la portada.
+        // No son texto fijo: salen de la base de datos en tiempo real.
         $clubStats = collect([
             [
                 'valor' => $equiposActivos,
@@ -124,6 +152,8 @@ class BasketController extends Controller
         $clasificacionInicioFilas = collect();
         $clasificacionInicioFilaClub = null;
 
+        // Se intenta enseñar primero la clasificación marcada como "activa".
+        // Si hubiera varias, esta consulta prioriza la activa y luego ordena por nombre.
         $clasificacionActiva = Clasificacion::orderByDesc('activa')->orderBy('nombre')->first();
 
         if ($clasificacionActiva) {
@@ -143,6 +173,9 @@ class BasketController extends Controller
                 ->values();
 
             if ($filasClasificacionInicio->isNotEmpty()) {
+                // Aquí se añade una posición manual (1, 2, 3, ...)
+                // porque en la base de datos no existe una columna "posicion".
+                // La posición se deduce del orden final de las filas.
                 $filasConPosicion = $filasClasificacionInicio->map(function (ClasificacionFila $fila, int $index) {
                     $fila->setAttribute('posicion_home', $index + 1);
                     return $fila;
@@ -167,6 +200,9 @@ class BasketController extends Controller
         }
 
         $noticias = Noticia::where('oculto', false)->latest()->take(6)->get();
+
+        // Al final, todo este bloque de datos se manda a la vista "basket.inicio".
+        // La vista ya no tiene que calcular nada complejo; solo mostrarlo.
         return view('basket.inicio', compact(
             'noticias',
             'proximoPartido',
@@ -179,6 +215,20 @@ class BasketController extends Controller
         ));
     }
 
+    /*
+     * PÁGINA DE EQUIPO
+     *
+     * Objetivo:
+     * mostrar los equipos del club por categoría y, dentro de la categoría elegida,
+     * listar sus jugadores visibles.
+     *
+     * Flujo:
+     * 1. sacar equipos locales visibles
+     * 2. obtener categorías disponibles
+     * 3. leer la categoría pedida por la URL
+     * 4. elegir el equipo de esa categoría
+     * 5. paginar sus jugadores
+     */
     public function equipo(Request $request)
     {
         $equiposLocales = Equipo::where('es_local', true)
@@ -186,18 +236,27 @@ class BasketController extends Controller
             ->whereHas('jugadores', function ($query) {
                 $query->where('oculto', false);
             })
-            ->orderBy('categoria')
             ->get();
 
-        $categorias = $equiposLocales
+        $equiposLocales = $this->sortTeamsByCategoryPriority($equiposLocales);
+
+        // De la colección de equipos se extraen solo las categorías.
+        // Luego se eliminan duplicados para poder construir el selector.
+        $categorias = $this->sortCategoriesByPriority($equiposLocales
             ->pluck('categoria')
             ->filter()
             ->unique()
-            ->values();
+            ->values());
 
+        // La categoría llega por query string, por ejemplo:
+        // /equipo?categoria=Senior
+        // Si no llega ninguna o no existe, se usa la primera categoría válida.
         $categoriaSel = (string) $request->get('categoria', '');
         if ($categoriaSel === '' || !$categorias->contains($categoriaSel)) {
-            $categoriaSel = (string) ($categorias->first() ?? 'Senior');
+            $categoriaSel = 'Senior';
+            if (!$categorias->contains($categoriaSel)) {
+                $categoriaSel = (string) ($categorias->first() ?? 'Senior');
+            }
         }
 
         $equipoMostrar = $equiposLocales
@@ -221,6 +280,15 @@ class BasketController extends Controller
         ));
     }
 
+    /*
+     * TIENDA
+     *
+     * Método sencillo:
+     * - carga productos visibles
+     * - los ordena alfabéticamente
+     * - los pagina de 9 en 9
+     * - los envía a la vista pública
+     */
     public function tienda()
     {
         $merchandising = Merchandising::where('oculto', false)
@@ -229,6 +297,15 @@ class BasketController extends Controller
         return view('basket.merchandising', compact('merchandising'));
     }
 
+    /*
+     * CLASIFICACIÓN PÚBLICA
+     *
+     * Este método permite ver una clasificación de dos formas:
+     * - modo general: la tabla más actual disponible
+     * - modo jornada: una jornada concreta
+     *
+     * Además de la tabla, también carga los partidos de la jornada seleccionada.
+     */
     public function clasificacion()
     {
         $clasificaciones = Clasificacion::orderByDesc('activa')->orderBy('nombre')->get();
@@ -254,6 +331,10 @@ class BasketController extends Controller
         $partidosJornada = collect();
 
         if ($clasificacionSeleccionada) {
+            // Las jornadas se sacan de dos sitios:
+            // - de las filas históricas de clasificación
+            // - de los partidos de liga asociados a esa clasificación
+            // Luego se mezclan y se limpian duplicados.
             $jornadasClasificacion = ClasificacionFila::where('clasificacion_id', $clasificacionSeleccionada->id)
                 ->whereNotNull('jornada')
                 ->distinct()
@@ -283,6 +364,8 @@ class BasketController extends Controller
             }
 
             if ($modoGeneral) {
+                // Si el usuario no ha pedido una jornada concreta,
+                // se enseña la última clasificación disponible.
                 $jornadaClasificacionMostrada = ClasificacionFila::where('clasificacion_id', $clasificacionSeleccionada->id)
                     ->whereNotNull('jornada')
                     ->max('jornada');
@@ -304,6 +387,10 @@ class BasketController extends Controller
 
             }
 
+            // La tabla se ordena como suele hacerse en una liga:
+            // 1. más puntos
+            // 2. mejor diferencia de puntos
+            // 3. más puntos a favor
             $filas = ClasificacionFila::with('equipo')
                 ->where('clasificacion_id', $clasificacionSeleccionada->id)
                 ->when($jornadaClasificacionMostrada, function ($query) use ($jornadaClasificacionMostrada) {
@@ -338,13 +425,32 @@ class BasketController extends Controller
         ));
     }
 
+    /*
+     * ESTADÍSTICAS
+     *
+     * Este es uno de los métodos más "numéricos" del controlador.
+     * Su función es construir un resumen de temporada para un equipo local.
+     *
+     * Qué calcula:
+     * - partidos jugados
+     * - victorias y derrotas
+     * - puntos totales
+     * - medias por partido
+     * - porcentajes de tiro
+     * - rebotes, asistencias, robos, pérdidas, etc.
+     * - puntos por cuarto y prórroga
+     *
+     * Importante:
+     * no guarda nada nuevo en base de datos.
+     * Solo lee datos existentes y construye un resumen para mostrarlo.
+     */
     public function estadisticas(Request $request)
     {
         $equiposLocales = Equipo::where('es_local', true)
             ->where('oculto', false)
-            ->orderBy('categoria')
-            ->orderBy('nombre')
             ->get(['id', 'nombre', 'categoria', 'imagen_club']);
+
+        $equiposLocales = $this->sortTeamsByCategoryPriority($equiposLocales);
 
         $equipoSeleccionado = null;
         $resumenTemporada = null;
@@ -357,13 +463,19 @@ class BasketController extends Controller
             if (!$equipoSeleccionado) {
                 $equipoSeleccionado = $this->resolvePreferredLocalTeam(
                     $equiposLocales,
-                    ['CB Bellreguard Senior A'],
-                    ['Senior A']
+                    ['CB Bellreguard Senior'],
+                    ['Senior']
+                ) ?: $this->resolvePreferredLocalTeam(
+                    $equiposLocales,
+                    ['CB Bellreguard Senior B'],
+                    ['Senior B']
                 ) ?: $equiposLocales->first();
             }
         }
 
         if ($equipoSeleccionado) {
+            // Solo cuentan partidos de liga que ya tengan resultado final.
+            // Si un partido no está cerrado, no debe alterar las estadísticas.
             $partidosLigaCompletados = Partido::with('estadisticas')
                 ->where('tipo_partido', 'liga')
                 ->whereNotNull('jornada')
@@ -381,6 +493,8 @@ class BasketController extends Controller
                 })
                 ->values();
 
+            // Esta consulta suma todas las estadísticas del equipo en la temporada.
+            // selectRaw permite pedir muchos SUM(...) y COUNT(...) en una sola consulta.
             $stats = PartidoEstadistica::query()
                 ->selectRaw('
                     COUNT(partido_estadisticas.id) as pj,
@@ -409,6 +523,8 @@ class BasketController extends Controller
                 ->whereNotNull('partido_estadisticas.puntos_totales')
                 ->first();
 
+            // Aquí se agrupan los puntos por periodo:
+            // Q1, Q2, Q3, Q4 y posible prórroga.
             $cuartosRaw = PartidoCuarto::query()
                 ->selectRaw('periodo, SUM(puntos) as puntos')
                 ->join('partidos', 'partidos.id', '=', 'partido_cuartos.partido_id')
@@ -427,6 +543,8 @@ class BasketController extends Controller
                 ->where('partido_cuartos.periodo', 5)
                 ->first();
 
+            // A partir de aquí se convierten a enteros los datos agregados
+            // para poder operar con ellos fácilmente y evitar nulos.
             $pj = (int) ($stats->pj ?? 0);
             $divisor = $pj > 0 ? $pj : 1;
 
@@ -458,6 +576,8 @@ class BasketController extends Controller
             $partidosConProrroga = (int) ($prorrogasRaw->partidos ?? 0);
             $divisorProrroga = $partidosConProrroga > 0 ? $partidosConProrroga : 1;
 
+            // La victoria se calcula comparando el marcador del equipo
+            // contra el marcador del rival en cada partido.
             $victorias = $partidosLigaCompletados->filter(function (Partido $partido) use ($equipoSeleccionado) {
                 $statsEquipo = $partido->estadisticas->firstWhere('equipo_id', $equipoSeleccionado->id);
                 $statsRival = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id === $equipoSeleccionado->id ? $partido->equipo_visitante_id : $partido->equipo_local_id);
@@ -535,6 +655,8 @@ class BasketController extends Controller
         return view('basket.estadisticas', compact('equiposLocales', 'equipoSeleccionado', 'resumenTemporada'));
     }
 
+    // Helper: comprueba si en el partido participa alguno de los equipos prioritarios
+    // que queremos destacar, por ejemplo Senior o Senior B.
     private function matchIncludesPreferredLocalTeam(Partido $partido, array $preferredNames, array $preferredCategories): bool
     {
         foreach ([$partido->equipoLocal, $partido->equipoVisitante] as $equipo) {
@@ -550,6 +672,8 @@ class BasketController extends Controller
         return false;
     }
 
+    // Helper: devuelve el primer equipo local que coincida
+    // con nombres o categorías preferidas.
     private function resolvePreferredLocalTeam($equiposLocales, array $preferredNames, array $preferredCategories): ?Equipo
     {
         return $equiposLocales->first(
@@ -557,14 +681,53 @@ class BasketController extends Controller
         );
     }
 
+    // Helper simple para reutilizar la comparación de nombre/categoría.
     private function teamMatchesPreference(Equipo $equipo, array $preferredNames, array $preferredCategories): bool
     {
         return in_array((string) $equipo->nombre, $preferredNames, true)
             || in_array((string) $equipo->categoria, $preferredCategories, true);
     }
 
+    // Orden visual común: primero el Senior principal, después el resto de categorías.
+    private function categoryPriorityList(): array
+    {
+        return ['Senior', 'Senior B', 'Senior C', 'Senior D', 'Junior', 'Junior A', 'Junior B', 'Cadete', 'Cadete A', 'Cadete B', 'Infantil', 'Infantil A', 'Infantil B', 'Alevín', 'Alevin', 'Benjamín', 'Benjamin', 'Prebenjamín', 'Prebenjamin'];
+    }
+
+    private function categoryPriorityIndex(?string $categoria): int
+    {
+        $categoria = (string) $categoria;
+        $priorityList = $this->categoryPriorityList();
+        $index = array_search($categoria, $priorityList, true);
+
+        return $index !== false ? $index : count($priorityList);
+    }
+
+    private function sortCategoriesByPriority($categorias)
+    {
+        return collect($categorias)
+            ->sortBy(fn ($categoria) => [$this->categoryPriorityIndex($categoria), (string) $categoria])
+            ->values();
+    }
+
+    private function sortTeamsByCategoryPriority($equipos)
+    {
+        return collect($equipos)
+            ->sortBy(fn (Equipo $equipo) => [$this->categoryPriorityIndex($equipo->categoria), (string) $equipo->nombre])
+            ->values();
+    }
+
+    /*
+     * PARTIDOS
+     *
+     * Muestra el calendario/listado público de partidos del club.
+     * Igual que en portada, solo enseña partidos visibles en los que participa
+     * al menos un equipo local del Bellreguard.
+     */
     public function partidos()
     {
+        $ahora = Carbon::now()->toDateTimeString();
+
         $partidos = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
             ->where('oculto', false)
             ->where(function ($query) {
@@ -574,11 +737,26 @@ class BasketController extends Controller
                     $teamQuery->where('es_local', true);
                 });
             })
-            ->orderBy('fecha_hora', 'asc')
+            // Primero se muestran los próximos encuentros; después, el histórico ya jugado.
+            ->orderByRaw('CASE WHEN fecha_hora >= ? THEN 0 ELSE 1 END', [$ahora])
+            ->orderByRaw('CASE WHEN fecha_hora >= ? THEN fecha_hora END ASC', [$ahora])
+            ->orderByRaw('CASE WHEN fecha_hora < ? THEN fecha_hora END DESC', [$ahora])
             ->paginate(10);
         return view('basket.partidos', compact('partidos'));
     }
 
+    /*
+     * DETALLE DE PARTIDO
+     *
+     * Carga un partido concreto con:
+     * - equipo local
+     * - equipo visitante
+     * - estadísticas generales
+     * - puntos por cuarto
+     *
+     * Después separa las estadísticas del local y del visitante
+     * para que la vista pueda enseñarlas con claridad.
+     */
     public function partidoDetalle($id)
     {
         $partido = Partido::with([
@@ -607,6 +785,8 @@ class BasketController extends Controller
         return view('basket.partido_detalle', compact('partido', 'statsLocal', 'statsVisitante'));
     }
 
+    // Cambia el booleano "oculto" de un equipo.
+    // Si estaba visible, lo oculta. Si estaba oculto, lo vuelve a mostrar.
     public function toggleOcultoEquipo(Equipo $equipo)
     {
         $equipo->oculto = !$equipo->oculto;
@@ -615,6 +795,7 @@ class BasketController extends Controller
         return redirect()->route('basket.equipo')->with('mensaje', $equipo->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
+    // Igual que el anterior, pero aplicado a jugadores.
     public function toggleOcultoJugador(Jugador $jugador)
     {
         $jugador->oculto = !$jugador->oculto;
@@ -623,7 +804,8 @@ class BasketController extends Controller
         return redirect()->route('basket.equipo', ['categoria' => optional($jugador->equipo)->categoria])->with('mensaje', $jugador->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
-    public function toggleOculto(Partido $partido)
+    // Igual que el anterior, pero aplicado a partidos públicos.
+    public function toggleOcultoPartido(Partido $partido)
     {
         $partido->oculto = !$partido->oculto;
         $partido->save();
@@ -635,6 +817,12 @@ class BasketController extends Controller
         return redirect()->route('basket.partidos')->with('mensaje', $mensaje);
     }
 
+    /*
+     * GALERÍA
+     *
+     * Lista las galerías públicas y permite filtrarlas por tipo.
+     * Ejemplo de tipo: partidos, entrenamientos, eventos...
+     */
     public function galeria()
     {
         $tipoSeleccionado = request('tipo', 'todos');
@@ -653,6 +841,8 @@ class BasketController extends Controller
         return view('basket.galeria', compact('galerias', 'tipos', 'tipoSeleccionado'));
     }
 
+    // Busca una galería concreta a partir del slug que llega en la URL.
+    // Ejemplo: /galeria/torneo-infantil-2026
     public function galeriaDetalle($slug)
     {
         $galeria = Galeria::with('imagenes')
@@ -663,11 +853,13 @@ class BasketController extends Controller
         return view('basket.galeria_detalle', compact('galeria'));
     }
 
+    // Devuelve una vista estática de contacto.
     public function contacto()
     {
         return view('basket.contacto');
     }
 
+    // Lista noticias visibles, ordenadas de más nuevas a más antiguas.
     public function noticia()
     {
         $noticias = Noticia::where('oculto', false)
@@ -676,6 +868,7 @@ class BasketController extends Controller
         return view('basket.noticias', compact('noticias'));
     }
 
+    // Carga una noticia concreta usando su slug en lugar de su id.
     public function noticia_detalle($slug)
     {
         $noticia = Noticia::where('oculto', false)
@@ -685,6 +878,7 @@ class BasketController extends Controller
         return view('basket.noticias_detalle', compact('noticia'));
     }
 
+    // Alterna visible/oculto en noticias.
     public function toggleOcultoNoticia(Noticia $noticia)
     {
         $noticia->oculto = !$noticia->oculto;
@@ -693,6 +887,7 @@ class BasketController extends Controller
         return redirect()->route('basket.noticias')->with('mensaje', $noticia->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
+    // Alterna visible/oculto en productos de merchandising.
     public function toggleOcultoMerchandising(Merchandising $merchandising)
     {
         $merchandising->oculto = !$merchandising->oculto;
@@ -701,6 +896,7 @@ class BasketController extends Controller
         return redirect()->route('basket.tienda')->with('mensaje', $merchandising->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
+    // Alterna visible/oculto en galerías.
     public function toggleOcultoGaleria(Galeria $galeria)
     {
         $galeria->oculto = !$galeria->oculto;
@@ -709,6 +905,18 @@ class BasketController extends Controller
         return redirect()->route('basket.galeria')->with('mensaje', $galeria->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
+    /*
+     * INTERÉS EN MERCHANDISING
+     *
+     * Este método procesa el formulario "me interesa este producto".
+     *
+     * Qué hace:
+     * 1. valida producto y talla
+     * 2. comprueba que el producto exista y sea visible
+     * 3. comprueba que la talla elegida sea válida
+     * 4. construye un mensaje
+     * 5. envía un correo al email configurado del club
+     */
     public function enviarInteresMerchan(Request $request)
     {
         $validated = $request->validate([
@@ -751,6 +959,8 @@ class BasketController extends Controller
         return back()->with('mensaje', 'Tu interés se ha enviado correctamente.');
     }
 
+    // Este helper pega a cada bloque de estadísticas únicamente
+    // los cuartos del equipo correcto, no los del partido entero mezclados.
     private function attachQuarterStats(Partido $partido, ?PartidoEstadistica $estadistica, int $equipoId): void
     {
         if (!$estadistica) {

@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico del detalle de galería --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
 @endpush
@@ -7,6 +9,7 @@
 @section('title', $galeria->titulo . ' - Bellreguard Club de Basket')
 
 @section('contenido')
+{{-- Hero con datos básicos del álbum --}}
 <x-public-news-hero
     badge="ALBUM OFICIAL"
     title="{{ $galeria->titulo }}"
@@ -23,14 +26,17 @@
     </div>
 </x-public-news-hero>
 
+{{-- Zona principal del álbum con la rejilla de imágenes --}}
 <section class="contenedor-galeria contenedor-galeria-detalle">
     <div class="galeria-editorial-shell">
+        {{-- Texto introductorio del álbum --}}
         <div class="galeria-editorial-intro">
             <span class="galeria-kicker">Album fotografico</span>
             <h2>Recorrido visual</h2>
             <p>Pulsa cualquier imagen para verla en grande y moverte por el album con las flechas laterales o el teclado.</p>
         </div>
 
+        {{-- Rejilla de fotos que alimenta el lightbox --}}
         <div class="rejilla-fotos">
             @foreach($galeria->imagenes as $index => $imagen)
                 <button
@@ -51,6 +57,7 @@
     </div>
 </section>
 
+{{-- Lightbox para abrir una foto en grande y navegar por el álbum --}}
 <div class="lightbox-galeria" data-lightbox hidden>
     <button type="button" class="lightbox-cerrar" data-lightbox-cerrar aria-label="Cerrar visor">
         <i class="fas fa-times"></i>
@@ -73,6 +80,7 @@
     </button>
 </div>
 
+{{-- Script del lightbox: abrir, cerrar y navegar entre imágenes --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const items = Array.from(document.querySelectorAll('[data-galeria-item]'));

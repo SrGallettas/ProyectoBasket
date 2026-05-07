@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico de la página de estadísticas --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
 @endpush
@@ -7,14 +9,17 @@
 @section('title', 'Estadísticas - Bellreguard Club de Basket')
 
 @section('contenido')
+{{-- Hero principal de estadísticas --}}
 <x-public-news-hero
     badge="ESTADISTICAS OFICIALES"
     title="Estadisticas Bellreguard"
     subtitle="Resumen de temporada por equipo local en partidos de liga."
 />
 
+{{-- Contenido principal con filtro y resumen de temporada --}}
 <section class="contenedor-estadisticas">
     @if($equiposLocales->isNotEmpty())
+        {{-- Selector del equipo local a analizar --}}
         <form method="GET" action="{{ route('basket.estadisticas') }}" class="stats-team-filter">
             <label class="stats-team-field">
                 <span>Equipos</span>
@@ -30,9 +35,12 @@
         </form>
 
         @if($equipoSeleccionado)
+            {{-- Escudo del equipo actual o imagen de respaldo --}}
             @php
                 $escudo = $equipoSeleccionado?->imagen_club_url ?? asset('img/club_14.png');
             @endphp
+
+            {{-- Panel principal con resumen global del equipo --}}
             <article class="stats-team-panel">
                 <header class="stats-team-head">
                     <div class="stats-team-identidad">
@@ -48,6 +56,7 @@
                     </div>
                 </header>
 
+                {{-- Resumen básico de récord de temporada --}}
                 <div class="stats-record-grid">
                     <div class="stats-record-card">
                         <span>Partidos jugados</span>
@@ -71,6 +80,7 @@
                     </div>
                 </div>
 
+                {{-- Cálculo visual de porcentajes de tiro --}}
                 <div class="stats-shooting-grid">
                     @php
                         $pctFg = isset($resumenTemporada['porcentajes']['fg']) && $resumenTemporada['porcentajes']['fg'] !== null ? number_format($resumenTemporada['porcentajes']['fg'], 1) . '%' : '-';
@@ -79,6 +89,7 @@
                         $pctFt = isset($resumenTemporada['porcentajes']['ft']) && $resumenTemporada['porcentajes']['ft'] !== null ? number_format($resumenTemporada['porcentajes']['ft'], 1) . '%' : '-';
                     @endphp
 
+                    {{-- Tarjetas de tiro por tipo --}}
                     <div class="stats-shot-card">
                         <h4>Tiro de campo</h4>
                         <p>{{ $resumenTemporada['totales']['fgm'] ?? 0 }} anotados · {{ $resumenTemporada['totales']['fg_fallados'] ?? 0 }} fallados · {{ $resumenTemporada['totales']['fga'] ?? 0 }} intentados</p>
@@ -101,6 +112,7 @@
                     </div>
                 </div>
 
+                {{-- KPIs acumulados y medias por partido --}}
                 <div class="stats-kpi-grid">
                     <div class="stats-kpi"><span>Puntos</span><strong>{{ $resumenTemporada['totales']['pts'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pts'] ?? 0, 1) }}</small></div>
                     <div class="stats-kpi"><span>Rebotes</span><strong>{{ $resumenTemporada['totales']['reb'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['reb'] ?? 0, 1) }}</small></div>
@@ -115,6 +127,7 @@
                     <div class="stats-kpi"><span>Ratio AST/PER</span><strong>{{ isset($resumenTemporada['ratios']['ast_per']) && $resumenTemporada['ratios']['ast_per'] !== null ? number_format($resumenTemporada['ratios']['ast_per'], 2) : '-' }}</strong><small>Asistencias por pérdida</small></div>
                 </div>
 
+                {{-- Reparto de puntos por cuarto y prórroga en toda la temporada --}}
                 <div class="stats-quarters">
                     <h4>Puntos por partes de la temporada</h4>
                     <div class="stats-quarters-grid">
@@ -128,6 +141,7 @@
             </article>
         @endif
     @else
+        {{-- Estado vacío si no hay equipos locales con datos públicos --}}
         <div class="estado-vacio">
             <div class="estado-vacio-icono">
                 <i class="fas fa-chart-bar"></i>

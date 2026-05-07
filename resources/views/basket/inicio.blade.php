@@ -1,12 +1,14 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico de la portada --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/inicio.css') }}" />
 @endpush
 
 @use('Carbon\Carbon')
 
+{{-- SEO y metadatos sociales de la página de inicio --}}
 @section('title', 'Inicio - Bellreguard Club de Basket')
 @section('meta_description', 'Descubre el Bellreguard Club de Basket: próximos partidos, último resultado, noticias del club y toda la actualidad del baloncesto en Bellreguard.')
 @section('canonical', route('basket.inicio'))
@@ -18,11 +20,12 @@
 @section('twitter_image', asset('img/principal-2.png'))
 @section('twitter_image_alt', 'Jugadores y ambiente del Bellreguard Club de Basket')
 
-{{-- ESTO PASA PORQUE TENEMOS LA VARIABLE TITULO DE NOTICIAS, Y COMO HAY DOS VARIABLES QUE SE LLAMAN IGUAL, NOS TOCA CAMBIARLO --}}
+{{-- Variable auxiliar para evitar conflictos con otros títulos compartidos --}}
 @php $titulo = 'Inicio - Bellreguard Club de Basket'; @endphp
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
+    {{-- Imágenes que alimentan el slider principal de portada --}}
     @php
         $heroImages = [
             ['src' => asset('img/principal-1.png'), 'alt' => 'Imagen principal 1 Bellreguard'],
@@ -31,6 +34,7 @@
         ];
     @endphp
 
+    {{-- HERO principal con slider de fondo y llamadas a la acción --}}
     <section class="seccion-hero">
         <div class="hero-fondo-slider" aria-hidden="true">
             @foreach ($heroImages as $index => $heroImage)
@@ -59,6 +63,7 @@
         </div>
     </section>
 
+    {{-- Script simple para rotar el fondo del hero --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const backgroundSlides = Array.from(document.querySelectorAll('[data-hero-bg-slide]'));
@@ -80,6 +85,7 @@
         });
     </script>
 
+    {{-- CTA para captar jugadores, familias o personas interesadas en el club --}}
     <section class="inicio-club-cta">
         <div class="inicio-club-cta-card">
             <div class="inicio-club-cta-copy">
@@ -108,6 +114,7 @@
         </div>
     </section>
 
+    {{-- Bloque de cifras rápidas que resumen la actividad pública del club --}}
     <section class="inicio-club-stats">
         <div class="inicio-club-stats-header">
             <p class="inicio-kicker">Sobre el club</p>
@@ -126,6 +133,7 @@
         </div>
     </section>
 
+    {{-- Tarjetas reutilizables para próximo partido y último resultado --}}
     @php
         $cardsPartidos = collect([
             [
@@ -151,6 +159,7 @@
         ]);
     @endphp
 
+    {{-- Marcadores destacados de la portada --}}
     <section class="inicio-marcadores">
         <div class="inicio-marcadores-header">
             <p class="inicio-kicker">Actualidad deportiva</p>
@@ -160,6 +169,7 @@
 
         <div class="inicio-marcadores-grid">
             @foreach($cardsPartidos as $card)
+                {{-- Datos rápidos del partido para pintar el marcador o el estado vacío --}}
                 @php
                     $partidoCard = $card['partido'];
                     $statsLocal = $partidoCard?->estadisticas->firstWhere('equipo_id', $partidoCard->equipo_local_id);
@@ -224,6 +234,7 @@
         </div>
     </section>
 
+    {{-- Mini clasificación de portada, solo si hay datos calculados --}}
     @if($clasificacionInicio && $clasificacionInicioFilas->isNotEmpty())
         <section class="inicio-mini-clasificacion">
             <div class="inicio-mini-clasificacion-header">
@@ -251,6 +262,7 @@
                     </thead>
                     <tbody>
                         @foreach($clasificacionInicioFilas as $fila)
+                            {{-- Se resalta la fila del club para que destaque en la tabla --}}
                             @php
                                 $equipoFila = $fila->equipo;
                                 $esFilaClub = (bool) optional($equipoFila)->es_local
@@ -278,6 +290,7 @@
         </section>
     @endif
 
+    {{-- Galerías destacadas para dar visibilidad a la parte visual del club --}}
     @if($galeriasDestacadas->isNotEmpty())
         <section class="inicio-galeria-destacada">
             <div class="inicio-galeria-header">
@@ -321,6 +334,7 @@
         </section>
     @endif
 
+    {{-- Bloque de noticias: una principal y varias secundarias --}}
     <section class="seccion-noticias">
         @php
             $noticiaPrincipal = $noticias->first();
@@ -388,7 +402,7 @@
         @endif
     </section>
 
-
+    {{-- Patrocinadores o colaboradores visibles en la portada --}}
     <section class="patrocinadores">
         @php
             $patrocinadoresHome = collect([

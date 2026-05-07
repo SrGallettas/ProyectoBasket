@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico del listado de noticias --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
 @endpush
@@ -8,13 +10,14 @@
 
 @section('contenido')
 
-{{-- HEADER DE LA SECCIÓN  --}}
+{{-- Hero principal del listado de noticias --}}
 <x-public-news-hero
     badge="COMUNICADOS OFICIALES"
     title="Actualidad Granota"
     subtitle="Sigue el día a día de nuestros equipos, crónicas de partidos y eventos del club."
 />
 
+{{-- Contenedor principal del listado --}}
 <section class="noticias-container-rectangular">
     @if(session('mensaje'))
         <div class="public-alert-ok">
@@ -22,11 +25,12 @@
         </div>
     @endif
 
-    {{-- BARRA DE FILTRO --}}
+    {{-- Cabecera informativa del listado --}}
     <div class="noticias-filter-bar">
         <span><i class="fas fa-list-ul"></i> Mostrando últimas noticias del club</span>
     </div>
 
+    {{-- Listado horizontal de noticias publicadas --}}
     <div class="noticias-list-horizontal">
         @forelse ($noticias as $noticia)
             <article class="noticia-row">
@@ -54,6 +58,7 @@
                         <a href="{{ route('noticias.detalle', $noticia->slug) }}" class="btn-leer-noticia">
                             LEER CRÓNICA COMPLETA <i class="fas fa-chevron-right"></i>
                         </a>
+                        {{-- Acción visible solo para usuarios con permisos de edición --}}
                         @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                             <form action="{{ route('basket.noticias.toggle-oculto', $noticia->id) }}" method="POST" class="public-card-action">
                                 @csrf
@@ -65,6 +70,7 @@
                 </div>
             </article>
         @empty
+            {{-- Estado vacío si todavía no hay noticias visibles --}}
             <div class="estado-vacio">
                 <div class="estado-vacio-icono">
                     <i class="fas fa-newspaper"></i>
@@ -76,7 +82,7 @@
         @endforelse
     </div>
 
-    {{--Esto es la paginación--}}
+    {{-- Paginación del listado --}}
     <div class="contenedor-paginacion">
         {{ $noticias->links() }}
     </div>

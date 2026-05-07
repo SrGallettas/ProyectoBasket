@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico del detalle de noticia --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
 @endpush
@@ -7,8 +9,9 @@
 @section('title', $noticia->titulo . ' - Bellreguard Basket')
 
 @section('contenido')
+{{-- Artículo completo de la noticia seleccionada --}}
 <article class="articulo-noticia">
-    {{-- Cabecera --}}
+    {{-- Cabecera con categoría, fecha, título y autor --}}
     <header class="articulo-header">
         <div class="articulo-meta">
             <span class="categoria-badge">ACTUALIDAD</span>
@@ -29,19 +32,19 @@
         </div>
     </header>
 
-    {{-- Contenedor de Imagen con Efecto --}}
+    {{-- Imagen principal de la noticia --}}
     <div class="articulo-imagen-wrap">
         <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ $noticia->titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
     </div>
 
-    {{-- Cuerpo del Artículo --}}
+    {{-- Cuerpo completo con saltos de línea respetados --}}
     <div class="articulo-cuerpo">
         <div class="texto-contenido">
             {!! nl2br(e($noticia->contenido)) !!}
         </div>
     </div>
 
-    {{-- Footer --}}
+    {{-- Pie con opciones de compartir y navegación de vuelta --}}
     <footer class="articulo-footer">
         <div class="caja-compartir">
             <h3>¿Te ha gustado esta noticia?</h3>

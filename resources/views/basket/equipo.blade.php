@@ -1,14 +1,18 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico de la página de equipos --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/equipo.css') }}" />
 @endpush
 
 @section('contenido')
+{{-- Imagen de cabecera: usa la foto del equipo visible o una imagen por defecto --}}
 @php
     $imagenEquipoHero = $equipoMostrar?->foto_plantilla_url ?? asset('img/equipo.png');
 @endphp
 
+{{-- Hero principal con selector rápido de categorías --}}
 <section class="equipo-hero">
     <div class="equipo-hero-media">
         <img src="{{ $imagenEquipoHero }}" alt="Plantilla y equipos del Bellreguard Club de Basket">
@@ -31,6 +35,7 @@
     </div>
 </section>
 
+{{-- Bloque principal con resumen del equipo y plantilla publicada --}}
 <section class="equipo-jugadores">
     @if(session('mensaje'))
         <div class="public-alert-ok">
@@ -39,6 +44,7 @@
     @endif
 
     @if($equipoMostrar)
+        {{-- Resumen rápido del equipo seleccionado --}}
         <div class="equipo-resumen">
             <div class="equipo-resumen-copy">
                 <h2 class="equipo-titulo-categoria">{{ $equipoMostrar->nombre }}</h2>
@@ -55,6 +61,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- Acción rápida para ocultar el equipo desde la vista pública --}}
         @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
             <div class="public-admin-actions">
                 <form action="{{ route('basket.equipo.toggle-oculto', $equipoMostrar->id) }}" method="POST">
@@ -65,6 +73,7 @@
             </div>
         @endif
         
+        {{-- Rejilla de jugadores del equipo seleccionado --}}
         <div class="rejilla-jugadores">
             @forelse($jugadores as $jugador)
                 <div class="tarjeta-jugador">
@@ -94,6 +103,7 @@
                             {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'N/A' }}
                         </p>
 
+                        {{-- Acción pública solo visible para admin o staff --}}
                         @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
                             <form action="{{ route('basket.jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="public-card-action">
                                 @csrf
@@ -104,6 +114,7 @@
                     </div>
                 </div>
             @empty
+                {{-- Estado vacío si el equipo no tiene jugadores publicados --}}
                 <div class="contenedor-mensaje-vacio full-grid-column">
                     <div class="alerta-basket">
                         <p>Todavía no hay jugadores inscritos en el equipo <strong>{{ $equipoMostrar->nombre }}</strong>.</p>
@@ -112,11 +123,13 @@
             @endforelse
         </div>
 
+        {{-- Paginación de jugadores --}}
         <div class="contenedor-paginacion">
             {{ $jugadores->links() }}
         </div>
 
     @else
+        {{-- Estado vacío si no existe la categoría solicitada --}}
         <div class="contenedor-mensaje-vacio">
             <div class="alerta-basket">
                 <p>No se ha encontrado el equipo de la categoría <strong>{{ $categoriaSel }}</strong>.</p>

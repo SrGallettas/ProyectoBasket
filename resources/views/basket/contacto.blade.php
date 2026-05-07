@@ -1,6 +1,7 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico de la página de contacto --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/contacto.css') }}" />
 @endpush
@@ -11,15 +12,17 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
+{{-- Hero principal de la página --}}
 <x-public-news-hero
     badge="ATENCION OFICIAL"
     title="Contacto Bellreguard"
     subtitle="Ponte en contacto con el Bellreguard CB. Estamos aquí para ayudarte."
 />
 
+{{-- Bloque principal con información del club y datos de contacto --}}
 <section class="contenedor-contacto">
     <div class="rejilla-contacto">
-        
+        {{-- Presentación general del club --}}
         <div class="bloque-sobre-nosotros">
             <div class="titulo-con-icono">
                 <i class="fas fa-basketball-ball"></i>
@@ -30,6 +33,7 @@
             <p>Nuestras instalaciones modernas y nuestro compromiso con la excelencia deportiva nos posicionan como uno de los clubes más importantes de la región. Únete a nosotros y forma parte de esta gran familia del baloncesto.</p>
         </div>
 
+        {{-- Tarjetas laterales con vías de contacto rápidas --}}
         <div class="bloque-info-lateral">
             <div class="tarjeta-contacto-mini">
                 <div class="icono-contacto-rojo"><i class="fas fa-phone-alt"></i></div>
@@ -77,6 +81,7 @@
         </div>
     </div>
 
+    {{-- Mapa e indicación de la ubicación física del pabellón --}}
     <div class="seccion-mapa">
         <div class="titulo-mapa-centrado">
             <h2>Cómo Llegar</h2>

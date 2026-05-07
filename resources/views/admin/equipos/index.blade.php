@@ -27,15 +27,61 @@
     </div>
 @endif
 
+@php
+    // Helper simple para alternar asc/desc desde las cabeceras clicables.
+    $nextDirection = function (string $column) use ($sort, $direction) {
+        return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+    };
+
+    // Solo enseñamos la flecha cuando el usuario ya ha pedido una ordenación.
+    $hasActiveSort = request()->has('sort');
+
+    $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+        if (!$hasActiveSort || $sort !== $column) {
+            return '';
+        }
+
+        return $direction === 'asc' ? ' ▲' : ' ▼';
+    };
+@endphp
+
 <div class="pizarra-admin">
     <table class="tabla-admin">
         <thead>
             <tr>
                 <th>Escudo</th>
-                <th>Nombre Equipo</th>
-                <th>Categoría</th>
-                <th>Nº Jugadores</th>
-                <th>Acciones</th>
+                <th>
+                    <a
+                        href="{{ route('equipos.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Nombre Equipo{!! $sortIndicator('nombre') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('equipos.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Categoría{!! $sortIndicator('categoria') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('equipos.index', ['search' => $search, 'sort' => 'jugadores_count', 'direction' => $nextDirection('jugadores_count')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Nº Jugadores{!! $sortIndicator('jugadores_count') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('equipos.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Acciones{!! $sortIndicator('oculto') !!}
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>

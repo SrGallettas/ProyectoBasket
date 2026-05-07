@@ -1,6 +1,7 @@
 {{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico del calendario público --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/partidos.css') }}" />
 @endpush
@@ -14,12 +15,14 @@
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
+{{-- Hero principal del calendario --}}
 <x-public-news-hero
     badge="CALENDARIO OFICIAL"
     title="Próximos Partidos"
     subtitle="Consulta el calendario de todos nuestros equipos."
 />
 
+{{-- Rejilla principal de partidos agrupados por categoría --}}
 <section class="seccion-calendario">
     <div class="rejilla-partidos">
         @if(session('mensaje'))
@@ -28,16 +31,26 @@
             </div>
         @endif
         
-        {{-- Agrupamos los partidos por su categoría --}}
+        {{-- Agrupamos los partidos por categoría para mostrarlos en bloques --}}
         @php
-            $partidosPorCategoria = $partidos->groupBy('categoria');
+            // Orden manual de categorías: primero los equipos más mayores.
+            $ordenCategorias = ['Senior', 'Senior B', 'Senior C', 'Senior D', 'Junior', 'Junior A', 'Junior B', 'Cadete', 'Cadete A', 'Cadete B', 'Infantil', 'Infantil A', 'Infantil B', 'Alevín', 'Alevin', 'Benjamín', 'Benjamin', 'Prebenjamín', 'Prebenjamin'];
+
+            $partidosPorCategoria = $partidos
+                ->groupBy('categoria')
+                ->sortBy(function ($encuentros, $categoria) use ($ordenCategorias) {
+                    $indice = array_search((string) $categoria, $ordenCategorias, true);
+
+                    return $indice !== false ? $indice : count($ordenCategorias);
+                });
         @endphp
 
         @forelse($partidosPorCategoria as $categoria => $encuentros)
+            {{-- Bloque visual de una categoría concreta --}}
             <div class="caja-equipo full-width">
                 <div class="titulo-equipo">
                     {{-- Icono dinámico según la categoría --}}
-                    <i class="fa-solid {{ $categoria == 'Senior A' || $categoria == 'Senior B' ? 'fa-trophy' : 'fa-star' }}"></i>
+                    <i class="fa-solid {{ $categoria == 'Senior' || $categoria == 'Senior B' ? 'fa-trophy' : 'fa-star' }}"></i>
                     <div>
                         <h3>Equipo {{ $categoria }}</h3>
                         <p>Bellreguard Club de Basket</p>
@@ -46,6 +59,7 @@
 
                 <div class="rejilla-partido-doble {{ $encuentros->count() === 1 ? 'unico' : '' }}">
                     @foreach($encuentros as $partido)
+                        {{-- Datos del partido para calcular si ya hay marcador final --}}
                         @php
                             $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                             $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
@@ -103,6 +117,7 @@
                                 <a href="{{ route('basket.partidos.detalle', $partido->id) }}" class="btn-detalle-partido">
                                     Ver detalles del partido
                                 </a>
+                                {{-- Acción de visibilidad solo para usuarios con permisos --}}
                                 @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
                                     <form action="{{ route('basket.partidos.toggle-oculto', $partido->id) }}" method="POST" class="form-ocultar-partido">
                                         @csrf
@@ -118,6 +133,7 @@
                 </div>
             </div>
         @empty
+            {{-- Estado vacío si todavía no hay calendario publicado --}}
             <div class="estado-vacio partidos-empty-card">
                 <div class="estado-vacio-icono">
                     <i class="fa-regular fa-calendar-xmark"></i>
@@ -130,5 +146,11 @@
         
     </div>
 </section>
+
+@if($partidos->hasPages())
+    <section class="seccion-calendario">
+        {{ $partidos->links() }}
+    </section>
+@endif
 
 @endsection

@@ -1,5 +1,7 @@
+{{-- LAYOUT PRINCIPAL --}}
 @extends('layouts.app')
 
+{{-- CSS específico del listado de galerías --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
 @endpush
@@ -7,6 +9,7 @@
 @section('title', 'Galería - Bellreguard Club de Basket')
 
 @section('contenido')
+{{-- Hero principal de la galería pública --}}
 <x-public-news-hero
     badge="ARCHIVO OFICIAL"
     title="Galería Bellreguard CB"
@@ -18,6 +21,7 @@
     </div>
 </x-public-news-hero>
 
+{{-- Contenedor principal con filtros y álbumes --}}
 <section class="contenedor-galeria">
     @if(session('mensaje'))
         <div class="public-alert-ok">
@@ -25,6 +29,7 @@
         </div>
     @endif
 
+    {{-- Filtros por tipo de galería --}}
     <div class="filtros-galeria">
         @foreach($tipos as $clave => $label)
             <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
@@ -34,6 +39,7 @@
         @endforeach
     </div>
 
+    {{-- Rejilla de álbumes publicados --}}
     <div class="rejilla-albumes">
         @forelse($galerias as $galeria)
             <div class="tarjeta-album">
@@ -55,6 +61,7 @@
                         <span class="fecha-album">{{ $galeria->created_at->format('d/m/Y') }}</span>
                         <div class="public-inline-actions">
                             <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
+                            {{-- Acción de visibilidad solo para admin o editor --}}
                             @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                                 <form action="{{ route('basket.galeria.toggle-oculto', $galeria->id) }}" method="POST" class="public-card-action">
                                     @csrf
@@ -67,6 +74,7 @@
                 </div>
             </div>
         @empty
+            {{-- Estado vacío si no hay álbumes para el filtro actual --}}
             <div class="galeria-empty-state">
                 <i class="fas fa-images"></i>
                 <h3>No hay álbumes para este filtro</h3>
@@ -75,9 +83,10 @@
         @endforelse
     </div>
 
-        <div class="contenedor-paginacion">
-            {{ $galerias->links() }}
-        </div>
+    {{-- Paginación del listado --}}
+    <div class="contenedor-paginacion">
+        {{ $galerias->links() }}
+    </div>
 
 </section>
 @endsection

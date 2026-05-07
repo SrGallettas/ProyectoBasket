@@ -19,15 +19,33 @@
         </div>
     @endif
 
+    @php
+        // Alterna asc/desc desde las cabeceras clicables.
+        $nextDirection = function (string $column) use ($sort, $direction) {
+            return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+        };
+
+        // La flecha solo aparece cuando ya existe una ordenación activa.
+        $hasActiveSort = request()->has('sort');
+
+        $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+            if (!$hasActiveSort || $sort !== $column) {
+                return '';
+            }
+
+            return $direction === 'asc' ? ' ▲' : ' ▼';
+        };
+    @endphp
+
     <div class="pizarra-admin">
         <table class="tabla-admin">
             <thead>
                 <tr>
                     <th>Imagen</th>
-                    <th>Producto</th>
-                    <th>Talla</th>
-                    <th>Precio</th>
-                    <th class="text-center">Acciones</th>
+                    <th><a href="{{ route('merchandising.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Producto{!! $sortIndicator('nombre') !!}</a></th>
+                    <th><a href="{{ route('merchandising.index', ['search' => $search, 'sort' => 'talla', 'direction' => $nextDirection('talla')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Talla{!! $sortIndicator('talla') !!}</a></th>
+                    <th><a href="{{ route('merchandising.index', ['search' => $search, 'sort' => 'precio', 'direction' => $nextDirection('precio')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Precio{!! $sortIndicator('precio') !!}</a></th>
+                    <th class="text-center"><a href="{{ route('merchandising.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('oculto') !!}</a></th>
                 </tr>
             </thead>
             <tbody>

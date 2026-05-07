@@ -20,20 +20,94 @@
     </div>
 @endif
 
+@php
+    // Alterna asc/desc al pulsar varias veces la misma cabecera.
+    $nextDirection = function (string $column) use ($sort, $direction) {
+        return $sort === $column && $direction === 'asc' ? 'desc' : 'asc';
+    };
+
+    // La flecha solo aparece cuando ya existe una ordenación activa en la URL.
+    $hasActiveSort = request()->has('sort');
+
+    $sortIndicator = function (string $column) use ($sort, $direction, $hasActiveSort) {
+        if (!$hasActiveSort || $sort !== $column) {
+            return '';
+        }
+
+        return $direction === 'asc' ? ' ▲' : ' ▼';
+    };
+@endphp
+
 <div class="pizarra-admin">
     <table class="tabla-admin">
         {{-- Tu tabla se queda EXACTAMENTE IGUAL que la tenías --}}
         <thead>
             <tr>
                 <th>Foto</th>
-                <th>Dorsal</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Club</th>
-                <th>Categoría</th>
-                <th>Posición</th>
-                <th>Fecha Nacimiento</th>
-                <th>Acciones</th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'dorsal', 'direction' => $nextDirection('dorsal')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Dorsal{!! $sortIndicator('dorsal') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Nombre{!! $sortIndicator('nombre') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'apellido', 'direction' => $nextDirection('apellido')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Apellidos{!! $sortIndicator('apellido') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'club', 'direction' => $nextDirection('club')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Club{!! $sortIndicator('club') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Categoría{!! $sortIndicator('categoria') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'posicion', 'direction' => $nextDirection('posicion')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Posición{!! $sortIndicator('posicion') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'fecha_nacimiento', 'direction' => $nextDirection('fecha_nacimiento')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Fecha Nacimiento{!! $sortIndicator('fecha_nacimiento') !!}
+                    </a>
+                </th>
+                <th>
+                    <a
+                        href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}"
+                        style="color: inherit; text-decoration: none; font: inherit;"
+                    >
+                        Acciones{!! $sortIndicator('oculto') !!}
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>

@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Partido;
 use App\Models\PartidoCuarto;
 use App\Models\PartidoEstadistica;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -109,5 +110,58 @@ class PartidoDetalleTest extends TestCase
             '<td>0</td>',
             '<td>88</td>',
         ], false);
+    }
+
+    public function test_la_pagina_publica_de_partidos_prioriza_los_proximos_encuentros(): void
+    {
+        Carbon::setTestNow('2026-05-07 10:00:00');
+
+        $equipoLocal = Equipo::create([
+            'nombre' => 'Senior Bellreguard 1',
+            'categoria' => 'Senior',
+            'imagen_club' => 'club_14.png',
+            'es_local' => true,
+            'oculto' => false,
+        ]);
+
+        $equipoVisitante = Equipo::create([
+            'nombre' => 'Senior Bellreguard 2',
+            'categoria' => 'Senior',
+            'imagen_club' => 'club_14.png',
+            'es_local' => false,
+            'oculto' => false,
+        ]);
+
+        foreach (range(1, 10) as $indice) {
+            Partido::create([
+                'equipo_local_id' => $equipoLocal->id,
+                'equipo_visitante_id' => $equipoVisitante->id,
+                'fecha_hora' => Carbon::parse('2026-04-01 18:00:00')->addDays($indice),
+                'lugar' => 'Pabellón Municipal',
+                'categoria' => 'Senior',
+                'tipo_partido' => 'liga',
+                'oculto' => false,
+            ]);
+        }
+
+        Partido::create([
+            'equipo_local_id' => $equipoLocal->id,
+            'equipo_visitante_id' => $equipoVisitante->id,
+            'fecha_hora' => '2026-06-13 10:43:00',
+            'lugar' => 'Pista Central',
+            'categoria' => 'Senior',
+            'tipo_partido' => 'liga',
+            'oculto' => false,
+        ]);
+
+        $response = $this->get(route('basket.partidos'));
+
+        $response->assertOk();
+        $response->assertSee('Senior Bellreguard 1');
+        $response->assertSee('Senior Bellreguard 2');
+        $response->assertSee('10:43h');
+        $response->assertSee('Pista Central');
+
+        Carbon::setTestNow();
     }
 }

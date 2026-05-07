@@ -11,6 +11,18 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search'));
+        $sort = (string) $request->input('sort', 'name');
+        $direction = strtolower((string) $request->input('direction', 'asc')) === 'desc' ? 'desc' : 'asc';
+
+        // Limitamos las columnas ordenables para no aceptar cualquier valor por URL.
+        $sortableColumns = [
+            'name' => 'name',
+            'email' => 'email',
+            'role' => 'role',
+            'created_at' => 'created_at',
+        ];
+
+        $sortColumn = $sortableColumns[$sort] ?? 'name';
 
         $usuarios = User::query()
             ->when($search !== '', function ($query) use ($search) {
@@ -19,12 +31,21 @@ class UserController extends Controller
                         ->orWhere('email', 'like', '%' . $search . '%')
                         ->orWhere('role', 'like', '%' . $search . '%');
                 });
-            })
-            ->orderBy('name')
+            });
+
+        // En texto usamos lower(...) para que el abecedario ignore mayúsculas.
+        if (in_array($sortColumn, ['name', 'email', 'role'], true)) {
+            $usuarios->orderByRaw('LOWER(' . $sortColumn . ') ' . $direction);
+        } else {
+            $usuarios->orderBy($sortColumn, $direction);
+        }
+
+        $usuarios = $usuarios
+            ->orderByRaw('LOWER(name) asc')
             ->paginate(12)
             ->withQueryString();
 
-        return view('admin.usuarios.index', compact('usuarios', 'search'));
+        return view('admin.usuarios.index', compact('usuarios', 'search', 'sort', 'direction'));
     }
 
     public function create()

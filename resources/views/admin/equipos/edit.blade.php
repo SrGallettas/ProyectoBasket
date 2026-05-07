@@ -35,7 +35,7 @@
                             type="text"
                             name="nombre"
                             value="{{ old('nombre', $equipo->nombre) }}"
-                            placeholder="Ej: Senior A"
+                            placeholder="Ej: Senior"
                             required
                             class="input-ficha"
                         >

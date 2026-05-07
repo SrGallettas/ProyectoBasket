@@ -34,7 +34,7 @@
                             type="text"
                             name="titulo"
                             value="{{ old('titulo', $noticia->titulo) }}"
-                            placeholder="Ej: Gran victoria del Senior A"
+                            placeholder="Ej: Gran victoria del Senior"
                             required
                             class="input-ficha"
                         >
