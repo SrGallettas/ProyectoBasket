@@ -98,7 +98,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img id="noticia-create-preview" src="{{ asset('img/basket.jpeg') }}" alt="Imagen por defecto de la noticia">
+                            <img id="noticia-create-preview" src="{{ asset('img/club_14.png') }}" alt="Imagen por defecto de la noticia">
                         </div>
 
                         <div class="info-subida-noticia">

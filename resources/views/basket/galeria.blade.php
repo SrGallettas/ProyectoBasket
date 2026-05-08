@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
 @endpush
 
-@section('title', 'Galería - Bellreguard Club de Basket')
+@section('title', 'Galería - Bellreguard CB')
 
 @section('contenido')
 {{-- Hero principal de la galería pública --}}

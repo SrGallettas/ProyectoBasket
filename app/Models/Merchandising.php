@@ -32,10 +32,6 @@ class Merchandising extends Model
             return asset('img/club_14.png');
         }
 
-        if ($this->imagen_merchan === 'basket.jpeg') {
-            return asset('img/basket.jpeg');
-        }
-
-        return '/storage/merchandising/' . ltrim($this->imagen_merchan, '/');
+        return Storage::disk('public')->url('merchandising/' . ltrim($this->imagen_merchan, '/'));
     }
 }

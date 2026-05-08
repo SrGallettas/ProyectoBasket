@@ -21,7 +21,7 @@
                     @if($item->imagen_merchan)
                         <img src="{{ $item->imagen_merchan_url }}" alt="{{ $item->nombre }}">
                     @else
-                        <img src="{{ asset('img/basket.jpeg') }}" alt="Sin imagen">
+                        <img src="{{ asset('img/club_14.png') }}" alt="Sin imagen">
                     @endif
                 </div>
             </div>

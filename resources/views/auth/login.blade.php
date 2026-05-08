@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/login.css') }}" />
 @endpush
 
-@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('title', 'Acceso - Bellreguard CB')
 
 @section('contenido')
 <section class="contenedor-login">
@@ -18,7 +18,7 @@
             
             {{-- BLOQUE 1: CABECERA (Logo y Textos de Bienvenida) --}}
             <div class="login-header">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo Bellreguard CB" class="logo-login">
+                <img src="{{ asset('img/club_14.png') }}" alt="Logo Bellreguard CB" class="logo-login">
                 <h1>Bienvenido de nuevo</h1>
                 <p>Introduce tus credenciales para acceder al panel</p>
             </div>
@@ -33,7 +33,7 @@
                     <label for="email">Email de acceso</label>
                     <div class="input-icono">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="admin@bellreguard.com" value="{{ old('email') }}" required autofocus>
+                        <input type="email" id="email" name="email" placeholder="admin@bellreguardcb.com" value="{{ old('email') }}" required autofocus>
                     </div>
                     {{-- Validación: Muestra error si el email es incorrecto --}}
                     @error('email')

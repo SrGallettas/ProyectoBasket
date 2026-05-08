@@ -316,12 +316,11 @@ class MerchandisingController extends Controller
          *
          * No borra imágenes base como:
          * - club_14.png
-         * - basket.jpeg
          */
     private function deleteStoredImage(?string $filename, string $directory): void
     {
         // Si no hay archivo o es una imagen por defecto, no hacemos nada.
-        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+        if (!$filename || $filename === 'club_14.png') {
             return;
         }
 

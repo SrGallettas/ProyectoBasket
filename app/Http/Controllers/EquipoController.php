@@ -204,8 +204,7 @@ class EquipoController extends Controller
             return redirect()
                 ->route('equipos.index')
                 ->withErrors([
-                    'delete' => 'No puedes eliminar este equipo porque tiene partidos
-  asociados.',
+                    'delete' => 'No puedes eliminar este equipo porque tiene partidos asociados.',
                 ]);
         }
 
@@ -380,14 +379,13 @@ class EquipoController extends Controller
        *
        * No borra imágenes por defecto como:
        * - club_14.png
-       * - basket.jpeg
        *
        * porque esas parecen ser imágenes "base" del proyecto.
        */
     private function deleteStoredImage(?string $filename, string $directory): void
     {
         // Si no hay nombre de archivo o es una imagen por defecto, no hacemos nada.
-        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+        if (!$filename || $filename === 'club_14.png') {
             return;
         }
 

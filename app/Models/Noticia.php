@@ -32,10 +32,6 @@ class Noticia extends Model
             return asset('img/club_14.png');
         }
 
-        if ($this->imagen_noticia === 'basket.jpeg') {
-            return asset('img/basket.jpeg');
-        }
-
-        return '/storage/noticias/' . ltrim($this->imagen_noticia, '/');
+        return Storage::disk('public')->url('noticias/' . ltrim($this->imagen_noticia, '/'));
     }
 }

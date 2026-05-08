@@ -73,7 +73,7 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img id="merch-create-preview" src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
+                            <img id="merch-create-preview" src="{{ asset('img/club_14.png') }}" alt="Foto por defecto">
                         </div>
 
                         <div class="info-subida-noticia">

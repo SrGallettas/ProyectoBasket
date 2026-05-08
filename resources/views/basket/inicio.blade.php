@@ -9,19 +9,19 @@
 @use('Carbon\Carbon')
 
 {{-- SEO y metadatos sociales de la página de inicio --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
-@section('meta_description', 'Descubre el Bellreguard Club de Basket: próximos partidos, último resultado, noticias del club y toda la actualidad del baloncesto en Bellreguard.')
+@section('title', 'Inicio - Bellreguard CB')
+@section('meta_description', 'Descubre Bellreguard CB: próximos partidos, último resultado, noticias del club y toda la actualidad del baloncesto en Bellreguard.')
 @section('canonical', route('basket.inicio'))
-@section('og_title', 'Bellreguard Club de Basket | Partidos, noticias y actualidad')
-@section('og_description', 'Consulta los próximos partidos, el último resultado y las noticias del Bellreguard Club de Basket desde la portada oficial del club.')
+@section('og_title', 'Bellreguard CB | Partidos, noticias y actualidad')
+@section('og_description', 'Consulta los próximos partidos, el último resultado y las noticias de Bellreguard CB desde la portada oficial del club.')
 @section('og_url', route('basket.inicio'))
 @section('og_image', asset('img/principal-2.png'))
-@section('og_image_alt', 'Jugadores y ambiente del Bellreguard Club de Basket')
+@section('og_image_alt', 'Jugadores y ambiente de Bellreguard CB')
 @section('twitter_image', asset('img/principal-2.png'))
-@section('twitter_image_alt', 'Jugadores y ambiente del Bellreguard Club de Basket')
+@section('twitter_image_alt', 'Jugadores y ambiente de Bellreguard CB')
 
 {{-- Variable auxiliar para evitar conflictos con otros títulos compartidos --}}
-@php $titulo = 'Inicio - Bellreguard Club de Basket'; @endphp
+@php $titulo = 'Inicio - Bellreguard CB'; @endphp
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
@@ -49,7 +49,7 @@
         </div>
 
         <div class="hero-texto">
-            <h1>Bellreguard Club de Basket</h1>
+            <h1>Bellreguard CB</h1>
             <p>Pasión, dedicación y excelencia en cada partido. Únete a nuestra familia basketbolística.</p>
             <div class="botones-hero">
                 <a href="{{ route('basket.partidos') }}" class="boton-principal">Ver Próximos Partidos</a>
@@ -321,7 +321,7 @@
                         <div class="inicio-galeria-copy">
                             <span class="inicio-galeria-type">{{ \App\Models\Galeria::TIPOS[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
                             <h3>{{ $galeria->titulo }}</h3>
-                            <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: 'Revive este álbum destacado del Bellreguard Club de Basket.', $index === 0 ? 150 : 110) }}</p>
+                            <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: 'Revive este álbum destacado de Bellreguard CB.', $index === 0 ? 150 : 110) }}</p>
                             <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-link">Ver álbum</a>
                         </div>
                     </article>

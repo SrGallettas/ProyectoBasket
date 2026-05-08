@@ -344,7 +344,7 @@ class JugadorController extends Controller
     private function deleteStoredImage(?string $filename, string $directory): void
     {
         // Si no hay nombre de archivo o es una imagen genérica, no hacemos nada.
-        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+        if (!$filename || $filename === 'club_14.png') {
             return;
         }
 

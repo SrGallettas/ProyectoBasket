@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
 @endpush
 
-@section('title', $galeria->titulo . ' - Bellreguard Club de Basket')
+@section('title', $galeria->titulo . ' - Bellreguard CB')
 
 @section('contenido')
 {{-- Hero con datos básicos del álbum --}}

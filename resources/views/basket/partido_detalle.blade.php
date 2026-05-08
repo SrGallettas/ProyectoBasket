@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
 @endpush
 
-@section('title', 'Detalle Partido - Bellreguard Club de Basket')
+@section('title', 'Detalle Partido - Bellreguard CB')
 
 @section('contenido')
 {{-- Helpers locales para limpiar nulos, calcular porcentajes y leer cuartos --}}

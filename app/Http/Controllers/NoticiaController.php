@@ -154,9 +154,6 @@ class NoticiaController extends Controller
 
             // En la base de datos guardamos solo el nombre del archivo.
             $noticia->imagen_noticia = $nombreImagen;
-        } else {
-            // Si no llega imagen, se usa una imagen por defecto.
-            $noticia->imagen_noticia = 'basket.jpeg';
         }
 
         $noticia->save();
@@ -320,7 +317,7 @@ class NoticiaController extends Controller
     private function deleteStoredImage(?string $filename, string $directory): void
     {
         // Estas imágenes se consideran de sistema y no deben borrarse.
-        if (!$filename || $filename === 'club_14.png' || $filename === 'basket.jpeg') {
+        if (!$filename || $filename === 'club_14.png') {
             return;
         }
 

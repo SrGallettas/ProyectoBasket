@@ -7,7 +7,7 @@
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Inicio - Bellreguard Club de Basket')
+@section('title', 'Tienda - Bellreguard CB')
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
@@ -30,6 +30,12 @@
     @if(session('mensaje'))
         <div class="public-alert-ok">
             {{ session('mensaje') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="public-alert-ok" role="alert">
+            {{ $errors->first() }}
         </div>
     @endif
 
@@ -71,27 +77,26 @@
                     </div>
 
                     {{-- Selector de talla y botón de interés por producto --}}
-                    <div class="precio-comprar">
+                    <form action="{{ route('basket.tienda.interes') }}" method="POST" class="precio-comprar">
+                        @csrf
+                        <input type="hidden" name="producto_id" value="{{ $item->id }}">
+
                         @if(count($tallas) > 0)
-                            <select class="selector-talla js-talla" required>
+                            <select class="selector-talla" name="talla" required>
                                 <option value="">Selecciona talla</option>
                                 @foreach($tallas as $talla)
                                     <option value="{{ trim($talla) }}">{{ trim($talla) }}</option>
                                 @endforeach
                             </select>
                         @else
-                            <input type="hidden" class="js-talla" value="Sin talla">
+                            <input type="hidden" name="talla" value="Sin talla">
                             <span class="merch-sin-talla">Talla unica</span>
                         @endif
 
-                        <button
-                            type="button"
-                            class="boton-comprar js-gmail-interes"
-                            data-producto="{{ $item->nombre }}"
-                        >
-                            ¡Estoy Interesado!
+                        <button type="submit" class="boton-comprar">
+                            ¡Estoy interesado!
                         </button>
-                    </div>
+                    </form>
 
                     {{-- Acción de visibilidad solo para admin o editor --}}
                     @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
@@ -126,37 +131,9 @@
 <section class="contacto-pedido">
     <h2>¿Te gusta algún producto?</h2>
     <p>Contacta con nosotros para realizar tu pedido</p>
-    <a href="mailto:info@bellreguardbasket.com" class="boton-contacto">
+    <a href="mailto:info@bellreguardcb.com" class="boton-contacto">
         <i class="fa-solid fa-envelope"></i> Contactar Ahora
     </a>
 </section>
-
-{{-- Script para abrir Gmail con el producto y la talla elegida --}}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const botones = document.querySelectorAll('.js-gmail-interes');
-
-    botones.forEach(function (boton) {
-        boton.addEventListener('click', function () {
-            const contenedor = boton.closest('.precio-comprar');
-            const tallaInput = contenedor ? contenedor.querySelector('.js-talla') : null;
-            const talla = tallaInput ? tallaInput.value.trim() : 'Sin talla';
-
-            if (tallaInput && tallaInput.tagName === 'SELECT' && !talla) {
-                tallaInput.reportValidity();
-                tallaInput.focus();
-                return;
-            }
-
-            const producto = boton.dataset.producto || 'Producto';
-            const asunto = `Interés ${producto}`;
-            const cuerpo = `Hola Bellreguard CB,\n\nEstoy interesado en el producto: ${producto}.\nTalla: ${talla}.\n\nGracias.`;
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=admin@bellreguard.com&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-
-            window.open(gmailUrl, '_blank');
-        });
-    });
-});
-</script>
 
 @endsection

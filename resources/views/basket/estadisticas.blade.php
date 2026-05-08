@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
 @endpush
 
-@section('title', 'Estadísticas - Bellreguard Club de Basket')
+@section('title', 'Estadísticas - Bellreguard CB')
 
 @section('contenido')
 {{-- Hero principal de estadísticas --}}

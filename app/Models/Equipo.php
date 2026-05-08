@@ -45,11 +45,7 @@ class Equipo extends Model
             return asset('img/club_14.png');
         }
 
-        if ($this->imagen_club === 'basket.jpeg') {
-            return asset('img/basket.jpeg');
-        }
-
-        return '/storage/escudos/' . ltrim($this->imagen_club, '/');
+        return Storage::disk('public')->url('escudos/' . ltrim($this->imagen_club, '/'));
     }
 
     public function getFotoPlantillaUrlAttribute(): string
@@ -58,6 +54,6 @@ class Equipo extends Model
             return asset('img/equipo.png');
         }
 
-        return '/storage/equipos/plantillas/' . ltrim($this->foto_plantilla, '/');
+        return Storage::disk('public')->url('equipos/plantillas/' . ltrim($this->foto_plantilla, '/'));
     }
 }

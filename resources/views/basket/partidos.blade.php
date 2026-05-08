@@ -10,7 +10,7 @@
 @use('Carbon\Carbon') 
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Partidos - Bellreguard Club de Basket')
+@section('title', 'Partidos - Bellreguard CB')
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
@@ -53,7 +53,7 @@
                     <i class="fa-solid {{ $categoria == 'Senior' || $categoria == 'Senior B' ? 'fa-trophy' : 'fa-star' }}"></i>
                     <div>
                         <h3>Equipo {{ $categoria }}</h3>
-                        <p>Bellreguard Club de Basket</p>
+                        <p>Bellreguard CB</p>
                     </div>
                 </div>
 

@@ -29,6 +29,6 @@ class ImagenGaleria extends Model
             return asset('img/club_14.png');
         }
 
-        return '/storage/galerias/' . ltrim($this->archivo, '/');
+        return Storage::disk('public')->url('galerias/' . ltrim($this->archivo, '/'));
     }
 }

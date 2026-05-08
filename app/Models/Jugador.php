@@ -36,10 +36,6 @@ class Jugador extends Model
             return asset('img/club_14.png');
         }
 
-        if ($this->imagen_jugador === 'basket.jpeg') {
-            return asset('img/basket.jpeg');
-        }
-
-        return '/storage/jugadores/' . ltrim(basename($this->imagen_jugador), '/');
+        return Storage::disk('public')->url('jugadores/' . ltrim(basename($this->imagen_jugador), '/'));
     }
 }

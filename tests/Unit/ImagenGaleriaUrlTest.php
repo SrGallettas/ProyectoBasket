@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\ImagenGaleria;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ImagenGaleriaUrlTest extends TestCase
@@ -13,6 +14,9 @@ class ImagenGaleriaUrlTest extends TestCase
             'archivo' => 'temporada-2026/foto-1.jpg',
         ]);
 
-        $this->assertSame('/storage/galerias/temporada-2026/foto-1.jpg', $imagen->image_url);
+        $this->assertSame(
+            Storage::disk('public')->url('galerias/temporada-2026/foto-1.jpg'),
+            $imagen->image_url
+        );
     }
 }

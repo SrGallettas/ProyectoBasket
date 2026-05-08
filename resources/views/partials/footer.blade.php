@@ -27,7 +27,7 @@
             <ul class="lista-footer contacto-items">
                 <li><i class="fas fa-map-marker-alt"></i> Pabellón Municipal</li>
                 <li><i class="fas fa-phone"></i> +34 620 300 902</li>
-                <li><i class="fas fa-envelope"></i> info@bellreguard.com</li>
+                <li><i class="fas fa-envelope"></i> info@bellreguardcb.com</li>
             </ul>
         </div>
 
@@ -43,7 +43,7 @@
     </div>
     
     <div class="footer-bottom">
-        <p class="copy">© {{ date('Y') }} Bellreguard Club de Basket. Todos los derechos reservados.</p>
+        <p class="copy">© {{ date('Y') }} Bellreguard CB. Todos los derechos reservados.</p>
         <p class="copy footer-copy-secondary">Baloncesto, comunidad y actividad deportiva en Bellreguard.</p>
     </div>
 </footer>

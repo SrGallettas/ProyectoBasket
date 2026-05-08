@@ -75,7 +75,7 @@
                             @if($item->imagen_merchan)
                                 <img id="merch-edit-preview" src="{{ $item->imagen_merchan_url }}" alt="Foto actual">
                             @else
-                                <img id="merch-edit-preview" src="{{ asset('img/basket.jpeg') }}" alt="Foto por defecto">
+                                <img id="merch-edit-preview" src="{{ asset('img/club_14.png') }}" alt="Foto por defecto">
                             @endif
                         </div>
 
