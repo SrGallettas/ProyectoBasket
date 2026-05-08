@@ -3,7 +3,7 @@
         $navLinks = [
             ['label' => 'Inicio', 'href' => url('/'), 'active' => request()->routeIs('basket.inicio')],
             ['label' => 'Equipo', 'href' => route('basket.equipo'), 'active' => request()->routeIs('basket.equipo')],
-            ['label' => 'Tienda', 'href' => route('basket.tienda'), 'active' => request()->routeIs('basket.tienda')],
+            ['label' => 'Tienda', 'href' => route('basket.tienda'), 'active' => request()->routeIs('basket.tienda', 'basket.tienda.*')],
             ['label' => 'Clasificación', 'href' => route('basket.clasificacion'), 'active' => request()->routeIs('basket.clasificacion')],
             ['label' => 'Estadísticas', 'href' => route('basket.estadisticas'), 'active' => request()->routeIs('basket.estadisticas')],
             ['label' => 'Partidos', 'href' => route('basket.partidos'), 'active' => request()->routeIs('basket.partidos', 'basket.partidos.*')],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MerchandisingPedidoMail;
 use App\Models\Equipo;
 use App\Models\Noticia;
 use App\Models\Merchandising;
@@ -281,6 +282,39 @@ class BasketController extends Controller
     }
 
     /*
+     * FICHA PÚBLICA DE JUGADOR
+     *
+     * Enseña una página individual del jugador siempre que:
+     * - el jugador sea visible
+     * - pertenezca a un equipo local
+     * - ese equipo también esté visible
+     *
+     * Además carga otros jugadores del mismo equipo para dejar
+     * una navegación lateral sencilla dentro de la categoría.
+     */
+    public function jugadorDetalle(Jugador $jugador)
+    {
+        $jugador->load('equipo');
+
+        abort_if(
+            $jugador->oculto
+            || !$jugador->equipo
+            || !$jugador->equipo->es_local
+            || $jugador->equipo->oculto,
+            404
+        );
+
+        $companeros = Jugador::where('equipo_id', $jugador->equipo_id)
+            ->where('oculto', false)
+            ->whereKeyNot($jugador->id)
+            ->orderBy('dorsal')
+            ->take(4)
+            ->get();
+
+        return view('basket.jugador_detalle', compact('jugador', 'companeros'));
+    }
+
+    /*
      * TIENDA
      *
      * Método sencillo:
@@ -294,7 +328,183 @@ class BasketController extends Controller
         $merchandising = Merchandising::where('oculto', false)
             ->orderBy('nombre', 'asc')
             ->paginate(9);
-        return view('basket.merchandising', compact('merchandising'));
+
+        $cartItems = $this->getCartItems();
+        $cartSummary = $this->buildCartSummary($cartItems);
+        $openCart = session('openCart', false);
+
+        return view('basket.merchandising', compact('merchandising', 'cartItems', 'cartSummary', 'openCart'));
+    }
+
+    /*
+     * FORMULARIO FINAL DEL PEDIDO
+     *
+     * Este método enseña una página de resumen con:
+     * - productos de la cesta
+     * - subtotal orientativo
+     * - formulario de datos del cliente
+     *
+     * Si la cesta está vacía, devuelve al usuario a la tienda.
+     */
+    public function mostrarFormularioPedido()
+    {
+        $cartItems = $this->getCartItems();
+
+        if (empty($cartItems)) {
+            return redirect()->route('basket.tienda')->withErrors([
+                'cesta' => 'Tu cesta está vacía. Añade al menos un producto antes de solicitar el pedido.',
+            ]);
+        }
+
+        $cartSummary = $this->buildCartSummary($cartItems);
+
+        return view('basket.merchandising_pedido', compact('cartItems', 'cartSummary'));
+    }
+
+    /*
+     * AÑADIR PRODUCTO A LA CESTA
+     *
+     * Flujo:
+     * 1. valida producto, talla y cantidad
+     * 2. comprueba que el producto exista y sea visible
+     * 3. valida la talla según las tallas reales del producto
+     * 4. guarda o acumula la línea en sesión
+     * 5. vuelve a la tienda abriendo el panel lateral
+     */
+    public function anadirProductoCesta(Request $request)
+    {
+        $validated = $request->validate([
+            'producto_id' => 'required|integer',
+            'talla' => 'nullable|string|max:20',
+            'cantidad' => 'required|integer|min:1|max:20',
+        ]);
+
+        $producto = Merchandising::whereKey($validated['producto_id'])
+            ->where('oculto', false)
+            ->firstOrFail();
+
+        $tallasDisponibles = $this->extractAvailableSizes($producto);
+        $tallaSeleccionada = trim((string) ($validated['talla'] ?? ''));
+
+        if (!empty($tallasDisponibles) && !in_array($tallaSeleccionada, $tallasDisponibles, true)) {
+            return back()->withErrors([
+                'talla' => 'Selecciona una talla válida para este producto.',
+            ])->withInput();
+        }
+
+        if (empty($tallasDisponibles)) {
+            $tallaSeleccionada = 'Sin talla';
+        }
+
+        $cart = session()->get('basket_cart', []);
+        $itemKey = $this->makeCartItemKey($producto->id, $tallaSeleccionada);
+
+        if (isset($cart[$itemKey])) {
+            $cart[$itemKey]['cantidad'] = min(20, $cart[$itemKey]['cantidad'] + (int) $validated['cantidad']);
+        } else {
+            $cart[$itemKey] = [
+                'producto_id' => $producto->id,
+                'nombre' => $producto->nombre,
+                'talla' => $tallaSeleccionada,
+                'precio' => (float) $producto->precio,
+                'cantidad' => (int) $validated['cantidad'],
+                'imagen_url' => $producto->imagen_merchan_url,
+            ];
+        }
+
+        session()->put('basket_cart', $cart);
+        session()->flash('openCart', true);
+
+        return redirect()->route('basket.tienda')->with('mensaje', 'Producto añadido a la cesta.');
+    }
+
+    /*
+     * ACTUALIZAR CANTIDAD DE LA CESTA
+     *
+     * Solo modifica una línea ya existente en sesión.
+     * Si la línea no existe, simplemente vuelve a la tienda.
+     */
+    public function actualizarProductoCesta(Request $request, string $itemKey)
+    {
+        $validated = $request->validate([
+            'cantidad' => 'required|integer|min:1|max:20',
+        ]);
+
+        $cart = session()->get('basket_cart', []);
+
+        if (!isset($cart[$itemKey])) {
+            return redirect()->route('basket.tienda')->withErrors([
+                'cesta' => 'El producto que intentas actualizar ya no está en la cesta.',
+            ]);
+        }
+
+        $cart[$itemKey]['cantidad'] = (int) $validated['cantidad'];
+
+        session()->put('basket_cart', $cart);
+        session()->flash('openCart', true);
+
+        return redirect()->route('basket.tienda');
+    }
+
+    /*
+     * ELIMINAR PRODUCTO DE LA CESTA
+     *
+     * Borra una línea concreta de la cesta en sesión y
+     * mantiene abierto el panel lateral al volver a la tienda.
+     */
+    public function eliminarProductoCesta(string $itemKey)
+    {
+        $cart = session()->get('basket_cart', []);
+
+        unset($cart[$itemKey]);
+
+        session()->put('basket_cart', $cart);
+        session()->flash('openCart', true);
+
+        return redirect()->route('basket.tienda')->with('mensaje', 'Producto eliminado de la cesta.');
+    }
+
+    /*
+     * ENVIAR PEDIDO DE MERCHANDISING
+     *
+     * Este método cierra el flujo público de tienda:
+     * 1. valida los datos del cliente
+     * 2. comprueba que la cesta siga teniendo productos
+     * 3. construye el resumen económico
+     * 4. envía un correo al club
+     * 5. vacía la cesta y redirige a la tienda
+     */
+    public function enviarPedidoMerchan(Request $request)
+    {
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:150',
+            'telefono' => 'required|string|max:30',
+            'correo' => 'required|email|max:150',
+            'notas' => 'nullable|string|max:1000',
+        ]);
+
+        $cartItems = $this->getCartItems();
+
+        if (empty($cartItems)) {
+            return redirect()->route('basket.tienda')->withErrors([
+                'cesta' => 'Tu cesta está vacía. Añade productos antes de enviar una solicitud.',
+            ]);
+        }
+
+        $cartSummary = $this->buildCartSummary($cartItems);
+        $destinatario = env('MERCH_PEDIDOS_EMAIL', env('MERCH_INTERES_EMAIL', 'paupalopvila@gmail.com'));
+
+        Mail::to($destinatario)->send(
+            new MerchandisingPedidoMail($validated, $cartItems, $cartSummary)
+        );
+
+        session()->forget('basket_cart');
+
+        return redirect()->route('basket.tienda')->with(
+            'mensaje',
+            'Tu solicitud de pedido se ha enviado correctamente. Te responderemos lo antes posible.'
+        );
     }
 
     /*
@@ -905,60 +1115,6 @@ class BasketController extends Controller
         return redirect()->route('basket.galeria')->with('mensaje', $galeria->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
     }
 
-    /*
-     * INTERÉS EN MERCHANDISING
-     *
-     * Este método procesa el formulario "me interesa este producto".
-     *
-     * Qué hace:
-     * 1. valida producto y talla
-     * 2. comprueba que el producto exista y sea visible
-     * 3. comprueba que la talla elegida sea válida
-     * 4. construye un mensaje
-     * 5. envía un correo al email configurado del club
-     */
-    public function enviarInteresMerchan(Request $request)
-    {
-        $validated = $request->validate([
-            'producto_id' => 'required|integer',
-            'talla' => 'required|string|max:20',
-        ]);
-
-        $producto = Merchandising::whereKey($validated['producto_id'])
-            ->where('oculto', false)
-            ->firstOrFail();
-        $talla = trim($validated['talla']);
-        $tallasDisponibles = $producto->talla
-            ? array_map('trim', explode(',', $producto->talla))
-            : [];
-
-        if (!empty($tallasDisponibles) && !in_array($talla, $tallasDisponibles, true)) {
-            return back()->withErrors([
-                'talla' => 'Selecciona una talla valida para este producto.'
-            ])->withInput();
-        }
-
-        if (empty($tallasDisponibles) && $talla !== 'Sin talla') {
-            return back()->withErrors([
-                'talla' => 'La talla seleccionada no es valida para este producto.'
-            ])->withInput();
-        }
-
-        $destinatario = env('MERCH_INTERES_EMAIL', 'info@bellreguardcb.com');
-        $asunto = 'Interés ' . $producto->nombre;
-
-        $mensaje = "Hola Bellreguard CB,\n\n"
-            . "Estoy interesado en el producto: {$producto->nombre}.\n"
-            . "Me gustaría pedirlo en la talla: {$talla}.\n\n"
-            . "Gracias.";
-
-        Mail::raw($mensaje, function ($mail) use ($destinatario, $asunto) {
-            $mail->to($destinatario)->subject($asunto);
-        });
-
-        return back()->with('mensaje', 'Tu interés se ha enviado correctamente.');
-    }
-
     // Este helper pega a cada bloque de estadísticas únicamente
     // los cuartos del equipo correcto, no los del partido entero mezclados.
     private function attachQuarterStats(Partido $partido, ?PartidoEstadistica $estadistica, int $equipoId): void
@@ -974,5 +1130,72 @@ class BasketController extends Controller
                 ->sortBy('periodo')
                 ->values()
         );
+    }
+
+    /*
+     * CESTA EN SESIÓN
+     *
+     * Devuelve las líneas guardadas en sesión como array indexado,
+     * listo para pasarlo a las vistas públicas.
+     */
+    private function getCartItems(): array
+    {
+        return array_values(session()->get('basket_cart', []));
+    }
+
+    /*
+     * RESUMEN DE CESTA
+     *
+     * Calcula:
+     * - número total de unidades
+     * - subtotal orientativo
+     */
+    private function buildCartSummary(array $cartItems): array
+    {
+        $units = 0;
+        $subtotal = 0.0;
+
+        foreach ($cartItems as $item) {
+            $cantidad = (int) ($item['cantidad'] ?? 0);
+            $precio = (float) ($item['precio'] ?? 0);
+
+            $units += $cantidad;
+            $subtotal += $cantidad * $precio;
+        }
+
+        return [
+            'units' => $units,
+            'subtotal' => $subtotal,
+        ];
+    }
+
+    /*
+     * TALLAS DISPONIBLES
+     *
+     * Convierte el texto guardado en base de datos a un array limpio.
+     * Si el producto no tiene tallas reales, devuelve un array vacío.
+     */
+    private function extractAvailableSizes(Merchandising $producto): array
+    {
+        if (!$producto->talla) {
+            return [];
+        }
+
+        return collect(explode(',', $producto->talla))
+            ->map(fn ($talla) => trim((string) $talla))
+            ->filter(fn ($talla) => $talla !== '' && strtolower($talla) !== 'sin talla')
+            ->values()
+            ->all();
+    }
+
+    /*
+     * CLAVE DE LÍNEA DE CESTA
+     *
+     * Genera una clave estable combinando producto y talla
+     * para que dos tallas distintas no se mezclen.
+     */
+    private function makeCartItemKey(int $productoId, string $talla): string
+    {
+        return $productoId . '-' . md5($talla);
     }
 }

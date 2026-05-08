@@ -103,6 +103,15 @@
     padding: 15px;
     position: relative;
     text-align: center;
+    background: linear-gradient(180deg, #ffffff 0%, #fff8f6 100%);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.tarjeta-partido:hover {
+    transform: translateY(-8px);
+    border-color: rgba(230, 0, 0, 0.28);
+    box-shadow: 0 22px 38px rgba(127, 29, 29, 0.14);
 }
 
 .tarjeta-partido-oculto {
@@ -166,14 +175,7 @@
     box-shadow:
         0 14px 30px rgba(230, 0, 0, 0.14),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjeta-partido:hover .equipo img {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow:
-        0 18px 36px rgba(230, 0, 0, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    transition: box-shadow 0.2s ease;
 }
 
 .equipo p {
@@ -203,6 +205,7 @@
     border-radius: 999px;
     background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
     box-shadow: inset 0 0 0 1px rgba(230, 0, 0, 0.1);
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
 
 .marcador-inline {
@@ -219,6 +222,12 @@
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: 0.02em;
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.tarjeta-partido:hover .vs,
+.tarjeta-partido:hover .marcador-inline {
+    transform: translateY(-2px) scale(1.03);
 }
 
 .info-adicional {
@@ -370,6 +379,11 @@ html[data-theme="dark"] .tarjeta-partido {
     border-color: #334155;
 }
 
+html[data-theme="dark"] .tarjeta-partido:hover {
+    border-color: #ef4444;
+    box-shadow: 0 22px 40px rgba(2, 6, 23, 0.62);
+}
+
 html[data-theme="dark"] .tarjeta-partido-oculto {
     background: #2d2311;
     border-color: #f59e0b;
@@ -397,12 +411,6 @@ html[data-theme="dark"] .equipo img {
     box-shadow:
         0 18px 36px rgba(2, 6, 23, 0.45),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-html[data-theme="dark"] .tarjeta-partido:hover .equipo img {
-    box-shadow:
-        0 22px 42px rgba(2, 6, 23, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 html[data-theme="dark"] .vs {

@@ -267,6 +267,12 @@
     position: relative;
 }
 
+.tarjeta-jugador-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
 .tarjeta-jugador::before {
     content: "";
     position: absolute;
@@ -338,6 +344,8 @@
 .info-jugador {
     padding: 22px 22px 24px;
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 .posicion-tag {
@@ -422,6 +430,184 @@
 }
 .full-grid-column {
     grid-column: 1 / -1;
+}
+
+.jugador-detalle {
+    padding: 56px 40px;
+    background: #f9f9f9;
+}
+
+.jugador-layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.jugador-media-card,
+.jugador-info-card,
+.jugador-companeros {
+    background: linear-gradient(180deg, #ffffff 0%, #fff8f6 100%);
+    border: 1px solid #f2d5cd;
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(127, 29, 29, 0.08);
+}
+
+.jugador-media-card {
+    overflow: hidden;
+}
+
+.jugador-media-card img {
+    width: 100%;
+    height: 100%;
+    max-height: 560px;
+    object-fit: cover;
+    display: block;
+}
+
+.jugador-info-stack {
+    display: grid;
+    gap: 24px;
+}
+
+.jugador-info-card {
+    padding: 30px;
+}
+
+.jugador-kicker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.jugador-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.jugador-header h2 {
+    margin: 10px 0 0;
+    color: #111827;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 0.98;
+}
+
+.jugador-dorsal-grande {
+    min-width: 88px;
+    min-height: 88px;
+    border-radius: 26px;
+    background: #111827;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
+}
+
+.jugador-copy {
+    color: #6b7280;
+    line-height: 1.8;
+    margin-bottom: 24px;
+    max-width: 56ch;
+}
+
+.jugador-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.jugador-meta-item {
+    padding: 18px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid #f3d8d3;
+}
+
+.jugador-meta-item span {
+    display: block;
+    margin-bottom: 8px;
+    color: #b91c1c;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.jugador-meta-item strong {
+    color: #111827;
+    line-height: 1.45;
+}
+
+.jugador-companeros {
+    padding: 24px;
+}
+
+.jugador-companeros h3 {
+    margin-bottom: 6px;
+    color: #111827;
+    font-size: 1.4rem;
+}
+
+.jugador-companeros p {
+    margin-bottom: 18px;
+    color: #6b7280;
+}
+
+.jugador-companeros-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.jugador-companero-link {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid #f3d8d3;
+    text-decoration: none;
+}
+
+.jugador-companero-link img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.jugador-companero-link strong {
+    display: block;
+    color: #111827;
+}
+
+.jugador-companero-link span {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.jugador-companero-link em {
+    color: #b91c1c;
+    font-style: normal;
+    font-weight: 800;
 }
 
 /* =========================
@@ -553,6 +739,52 @@ html[data-theme="dark"] .alerta-basket p {
     color: #cbd5e1;
 }
 
+html[data-theme="dark"] .jugador-detalle {
+    background: #0b1120;
+}
+
+html[data-theme="dark"] .jugador-media-card,
+html[data-theme="dark"] .jugador-info-card,
+html[data-theme="dark"] .jugador-companeros {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .jugador-kicker {
+    background: rgba(185, 28, 28, 0.18);
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .jugador-header h2,
+html[data-theme="dark"] .jugador-meta-item strong,
+html[data-theme="dark"] .jugador-companeros h3,
+html[data-theme="dark"] .jugador-companero-link strong {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .jugador-copy,
+html[data-theme="dark"] .jugador-companeros p,
+html[data-theme="dark"] .jugador-companero-link span {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .jugador-dorsal-grande {
+    background: #111827;
+    box-shadow: 0 16px 30px rgba(2, 6, 23, 0.4);
+}
+
+html[data-theme="dark"] .jugador-meta-item,
+html[data-theme="dark"] .jugador-companero-link {
+    background: #111827;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .jugador-meta-item span,
+html[data-theme="dark"] .jugador-companero-link em {
+    color: #fca5a5;
+}
+
 html[data-theme="dark"] .contenedor-mensaje-vacio .alerta-basket strong {
     color: #f8fafc;
 }
@@ -603,6 +835,18 @@ html[data-theme="dark"] .equipo-jugadores .pagination .page-item.disabled .page-
 
     .foto-jugador {
         height: 300px;
+    }
+
+    .jugador-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .jugador-media-card img {
+        max-height: 520px;
+    }
+
+    .jugador-meta-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -658,6 +902,29 @@ html[data-theme="dark"] .equipo-jugadores .pagination .page-item.disabled .page-
 
     .alerta-basket p {
         font-size: 1.05rem;
+    }
+
+    .jugador-detalle {
+        padding: 36px 18px;
+    }
+
+    .jugador-info-card,
+    .jugador-companeros {
+        padding: 20px;
+    }
+
+    .jugador-header {
+        flex-direction: column;
+    }
+
+    .jugador-dorsal-grande {
+        min-width: 74px;
+        min-height: 74px;
+        border-radius: 22px;
+    }
+
+    .jugador-companero-link {
+        grid-template-columns: 56px 1fr;
     }
 }
 

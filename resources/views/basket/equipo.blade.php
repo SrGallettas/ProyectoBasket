@@ -76,7 +76,11 @@
         {{-- Rejilla de jugadores del equipo seleccionado --}}
         <div class="rejilla-jugadores">
             @forelse($jugadores as $jugador)
-                <div class="tarjeta-jugador">
+                <article class="tarjeta-jugador">
+                    {{-- Enlace principal para abrir la ficha pública del jugador --}}
+                    <a href="{{ route('basket.jugadores.detalle', $jugador) }}" class="tarjeta-jugador-link" aria-label="Ver ficha de {{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}">
+                    </a>
+
                     <div class="foto-jugador">
                         @if($jugador->imagen_jugador)
                             <img src="{{ $jugador->imagen_jugador_url }}" alt="{{ $jugador->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
@@ -112,7 +116,7 @@
                             </form>
                         @endif
                     </div>
-                </div>
+                </article>
             @empty
                 {{-- Estado vacío si el equipo no tiene jugadores publicados --}}
                 <div class="contenedor-mensaje-vacio full-grid-column">

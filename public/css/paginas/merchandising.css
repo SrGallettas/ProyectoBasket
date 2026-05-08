@@ -1,52 +1,26 @@
-/*******************************************************************************
- * *
- * 5. MERCHANDISING                           *
- * *
- *******************************************************************************/
-
-.seccion-merchandising-header {
-    background: #e60000;
-    /* Rojo principal */
-    color: white;
-    text-align: center;
-    padding: 30px 40px;
-}
-
-.seccion-merchandising-header h1 {
-    font-size: 30px;
-    margin-bottom: 5px;
-}
-
-.seccion-merchandising-header p {
-    margin-bottom: 15px;
-    opacity: 0.9;
-}
-
-.contenedor-paginacion {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
+/* 5. MERCHANDISING */
 
 .iconos-merchandising {
-    font-size: 24px;
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 18px;
+    font-size: 24px;
 }
 
-/* 2.2. SECCIÓN DE PRODUCTOS OFICIALES */
 .productos-oficiales {
+    position: relative;
     padding: 50px 40px;
-    background: #f5f5f5;
+    background:
+        radial-gradient(circle at top left, rgba(230, 0, 0, 0.08), transparent 32%),
+        linear-gradient(180deg, #faf7f5 0%, #f2f1ef 100%);
 }
 
 .public-alert-ok {
-    max-width: 1050px;
+    max-width: 1180px;
     margin: 0 auto 24px;
     padding: 12px 16px;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #e7f8ec;
     border: 1px solid #b6e2c5;
     color: #17603a;
@@ -54,118 +28,209 @@
     font-weight: 700;
 }
 
+.merch-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 1180px;
+    margin: 0 auto 34px;
+}
+
 .merch-intro {
     max-width: 760px;
-    margin: 0 auto 34px;
-    text-align: center;
 }
 
 .merch-kicker {
     display: inline-block;
     margin-bottom: 12px;
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 800;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #e60000;
+    color: #c1121f;
 }
 
 .productos-oficiales h2 {
-    text-align: center;
     margin-bottom: 10px;
-    font-size: 28px;
+    font-size: 30px;
+    color: #181818;
 }
 
 .merch-subtitulo {
     max-width: 680px;
-    margin: 0 auto;
+    margin: 0;
     font-size: 16px;
     line-height: 1.7;
     color: #5f6368;
 }
 
+.boton-cesta-flotante {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    border-radius: 999px;
+    background: #111111;
+    color: #ffffff;
+    padding: 14px 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.16);
+}
+
+.boton-cesta-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: #e60000;
+    font-size: 14px;
+}
+
 .rejilla-productos {
     display: grid;
-    /* 3 columnas, ajustando el ancho máximo del contenedor para centrar los 5 productos */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 30px;
-    max-width: 1050px;
-    /* Ancho ajustado para centrar mejor 5 elementos */
+    max-width: 1180px;
     margin: 0 auto;
 }
 
-/* 2.3. TARJETA DE PRODUCTO */
 .tarjeta-producto {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(34, 34, 34, 0.08);
 }
 
 .tarjeta-producto img {
     width: 100%;
-    /* Altura fija para que todas las imágenes tengan el mismo tamaño (opcional) */
     height: 250px;
     object-fit: cover;
 }
 
 .info-producto {
-    padding: 15px 15px 20px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    padding: 18px 18px 20px;
 }
 
 .info-producto h3 {
-    font-size: 18px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    font-size: 20px;
+    color: #181818;
 }
 
 .descripcion-producto {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
     flex-grow: 1;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #555;
 }
 
 .merch-resumen-compra {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.merch-tallas-bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.merch-tallas-texto {
+    color: #5f6368;
+}
+
+.precio {
+    font-size: 24px;
+    font-weight: 800;
+    color: #c1121f;
+    white-space: nowrap;
+}
+
+.merch-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.merch-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.selector-talla,
+.selector-cantidad,
+.pedido-field input,
+.pedido-field textarea {
+    width: 100%;
+    border: 1px solid #d4d7dc;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.selector-cantidad {
+    max-width: 110px;
 }
 
 .precio-comprar {
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-top: 14px;
+    gap: 14px;
 }
 
-.precio {
-    font-size: 22px;
-    /* Ligeramente más pequeño que el anterior */
-    font-weight: 700;
-    color: #e60000;
+.merch-field-cantidad {
+    flex-shrink: 0;
 }
 
 .boton-comprar {
-    background: #e60000;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
     border: none;
-    font-weight: 600;
-    transition: background 0.2s;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e60000 0%, #ad1111 100%);
+    color: #ffffff;
+    padding: 12px 18px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.boton-comprar:hover {
-    background: #cf1515;
+.merch-sin-talla {
+    color: #666;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.merch-field-placeholder {
+    min-height: 73px;
+}
+
+.merch-sin-talla-box {
+    display: flex;
+    align-items: center;
+    min-height: 43px;
+    border: 1px solid #d4d7dc;
+    border-radius: 10px;
+    padding: 11px 12px;
+    background: #ffffff;
+    color: #5f6368;
 }
 
 .public-card-action {
@@ -173,9 +238,9 @@
 }
 
 .merch-hide-action {
-    margin-top: 14px;
     display: flex;
     justify-content: center;
+    margin-top: 14px;
 }
 
 .public-hide-button {
@@ -186,63 +251,208 @@
     padding: 8px 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.public-hide-button:hover {
-    background: #d97706;
-    color: #fff;
-    transform: translateY(-1px);
+.contenedor-paginacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
 }
 
-.selector-talla {
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 7px 8px;
+.cesta-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease;
+    z-index: 40;
+}
+
+.panel-cesta {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(430px, 100%);
+    height: 100vh;
+    background: #fbfaf8;
+    box-shadow: -14px 0 36px rgba(0, 0, 0, 0.12);
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+    z-index: 50;
+}
+
+.cart-open .cesta-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-open .panel-cesta {
+    transform: translateX(0);
+}
+
+.panel-cesta-header,
+.panel-cesta-footer {
+    padding: 22px 24px;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.panel-cesta-footer {
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
+    border-bottom: none;
+    margin-top: auto;
+    background: #ffffff;
+}
+
+.panel-cesta-kicker {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #c1121f;
+}
+
+.panel-cesta-header h3 {
+    margin: 0;
+    font-size: 26px;
+    color: #181818;
+}
+
+.panel-cesta-close {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.panel-cesta-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.cesta-item {
+    display: grid;
+    grid-template-columns: 86px 1fr auto;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 16px;
+    background: #ffffff;
+}
+
+.cesta-item img {
+    width: 86px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cesta-item-info h4 {
+    margin-bottom: 6px;
+    font-size: 17px;
+    color: #181818;
+}
+
+.cesta-item-info p {
+    margin-bottom: 6px;
+    color: #5f6368;
     font-size: 14px;
-    background: #fff;
-    min-width: 0;
-    flex: 1;
 }
 
-.merch-sin-talla {
-    color: #666;
-    font-size: 14px;
-    font-weight: 600;
+.cesta-inline-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.mensaje-exito,
-.mensaje-error {
-    max-width: 1050px;
-    margin: 0 auto 15px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-weight: 600;
+.merch-field-panel {
+    font-size: 12px;
 }
 
-.mensaje-exito {
-    background: #e7f8ed;
-    color: #1c6b39;
-    border: 1px solid #9fdbb8;
+.cesta-remove-button,
+.pedido-submit {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.mensaje-error {
-    background: #fdeaea;
+.cesta-remove-button {
+    background: #f9dede;
     color: #8f1c1c;
-    border: 1px solid #efb1b1;
 }
 
-/* 2.4. SECCIÓN DE CONTACTO INFERIOR (Rojo) */
-.contacto-pedido {
-    background: #e60000;
-    color: white;
+.cesta-item-total {
+    align-self: flex-start;
+    font-size: 18px;
+    font-weight: 800;
+    color: #c1121f;
+}
+
+.cesta-vacia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 46px 18px;
+    border: 1px dashed rgba(17, 17, 17, 0.16);
+    border-radius: 18px;
     text-align: center;
-    padding: 40px 40px;
+    color: #5f6368;
+}
+
+.cesta-vacia i {
+    font-size: 28px;
+    color: #c1121f;
+}
+
+.cesta-resumen-linea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.cesta-submit-link,
+.pedido-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e60000 0%, #ad1111 100%);
+    color: #ffffff;
+    padding: 14px 18px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.cesta-submit-link-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.contacto-pedido {
+    padding: 48px 40px;
+    background: linear-gradient(135deg, #111111 0%, #262626 100%);
+    color: #ffffff;
+    text-align: center;
 }
 
 .contacto-pedido h2 {
-    font-size: 24px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-size: 26px;
 }
 
 .contacto-pedido p {
@@ -251,13 +461,180 @@
 }
 
 .boton-contacto {
-    background: white;
-    color: #e60000;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    color: #111111;
     padding: 12px 25px;
-    border-radius: 8px;
+    border-radius: 999px;
     font-weight: 700;
-    cursor: pointer;
     text-decoration: none;
+}
+
+.pedido-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.pedido-card,
+.pedido-summary {
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 14px 32px rgba(34, 34, 34, 0.08);
+}
+
+.pedido-card {
+    padding: 28px;
+}
+
+.pedido-summary {
+    padding: 24px;
+    height: fit-content;
+}
+
+.pedido-card h2,
+.pedido-summary h3 {
+    margin-bottom: 12px;
+    font-size: 28px;
+    color: #181818;
+}
+
+.pedido-card p,
+.pedido-summary p {
+    color: #5f6368;
+}
+
+.pedido-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.pedido-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.pedido-field-full {
+    grid-column: 1 / -1;
+}
+
+.pedido-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.pedido-items {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.pedido-item {
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 16px;
+    background: #f7f5f2;
+}
+
+.pedido-item img {
+    width: 70px;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.pedido-item strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #181818;
+}
+
+.pedido-item span {
+    display: block;
+    color: #5f6368;
+    font-size: 14px;
+}
+
+.pedido-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+@media (max-width: 1024px) {
+    .merch-toolbar,
+    .pedido-layout {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .rejilla-productos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .productos-oficiales,
+    .contacto-pedido {
+        padding: 36px 18px;
+    }
+
+    .merch-toolbar {
+        gap: 18px;
+    }
+
+    .boton-cesta-flotante {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rejilla-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .precio-comprar,
+    .cesta-inline-form,
+    .pedido-form {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .selector-cantidad {
+        max-width: 100%;
+    }
+
+    .cesta-item,
+    .pedido-item {
+        grid-template-columns: 1fr;
+    }
+
+    .cesta-item-total {
+        justify-self: flex-start;
+    }
+
+    .panel-cesta {
+        width: 100%;
+    }
+}
     display: inline-block;
     transition: background 0.2s;
 }
@@ -309,7 +686,9 @@ html[data-theme="dark"] .iconos-merchandising {
 }
 
 html[data-theme="dark"] .productos-oficiales {
-    background: #0b1120;
+    background:
+        radial-gradient(circle at top left, rgba(239, 68, 68, 0.12), transparent 28%),
+        linear-gradient(180deg, #08101d 0%, #0b1120 100%);
 }
 
 html[data-theme="dark"] .public-alert-ok {
@@ -330,6 +709,17 @@ html[data-theme="dark"] .merch-subtitulo {
     color: #cbd5e1;
 }
 
+html[data-theme="dark"] .boton-cesta-flotante {
+    background: #f8fafc;
+    color: #0f172a;
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.38);
+}
+
+html[data-theme="dark"] .boton-cesta-count {
+    background: #dc2626;
+    color: #fff;
+}
+
 html[data-theme="dark"] .tarjeta-producto {
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid #334155;
@@ -348,23 +738,46 @@ html[data-theme="dark"] .descripcion-producto {
     color: #cbd5e1;
 }
 
+html[data-theme="dark"] .merch-field {
+    color: #e5e7eb;
+}
+
 html[data-theme="dark"] .precio {
     color: #f87171;
 }
 
-html[data-theme="dark"] .selector-talla {
+html[data-theme="dark"] .selector-talla,
+html[data-theme="dark"] .selector-cantidad,
+html[data-theme="dark"] .pedido-field input,
+html[data-theme="dark"] .pedido-field textarea {
     background: #0f172a;
     border-color: #334155;
     color: #e2e8f0;
 }
 
-html[data-theme="dark"] .selector-talla:focus {
+html[data-theme="dark"] .selector-talla::placeholder,
+html[data-theme="dark"] .pedido-field textarea::placeholder,
+html[data-theme="dark"] .pedido-field input::placeholder {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .selector-talla:focus,
+html[data-theme="dark"] .selector-cantidad:focus,
+html[data-theme="dark"] .pedido-field input:focus,
+html[data-theme="dark"] .pedido-field textarea:focus {
     outline: none;
     border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
 }
 
 html[data-theme="dark"] .merch-sin-talla {
     color: #cbd5e1;
+}
+
+html[data-theme="dark"] .merch-sin-talla-box {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
 }
 
 html[data-theme="dark"] .boton-comprar {
@@ -391,18 +804,113 @@ html[data-theme="dark"] .merch-tallas-texto {
     color: #e5e7eb;
 }
 
+html[data-theme="dark"] .cesta-overlay {
+    background: rgba(2, 6, 23, 0.72);
+}
+
+html[data-theme="dark"] .panel-cesta {
+    background: #0f172a;
+    box-shadow: -18px 0 40px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .panel-cesta-header,
+html[data-theme="dark"] .panel-cesta-footer {
+    background: #111827;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .panel-cesta-header h3,
+html[data-theme="dark"] .cesta-item-info h4,
+html[data-theme="dark"] .pedido-card h2,
+html[data-theme="dark"] .pedido-summary h3,
+html[data-theme="dark"] .pedido-item strong {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .panel-cesta-close {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .cesta-item {
+    background: linear-gradient(180deg, #172033 0%, #0f172a 100%);
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .cesta-item-info p,
+html[data-theme="dark"] .cesta-vacia,
+html[data-theme="dark"] .pedido-card p,
+html[data-theme="dark"] .pedido-summary p,
+html[data-theme="dark"] .pedido-item span {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .cesta-update-button,
+html[data-theme="dark"] .pedido-submit {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: #fff;
+}
+
+html[data-theme="dark"] .cesta-remove-button {
+    background: rgba(127, 29, 29, 0.28);
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .cesta-item-total,
+html[data-theme="dark"] .cesta-resumen-linea strong,
+html[data-theme="dark"] .pedido-total strong {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .cesta-resumen-linea {
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .cesta-submit-link {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: #fff;
+}
+
+html[data-theme="dark"] .cesta-submit-link-disabled {
+    background: #334155;
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .cesta-vacia {
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .pedido-card,
+html[data-theme="dark"] .pedido-summary {
+    background: linear-gradient(180deg, #172033 0%, #0f172a 100%);
+    border-color: #334155;
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .pedido-field {
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .pedido-item {
+    background: #111827;
+}
+
+html[data-theme="dark"] .pedido-total {
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
 html[data-theme="dark"] .contacto-pedido {
-    background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
 }
 
 html[data-theme="dark"] .boton-contacto {
-    background: #111827;
-    color: #fca5a5;
-    border: 1px solid #374151;
+    background: #f8fafc;
+    color: #111827;
+    border: 1px solid #cbd5e1;
 }
 
 html[data-theme="dark"] .boton-contacto:hover {
-    background: #1f2937;
+    background: #e2e8f0;
 }
 
 html[data-theme="dark"] .productos-oficiales .pagination .page-link {

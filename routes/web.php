@@ -41,6 +41,10 @@
       ->middleware(['auth', 'role:admin,coach']);
   // Igual que la anterior, pero para jugadores.
 
+  // Muestra la ficha pública de un jugador visible del club.
+  Route::get('jugadores/{jugador}', [BasketController::class, 'jugadorDetalle'])
+      ->name('basket.jugadores.detalle');
+
   Route::get('tienda', [BasketController::class, 'tienda'])->name('basket.tienda');
   // Muestra la tienda o merchandising público.
 
@@ -104,10 +108,25 @@
   'noticia_detalle'])->name('noticias.detalle');
   // Muestra el detalle de una noticia usando slug.
 
-  Route::post('tienda/interes', [BasketController::class,
-  'enviarInteresMerchan'])->name('basket.tienda.interes');
-  // Procesa el formulario de interés de tienda.
-  // Es POST porque aquí el usuario envía datos.
+  // Añade un producto visible a la cesta guardada en sesión.
+  Route::post('tienda/cesta', [BasketController::class,
+  'anadirProductoCesta'])->name('basket.tienda.cesta.add');
+
+  // Cambia la cantidad de una línea ya presente en la cesta.
+  Route::patch('tienda/cesta/{itemKey}', [BasketController::class,
+  'actualizarProductoCesta'])->name('basket.tienda.cesta.update');
+
+  // Elimina una línea concreta de la cesta.
+  Route::delete('tienda/cesta/{itemKey}', [BasketController::class,
+  'eliminarProductoCesta'])->name('basket.tienda.cesta.remove');
+
+  // Muestra el resumen final y el formulario de solicitud del pedido.
+  Route::get('tienda/pedido', [BasketController::class,
+  'mostrarFormularioPedido'])->name('basket.tienda.pedido');
+
+  // Envía al club la solicitud de pedido con datos del cliente y la cesta.
+  Route::post('tienda/pedido', [BasketController::class,
+  'enviarPedidoMerchan'])->name('basket.tienda.pedido.enviar');
 
 
   // ======================================================

@@ -205,6 +205,13 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.partido-jornada-card:hover {
+    transform: translateY(-8px);
+    border-color: #cf1515;
+    box-shadow: 0 20px 34px rgba(15, 23, 42, 0.14);
 }
 
 .partido-jornada-top {
@@ -441,7 +448,14 @@ html[data-theme="dark"] .jornada-bloque-titulo {
 html[data-theme="dark"] .partido-jornada-card {
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     border-color: #334155;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+html[data-theme="dark"] .partido-jornada-card:hover {
+    border-color: #ef4444;
+    box-shadow: 0 20px 36px rgba(2, 6, 23, 0.62);
+}
+
 
 html[data-theme="dark"] .estado-partido.finalizado {
     background: #3f1418;
@@ -484,6 +498,7 @@ html[data-theme="dark"] .partido-lugar {
 html[data-theme="dark"] .partido-lugar i {
     color: #f87171;
 }
+
 
 html[data-theme="dark"] .partidos-vacio {
     background: #111827;
