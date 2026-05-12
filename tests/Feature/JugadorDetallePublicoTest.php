@@ -53,4 +53,38 @@ class JugadorDetallePublicoTest extends TestCase
 
         $response->assertNotFound();
     }
+
+    public function test_no_muestra_la_ficha_publica_de_un_jugador_de_equipo_visitante(): void
+    {
+        $equipo = Equipo::factory()->create([
+            'es_local' => false,
+            'oculto' => false,
+        ]);
+
+        $jugador = Jugador::factory()->create([
+            'equipo_id' => $equipo->id,
+            'oculto' => false,
+        ]);
+
+        $response = $this->get(route('basket.jugadores.detalle', $jugador));
+
+        $response->assertNotFound();
+    }
+
+    public function test_no_muestra_la_ficha_publica_de_un_jugador_de_equipo_oculto(): void
+    {
+        $equipo = Equipo::factory()->create([
+            'es_local' => true,
+            'oculto' => true,
+        ]);
+
+        $jugador = Jugador::factory()->create([
+            'equipo_id' => $equipo->id,
+            'oculto' => false,
+        ]);
+
+        $response = $this->get(route('basket.jugadores.detalle', $jugador));
+
+        $response->assertNotFound();
+    }
 }

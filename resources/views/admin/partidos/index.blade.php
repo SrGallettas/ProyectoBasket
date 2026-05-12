@@ -163,6 +163,10 @@
                             <i class="fas fa-pen"></i>
                         </a>
 
+                        <a href="{{ route('partidos.anotacion', $partido->id) }}" class="btn-accion apuntar" title="Apuntar estadísticas">
+                            <i class="fas fa-basketball"></i>
+                        </a>
+
                         <form action="{{ route('partidos.toggle-oculto', $partido->id) }}" method="POST">
                             @csrf
                             @method('PATCH')

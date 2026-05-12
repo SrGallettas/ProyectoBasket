@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la clasificación pública --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/clasificacion.css') }}" />
+<x-page-style file="clasificacion.css" />
 @endpush
 
 @use('Carbon\Carbon')

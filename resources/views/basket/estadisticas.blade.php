@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la página de estadísticas --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
+<x-page-style file="estadisticas.css" />
 @endpush
 
 @section('title', 'Estadísticas - Bellreguard CB')

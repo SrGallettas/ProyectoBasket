@@ -3,7 +3,7 @@
 
 {{-- CSS específico del listado de galerías --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
+<x-page-style file="galeria.css" />
 @endpush
 
 @section('title', 'Galería - Bellreguard CB')

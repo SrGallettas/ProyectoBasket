@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la portada --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/inicio.css') }}" />
+<x-page-style file="inicio.css" />
 @endpush
 
 @use('Carbon\Carbon')

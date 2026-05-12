@@ -3,7 +3,7 @@
 
 {{-- CSS específico del detalle de noticia --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
+<x-page-style file="noticias.css" />
 @endpush
 
 @section('title', $noticia->titulo . ' - Bellreguard Basket')
@@ -57,7 +57,7 @@
         </div>
 
         <div class="navegacion-final">
-            <a href="{{ route('noticias.index') }}" class="btn-regresar-lista">
+            <a href="{{ route('basket.noticias') }}" class="btn-regresar-lista">
                 <i class="fas fa-arrow-left"></i> Volver a todas las noticias
             </a>
         </div>

@@ -5,19 +5,14 @@ namespace App\Http\Controllers;
 // Modelo principal de este controlador.
 // Representa una clasificación o tabla de liga.
 use App\Models\Clasificacion;
-
 // Este modelo guarda una fila de clasificación por equipo y jornada.
 use App\Models\ClasificacionFila;
-
 // Equipo se usa para asociar clubes o plantillas a cada clasificación.
 use App\Models\Equipo;
-
 // Partido se usa para mostrar y recalcular resultados de una clasificación.
 use App\Models\Partido;
-
 // Request permite leer formularios y parámetros de la petición.
 use Illuminate\Http\Request;
-
 // DB se usa para agrupar operaciones críticas en transacciones.
 use Illuminate\Support\Facades\DB;
 
@@ -61,15 +56,15 @@ class ClasificacionController extends Controller
             ->when($search !== '', function ($query) use ($search) {
                 // Si hay búsqueda, se filtra por varios campos de texto.
                 $query->where(function ($subQuery) use ($search) {
-                    $subQuery->where('nombre', 'like', '%' . $search . '%')
-                        ->orWhere('categoria', 'like', '%' . $search . '%')
-                        ->orWhere('temporada', 'like', '%' . $search . '%');
+                    $subQuery->where('nombre', 'like', '%'.$search.'%')
+                        ->orWhere('categoria', 'like', '%'.$search.'%')
+                        ->orWhere('temporada', 'like', '%'.$search.'%');
                 });
             });
 
         // En texto usamos lower(...) para ordenar sin depender de mayúsculas.
         if (in_array($sortColumn, ['nombre', 'categoria', 'temporada'], true)) {
-            $clasificaciones->orderByRaw('LOWER(' . $sortColumn . ') ' . $direction);
+            $clasificaciones->orderByRaw('LOWER('.$sortColumn.') '.$direction);
         } else {
             $clasificaciones->orderBy($sortColumn, $direction);
         }
@@ -129,7 +124,7 @@ class ClasificacionController extends Controller
         DB::transaction(function () use ($request, $data) {
             // Si esta clasificación pasa a ser la activa,
             // primero desactivamos cualquier otra que lo estuviera.
-            if (!empty($data['activa'])) {
+            if (! empty($data['activa'])) {
                 Clasificacion::query()->update(['activa' => false]);
             }
 
@@ -251,9 +246,21 @@ class ClasificacionController extends Controller
         ]);
 
         // La transacción evita dejar media actualización aplicada.
-        DB::transaction(function () use ($request, $data, $clasificacion) {
+        $equiposOriginales = $clasificacion->equipos()->pluck('equipos.id')
+            ->map(static fn ($id) => (int) $id)
+            ->sort()
+            ->values()
+            ->all();
+        $equiposNuevos = collect($data['equipos'] ?? [])
+            ->map(static fn ($id) => (int) $id)
+            ->sort()
+            ->values()
+            ->all();
+        $equiposCambiados = $equiposOriginales !== $equiposNuevos;
+
+        DB::transaction(function () use ($request, $data, $clasificacion, $equiposCambiados) {
             // Si esta pasa a ser la activa, el resto deben desactivarse.
-            if (!empty($data['activa'])) {
+            if (! empty($data['activa'])) {
                 Clasificacion::where('id', '<>', $clasificacion->id)->update(['activa' => false]);
             }
 
@@ -267,6 +274,10 @@ class ClasificacionController extends Controller
 
             // Reemplazamos la lista de equipos por la selección actual.
             $clasificacion->equipos()->sync($data['equipos'] ?? []);
+
+            if ($equiposCambiados) {
+                $this->rebuildClasificacionRows($clasificacion);
+            }
         });
 
         return redirect()->route('clasificaciones.index')->with('mensaje', 'Clasificación actualizada correctamente.');
@@ -299,130 +310,141 @@ class ClasificacionController extends Controller
      */
     public function recalcular(Clasificacion $clasificacion)
     {
-        // Sacamos los IDs de equipos vinculados a esta clasificación.
-        $equipoIds = $clasificacion->equipos()->pluck('equipos.id')->map(static fn ($id) => (int) $id)->all();
-
-        // Si no hay equipos asociados, no tiene sentido recalcular.
-        if (empty($equipoIds)) {
+        if (! $this->rebuildClasificacionRows($clasificacion)) {
             return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', 'No hay equipos asignados a esta clasificación.');
         }
-
-        // Cargamos solo partidos de liga con jornada definida.
-        // También traemos estadísticas para poder leer los puntos finales.
-        $partidos = Partido::with('estadisticas')
-            ->where('clasificacion_id', $clasificacion->id)
-            ->where('tipo_partido', 'liga')
-            ->whereNotNull('jornada')
-            ->orderBy('jornada')
-            ->orderBy('fecha_hora')
-            ->get();
-
-        DB::transaction(function () use ($clasificacion, $equipoIds, $partidos) {
-            // Primero borramos cualquier cálculo antiguo de esta clasificación.
-            ClasificacionFila::where('clasificacion_id', $clasificacion->id)->delete();
-
-            // Este array guarda los acumulados que van creciendo jornada a jornada.
-            $acumulado = [];
-            foreach ($equipoIds as $equipoId) {
-                $acumulado[$equipoId] = [
-                    'pj' => 0,
-                    'pg' => 0,
-                    'pp' => 0,
-                    'pf' => 0,
-                    'pc' => 0,
-                    'pts' => 0,
-                ];
-            }
-
-            // Identificamos las jornadas únicas presentes en los partidos.
-            $jornadas = $partidos->pluck('jornada')
-                ->filter()
-                ->map(static fn ($jornada) => (int) $jornada)
-                ->unique()
-                ->sort()
-                ->values();
-
-            // Recorremos las jornadas en orden para que el acumulado tenga sentido.
-            foreach ($jornadas as $jornada) {
-                $partidosJornada = $partidos->where('jornada', $jornada);
-
-                foreach ($partidosJornada as $partido) {
-                    // Obtenemos los IDs real de local y visitante.
-                    $localId = (int) $partido->equipo_local_id;
-                    $visitanteId = (int) $partido->equipo_visitante_id;
-
-                    // Si algún equipo del partido no pertenece a esta clasificación,
-                    // el encuentro no debe afectar a esta tabla.
-                    if (!in_array($localId, $equipoIds, true) || !in_array($visitanteId, $equipoIds, true)) {
-                        continue;
-                    }
-
-                    // Buscamos las estadísticas finales de ambos equipos.
-                    $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $localId);
-                    $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $visitanteId);
-
-                    $puntosLocal = optional($statsLocal)->puntos_totales;
-                    $puntosVisitante = optional($statsVisitante)->puntos_totales;
-
-                    // Si el partido aún no tiene marcador final, se ignora.
-                    if ($puntosLocal === null || $puntosVisitante === null) {
-                        continue;
-                    }
-
-                    $puntosLocal = (int) $puntosLocal;
-                    $puntosVisitante = (int) $puntosVisitante;
-
-                    // Sumamos partidos jugados y puntos a favor/en contra.
-                    $acumulado[$localId]['pj']++;
-                    $acumulado[$visitanteId]['pj']++;
-                    $acumulado[$localId]['pf'] += $puntosLocal;
-                    $acumulado[$localId]['pc'] += $puntosVisitante;
-                    $acumulado[$visitanteId]['pf'] += $puntosVisitante;
-                    $acumulado[$visitanteId]['pc'] += $puntosLocal;
-
-                    // Reparto de victorias, derrotas y puntos de clasificación.
-                    if ($puntosLocal > $puntosVisitante) {
-                        $acumulado[$localId]['pg']++;
-                        $acumulado[$localId]['pts'] += 2;
-                        $acumulado[$visitanteId]['pp']++;
-                        $acumulado[$visitanteId]['pts'] += 1;
-                    } elseif ($puntosVisitante > $puntosLocal) {
-                        $acumulado[$visitanteId]['pg']++;
-                        $acumulado[$visitanteId]['pts'] += 2;
-                        $acumulado[$localId]['pp']++;
-                        $acumulado[$localId]['pts'] += 1;
-                    } else {
-                        $acumulado[$localId]['pts'] += 1;
-                        $acumulado[$visitanteId]['pts'] += 1;
-                    }
-                }
-
-                // En cada jornada guardamos una "foto" completa de la tabla acumulada.
-                $now = now();
-                $rows = [];
-                foreach ($equipoIds as $equipoId) {
-                    $rows[] = [
-                        'clasificacion_id' => $clasificacion->id,
-                        'equipo_id' => $equipoId,
-                        'jornada' => $jornada,
-                        'pj' => $acumulado[$equipoId]['pj'],
-                        'pg' => $acumulado[$equipoId]['pg'],
-                        'pp' => $acumulado[$equipoId]['pp'],
-                        'pf' => $acumulado[$equipoId]['pf'],
-                        'pc' => $acumulado[$equipoId]['pc'],
-                        'diff' => $acumulado[$equipoId]['pf'] - $acumulado[$equipoId]['pc'],
-                        'pts' => $acumulado[$equipoId]['pts'],
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ];
-                }
-
-                // Insertamos de golpe todas las filas de esa jornada.
-                ClasificacionFila::insert($rows);
-            }
-        });
 
         return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', 'Clasificación recalculada correctamente.');
     }
 
+    /*
+     * RECONSTRUIR FILAS DE CLASIFICACIÓN
+     *
+     * Devuelve false si la clasificación no tiene equipos asociados.
+     */
+    private function rebuildClasificacionRows(Clasificacion $clasificacion): bool
+    {
+        // Sacamos los IDs de equipos vinculados a esta clasificación.
+        $equipoIds = $clasificacion->equipos()->pluck('equipos.id')->map(static fn ($id) => (int) $id)->all();
+
+        if (empty($equipoIds)) {
+            ClasificacionFila::where('clasificacion_id', $clasificacion->id)->delete();
+
+            return false;
+        }
+
+        // Cargamos solo partidos de liga visibles en clasificación.
+        $partidos = Partido::with('estadisticas')
+            ->where('clasificacion_id', $clasificacion->id)
+            ->where('tipo_partido', 'liga')
+            ->whereNotNull('jornada')
+            ->where('oculto_en_clasificacion', false)
+            ->orderBy('jornada')
+            ->orderBy('fecha_hora')
+            ->get()
+            ->filter(function (Partido $partido) use ($equipoIds) {
+                return in_array((int) $partido->equipo_local_id, $equipoIds, true)
+                    && in_array((int) $partido->equipo_visitante_id, $equipoIds, true);
+            })
+            ->values();
+
+        // Primero borramos cualquier cálculo antiguo de esta clasificación.
+        ClasificacionFila::where('clasificacion_id', $clasificacion->id)->delete();
+
+        // Este array guarda los acumulados que van creciendo jornada a jornada.
+        $acumulado = [];
+        foreach ($equipoIds as $equipoId) {
+            $acumulado[$equipoId] = [
+                'pj' => 0,
+                'pg' => 0,
+                'pp' => 0,
+                'pf' => 0,
+                'pc' => 0,
+                'pts' => 0,
+            ];
+        }
+
+        // Identificamos las jornadas únicas presentes en los partidos.
+        $jornadas = $partidos->pluck('jornada')
+            ->filter()
+            ->map(static fn ($jornada) => (int) $jornada)
+            ->unique()
+            ->sort()
+            ->values();
+
+        // Recorremos las jornadas en orden para que el acumulado tenga sentido.
+        foreach ($jornadas as $jornada) {
+            $partidosJornada = $partidos->where('jornada', $jornada);
+
+            foreach ($partidosJornada as $partido) {
+                // Obtenemos los IDs real de local y visitante.
+                $localId = (int) $partido->equipo_local_id;
+                $visitanteId = (int) $partido->equipo_visitante_id;
+
+                // Buscamos las estadísticas finales de ambos equipos.
+                $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $localId);
+                $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $visitanteId);
+
+                $puntosLocal = optional($statsLocal)->puntos_totales;
+                $puntosVisitante = optional($statsVisitante)->puntos_totales;
+
+                // Si el partido aún no tiene marcador final, se ignora.
+                if ($puntosLocal === null || $puntosVisitante === null) {
+                    continue;
+                }
+
+                $puntosLocal = (int) $puntosLocal;
+                $puntosVisitante = (int) $puntosVisitante;
+
+                // Sumamos partidos jugados y puntos a favor/en contra.
+                $acumulado[$localId]['pj']++;
+                $acumulado[$visitanteId]['pj']++;
+                $acumulado[$localId]['pf'] += $puntosLocal;
+                $acumulado[$localId]['pc'] += $puntosVisitante;
+                $acumulado[$visitanteId]['pf'] += $puntosVisitante;
+                $acumulado[$visitanteId]['pc'] += $puntosLocal;
+
+                // Reparto de victorias, derrotas y puntos de clasificación.
+                if ($puntosLocal > $puntosVisitante) {
+                    $acumulado[$localId]['pg']++;
+                    $acumulado[$localId]['pts'] += 2;
+                    $acumulado[$visitanteId]['pp']++;
+                    $acumulado[$visitanteId]['pts'] += 1;
+                } elseif ($puntosVisitante > $puntosLocal) {
+                    $acumulado[$visitanteId]['pg']++;
+                    $acumulado[$visitanteId]['pts'] += 2;
+                    $acumulado[$localId]['pp']++;
+                    $acumulado[$localId]['pts'] += 1;
+                } else {
+                    $acumulado[$localId]['pts'] += 1;
+                    $acumulado[$visitanteId]['pts'] += 1;
+                }
+            }
+
+            // En cada jornada guardamos una "foto" completa de la tabla acumulada.
+            $now = now();
+            $rows = [];
+            foreach ($equipoIds as $equipoId) {
+                $rows[] = [
+                    'clasificacion_id' => $clasificacion->id,
+                    'equipo_id' => $equipoId,
+                    'jornada' => $jornada,
+                    'pj' => $acumulado[$equipoId]['pj'],
+                    'pg' => $acumulado[$equipoId]['pg'],
+                    'pp' => $acumulado[$equipoId]['pp'],
+                    'pf' => $acumulado[$equipoId]['pf'],
+                    'pc' => $acumulado[$equipoId]['pc'],
+                    'diff' => $acumulado[$equipoId]['pf'] - $acumulado[$equipoId]['pc'],
+                    'pts' => $acumulado[$equipoId]['pts'],
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+
+            // Insertamos de golpe todas las filas de esa jornada.
+            ClasificacionFila::insert($rows);
+        }
+
+        return true;
+    }
 }

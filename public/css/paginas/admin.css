@@ -258,9 +258,19 @@ body.admin-sidebar-collapsed .item-admin i {
     color: #ef6c00;
 }
 
+.btn-accion.apuntar {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
 .btn-accion.borrar {
     background: #ffebee;
     color: #c62828;
+}
+
+.btn-accion.apuntar:hover {
+    background: #4338ca;
+    color: white;
 }
 
 .btn-accion.editar:hover {
@@ -517,6 +527,416 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 14. MESA DE ANOTACION DE PARTIDOS */
+.admin-live-board {
+    display: grid;
+    gap: 24px;
+}
+
+.admin-live-board-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.admin-live-kicker {
+    margin: 0 0 6px;
+    color: #e60000;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.admin-live-board-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.02;
+}
+
+.admin-live-meta {
+    margin: 10px 0 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.admin-live-board-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.admin-live-primary-button,
+.admin-live-secondary-button,
+.admin-live-period-button,
+.admin-live-action-button {
+    border: none;
+    border-radius: 14px;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-live-primary-button,
+.admin-live-secondary-button {
+    padding: 12px 16px;
+}
+
+.admin-live-primary-button {
+    background: linear-gradient(135deg, #e60000 0%, #b01212 100%);
+    color: #fff;
+}
+
+.admin-live-secondary-button {
+    background: #111827;
+    color: #fff;
+}
+
+.admin-live-scoreboard {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 18px;
+    padding: 24px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    color: #fff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+}
+
+.admin-live-score-team {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+}
+
+.admin-live-score-team:last-child {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.admin-live-team-label {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.admin-live-score {
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 0.95;
+}
+
+.admin-live-score-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.admin-live-period-display {
+    padding: 12px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.admin-live-period-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.admin-live-period-button {
+    min-width: 56px;
+    padding: 11px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.admin-live-period-button.is-active {
+    background: #fff;
+    color: #111827;
+}
+
+.admin-live-main-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.admin-live-team-panel,
+.admin-live-history-card {
+    padding: 24px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+}
+
+.admin-live-team-header,
+.admin-live-history-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.admin-live-team-side {
+    display: inline-flex;
+    margin-bottom: 6px;
+    color: #b91c1c;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.admin-live-team-header h2,
+.admin-live-history-header h3 {
+    margin: 0;
+    color: #111827;
+}
+
+.admin-live-team-points {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #e60000;
+}
+
+.admin-live-quarter-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-live-quarter-chip {
+    padding: 12px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.admin-live-quarter-chip span {
+    display: block;
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.admin-live-quarter-chip strong {
+    color: #111827;
+}
+
+.admin-live-quarter-chip.is-active {
+    border-color: #fecaca;
+    background: #fff1f2;
+}
+
+.admin-live-action-group + .admin-live-action-group {
+    margin-top: 18px;
+}
+
+.admin-live-action-group h3 {
+    margin: 0 0 12px;
+    color: #111827;
+    font-size: 1rem;
+}
+
+.admin-live-action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.admin-live-action-grid form {
+    margin: 0;
+}
+
+.admin-live-action-button {
+    width: 100%;
+    min-height: 56px;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e5e7eb;
+    color: #1f2937;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-live-action-button:hover {
+    transform: translateY(-1px);
+    border-color: #fca5a5;
+    box-shadow: 0 12px 22px rgba(127, 29, 29, 0.08);
+}
+
+.admin-live-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.admin-live-stat-card {
+    padding: 12px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+}
+
+.admin-live-stat-card span {
+    display: block;
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-live-stat-card strong {
+    color: #111827;
+    font-size: 1.1rem;
+}
+
+.admin-live-history-header span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.admin-live-history-list {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-live-history-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+}
+
+.admin-live-history-item strong,
+.admin-live-history-item span,
+.admin-live-history-item em {
+    font-size: 14px;
+}
+
+.admin-live-history-item strong {
+    color: #b91c1c;
+}
+
+.admin-live-history-item span {
+    color: #111827;
+    font-weight: 700;
+}
+
+.admin-live-history-item em,
+.admin-live-history-empty {
+    color: #6b7280;
+}
+
+html[data-theme="dark"] .admin-live-board-header h1,
+html[data-theme="dark"] .admin-live-team-header h2,
+html[data-theme="dark"] .admin-live-history-header h3,
+html[data-theme="dark"] .admin-live-action-group h3,
+html[data-theme="dark"] .admin-live-quarter-chip strong,
+html[data-theme="dark"] .admin-live-stat-card strong,
+html[data-theme="dark"] .admin-live-history-item span {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .admin-live-meta,
+html[data-theme="dark"] .admin-live-history-header span,
+html[data-theme="dark"] .admin-live-history-item em,
+html[data-theme="dark"] .admin-live-history-empty,
+html[data-theme="dark"] .admin-live-quarter-chip span,
+html[data-theme="dark"] .admin-live-stat-card span {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .admin-live-team-panel,
+html[data-theme="dark"] .admin-live-history-card {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+html[data-theme="dark"] .admin-live-quarter-chip,
+html[data-theme="dark"] .admin-live-stat-card,
+html[data-theme="dark"] .admin-live-history-item,
+html[data-theme="dark"] .admin-live-action-button {
+    background: #111827;
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .admin-live-quarter-chip.is-active {
+    background: rgba(127, 29, 29, 0.35);
+    border-color: #ef4444;
+}
+
+html[data-theme="dark"] .admin-live-action-button:hover {
+    border-color: #ef4444;
+    box-shadow: 0 16px 24px rgba(2, 6, 23, 0.35);
+}
+
+html[data-theme="dark"] .admin-live-secondary-button {
+    background: #334155;
+}
+
+@media (max-width: 1100px) {
+    .admin-live-main-grid,
+    .admin-live-scoreboard {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-live-score-team:last-child {
+        align-items: flex-start;
+        text-align: left;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-live-board-header {
+        flex-direction: column;
+    }
+
+    .admin-live-board-actions,
+    .admin-live-board-actions form {
+        width: 100%;
+    }
+
+    .admin-live-primary-button,
+    .admin-live-secondary-button {
+        width: 100%;
+    }
+
+    .admin-live-main-grid,
+    .admin-live-action-grid,
+    .admin-live-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-live-quarter-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .admin-live-history-item {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Colores más vivos */

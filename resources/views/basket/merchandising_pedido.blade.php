@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la tienda pública --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/merchandising.css') }}" />
+<x-page-style file="merchandising.css" />
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
@@ -22,7 +22,7 @@
 {{-- Contenido principal del formulario y resumen --}}
 <section class="productos-oficiales">
     @if($errors->any())
-        <div class="public-alert-ok" role="alert">
+        <div class="public-alert-error" role="alert">
             {{ $errors->first() }}
         </div>
     @endif

@@ -37,8 +37,19 @@ class Galeria extends Model
         return $this->hasMany(ImagenGaleria::class)->orderBy('id');
     }
 
+    public function portadaImagen()
+    {
+        return $this->hasOne(ImagenGaleria::class)
+            ->orderByDesc('es_principal')
+            ->orderBy('id');
+    }
+
     public function getPortadaAttribute(): ?ImagenGaleria
     {
+        if ($this->relationLoaded('portadaImagen')) {
+            return $this->getRelation('portadaImagen');
+        }
+
         return $this->imagenes->firstWhere('es_principal', true) ?? $this->imagenes->first();
     }
 }

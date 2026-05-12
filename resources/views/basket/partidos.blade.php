@@ -3,7 +3,7 @@
 
 {{-- CSS específico del calendario público --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/partidos.css') }}" />
+<x-page-style file="partidos.css" />
 @endpush
 
 {{-- IMPORTAMOS LA LIBRERÍA CARBON --}}

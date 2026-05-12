@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la página de equipos --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/equipo.css') }}" />
+<x-page-style file="equipo.css" />
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}

@@ -1,258 +1,190 @@
 <?php
 
-  use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClasificacionController;
+use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\GaleriaController;
+use App\Http\Controllers\JugadorController;
+use App\Http\Controllers\MerchandisingController;
+use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\PartidoAnotacionController;
+use App\Http\Controllers\PartidoController;
+use App\Http\Controllers\Public\ClasificacionController as PublicClasificacionController;
+use App\Http\Controllers\Public\EquipoController as PublicEquipoController;
+use App\Http\Controllers\Public\GaleriaController as PublicGaleriaController;
+use App\Http\Controllers\Public\HomeController as PublicHomeController;
+use App\Http\Controllers\Public\NoticiaController as PublicNoticiaController;
+use App\Http\Controllers\Public\PartidoController as PublicPartidoController;
+use App\Http\Controllers\Public\TiendaController as PublicTiendaController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
-  // Importamos los controladores.
-  // Un controlador es la clase que se encarga de responder cuando el usuario entra a una ruta.
-  use App\Http\Controllers\EquipoController;
-  use App\Http\Controllers\JugadorController;
-  use App\Http\Controllers\AuthController;
-  use App\Http\Controllers\BasketController;
-  use App\Http\Controllers\NoticiaController;
-  use App\Http\Controllers\MerchandisingController;
-  use App\Http\Controllers\PartidoController;
-  use App\Http\Controllers\GaleriaController;
-  use App\Http\Controllers\ClasificacionController;
-  use App\Http\Controllers\UserController;
+/*
+|--------------------------------------------------------------------------
+| Rutas públicas
+|--------------------------------------------------------------------------
+*/
 
+Route::get('/', [PublicHomeController::class, 'inicio'])->name('basket.inicio');
+Route::get('contacto', [PublicHomeController::class, 'contacto'])->name('basket.contacto');
 
-  // ======================================================
-  // 1. RUTAS PUBLICAS
-  // ======================================================
-  // Son las páginas que puede ver cualquier visitante.
-  // En este proyecto casi toda la parte pública la controla BasketController.
+Route::get('equipo', [PublicEquipoController::class, 'equipo'])->name('basket.equipo');
+Route::get('jugadores/{jugador}', [PublicEquipoController::class, 'jugadorDetalle'])
+    ->name('basket.jugadores.detalle');
+Route::patch('equipo/{equipo}/oculto', [PublicEquipoController::class, 'toggleOcultoEquipo'])
+    ->name('basket.equipo.toggle-oculto')
+    ->middleware(['auth', 'role:admin,coach']);
+Route::patch('jugadores/{jugador}/oculto', [PublicEquipoController::class, 'toggleOcultoJugador'])
+    ->name('basket.jugadores.toggle-oculto')
+    ->middleware(['auth', 'role:admin,coach']);
 
-  Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
-  // Cuando alguien entra en "/" se carga la portada de la web.
+Route::get('partidos', [PublicPartidoController::class, 'partidos'])->name('basket.partidos');
+Route::get('partidos/{id}', [PublicPartidoController::class, 'partidoDetalle'])
+    ->name('basket.partidos.detalle');
+Route::patch('partidos/{partido}/oculto', [PublicPartidoController::class, 'toggleOcultoPartido'])
+    ->name('basket.partidos.toggle-oculto')
+    ->middleware(['auth', 'role:admin,coach']);
 
-  Route::get('equipo', [BasketController::class, 'equipo'])->name('basket.equipo');
-  // Muestra la página pública del equipo y los jugadores.
+Route::get('clasificacion', [PublicClasificacionController::class, 'clasificacion'])
+    ->name('basket.clasificacion');
+Route::get('estadisticas', [PublicClasificacionController::class, 'estadisticas'])
+    ->name('basket.estadisticas');
 
-  Route::patch('equipo/{equipo}/oculto', [BasketController::class, 'toggleOcultoEquipo'])
-      ->name('basket.equipo.toggle-oculto')
-      ->middleware(['auth', 'role:admin,coach']);
-  // Cambia el valor "oculto" de un equipo.
-  // {equipo} será el id o modelo del equipo.
-  // Solo pueden hacerlo usuarios logueados con rol admin o coach.
+Route::get('galeria', [PublicGaleriaController::class, 'galeria'])->name('basket.galeria');
+Route::get('galeria/{slug}', [PublicGaleriaController::class, 'galeriaDetalle'])
+    ->name('basket.galeria.detalle');
+Route::patch('galeria/{galeria}/oculto', [PublicGaleriaController::class, 'toggleOcultoGaleria'])
+    ->name('basket.galeria.toggle-oculto')
+    ->middleware(['auth', 'role:admin,editor']);
 
-  Route::patch('jugadores/{jugador}/oculto', [BasketController::class,
-  'toggleOcultoJugador'])
-      ->name('basket.jugadores.toggle-oculto')
-      ->middleware(['auth', 'role:admin,coach']);
-  // Igual que la anterior, pero para jugadores.
+Route::get('noticia', [PublicNoticiaController::class, 'noticia'])->name('basket.noticias');
+Route::get('noticias/{slug}', [PublicNoticiaController::class, 'noticia_detalle'])
+    ->name('noticias.detalle');
+Route::patch('noticia/{noticia}/oculto', [PublicNoticiaController::class, 'toggleOcultoNoticia'])
+    ->name('basket.noticias.toggle-oculto')
+    ->middleware(['auth', 'role:admin,editor']);
 
-  // Muestra la ficha pública de un jugador visible del club.
-  Route::get('jugadores/{jugador}', [BasketController::class, 'jugadorDetalle'])
-      ->name('basket.jugadores.detalle');
+Route::get('tienda', [PublicTiendaController::class, 'tienda'])->name('basket.tienda');
+Route::post('tienda/cesta', [PublicTiendaController::class, 'anadirProductoCesta'])
+    ->name('basket.tienda.cesta.add');
+Route::patch('tienda/cesta/{itemKey}', [PublicTiendaController::class, 'actualizarProductoCesta'])
+    ->name('basket.tienda.cesta.update');
+Route::delete('tienda/cesta/{itemKey}', [PublicTiendaController::class, 'eliminarProductoCesta'])
+    ->name('basket.tienda.cesta.remove');
+Route::get('tienda/pedido', [PublicTiendaController::class, 'mostrarFormularioPedido'])
+    ->name('basket.tienda.pedido');
+Route::post('tienda/pedido', [PublicTiendaController::class, 'enviarPedidoMerchan'])
+    ->name('basket.tienda.pedido.enviar');
+Route::patch('tienda/{merchandising}/oculto', [PublicTiendaController::class, 'toggleOcultoMerchandising'])
+    ->name('basket.tienda.toggle-oculto')
+    ->middleware(['auth', 'role:admin,editor']);
 
-  Route::get('tienda', [BasketController::class, 'tienda'])->name('basket.tienda');
-  // Muestra la tienda o merchandising público.
+/*
+|--------------------------------------------------------------------------
+| Autenticación
+|--------------------------------------------------------------------------
+*/
 
-  Route::patch('tienda/{merchandising}/oculto', [BasketController::class,
-  'toggleOcultoMerchandising'])
-      ->name('basket.tienda.toggle-oculto')
-      ->middleware(['auth', 'role:admin,editor']);
-  // Oculta o muestra un producto de merchandising.
-  // Solo admin o editor.
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+});
 
-  Route::get('clasificacion', [BasketController::class,
-  'clasificacion'])->name('basket.clasificacion');
-  // Muestra la clasificación pública.
+Route::post('logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
 
-  Route::get('estadisticas', [BasketController::class,
-  'estadisticas'])->name('basket.estadisticas');
-  // Muestra estadísticas públicas.
+/*
+|--------------------------------------------------------------------------
+| Dashboard admin compartido
+|--------------------------------------------------------------------------
+*/
 
-  Route::get('partidos', [BasketController::class, 'partidos'])->name('basket.partidos');
-  // Muestra el listado público de partidos.
+Route::middleware(['auth', 'role:admin,coach,editor'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+    });
 
-  Route::get('partidos/{id}', [BasketController::class,
-  'partidoDetalle'])->name('basket.partidos.detalle');
-  // Muestra el detalle de un partido concreto.
-  // Aquí {id} es el identificador del partido.
+/*
+|--------------------------------------------------------------------------
+| Admin y coach
+|--------------------------------------------------------------------------
+*/
 
-  Route::patch('partidos/{partido}/oculto', [BasketController::class,
-  'toggleOcultoPartido'])
-      ->name('basket.partidos.toggle-oculto')
-      ->middleware(['auth', 'role:admin,coach']);
-  // Oculta o muestra un partido en la web pública.
+Route::middleware(['auth', 'role:admin,coach'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::middleware('role:admin')->group(function () {
+            Route::resource('clasificaciones', ClasificacionController::class)
+                ->parameters(['clasificaciones' => 'clasificacion'])
+                ->except(['index', 'show']);
 
-  Route::get('galeria', [BasketController::class, 'galeria'])->name('basket.galeria');
-  // Muestra el listado público de galerías.
+            Route::post('clasificaciones/{clasificacion}/recalcular', [ClasificacionController::class, 'recalcular'])
+                ->name('clasificaciones.recalcular');
+        });
 
-  Route::patch('galeria/{galeria}/oculto', [BasketController::class,
-  'toggleOcultoGaleria'])
-      ->name('basket.galeria.toggle-oculto')
-      ->middleware(['auth', 'role:admin,editor']);
-  // Oculta o muestra una galería.
+        Route::resource('equipos', EquipoController::class);
+        Route::patch('equipos/{equipo}/oculto', [EquipoController::class, 'toggleOculto'])
+            ->name('equipos.toggle-oculto');
 
-  Route::get('galeria/{slug}', [BasketController::class,
-  'galeriaDetalle'])->name('basket.galeria.detalle');
-  // Muestra el detalle de una galería concreta.
-  // Aquí no usa id, usa slug.
-  // Ejemplo: /galeria/torneo-infantil-2026
+        Route::resource('jugadores', JugadorController::class);
+        Route::patch('jugadores/{jugador}/oculto', [JugadorController::class, 'toggleOculto'])
+            ->name('jugadores.toggle-oculto');
 
-  Route::get('contacto', [BasketController::class, 'contacto'])->name('basket.contacto');
-  // Muestra la página de contacto.
+        Route::resource('partidos', PartidoController::class);
+        Route::get('partidos/{partido}/anotacion', [PartidoAnotacionController::class, 'anotacion'])
+            ->name('partidos.anotacion');
+        Route::post('partidos/{partido}/anotacion/periodo', [PartidoAnotacionController::class, 'cambiarPeriodoAnotacion'])
+            ->name('partidos.anotacion.periodo');
+        Route::post('partidos/{partido}/anotacion/accion', [PartidoAnotacionController::class, 'registrarAccionAnotacion'])
+            ->name('partidos.anotacion.accion');
+        Route::post('partidos/{partido}/anotacion/deshacer', [PartidoAnotacionController::class, 'deshacerAccionAnotacion'])
+            ->name('partidos.anotacion.deshacer');
+        Route::post('partidos/{partido}/anotacion/confirmar', [PartidoAnotacionController::class, 'confirmarAnotacion'])
+            ->name('partidos.anotacion.confirmar');
+        Route::patch('partidos/{partido}/oculto', [PartidoController::class, 'toggleOculto'])
+            ->name('partidos.toggle-oculto');
+        Route::patch('partidos/{partido}/oculto-clasificacion', [PartidoController::class, 'toggleOcultoClasificacion'])
+            ->name('partidos.toggle-oculto-clasificacion');
 
-  Route::get('noticia', [BasketController::class, 'noticia'])->name('basket.noticias');
-  // Muestra el listado público de noticias.
+        Route::resource('clasificaciones', ClasificacionController::class)
+            ->parameters(['clasificaciones' => 'clasificacion'])
+            ->only(['index', 'show']);
+    });
 
-  Route::patch('noticia/{noticia}/oculto', [BasketController::class,
-  'toggleOcultoNoticia'])
-      ->name('basket.noticias.toggle-oculto')
-      ->middleware(['auth', 'role:admin,editor']);
-  // Oculta o muestra una noticia.
+/*
+|--------------------------------------------------------------------------
+| Solo admin
+|--------------------------------------------------------------------------
+*/
 
-  Route::get('/noticias/{slug}', [BasketController::class,
-  'noticia_detalle'])->name('noticias.detalle');
-  // Muestra el detalle de una noticia usando slug.
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::resource('usuarios', UserController::class)->except(['show']);
+    });
 
-  // Añade un producto visible a la cesta guardada en sesión.
-  Route::post('tienda/cesta', [BasketController::class,
-  'anadirProductoCesta'])->name('basket.tienda.cesta.add');
+/*
+|--------------------------------------------------------------------------
+| Admin y editor
+|--------------------------------------------------------------------------
+*/
 
-  // Cambia la cantidad de una línea ya presente en la cesta.
-  Route::patch('tienda/cesta/{itemKey}', [BasketController::class,
-  'actualizarProductoCesta'])->name('basket.tienda.cesta.update');
+Route::middleware(['auth', 'role:admin,editor'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::resource('noticias', NoticiaController::class);
+        Route::patch('noticias/{noticia}/oculto', [NoticiaController::class, 'toggleOculto'])
+            ->name('noticias.toggle-oculto');
 
-  // Elimina una línea concreta de la cesta.
-  Route::delete('tienda/cesta/{itemKey}', [BasketController::class,
-  'eliminarProductoCesta'])->name('basket.tienda.cesta.remove');
+        Route::resource('merchandising', MerchandisingController::class);
+        Route::patch('merchandising/{merchandising}/oculto', [MerchandisingController::class, 'toggleOculto'])
+            ->name('merchandising.toggle-oculto');
 
-  // Muestra el resumen final y el formulario de solicitud del pedido.
-  Route::get('tienda/pedido', [BasketController::class,
-  'mostrarFormularioPedido'])->name('basket.tienda.pedido');
-
-  // Envía al club la solicitud de pedido con datos del cliente y la cesta.
-  Route::post('tienda/pedido', [BasketController::class,
-  'enviarPedidoMerchan'])->name('basket.tienda.pedido.enviar');
-
-
-  // ======================================================
-  // 2. AUTENTICACION
-  // ======================================================
-  // Aquí está el login y logout.
-
-  Route::middleware(['guest'])->group(function () {
-      Route::get('login', [AuthController::class, 'showLogin'])->name('login');
-      // Muestra el formulario de login.
-      // "guest" significa: solo si NO estás logueado.
-
-      Route::post('login', [AuthController::class, 'login']);
-      // Procesa el envío del login.
-  });
-
-  Route::post('logout', [AuthController::class,
-  'logout'])->name('logout')->middleware('auth');
-  // Cierra sesión.
-  // Solo puede hacerlo alguien autenticado.
-
-
-  // ======================================================
-  // 3. PANEL DE ADMINISTRACION
-  // ======================================================
-  // Todo lo que empieza por /admin pertenece al panel interno.
-  // Además, aquí se usan middlewares para controlar acceso por roles.
-
-  Route::middleware(['auth', 'role:admin,coach,editor'])->prefix('admin')->group(function
-  () {
-      Route::get('/', function () {
-          return view('admin.dashboard');
-      })->name('dashboard');
-  });
-  // Dashboard principal del panel.
-  // Puede entrar cualquier usuario logueado que tenga rol admin, coach o editor.
-
-
-  // ======================================================
-  // 4. RUTAS DE ADMIN PARA ADMIN Y COACH
-  // ======================================================
-
-  Route::middleware(['auth', 'role:admin,coach'])->prefix('admin')->group(function () {
-
-      Route::middleware(['role:admin'])->group(function () {
-          // Estas rutas van antes que "show" para que "/create" no choque
-          // con el comodín "/{clasificacion}".
-          Route::resource('clasificaciones', ClasificacionController::class)
-              ->parameters(['clasificaciones' => 'clasificacion'])
-              ->except(['index', 'show']);
-          // Aquí el admin sí puede crear, actualizar y borrar clasificaciones.
-
-          Route::post('clasificaciones/{clasificacion}/recalcular',
-      [ClasificacionController::class, 'recalcular'])->name('clasificaciones.recalcular');
-          // Recalcula la clasificación usando los resultados de partidos.
-      });
-
-      Route::resource("equipos", EquipoController::class);
-      // Crea automáticamente las rutas CRUD de equipos:
-      // index, create, store, show, edit, update, destroy
-
-      Route::patch('equipos/{equipo}/oculto', [EquipoController::class,
-  'toggleOculto'])->name('equipos.toggle-oculto');
-      // Oculta o muestra equipos desde el panel admin.
-
-      Route::resource("jugadores", JugadorController::class);
-      // CRUD de jugadores.
-
-      Route::patch('jugadores/{jugador}/oculto', [JugadorController::class,
-  'toggleOculto'])->name('jugadores.toggle-oculto');
-      // Oculta o muestra jugadores desde el panel admin.
-
-      Route::resource('partidos', PartidoController::class);
-      // CRUD de partidos.
-
-      Route::patch('partidos/{partido}/oculto', [PartidoController::class,
-  'toggleOculto'])->name('partidos.toggle-oculto');
-      // Oculta o muestra partidos en la web pública desde el admin.
-
-      Route::patch('partidos/{partido}/oculto-clasificacion', [PartidoController::class,
-  'toggleOcultoClasificacion'])->name('partidos.toggle-oculto-clasificacion');
-      // Oculta o muestra un partido dentro de la clasificación pública.
-
-      Route::resource('clasificaciones', ClasificacionController::class)
-          ->parameters(['clasificaciones' => 'clasificacion'])
-          ->only(['index', 'show']);
-      // Admin y coach aquí solo pueden listar y ver clasificaciones.
-      // No crear, editar ni borrar.
-  });
-
-
-  // ======================================================
-  // 5. RUTAS DE ADMIN SOLO PARA ADMIN
-  // ======================================================
-  Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-
-      Route::resource("usuarios", UserController::class)->except(['show']);
-      // CRUD de usuarios.
-      // "except(['show'])" significa que no existe la ruta para ver un usuario en detalle.
-  });
-
-
-  // ======================================================
-  // 6. RUTAS DE ADMIN PARA ADMIN Y EDITOR
-  // ======================================================
-
-  Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->group(function () {
-
-      Route::resource("noticias", NoticiaController::class);
-      // CRUD de noticias.
-
-      Route::resource("merchandising", MerchandisingController::class);
-      // CRUD de productos de tienda.
-
-      Route::patch('noticias/{noticia}/oculto', [NoticiaController::class,
-  'toggleOculto'])->name('noticias.toggle-oculto');
-      // Oculta o muestra noticias.
-
-      Route::patch('merchandising/{merchandising}/oculto', [MerchandisingController::class,
-  'toggleOculto'])->name('merchandising.toggle-oculto');
-      // Oculta o muestra productos.
-
-      Route::resource('galerias', GaleriaController::class);
-      // CRUD de galerías.
-
-      Route::patch('galerias/{galeria}/oculto', [GaleriaController::class,
-  'toggleOculto'])->name('galerias.toggle-oculto');
-      // Oculta o muestra galerías.
-  });
+        Route::resource('galerias', GaleriaController::class);
+        Route::patch('galerias/{galeria}/oculto', [GaleriaController::class, 'toggleOculto'])
+            ->name('galerias.toggle-oculto');
+    });

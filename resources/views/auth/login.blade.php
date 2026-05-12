@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/login.css') }}" />
+<x-page-style file="login.css" />
 @endpush
 
 @section('title', 'Acceso - Bellreguard CB')

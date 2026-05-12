@@ -3,7 +3,7 @@
 
 {{-- CSS específico del listado de noticias --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/noticias.css') }}" />
+<x-page-style file="noticias.css" />
 @endpush
 
 @section('title', 'Noticias - Bellreguard Basket')

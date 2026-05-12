@@ -3,7 +3,7 @@
 
 {{-- CSS específico del detalle de galería --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/galeria.css') }}" />
+<x-page-style file="galeria.css" />
 @endpush
 
 @section('title', $galeria->titulo . ' - Bellreguard CB')

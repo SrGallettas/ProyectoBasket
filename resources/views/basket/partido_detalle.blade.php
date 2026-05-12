@@ -3,7 +3,7 @@
 
 {{-- CSS reutilizado para la parte visual de estadísticas --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/estadisticas.css') }}" />
+<x-page-style file="estadisticas.css" />
 @endpush
 
 @section('title', 'Detalle Partido - Bellreguard CB')

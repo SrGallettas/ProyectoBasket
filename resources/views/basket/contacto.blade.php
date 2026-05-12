@@ -3,7 +3,7 @@
 
 {{-- CSS específico de la página de contacto --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/paginas/contacto.css') }}" />
+<x-page-style file="contacto.css" />
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}

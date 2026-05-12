@@ -48,7 +48,7 @@
                     <div class="campo-ficha">
                         <label>Tallas Disponibles</label>
                         <div class="contenedor-checkboxes">
-                            @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica'] as $talla)
+                            @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica', 'Sin talla'] as $talla)
                                 <label>
                                     <input type="checkbox" name="talla[]" value="{{ $talla }}" 
                                     {{ in_array($talla, old('talla', $tallasSeleccionadas)) ? 'checked' : '' }}> 
