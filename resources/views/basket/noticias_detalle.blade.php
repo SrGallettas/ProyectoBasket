@@ -59,11 +59,7 @@
 
         <div class="navegacion-final">
             <a href="{{ route('basket.noticias') }}" class="btn-regresar-lista">
-<<<<<<< HEAD
-                <i class="fas fa-arrow-left"></i> Volver a todas las noticias
-=======
                 <i class="fas fa-arrow-left"></i> {{ __('public.news_detail.back') }}
->>>>>>> e0ab8cf (VERSION VALENCIANO)
             </a>
         </div>
     </footer>

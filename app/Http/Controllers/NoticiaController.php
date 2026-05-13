@@ -33,70 +33,7 @@ class NoticiaController extends Controller
 
     public function store(StoreNoticiaRequest $request)
     {
-<<<<<<< HEAD
         $this->writeService->create($request->validated());
-=======
-        $request->validate([
-            'titulo'         => 'required|string|min:5|max:255',
-            'subtitulo'      => 'required|string|max:500',
-            'contenido'      => 'required|string',
-            'autor'          => 'required|string|max:100',
-            'imagen_noticia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'oculto'         => 'nullable|boolean',
-        ], [
-            'titulo.required'         => __('admin.news.validation.title_required'),
-            'titulo.min'              => __('admin.news.validation.title_min'),
-            'subtitulo.required'      => __('admin.news.validation.subtitle_required'),
-            'contenido.required'      => __('admin.news.validation.content_required'),
-            'autor.required'          => __('admin.news.validation.author_required'),
-            'imagen_noticia.image'    => __('admin.news.validation.image'),
-            'imagen_noticia.mimes'    => __('admin.news.validation.image_mimes'),
-            'imagen_noticia.max'      => __('admin.news.validation.image_max'),
-        ]);
-
-        // Creamos una instancia vacía del modelo.
-        $noticia = new Noticia();
-
-        // Asignamos los datos básicos que llegan desde el formulario.
-        $noticia->titulo = $request->titulo;
-        $noticia->subtitulo = $request->subtitulo;
-        $noticia->contenido = $request->contenido;
-        $noticia->autor = $request->autor;
-        $noticia->imagen_noticia = null;
-
-        // Campo booleano para decidir si la noticia se ve o no en la web pública.
-        $noticia->oculto = $request->boolean('oculto');
-
-        // Generamos un slug a partir del título.
-        // Si ya existe, añadimos un número al final para que sea único.
-        $slugBase = Str::slug($request->titulo);
-        $slug = $slugBase;
-        $contador = 1;
-
-        // Comprobamos si ya existe ese slug y añadimos un número si es necesario.
-        while (Noticia::where('slug', $slug)->exists()) {
-            $slug = $slugBase . '-' . $contador;
-            $contador++;
-        }
-
-        $noticia->slug = $slug;
-
-        // Si el usuario ha subido una imagen, la guardamos en disco.
-        if ($request->hasFile('imagen_noticia')) {
-            $imagen = $request->file('imagen_noticia');
-
-            // Se genera un nombre único con time() para evitar nombres repetidos.
-            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
-
-            // Se guarda en storage/app/public/noticias.
-            $imagen->storeAs('noticias', $nombreImagen, 'public');
-
-            // En la base de datos guardamos solo el nombre del archivo.
-            $noticia->imagen_noticia = $nombreImagen;
-        }
-
-        $noticia->save();
->>>>>>> e0ab8cf (VERSION VALENCIANO)
 
         return redirect()->route('noticias.index')->with('mensaje', 'Noticia creada correctamente');
     }
@@ -110,28 +47,6 @@ class NoticiaController extends Controller
 
     public function update(UpdateNoticiaRequest $request, string $id)
     {
-<<<<<<< HEAD
-=======
-        $request->validate([
-            'titulo'         => 'required|string|min:5|max:255',
-            'subtitulo'      => 'required|string|max:500',
-            'contenido'      => 'required|string',
-            'autor'          => 'required|string|max:100',
-            'imagen_noticia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'oculto'         => 'nullable|boolean',
-        ], [
-            'titulo.required' => __('admin.news.validation.title_required'),
-            'titulo.min'      => __('admin.news.validation.title_min'),
-            'subtitulo.required' => __('admin.news.validation.subtitle_required'),
-            'contenido.required' => __('admin.news.validation.content_required'),
-            'autor.required' => __('admin.news.validation.author_required'),
-            'imagen_noticia.image' => __('admin.news.validation.image'),
-            'imagen_noticia.mimes' => __('admin.news.validation.image_mimes'),
-            'imagen_noticia.max'   => __('admin.news.validation.image_max'),
-        ]);
-
-        // Buscamos la noticia actual.
->>>>>>> e0ab8cf (VERSION VALENCIANO)
         $noticia = Noticia::findOrFail($id);
         $this->writeService->update($noticia, $request->validated());
 

@@ -48,11 +48,7 @@
                     <div class="campo-ficha">
                         <label>{{ __('admin.store.fields.available_sizes') }}</label>
                         <div class="contenedor-checkboxes">
-<<<<<<< HEAD
                             @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica', 'Sin talla'] as $talla)
-=======
-                            @foreach(['XS', 'S', 'M', 'L', 'XL', 'Unica', 'Sin Talla'] as $talla)
->>>>>>> e0ab8cf (VERSION VALENCIANO)
                                 <label>
                                     <input type="checkbox" name="talla[]" value="{{ $talla }}" 
                                     {{ in_array($talla, old('talla', $tallasSeleccionadas)) ? 'checked' : '' }}> 

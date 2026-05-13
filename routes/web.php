@@ -38,25 +38,20 @@ Route::patch('jugadores/{jugador}/oculto', [PublicEquipoController::class, 'togg
     ->name('basket.jugadores.toggle-oculto')
     ->middleware(['auth', 'role:admin,coach']);
 
-<<<<<<< HEAD
 Route::get('partidos', [PublicPartidoController::class, 'partidos'])->name('basket.partidos');
 Route::get('partidos/{id}', [PublicPartidoController::class, 'partidoDetalle'])
     ->name('basket.partidos.detalle');
 Route::patch('partidos/{partido}/oculto', [PublicPartidoController::class, 'toggleOcultoPartido'])
     ->name('basket.partidos.toggle-oculto')
     ->middleware(['auth', 'role:admin,coach']);
-=======
-  Route::get('idioma/{locale}', function (string $locale) {
-      abort_unless(in_array($locale, ['es', 'val'], true), 404);
 
-      session(['locale' => $locale]);
+Route::get('idioma/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, ['es', 'val'], true), 404);
 
-      return redirect()->back();
-  })->name('locale.switch');
+    session(['locale' => $locale]);
 
-  Route::get('/', [BasketController::class, 'inicio'])->name('basket.inicio');
-  // Cuando alguien entra en "/" se carga la portada de la web.
->>>>>>> e0ab8cf (VERSION VALENCIANO)
+    return redirect()->back();
+})->name('locale.switch');
 
 Route::get('clasificacion', [PublicClasificacionController::class, 'clasificacion'])
     ->name('basket.clasificacion');
