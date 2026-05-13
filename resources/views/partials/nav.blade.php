@@ -1,15 +1,21 @@
 <nav class="barra-navegacion" data-nav>
     @php
         $navLinks = [
-            ['label' => 'Inicio', 'href' => url('/'), 'active' => request()->routeIs('basket.inicio')],
-            ['label' => 'Equipo', 'href' => route('basket.equipo'), 'active' => request()->routeIs('basket.equipo')],
-            ['label' => 'Tienda', 'href' => route('basket.tienda'), 'active' => request()->routeIs('basket.tienda', 'basket.tienda.*')],
-            ['label' => 'Clasificación', 'href' => route('basket.clasificacion'), 'active' => request()->routeIs('basket.clasificacion')],
-            ['label' => 'Estadísticas', 'href' => route('basket.estadisticas'), 'active' => request()->routeIs('basket.estadisticas')],
-            ['label' => 'Partidos', 'href' => route('basket.partidos'), 'active' => request()->routeIs('basket.partidos', 'basket.partidos.*')],
-            ['label' => 'Noticias', 'href' => route('basket.noticias'), 'active' => request()->routeIs('basket.noticias', 'basket.noticias.*', 'noticias.detalle')],
-            ['label' => 'Galería', 'href' => route('basket.galeria'), 'active' => request()->routeIs('basket.galeria', 'basket.galeria.*')],
-            ['label' => 'Contacto', 'href' => route('basket.contacto'), 'active' => request()->routeIs('basket.contacto')],
+            ['label' => __('ui.nav.home'), 'href' => url('/'), 'active' => request()->routeIs('basket.inicio')],
+            ['label' => __('ui.nav.team'), 'href' => route('basket.equipo'), 'active' => request()->routeIs('basket.equipo')],
+            ['label' => __('ui.nav.store'), 'href' => route('basket.tienda'), 'active' => request()->routeIs('basket.tienda', 'basket.tienda.*')],
+            ['label' => __('ui.nav.standings'), 'href' => route('basket.clasificacion'), 'active' => request()->routeIs('basket.clasificacion')],
+            ['label' => __('ui.nav.stats'), 'href' => route('basket.estadisticas'), 'active' => request()->routeIs('basket.estadisticas')],
+            ['label' => __('ui.nav.matches'), 'href' => route('basket.partidos'), 'active' => request()->routeIs('basket.partidos', 'basket.partidos.*')],
+            ['label' => __('ui.nav.news'), 'href' => route('basket.noticias'), 'active' => request()->routeIs('basket.noticias', 'basket.noticias.*', 'noticias.detalle')],
+            ['label' => __('ui.nav.gallery'), 'href' => route('basket.galeria'), 'active' => request()->routeIs('basket.galeria', 'basket.galeria.*')],
+            ['label' => __('ui.nav.contact'), 'href' => route('basket.contacto'), 'active' => request()->routeIs('basket.contacto')],
+        ];
+
+        $currentLocale = app()->getLocale();
+        $availableLocales = [
+            'es' => 'ES',
+            'val' => 'VAL',
         ];
     @endphp
 
@@ -18,11 +24,11 @@
         <img src="{{ asset('img/club_14.png') }}" class="logo-navegacion" alt="Logo Bellreguard" />
         <div class="titulo-navegacion">
             <h3>Bellreguard</h3>
-            <span>Club de Basket</span>
+            <span>{{ __('ui.club_name') }}</span>
         </div>
     </a>
 
-    <button type="button" class="boton-menu-movil" data-nav-toggle aria-label="Abrir menu" aria-expanded="false">
+    <button type="button" class="boton-menu-movil" data-nav-toggle aria-label="{{ __('ui.nav.open_menu') }}" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -42,27 +48,39 @@
 
         {{-- 3. BOTÓN LOGIN / LOGOUT --}}
         <div class="login-seccion">
+            <div class="selector-idioma" aria-label="{{ __('ui.language.selector_aria') }}">
+                @foreach ($availableLocales as $locale => $label)
+                    <a
+                        href="{{ route('locale.switch', $locale) }}"
+                        class="{{ $currentLocale === $locale ? 'activo' : '' }}"
+                        hreflang="{{ $locale === 'val' ? 'ca' : $locale }}"
+                    >
+                        {{ $label }}
+                    </a>
+                @endforeach
+            </div>
+
             @guest
-                <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="Cambiar modo oscuro" title="Cambiar modo oscuro">
+                <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
                     <i class="fa-regular fa-moon"></i>
                 </button>
                 <a href="{{ route('login') }}" class="boton-inicio-sesion">
-                    INICIAR SESIÓN
+                    {{ __('ui.auth.login') }}
                 </a>
             @endguest
 
             @auth
                 <div class="auth-actions-wrap">
-                    <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="Cambiar modo oscuro" title="Cambiar modo oscuro">
+                    <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
                         <i class="fa-regular fa-moon"></i>
                     </button>
                     <a href="{{ route('dashboard') }}" class="boton-admin-nav">
-                        ADMINISTRACIÓN
+                        {{ __('ui.auth.admin') }}
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="logout-inline-form">
                         @csrf
                         <button type="submit" class="boton-cerrar-sesion">
-                            SALIR DE SESIÓN
+                            {{ __('ui.auth.logout') }}
                         </button>
                     </form>
                 </div>
@@ -91,7 +109,9 @@ function actualizarIconoTema() {
     botonTema.innerHTML = temaActual === 'dark'
         ? '<i class="fa-regular fa-sun"></i>'
         : '<i class="fa-regular fa-moon"></i>';
-    botonTema.setAttribute('aria-label', temaActual === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro');
+    botonTema.setAttribute('aria-label', temaActual === 'dark'
+        ? @json(__('ui.theme.toggle_light'))
+        : @json(__('ui.theme.toggle_dark')));
 }
 
 aplicarTemaInicial();
@@ -110,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     toggle.addEventListener('click', function () {
         const abierto = nav.classList.toggle('nav-abierta');
-        toggle.setAttribute('aria-label', abierto ? 'Cerrar menu' : 'Abrir menu');
+        toggle.setAttribute('aria-label', abierto ? @json(__('ui.nav.close_menu')) : @json(__('ui.nav.open_menu')));
         toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
         document.body.classList.toggle('menu-movil-abierto', abierto);
     });
@@ -127,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', function () {
         if (window.innerWidth > 1024) {
             nav.classList.remove('nav-abierta');
-            toggle.setAttribute('aria-label', 'Abrir menu');
+            toggle.setAttribute('aria-label', @json(__('ui.nav.open_menu')));
             toggle.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-movil-abierto');
         }

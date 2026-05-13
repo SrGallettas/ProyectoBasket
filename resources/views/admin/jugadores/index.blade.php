@@ -2,14 +2,16 @@
 
 @use('Carbon\Carbon') 
 
+@section('title', __('admin.players.meta.index_title'))
+
 @section('contenido_admin')
 
 {{-- Invocamos el componente con tus datos --}}
 <x-admin-header 
-    titulo="Gestión de Jugadores" 
-    subtitulo="Plantilla completa del club"
+    :titulo="__('admin.players.index.title')" 
+    :subtitulo="__('admin.players.index.subtitle')"
     :rutaNuevo="route('jugadores.create')" 
-    textoNuevo="Añadir Jugador"
+    :textoNuevo="__('admin.players.index.new')"
     :rutaIndex="route('jugadores.index')"
 />
 
@@ -43,13 +45,13 @@
         {{-- Tu tabla se queda EXACTAMENTE IGUAL que la tenías --}}
         <thead>
             <tr>
-                <th>Foto</th>
+                <th>{{ __('admin.players.fields.photo') }}</th>
                 <th>
                     <a
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'dorsal', 'direction' => $nextDirection('dorsal')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Dorsal{!! $sortIndicator('dorsal') !!}
+                        {{ __('admin.players.fields.number') }}{!! $sortIndicator('dorsal') !!}
                     </a>
                 </th>
                 <th>
@@ -57,7 +59,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Nombre{!! $sortIndicator('nombre') !!}
+                        {{ __('admin.players.fields.name') }}{!! $sortIndicator('nombre') !!}
                     </a>
                 </th>
                 <th>
@@ -65,7 +67,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'apellido', 'direction' => $nextDirection('apellido')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Apellidos{!! $sortIndicator('apellido') !!}
+                        {{ __('admin.players.fields.surname') }}{!! $sortIndicator('apellido') !!}
                     </a>
                 </th>
                 <th>
@@ -73,7 +75,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'club', 'direction' => $nextDirection('club')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Club{!! $sortIndicator('club') !!}
+                        {{ __('admin.players.fields.club') }}{!! $sortIndicator('club') !!}
                     </a>
                 </th>
                 <th>
@@ -81,7 +83,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Categoría{!! $sortIndicator('categoria') !!}
+                        {{ __('admin.players.fields.category') }}{!! $sortIndicator('categoria') !!}
                     </a>
                 </th>
                 <th>
@@ -89,7 +91,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'posicion', 'direction' => $nextDirection('posicion')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Posición{!! $sortIndicator('posicion') !!}
+                        {{ __('admin.players.fields.position') }}{!! $sortIndicator('posicion') !!}
                     </a>
                 </th>
                 <th>
@@ -97,7 +99,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'fecha_nacimiento', 'direction' => $nextDirection('fecha_nacimiento')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Fecha Nacimiento{!! $sortIndicator('fecha_nacimiento') !!}
+                        {{ __('admin.players.fields.birth_date') }}{!! $sortIndicator('fecha_nacimiento') !!}
                     </a>
                 </th>
                 <th>
@@ -105,7 +107,7 @@
                         href="{{ route('jugadores.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Acciones{!! $sortIndicator('oculto') !!}
+                        {{ __('admin.common.actions') }}{!! $sortIndicator('oculto') !!}
                     </a>
                 </th>
             </tr>
@@ -117,9 +119,9 @@
                 <td>
                     <div class="contenedor-escudo admin-photo-frame">
                         @if($jugador->imagen_jugador)
-                            <img src="{{ $jugador->imagen_jugador_url }}" alt="Foto" class="admin-photo-fill" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                            <img src="{{ $jugador->imagen_jugador_url }}" alt="{{ __('admin.players.fields.photo') }}" class="admin-photo-fill" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                         @else
-                            <img src="{{ asset('img/club_14.png') }}" alt="Sin foto" class="admin-photo-fill">
+                            <img src="{{ asset('img/club_14.png') }}" alt="{{ __('admin.players.fields.no_photo') }}" class="admin-photo-fill">
                         @endif
                     </div>
                 </td>
@@ -135,7 +137,7 @@
                 
                 {{-- 4. CLUB --}}
                 <td>
-                    {{ $jugador->equipo->nombre ?? 'Sin Equipo' }}
+                    {{ $jugador->equipo->nombre ?? __('admin.players.fields.no_team') }}
                 </td>
 
                 {{-- 5. CATEGORÍA (Sacada del modelo Equipo) --}}
@@ -151,7 +153,7 @@
                 {{-- 4. FECHA DE NACIMIENTO --}}
                 <td>
                     {{-- Usamos carbon para poner la fecha en formato día/mes/año --}}
-                    {{ $jugador->fecha_nacimiento ? Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'No asignada' }}
+                    {{ $jugador->fecha_nacimiento ? Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : __('admin.players.fields.not_assigned') }}
                 </td>
                 
                 {{-- 7. ACCIONES (ALINEADAS) --}}
@@ -159,28 +161,28 @@
                     <div class="admin-row-actions">
                         
                         {{-- Botón Ver --}}
-                        <a href="{{ route('jugadores.show', $jugador->id) }}" class="btn-accion admin-view-btn" title="Ver detalles del jugador">
+                        <a href="{{ route('jugadores.show', $jugador->id) }}" class="btn-accion admin-view-btn" title="{{ __('admin.players.actions.view') }}">
                             <i class="fas fa-eye"></i>
                         </a>
 
                         {{-- Botón Editar --}}
-                        <a href="{{ route ('jugadores.edit', $jugador->id)}}" class="btn-accion editar admin-no-margin" title="Editar jugador">
+                        <a href="{{ route ('jugadores.edit', $jugador->id)}}" class="btn-accion editar admin-no-margin" title="{{ __('admin.players.actions.edit') }}">
                             <i class="fas fa-pen"></i>
                         </a>
 
                         <form action="{{ route('jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="admin-form-inline admin-form-inline-flex">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn-accion {{ $jugador->oculto ? 'mostrar' : 'ocultar' }} admin-no-margin" title="{{ $jugador->oculto ? 'Mostrar jugador' : 'Ocultar jugador' }}">
+                            <button type="submit" class="btn-accion {{ $jugador->oculto ? 'mostrar' : 'ocultar' }} admin-no-margin" title="{{ $jugador->oculto ? __('admin.players.actions.show') : __('admin.players.actions.hide') }}">
                                 <i class="fas {{ $jugador->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                             </button>
                         </form>
                         
                         {{-- Formulario Borrar --}}
-                        <form action="{{ route ('jugadores.destroy', $jugador->id)}}" method="POST" onsubmit="return confirm('¿Eliminar jugador?')" class="admin-form-inline admin-form-inline-flex">
+                        <form action="{{ route ('jugadores.destroy', $jugador->id)}}" method="POST" onsubmit="return confirm('{{ __('admin.players.actions.confirm_delete') }}')" class="admin-form-inline admin-form-inline-flex">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar jugador">
+                            <button type="submit" class="btn-accion borrar admin-no-margin" title="{{ __('admin.players.actions.delete') }}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -192,7 +194,7 @@
             {{-- MENSAJE SI NO HAY JUGADORES --}}
             <tr>
                 <td colspan="9" class="admin-empty-cell">
-                    <i class="fas fa-info-circle"></i> No se han encontrado jugadores en la base de datos.
+                    <i class="fas fa-info-circle"></i> {{ __('admin.players.empty.index') }}
                 </td>
             </tr>
             @endforelse

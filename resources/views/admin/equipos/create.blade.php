@@ -1,21 +1,19 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.teams.meta.create_title'))
+
 @section('contenido_admin')
 @php($mostrarFotoPlantilla = old('es_local'))
 <div class="contenedor-edit-jugador">
-    <header class="header-ficha">
-        <div>
-            <h2>Añadir Nuevo Equipo</h2>
-            <p>Introduce los datos para registrar un nuevo equipo del club</p>
-        </div>
-        <a href="{{ route('equipos.index') }}" class="btn-nuevo btn-nuevo-secondary" title="Volver al listado de equipos">
-            <i class="fas fa-arrow-left"></i> Volver al listado
-        </a>
-    </header>
+    <x-admin-edit-header
+        :titulo="__('admin.teams.create.title')"
+        :subtitulo="__('admin.teams.create.subtitle')"
+        :backRoute="route('equipos.index')"
+    />
 
     @if ($errors->any())
     <div class="cuadro-errores-admin">
-        <strong>¡Vaya! Algo ha ido mal:</strong>
+        <strong>{{ __('admin.common.form_error') }}</strong>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -30,24 +28,23 @@
 
             <div class="grid-formulario-fichas">
                 <div class="seccion-form-ficha seccion-personal">
-                    <h3><i class="fas fa-shield-alt"></i> Datos del Equipo</h3>
+                    <h3><i class="fas fa-shield-alt"></i> {{ __('admin.teams.sections.data') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Nombre del Equipo</label>
+                        <label>{{ __('admin.teams.fields.team_name') }}</label>
                         <input
                             type="text"
                             name="nombre"
                             value="{{ old('nombre') }}"
-                            placeholder="Ej: Senior"
-                            required
+                            placeholder="{{ __('admin.teams.fields.team_name_placeholder') }}"
                             class="input-ficha"
                         >
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Categoría</label>
-                        <select name="categoria" required class="input-ficha input-white">
-                            <option value="" disabled {{ old('categoria') == '' ? 'selected' : '' }}>Selecciona...</option>
+                        <label>{{ __('admin.teams.fields.category') }}</label>
+                        <select name="categoria" class="input-ficha input-white">
+                            <option value="" disabled {{ old('categoria') == '' ? 'selected' : '' }}>{{ __('admin.common.select') }}</option>
                             @foreach($categoryOptions as $categoria)
                                 <option value="{{ $categoria }}" {{ old('categoria') == $categoria ? 'selected' : '' }}>
                                     {{ $categoria }}
@@ -58,10 +55,10 @@
                 </div>
 
                 <div class="seccion-form-ficha seccion-deportiva">
-                    <h3><i class="fas fa-clipboard-list"></i> Configuración</h3>
+                    <h3><i class="fas fa-clipboard-list"></i> {{ __('admin.teams.sections.config') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Estado del Equipo</label>
+                        <label>{{ __('admin.teams.fields.team_status') }}</label>
                         <div class="checkbox-wrapper checkbox-wrapper-ficha">
                             <input
                                 type="checkbox"
@@ -70,20 +67,20 @@
                                 value="1"
                                 {{ old('es_local') ? 'checked' : '' }}
                             >
-                            <span>Sí, es equipo local</span>
+                            <span>{{ __('admin.teams.fields.local_team') }}</span>
                         </div>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Uso de la imagen</label>
-                        <p class="input-help-text">Puedes subir un escudo propio o dejar la imagen por defecto del formulario por ahora.</p>
+                        <label>{{ __('admin.teams.fields.image_usage') }}</label>
+                        <p class="input-help-text">{{ __('admin.teams.fields.image_usage_help_create') }}</p>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Visibilidad en la web</label>
+                        <label>{{ __('admin.teams.fields.visibility') }}</label>
                         <div class="checkbox-wrapper checkbox-wrapper-ficha">
                             <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
-                            <span>Ocultar equipo de la web pública</span>
+                            <span>{{ __('admin.teams.fields.hide_public') }}</span>
                         </div>
                     </div>
                 </div>
@@ -91,19 +88,19 @@
                 <div class="seccion-foto-ficha">
                     <div class="card-imagen-horizontal">
                         <div class="preview-foto-noticia">
-                            <img id="equipo-create-preview" src="{{ asset('img/club_14.png') }}" alt="Imagen por defecto">
+                            <img id="equipo-create-preview" src="{{ asset('img/club_14.png') }}" alt="{{ __('admin.teams.images.default_alt') }}">
                         </div>
 
                         <div class="info-subida-noticia">
-                            <h3>Imagen del Equipo</h3>
-                            <p>Para que luzca bien, usa un escudo nítido o una imagen cuadrada del equipo.</p>
+                            <h3>{{ __('admin.teams.images.team_image') }}</h3>
+                            <p>{{ __('admin.teams.images.team_image_help') }}</p>
 
                             <label for="imagen_club" class="btn-cambiar-foto">
-                                <i class="fas fa-camera"></i> Seleccionar imagen
+                                <i class="fas fa-camera"></i> {{ __('admin.teams.images.select_image') }}
                             </label>
                             <input type="file" name="imagen_club" id="imagen_club" class="hidden-file-input" accept="image/*" data-image-input="#equipo-create-preview">
 
-                            <span class="nota-subida">Formatos: JPG o PNG. La imagen se guardará en public/escudos.</span>
+                            <span class="nota-subida">{{ __('admin.teams.images.team_note_create') }}</span>
                         </div>
                     </div>
 
@@ -113,28 +110,28 @@
                         @unless($mostrarFotoPlantilla) style="display: none;" @endunless
                     >
                         <div class="preview-foto-noticia">
-                            <img id="equipo-plantilla-create-preview" src="{{ asset('img/equipo.png') }}" alt="Foto de plantilla por defecto">
+                            <img id="equipo-plantilla-create-preview" src="{{ asset('img/equipo.png') }}" alt="{{ __('admin.teams.images.template_default_alt') }}">
                         </div>
 
                         <div class="info-subida-noticia">
-                            <h3>Foto de Plantilla</h3>
-                            <p>Esta imagen se usará en la cabecera pública de la página Equipo para esta categoría.</p>
+                            <h3>{{ __('admin.teams.images.template_photo') }}</h3>
+                            <p>{{ __('admin.teams.images.template_help_create') }}</p>
 
                             <label for="foto_plantilla" class="btn-cambiar-foto">
-                                <i class="fas fa-camera"></i> Seleccionar foto
+                                <i class="fas fa-camera"></i> {{ __('admin.teams.images.select_photo') }}
                             </label>
                             <input type="file" name="foto_plantilla" id="foto_plantilla" class="hidden-file-input" accept="image/*" data-image-input="#equipo-plantilla-create-preview">
 
-                            <span class="nota-subida">Formatos: JPG, PNG o WEBP. Si no subes nada se usará la imagen general por defecto.</span>
+                            <span class="nota-subida">{{ __('admin.teams.images.template_note_create') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de equipos">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="Registrar equipo">
-                    <i class="fas fa-save"></i> REGISTRAR EQUIPO
+                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.teams.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.teams.actions.register') }}">
+                    <i class="fas fa-save"></i> {{ __('admin.teams.create.submit') }}
                 </button>
             </div>
         </form>

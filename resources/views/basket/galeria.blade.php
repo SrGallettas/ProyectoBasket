@@ -6,18 +6,19 @@
 <x-page-style file="galeria.css" />
 @endpush
 
-@section('title', 'Galería - Bellreguard CB')
+@section('title', __('public.gallery.meta.title'))
+@section('meta_description', __('public.gallery.meta.description'))
 
 @section('contenido')
 {{-- Hero principal de la galería pública --}}
 <x-public-news-hero
-    badge="ARCHIVO OFICIAL"
-    title="Galería Bellreguard CB"
-    subtitle="Álbumes del club organizados por tipo para que puedas filtrar cada momento."
+    :badge="__('public.gallery.hero.badge')"
+    :title="__('public.gallery.hero.title')"
+    :subtitle="__('public.gallery.hero.subtitle')"
 >
     <div class="stats-galeria">
-        <span><i class="fas fa-folder-open"></i> {{ $galerias->total() }} álbumes</span>
-        <span><i class="fas fa-images"></i> {{ $galerias->sum('imagenes_count') }} fotos en esta página</span>
+        <span><i class="fas fa-folder-open"></i> {{ __('public.gallery.hero.albums_count', ['count' => $galerias->total()]) }}</span>
+        <span><i class="fas fa-images"></i> {{ __('public.gallery.hero.photos_count', ['count' => $galerias->sum('imagenes_count')]) }}</span>
     </div>
 </x-public-news-hero>
 
@@ -51,22 +52,22 @@
                             <i class="fas fa-image"></i>
                         </div>
                     @endif
-                    <span class="badge-fotos">{{ $galeria->imagenes_count }} fotos</span>
+                    <span class="badge-fotos">{{ __('public.gallery.photos_badge', ['count' => $galeria->imagenes_count]) }}</span>
                 </div>
                 <div class="info-album">
                     <span class="tipo-album">{{ $tipos[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
                     <h3>{{ $galeria->titulo }}</h3>
                     <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion, 120) }}</p>
                     <div class="footer-album">
-                        <span class="fecha-album">{{ $galeria->created_at->format('d/m/Y') }}</span>
+                        <span class="fecha-album">{{ $galeria->created_at->translatedFormat('d/m/Y') }}</span>
                         <div class="public-inline-actions">
-                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">Ver álbum</a>
+                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">{{ __('public.gallery.view_album') }}</a>
                             {{-- Acción de visibilidad solo para admin o editor --}}
                             @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                                 <form action="{{ route('basket.galeria.toggle-oculto', $galeria->id) }}" method="POST" class="public-card-action">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="public-hide-button">Ocultar en web</button>
+                                    <button type="submit" class="public-hide-button">{{ __('public.gallery.hide') }}</button>
                                 </form>
                             @endif
                         </div>
@@ -77,8 +78,8 @@
             {{-- Estado vacío si no hay álbumes para el filtro actual --}}
             <div class="galeria-empty-state">
                 <i class="fas fa-images"></i>
-                <h3>No hay álbumes para este filtro</h3>
-                <p>Cuando se creen galerías desde el panel de administración aparecerán aquí.</p>
+                <h3>{{ __('public.gallery.empty.title') }}</h3>
+                <p>{{ __('public.gallery.empty.text') }}</p>
             </div>
         @endforelse
     </div>

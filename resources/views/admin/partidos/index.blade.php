@@ -6,10 +6,10 @@
 @section('contenido_admin')
 
 <x-admin-header 
-    titulo="Calendario de Partidos" 
-    subtitulo="Próximos encuentros y programación del club"
+    :titulo="__('admin.matches.index.title')" 
+    :subtitulo="__('admin.matches.index.subtitle')"
     :rutaNuevo="route('partidos.create')" 
-    textoNuevo="Programar Partido"
+    :textoNuevo="__('admin.matches.index.new')"
     :rutaIndex="route('partidos.index')"
 />
 
@@ -47,7 +47,7 @@
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'fecha_hora', 'direction' => $nextDirection('fecha_hora')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Fecha y Hora{!! $sortIndicator('fecha_hora') !!}
+                        {{ __('admin.matches.fields.date_time') }}{!! $sortIndicator('fecha_hora') !!}
                     </a>
                 </th>
                 <th class="col-categoria">
@@ -55,7 +55,7 @@
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Categoría{!! $sortIndicator('categoria') !!}
+                        {{ __('admin.matches.fields.category') }}{!! $sortIndicator('categoria') !!}
                     </a>
                 </th>
                 <th class="text-right col-equipo" style="text-align: right; padding-right: 28px;">
@@ -63,16 +63,16 @@
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'equipo_local', 'direction' => $nextDirection('equipo_local')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Local{!! $sortIndicator('equipo_local') !!}
+                        {{ __('admin.matches.fields.local') }}{!! $sortIndicator('equipo_local') !!}
                     </a>
                 </th>
-                <th class="text-center col-vs">Encuentro</th>
+                <th class="text-center col-vs">{{ __('admin.matches.fields.match') }}</th>
                 <th class="text-left col-equipo">
                     <a
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'equipo_visitante', 'direction' => $nextDirection('equipo_visitante')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Visitante{!! $sortIndicator('equipo_visitante') !!}
+                        {{ __('admin.matches.fields.visitor') }}{!! $sortIndicator('equipo_visitante') !!}
                     </a>
                 </th>
                 <th class="text-center col-lugar">
@@ -80,7 +80,7 @@
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'lugar', 'direction' => $nextDirection('lugar')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Lugar{!! $sortIndicator('lugar') !!}
+                        {{ __('admin.matches.fields.place') }}{!! $sortIndicator('lugar') !!}
                     </a>
                 </th>
                 <th class="text-center col-acciones">
@@ -88,7 +88,7 @@
                         href="{{ route('partidos.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Acciones{!! $sortIndicator('oculto') !!}
+                        {{ __('admin.matches.fields.actions') }}{!! $sortIndicator('oculto') !!}
                     </a>
                 </th>
             </tr>
@@ -108,7 +108,7 @@
                 <td class="col-categoria">
                     <span class="badge-categoria-pildora">{{ $partido->categoria }}</span>
                     <div class="admin-subtle-text" style="margin-top: 6px;">
-                        {{ ucfirst($partido->tipo_partido ?? 'liga') }}
+                        {{ __('admin.matches.types.' . ($partido->tipo_partido === 'amistoso' ? 'friendly' : 'league')) }}
                         @if($partido->tipo_partido === 'liga' && $partido->jornada)
                             · J{{ $partido->jornada }}
                         @endif
@@ -123,7 +123,7 @@
                     <div class="contenedor-equipo-tabla reverse">
                         <span class="nombre-equipo">{{ $partido->equipoLocal->nombre }}</span>
                         <span class="admin-shield-frame">
-                            <img src="{{ $partido->equipoLocal->imagen_club_url }}" class="escudo-tabla-ajustado" alt="Escudo {{ $partido->equipoLocal->nombre }}">
+                            <img src="{{ $partido->equipoLocal->imagen_club_url }}" class="escudo-tabla-ajustado" alt="{{ __('admin.teams.images.shield_alt', ['team' => $partido->equipoLocal->nombre]) }}">
                         </span>
                     </div>
                 </td>
@@ -137,7 +137,7 @@
                 <td class="text-left col-equipo">
                     <div class="contenedor-equipo-tabla">
                         <span class="admin-shield-frame">
-                            <img src="{{ $partido->equipoVisitante->imagen_club_url }}" class="escudo-tabla-ajustado" alt="Escudo {{ $partido->equipoVisitante->nombre }}">
+                            <img src="{{ $partido->equipoVisitante->imagen_club_url }}" class="escudo-tabla-ajustado" alt="{{ __('admin.teams.images.shield_alt', ['team' => $partido->equipoVisitante->nombre]) }}">
                         </span>
                         <span class="nombre-equipo">{{ $partido->equipoVisitante->nombre }}</span>
                     </div>
@@ -155,11 +155,11 @@
                     <div class="flex-acciones">
                         
                         {{-- Botón Ver --}}
-                        <a href="{{ route('partidos.show', $partido->id) }}" class="btn-accion" title="Ver detalles del partido">
+                        <a href="{{ route('partidos.show', $partido->id) }}" class="btn-accion" title="{{ __('admin.matches.actions.view') }}">
                             <i class="fas fa-eye"></i>
                         </a>
 
-                        <a href="{{ route('partidos.edit', $partido->id) }}" class="btn-accion editar" title="Editar partido">
+                        <a href="{{ route('partidos.edit', $partido->id) }}" class="btn-accion editar" title="{{ __('admin.matches.actions.edit') }}">
                             <i class="fas fa-pen"></i>
                         </a>
 
@@ -170,7 +170,7 @@
                         <form action="{{ route('partidos.toggle-oculto', $partido->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn-accion {{ $partido->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $partido->oculto ? 'Mostrar en Partidos' : 'Ocultar de Partidos' }}">
+                            <button type="submit" class="btn-accion {{ $partido->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $partido->oculto ? __('admin.matches.actions.show') : __('admin.matches.actions.hide') }}">
                                 <i class="fas {{ $partido->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                             </button>
                         </form>
@@ -182,17 +182,17 @@
                                 <button
                                     type="submit"
                                     class="btn-accion {{ $partido->oculto_en_clasificacion ? 'mostrar' : 'ocultar' }}"
-                                    title="{{ $partido->oculto_en_clasificacion ? 'Mostrar en Clasificación' : 'Ocultar de Clasificación' }}"
+                                    title="{{ $partido->oculto_en_clasificacion ? __('admin.matches.actions.show_in_standings') : __('admin.matches.actions.hide_in_standings') }}"
                                 >
                                     <i class="fas fa-trophy"></i>
                                 </button>
                             </form>
                         @endif
 
-                        <form action="{{ route('partidos.destroy', $partido->id) }}" method="POST" onsubmit="return confirm('¿Eliminar partido?')">
+                        <form action="{{ route('partidos.destroy', $partido->id) }}" method="POST" onsubmit="return confirm('{{ __('admin.matches.actions.confirm_delete') }}')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-accion borrar" title="Eliminar partido">
+                            <button type="submit" class="btn-accion borrar" title="{{ __('admin.matches.actions.delete') }}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -201,7 +201,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="tabla-vacia">No hay partidos programados.</td>
+                <td colspan="7" class="tabla-vacia">{{ __('admin.matches.empty.index') }}</td>
             </tr>
             @endforelse
         </tbody>

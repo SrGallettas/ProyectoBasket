@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+@php($htmlLocale = app()->getLocale() === 'val' ? 'ca' : str_replace('_', '-', app()->getLocale()))
+<html lang="{{ $htmlLocale }}">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Bellreguard CB</title>
+    <title>@yield('title', __('admin.layout.title'))</title>
     <script>
         (function () {
             const key = 'bb_theme';
@@ -26,72 +27,72 @@
             <div class="admin-perfil">
                 <img src="{{ asset('img/club_14.png') }}" alt="Logo Admin">
                 <div class="admin-info">
-                    <h4>Panel Admin</h4>
-                    <span>{{ $adminUser?->name }} · {{ \App\Models\User::ROLES[$adminUser?->role] ?? 'Usuario' }}</span>
+                    <h4>{{ __('admin.layout.panel') }}</h4>
+                    <span>{{ $adminUser?->name }} · {{ \App\Models\User::ROLES[$adminUser?->role] ?? __('admin.layout.user') }}</span>
                 </div>
             </div>
 
             <nav class="menu-admin">
                 <a href="{{ route('dashboard') }}" class="item-admin {{ request()->routeIs('dashboard') ? 'activo' : '' }}">
-                    <i class="fas fa-home"></i><span>Inicio</span>
+                    <i class="fas fa-home"></i><span>{{ __('admin.menu.home') }}</span>
                 </a>
 
                 @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
                     <a href="{{ route('equipos.index') }}" class="item-admin {{ request()->is('admin/equipos*') ? 'activo' : '' }}">
-                        <i class="fas fa-tshirt"></i><span>Equipos</span>
+                        <i class="fas fa-tshirt"></i><span>{{ __('admin.menu.teams') }}</span>
                     </a>
 
                     <a href="{{ route('jugadores.index') }}" class="item-admin {{ request()->is('admin/jugadores*') ? 'activo' : '' }}">
-                        <i class="fas fa-users"></i><span>Jugadores</span>
+                        <i class="fas fa-users"></i><span>{{ __('admin.menu.players') }}</span>
                     </a>
 
                     <a href="{{ route('partidos.index') }}" class="item-admin {{ request()->is('admin/partidos*') ? 'activo' : '' }}">
-                        <i class="fas fa-calendar-alt"></i><span>Partidos</span>
+                        <i class="fas fa-calendar-alt"></i><span>{{ __('admin.menu.matches') }}</span>
                     </a>
 
                     <a href="{{ route('clasificaciones.index') }}" class="item-admin {{ request()->is('admin/clasificaciones*') ? 'activo' : '' }}">
-                        <i class="fas fa-trophy"></i><span>Clasificaciones</span>
+                        <i class="fas fa-trophy"></i><span>{{ __('admin.menu.standings') }}</span>
                     </a>
                 @endif
 
                 @if($adminUser?->isAdmin())
                     <a href="{{ route('usuarios.index') }}" class="item-admin {{ request()->is('admin/usuarios*') ? 'activo' : '' }}">
-                        <i class="fas fa-user-shield"></i><span>Usuarios</span>
+                        <i class="fas fa-user-shield"></i><span>{{ __('admin.menu.users') }}</span>
                     </a>
                 @endif
 
                 @if($adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]))
                     <a href="{{ route('noticias.index') }}" class="item-admin {{ request()->is('admin/noticias*') ? 'activo' : '' }}">
-                        <i class="fas fa-newspaper"></i><span>Noticias</span>
+                        <i class="fas fa-newspaper"></i><span>{{ __('admin.menu.news') }}</span>
                     </a>
 
                     <a href="{{ route('merchandising.index') }}" class="item-admin {{ request()->is('admin/merchandising*') ? 'activo' : '' }}">
-                        <i class="fas fa-shopping-bag"></i><span>Merchandising</span>
+                        <i class="fas fa-shopping-bag"></i><span>{{ __('admin.menu.store') }}</span>
                     </a>
 
                     <a href="{{ route('galerias.index') }}" class="item-admin {{ request()->is('admin/galerias*') ? 'activo' : '' }}">
-                        <i class="fas fa-images"></i><span>Galerías</span>
+                        <i class="fas fa-images"></i><span>{{ __('admin.menu.galleries') }}</span>
                     </a>
                 @endif
 
                 <div class="separador-admin"></div>
 
-                <button type="button" class="item-admin admin-sidebar-menu-toggle" id="admin-sidebar-toggle" aria-label="Desplegar u ocultar menú">
-                    <i class="fas fa-bars"></i><span>Abrir o cerrar menú</span>
+                <button type="button" class="item-admin admin-sidebar-menu-toggle" id="admin-sidebar-toggle" aria-label="{{ __('admin.layout.toggle_menu') }}">
+                    <i class="fas fa-bars"></i><span>{{ __('admin.layout.toggle_menu_text') }}</span>
                 </button>
 
-                <button type="button" class="item-admin admin-theme-toggle" id="admin-theme-toggle" aria-label="Cambiar modo oscuro">
-                    <i class="fa-regular fa-moon"></i><span>Cambiar tema</span>
+                <button type="button" class="item-admin admin-theme-toggle" id="admin-theme-toggle" aria-label="{{ __('admin.layout.theme_dark') }}">
+                    <i class="fa-regular fa-moon"></i><span>{{ __('admin.layout.theme_toggle') }}</span>
                 </button>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
-                    <i class="fas fa-door-open"></i><span>Volver a la Web</span>
+                    <i class="fas fa-door-open"></i><span>{{ __('admin.layout.back_to_site') }}</span>
                 </a>
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="item-admin volver-web admin-logout-toggle">
-                        <i class="fas fa-right-from-bracket"></i><span>Cerrar sesión</span>
+                        <i class="fas fa-right-from-bracket"></i><span>{{ __('admin.layout.logout') }}</span>
                     </button>
                 </form>
 
@@ -103,14 +104,14 @@
 
         <main class="contenido-admin">
             <div class="admin-mobile-header">
-                <button type="button" class="admin-mobile-toggle" id="admin-mobile-toggle" aria-label="Abrir menu de administracion">
+                <button type="button" class="admin-mobile-toggle" id="admin-mobile-toggle" aria-label="{{ __('admin.layout.open_mobile_menu') }}">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="admin-mobile-header-text">
-                    <strong>Panel Admin</strong>
+                    <strong>{{ __('admin.layout.panel') }}</strong>
                     <span>Bellreguard CB</span>
                 </div>
-                <button type="button" class="admin-mobile-theme-toggle" id="admin-mobile-theme-toggle" aria-label="Cambiar modo oscuro">
+                <button type="button" class="admin-mobile-theme-toggle" id="admin-mobile-theme-toggle" aria-label="{{ __('admin.layout.theme_dark') }}">
                     <i class="fa-regular fa-moon"></i>
                 </button>
             </div>
@@ -133,11 +134,11 @@
             const actualizarBotonesTema = () => {
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                 const icono = isDark ? 'fa-sun' : 'fa-moon';
-                const label = isDark ? 'Activar modo claro' : 'Activar modo oscuro';
+                const label = isDark ? @json(__('admin.layout.theme_light')) : @json(__('admin.layout.theme_dark'));
 
                 [desktopThemeToggle, mobileThemeToggle].forEach((boton) => {
                     if (!boton) return;
-                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${boton.id === 'admin-theme-toggle' ? '<span>Cambiar tema</span>' : ''}`;
+                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${boton.id === 'admin-theme-toggle' ? '<span>${@json(__('admin.layout.theme_toggle'))}</span>' : ''}`;
                     boton.setAttribute('aria-label', label);
                     boton.setAttribute('title', label);
                 });

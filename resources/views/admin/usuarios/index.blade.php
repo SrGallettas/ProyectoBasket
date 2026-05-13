@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.users.meta.index_title'))
+
 @section('contenido_admin')
 <x-admin-header
-    titulo="Gestión de Usuarios"
-    subtitulo="Cuentas internas del panel y sus roles"
+    :titulo="__('admin.users.index.title')"
+    :subtitulo="__('admin.users.index.subtitle')"
     :rutaNuevo="route('usuarios.create')"
-    textoNuevo="Añadir Usuario"
+    :textoNuevo="__('admin.users.index.new')"
     :rutaIndex="route('usuarios.index')"
 />
 
@@ -17,7 +19,7 @@
 
 @if($errors->any())
     <div class="cuadro-errores-admin">
-        <strong>Hay algo que revisar:</strong>
+        <strong>{{ __('admin.common.review_errors') }}</strong>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -48,11 +50,11 @@
     <table class="tabla-admin">
         <thead>
             <tr>
-                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'name', 'direction' => $nextDirection('name')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Nombre{!! $sortIndicator('name') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'name', 'direction' => $nextDirection('name')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.users.fields.name') }}{!! $sortIndicator('name') !!}</a></th>
                 <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'email', 'direction' => $nextDirection('email')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Email{!! $sortIndicator('email') !!}</a></th>
-                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'role', 'direction' => $nextDirection('role')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Rol{!! $sortIndicator('role') !!}</a></th>
-                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Creado{!! $sortIndicator('created_at') !!}</a></th>
-                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('created_at') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'role', 'direction' => $nextDirection('role')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.users.fields.role') }}{!! $sortIndicator('role') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.users.fields.created') }}{!! $sortIndicator('created_at') !!}</a></th>
+                <th><a href="{{ route('usuarios.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.common.actions') }}{!! $sortIndicator('created_at') !!}</a></th>
             </tr>
         </thead>
         <tbody>
@@ -64,14 +66,14 @@
                     <td>{{ optional($usuario->created_at)->format('d/m/Y H:i') }}</td>
                     <td class="admin-actions-cell">
                         <div class="admin-row-actions">
-                            <a href="{{ route('usuarios.edit', $usuario) }}" class="btn-accion editar admin-no-margin" title="Editar usuario">
+                            <a href="{{ route('usuarios.edit', $usuario) }}" class="btn-accion editar admin-no-margin" title="{{ __('admin.users.actions.edit') }}">
                                 <i class="fas fa-pen"></i>
                             </a>
 
-                            <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" onsubmit="return confirm('¿Eliminar usuario?')" class="admin-form-inline admin-form-inline-flex">
+                            <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" onsubmit="return confirm('{{ __('admin.users.actions.confirm_delete') }}')" class="admin-form-inline admin-form-inline-flex">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion borrar admin-no-margin" title="Eliminar usuario">
+                                <button type="submit" class="btn-accion borrar admin-no-margin" title="{{ __('admin.users.actions.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -81,7 +83,7 @@
             @empty
                 <tr>
                     <td colspan="5" class="admin-empty-cell">
-                        <i class="fas fa-info-circle"></i> No se han encontrado usuarios.
+                        <i class="fas fa-info-circle"></i> {{ __('admin.users.empty.index') }}
                     </td>
                 </tr>
             @endforelse

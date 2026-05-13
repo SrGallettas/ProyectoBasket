@@ -1,35 +1,29 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.news.meta.show_title'))
+
 @section('contenido_admin')
 <div class="contenedor-ficha-noticia"> {{-- Ajustado a tu CSS --}}
     <x-admin-show-header
-        titulo="Visualizar Noticia"
-        subtitulo="Publicación editorial del club"
+        :titulo="__('admin.news.show.title')"
+        :subtitulo="__('admin.news.show.subtitle')"
         :editRoute="route('noticias.edit', $noticia->id)"
         :deleteRoute="route('noticias.destroy', $noticia->id)"
         :indexRoute="route('noticias.index')"
-        confirmMessage="¿Seguro que deseas eliminar esta noticia?"
+        :confirmMessage="__('admin.news.actions.confirm_delete_detail')"
     />
 
     <div class="pizarra-ficha">
-        {{-- Contenedor de Imagen con el placeholder por si falla --}}
         <div class="noticia-hero-container">
-            @if($noticia->imagen_noticia)
-                <img src="{{ $noticia->imagen_noticia_url }}" class="noticia-img-main">
-            @else
-                <div class="noticia-placeholder">
-                    <i class="fas fa-image"></i>
-                    <span>Sin imagen de portada</span>
-                </div>
-            @endif
+            <img src="{{ $noticia->imagen_noticia_url }}" class="noticia-img-main" alt="{{ $noticia->titulo }}">
         </div>
         
         <h1 class="noticia-view-title">{{ $noticia->titulo }}</h1>
 
         {{-- NUEVO: Bloque de Autor y Fecha --}}
         <div class="noticia-view-footer noticia-view-footer-compact">
-            <span class="meta-item"><i class="fas fa-user-pen"></i> <strong>Autor:</strong> {{ $noticia->autor }}</span>
-            <span class="meta-item"><i class="fas fa-calendar-check"></i> <strong>Publicado:</strong> {{ $noticia->created_at->format('d/m/Y') }}</span>
+            <span class="meta-item"><i class="fas fa-user-pen"></i> <strong>{{ __('admin.news.fields.author') }}:</strong> {{ $noticia->autor }}</span>
+            <span class="meta-item"><i class="fas fa-calendar-check"></i> <strong>{{ __('admin.news.show.published') }}:</strong> {{ $noticia->created_at->format('d/m/Y') }}</span>
         </div>
         
         <p class="noticia-view-subtitle">{{ $noticia->subtitulo }}</p>

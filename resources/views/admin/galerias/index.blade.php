@@ -1,12 +1,14 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.galleries.meta.index_title'))
+
 @section('contenido_admin')
 <div class="contenedor-admin-noticias">
     <x-admin-header
-        titulo="Gestión de Galerías"
-        subtitulo="Crea álbumes, sube varias imágenes y organiza la galería por tipo."
+        :titulo="__('admin.galleries.index.title')"
+        :subtitulo="__('admin.galleries.index.subtitle')"
         :rutaNuevo="route('galerias.create')"
-        textoNuevo="Nueva Galería"
+        :textoNuevo="__('admin.galleries.index.new')"
         :rutaIndex="route('galerias.index')"
     />
 
@@ -38,12 +40,12 @@
         <table class="tabla-admin">
             <thead>
                 <tr>
-                    <th>Portada</th>
-                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Título{!! $sortIndicator('titulo') !!}</a></th>
-                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'tipo', 'direction' => $nextDirection('tipo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Tipo{!! $sortIndicator('tipo') !!}</a></th>
-                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'imagenes_count', 'direction' => $nextDirection('imagenes_count')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Imágenes{!! $sortIndicator('imagenes_count') !!}</a></th>
+                    <th>{{ __('admin.galleries.fields.cover') }}</th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.galleries.fields.title') }}{!! $sortIndicator('titulo') !!}</a></th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'tipo', 'direction' => $nextDirection('tipo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.galleries.fields.type') }}{!! $sortIndicator('tipo') !!}</a></th>
+                    <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'imagenes_count', 'direction' => $nextDirection('imagenes_count')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.galleries.fields.images') }}{!! $sortIndicator('imagenes_count') !!}</a></th>
                     <th><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'slug', 'direction' => $nextDirection('slug')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Slug{!! $sortIndicator('slug') !!}</a></th>
-                    <th class="text-center"><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('oculto') !!}</a></th>
+                    <th class="text-center"><a href="{{ route('galerias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.common.actions') }}{!! $sortIndicator('oculto') !!}</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +53,7 @@
                     <tr>
                         <td class="td-img">
                             @if($galeria->portada)
-                                <img src="{{ $galeria->portada->image_url }}" alt="Portada {{ $galeria->titulo }}" class="admin-thumb-60">
+                                <img src="{{ $galeria->portada->image_url }}" alt="{{ __('admin.galleries.fields.cover') }} {{ $galeria->titulo }}" class="admin-thumb-60">
                             @else
                                 <div class="sin-foto"><i class="fas fa-image"></i></div>
                             @endif
@@ -73,23 +75,23 @@
                         </td>
                         <td>
                             <div class="admin-row-actions">
-                                <a href="{{ route('galerias.show', $galeria->id) }}" class="btn-accion admin-view-btn" title="Ver detalles de la galeria">
+                                <a href="{{ route('galerias.show', $galeria->id) }}" class="btn-accion admin-view-btn" title="{{ __('admin.galleries.actions.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('galerias.edit', $galeria->id) }}" class="btn-accion editar" title="Editar galeria">
+                                <a href="{{ route('galerias.edit', $galeria->id) }}" class="btn-accion editar" title="{{ __('admin.galleries.actions.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('galerias.toggle-oculto', $galeria->id) }}" method="POST" class="admin-form-inline">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="btn-accion {{ $galeria->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $galeria->oculto ? 'Mostrar galeria' : 'Ocultar galeria' }}">
+                                    <button type="submit" class="btn-accion {{ $galeria->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $galeria->oculto ? __('admin.galleries.actions.show') : __('admin.galleries.actions.hide') }}">
                                         <i class="fas {{ $galeria->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                                     </button>
                                 </form>
-                                <form action="{{ route('galerias.destroy', $galeria->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta galería?')" class="admin-form-inline">
+                                <form action="{{ route('galerias.destroy', $galeria->id) }}" method="POST" onsubmit="return confirm('{{ __('admin.galleries.actions.confirm_delete') }}')" class="admin-form-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-accion borrar" title="Eliminar galeria">
+                                    <button type="submit" class="btn-accion borrar" title="{{ __('admin.galleries.actions.delete') }}">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
@@ -99,7 +101,7 @@
                 @empty
                     <tr>
                         <td colspan="6" class="admin-empty-cell">
-                            <i class="fas fa-images"></i> No hay galerías creadas todavía.
+                            <i class="fas fa-images"></i> {{ __('admin.galleries.empty.index') }}
                         </td>
                     </tr>
                 @endforelse

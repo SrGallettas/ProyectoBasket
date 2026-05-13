@@ -8,6 +8,7 @@
 
 {{-- TÍTULO DE LA PESTAÑA --}}
 @section('title', $jugador->nombre . ' ' . ($jugador->apellido ?? '') . ' - Bellreguard CB')
+@section('meta_description', __('public.player.meta.description', ['name' => trim($jugador->nombre . ' ' . ($jugador->apellido ?? ''))]))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
@@ -20,13 +21,13 @@
     </div>
 
     <div class="equipo-hero-content">
-        <span class="equipo-hero-badge">FICHA DE JUGADOR</span>
+        <span class="equipo-hero-badge">{{ __('public.player.hero.badge') }}</span>
         <h1>{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}</h1>
-        <p>{{ $jugador->equipo->nombre }} · {{ $jugador->posicion }} · Dorsal #{{ $jugador->dorsal ?? '00' }}</p>
+        <p>{{ __('public.player.hero.subtitle', ['team' => $jugador->equipo->nombre, 'position' => $jugador->posicion, 'number' => $jugador->dorsal ?? '00']) }}</p>
 
         <div class="botones-categoria">
             <a href="{{ route('basket.equipo', ['categoria' => $jugador->equipo->categoria]) }}" class="boton-categoria activo">
-                Volver al equipo
+                {{ __('public.player.hero.back_to_team') }}
             </a>
         </div>
     </div>
@@ -43,7 +44,7 @@
         <div class="jugador-info-stack">
             {{-- Datos principales del jugador --}}
             <article class="jugador-info-card">
-                <span class="jugador-kicker">Plantilla oficial</span>
+                <span class="jugador-kicker">{{ __('public.player.kicker') }}</span>
 
                 <div class="jugador-header">
                     <div>
@@ -55,24 +56,24 @@
                 </div>
 
                 <p class="jugador-copy">
-                    Perfil público del jugador dentro de la plantilla del Bellreguard CB. Aquí puedes consultar su equipo actual, posición y los datos básicos publicados por el club.
+                    {{ __('public.player.copy') }}
                 </p>
 
                 <div class="jugador-meta-grid">
                     <div class="jugador-meta-item">
-                        <span>Equipo</span>
+                        <span>{{ __('public.player.meta.team') }}</span>
                         <strong>{{ $jugador->equipo->nombre }}</strong>
                     </div>
 
                     <div class="jugador-meta-item">
-                        <span>Categoría</span>
+                        <span>{{ __('public.player.meta.category') }}</span>
                         <strong>{{ $jugador->equipo->categoria }}</strong>
                     </div>
 
                     <div class="jugador-meta-item">
-                        <span>Nacimiento</span>
+                        <span>{{ __('public.player.meta.birth') }}</span>
                         <strong>
-                            {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'No disponible' }}
+                            {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : __('public.player.meta.not_available') }}
                         </strong>
                     </div>
                 </div>
@@ -81,8 +82,8 @@
             {{-- Navegación rápida a otros jugadores del mismo equipo --}}
             @if($companeros->isNotEmpty())
                 <aside class="jugador-companeros">
-                    <h3>Más jugadores del equipo</h3>
-                    <p>Explora otros perfiles publicados de la misma categoría.</p>
+                    <h3>{{ __('public.player.teammates.title') }}</h3>
+                    <p>{{ __('public.player.teammates.text') }}</p>
 
                     <div class="jugador-companeros-grid">
                         @foreach($companeros as $companero)

@@ -2,10 +2,10 @@
 
 @section('contenido_admin')
 <x-admin-header
-    titulo="Gestión de Clasificaciones"
-    subtitulo="Crea ligas por temporada y asigna equipos para generar la tabla por jornadas."
+    :titulo="__('admin.standings.index.title')"
+    :subtitulo="__('admin.standings.index.subtitle')"
     :rutaNuevo="route('clasificaciones.create')"
-    textoNuevo="Nueva Clasificación"
+    :textoNuevo="__('admin.standings.index.new')"
     :rutaIndex="route('clasificaciones.index')"
 />
 
@@ -42,7 +42,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'nombre', 'direction' => $nextDirection('nombre')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Nombre{!! $sortIndicator('nombre') !!}
+                        {{ __('admin.standings.fields.name') }}{!! $sortIndicator('nombre') !!}
                     </a>
                 </th>
                 <th>
@@ -50,7 +50,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'categoria', 'direction' => $nextDirection('categoria')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Categoría{!! $sortIndicator('categoria') !!}
+                        {{ __('admin.standings.fields.category') }}{!! $sortIndicator('categoria') !!}
                     </a>
                 </th>
                 <th>
@@ -58,7 +58,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'temporada', 'direction' => $nextDirection('temporada')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Temporada{!! $sortIndicator('temporada') !!}
+                        {{ __('admin.standings.fields.season') }}{!! $sortIndicator('temporada') !!}
                     </a>
                 </th>
                 <th>
@@ -66,7 +66,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'equipos_count', 'direction' => $nextDirection('equipos_count')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Equipos{!! $sortIndicator('equipos_count') !!}
+                        {{ __('admin.standings.fields.teams') }}{!! $sortIndicator('equipos_count') !!}
                     </a>
                 </th>
                 <th>
@@ -74,7 +74,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'activa', 'direction' => $nextDirection('activa')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Estado{!! $sortIndicator('activa') !!}
+                        {{ __('admin.standings.fields.status') }}{!! $sortIndicator('activa') !!}
                     </a>
                 </th>
                 <th>
@@ -82,7 +82,7 @@
                         href="{{ route('clasificaciones.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}"
                         style="color: inherit; text-decoration: none; font: inherit;"
                     >
-                        Acciones{!! $sortIndicator('created_at') !!}
+                        {{ __('admin.standings.fields.actions') }}{!! $sortIndicator('created_at') !!}
                     </a>
                 </th>
             </tr>
@@ -91,22 +91,22 @@
             @forelse($clasificaciones as $clasificacion)
                 <tr>
                     <td><strong>{{ $clasificacion->nombre }}</strong></td>
-                    <td>{{ $clasificacion->categoria ?: '-' }}</td>
+                    <td>{{ $clasificacion->categoria ?: __('admin.standings.fields.no_category') }}</td>
                     <td>{{ $clasificacion->temporada ?: '-' }}</td>
                     <td>{{ $clasificacion->equipos_count }}</td>
-                    <td>{{ $clasificacion->activa ? 'Activa' : 'Inactiva' }}</td>
+                    <td>{{ $clasificacion->activa ? __('admin.standings.fields.active') : __('admin.standings.fields.inactive') }}</td>
                     <td class="admin-actions-cell">
                         <div class="admin-row-actions">
-                            <a href="{{ route('clasificaciones.show', $clasificacion->id) }}" class="btn-accion admin-view-btn" title="Ver clasificación">
+                            <a href="{{ route('clasificaciones.show', $clasificacion->id) }}" class="btn-accion admin-view-btn" title="{{ __('admin.standings.actions.view') }}">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('clasificaciones.edit', $clasificacion->id) }}" class="btn-accion editar" title="Editar clasificación">
+                            <a href="{{ route('clasificaciones.edit', $clasificacion->id) }}" class="btn-accion editar" title="{{ __('admin.standings.actions.edit') }}">
                                 <i class="fas fa-pen"></i>
                             </a>
-                            <form action="{{ route('clasificaciones.destroy', $clasificacion->id) }}" method="POST" onsubmit="return confirm('¿Eliminar clasificación?')" class="admin-form-inline">
+                            <form action="{{ route('clasificaciones.destroy', $clasificacion->id) }}" method="POST" onsubmit="return confirm('{{ __('admin.standings.actions.confirm_delete') }}')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion borrar" title="Eliminar clasificación">
+                                <button type="submit" class="btn-accion borrar" title="{{ __('admin.standings.actions.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -116,7 +116,7 @@
             @empty
                 <tr>
                     <td colspan="6" class="admin-empty-cell">
-                        <i class="fas fa-info-circle"></i> No hay clasificaciones creadas.
+                        <i class="fas fa-info-circle"></i> {{ __('admin.standings.empty.index') }}
                     </td>
                 </tr>
             @endforelse

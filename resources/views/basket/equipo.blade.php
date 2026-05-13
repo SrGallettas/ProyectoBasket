@@ -6,6 +6,9 @@
 <x-page-style file="equipo.css" />
 @endpush
 
+@section('title', __('public.team.meta.title'))
+@section('meta_description', __('public.team.meta.description'))
+
 @section('contenido')
 {{-- Imagen de cabecera: usa la foto del equipo visible o una imagen por defecto --}}
 @php
@@ -15,14 +18,14 @@
 {{-- Hero principal con selector rápido de categorías --}}
 <section class="equipo-hero">
     <div class="equipo-hero-media">
-        <img src="{{ $imagenEquipoHero }}" alt="Plantilla y equipos del Bellreguard Club de Basket">
+        <img src="{{ $imagenEquipoHero }}" alt="{{ __('public.team.hero.image_alt') }}">
         <div class="equipo-hero-overlay"></div>
     </div>
 
     <div class="equipo-hero-content">
-        <span class="equipo-hero-badge">PLANTILLA OFICIAL</span>
-        <h1>Cantera y equipos del Bellreguard CB</h1>
-        <p>Descubre las categorías del club y consulta la plantilla disponible de cada equipo local.</p>
+        <span class="equipo-hero-badge">{{ __('public.team.hero.badge') }}</span>
+        <h1>{{ __('public.team.hero.title') }}</h1>
+        <p>{{ __('public.team.hero.subtitle') }}</p>
 
         <div class="botones-categoria">
             @foreach($categorias as $categoria)
@@ -48,16 +51,16 @@
         <div class="equipo-resumen">
             <div class="equipo-resumen-copy">
                 <h2 class="equipo-titulo-categoria">{{ $equipoMostrar->nombre }}</h2>
-                <p>Consulta la plantilla disponible de esta categoría y revisa los jugadores publicados actualmente en la web del club.</p>
+                <p>{{ __('public.team.summary.text') }}</p>
             </div>
             <div class="equipo-resumen-stats">
                 <div class="equipo-resumen-stat">
                     <strong>{{ $jugadores?->total() ?? 0 }}</strong>
-                    <span>Jugadores</span>
+                    <span>{{ __('public.team.summary.players') }}</span>
                 </div>
                 <div class="equipo-resumen-stat">
                     <strong>{{ $equipoMostrar->categoria }}</strong>
-                    <span>Categoría</span>
+                    <span>{{ __('public.team.summary.category') }}</span>
                 </div>
             </div>
         </div>
@@ -68,7 +71,7 @@
                 <form action="{{ route('basket.equipo.toggle-oculto', $equipoMostrar->id) }}" method="POST">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" class="public-hide-button">Ocultar equipo en web</button>
+                    <button type="submit" class="public-hide-button">{{ __('public.team.actions.hide_team') }}</button>
                 </form>
             </div>
         @endif
@@ -78,14 +81,14 @@
             @forelse($jugadores as $jugador)
                 <article class="tarjeta-jugador">
                     {{-- Enlace principal para abrir la ficha pública del jugador --}}
-                    <a href="{{ route('basket.jugadores.detalle', $jugador) }}" class="tarjeta-jugador-link" aria-label="Ver ficha de {{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}">
+                    <a href="{{ route('basket.jugadores.detalle', $jugador) }}" class="tarjeta-jugador-link" aria-label="{{ __('public.team.player.view_card', ['name' => trim($jugador->nombre . ' ' . ($jugador->apellido ?? ''))]) }}">
                     </a>
 
                     <div class="foto-jugador">
                         @if($jugador->imagen_jugador)
                             <img src="{{ $jugador->imagen_jugador_url }}" alt="{{ $jugador->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                         @else
-                            <img src="{{ asset('img/club_14.png') }}" alt="Sin foto" class="foto-defecto">
+                            <img src="{{ asset('img/club_14.png') }}" alt="{{ __('public.team.player.no_photo') }}" class="foto-defecto">
                         @endif
                         {{-- Badge del dorsal sobre la foto --}}
                         <div class="dorsal-badge">#{{ $jugador->dorsal ?? '00' }}</div>
@@ -103,16 +106,16 @@
                         
                         {{-- 4. Fecha de nacimiento --}}
                         <p class="fecha-nacimiento">
-                            <strong>Nacimiento:</strong> 
-                            {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : 'N/A' }}
+                            <strong>{{ __('public.team.player.birth') }}</strong> 
+                            {{ $jugador->fecha_nacimiento ? \Carbon\Carbon::parse($jugador->fecha_nacimiento)->format('d/m/Y') : __('public.team.player.not_available') }}
                         </p>
 
                         {{-- Acción pública solo visible para admin o staff --}}
                         @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
-                            <form action="{{ route('basket.jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="public-card-action">
+                                <form action="{{ route('basket.jugadores.toggle-oculto', $jugador->id) }}" method="POST" class="public-card-action">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="public-hide-button">Ocultar jugador en web</button>
+                                <button type="submit" class="public-hide-button">{{ __('public.team.actions.hide_player') }}</button>
                             </form>
                         @endif
                     </div>
@@ -121,7 +124,7 @@
                 {{-- Estado vacío si el equipo no tiene jugadores publicados --}}
                 <div class="contenedor-mensaje-vacio full-grid-column">
                     <div class="alerta-basket">
-                        <p>Todavía no hay jugadores inscritos en el equipo <strong>{{ $equipoMostrar->nombre }}</strong>.</p>
+                        <p>{!! __('public.team.empty.players', ['team' => e($equipoMostrar->nombre)]) !!}</p>
                     </div>
                 </div>
             @endforelse
@@ -136,8 +139,8 @@
         {{-- Estado vacío si no existe la categoría solicitada --}}
         <div class="contenedor-mensaje-vacio">
             <div class="alerta-basket">
-                <p>No se ha encontrado el equipo de la categoría <strong>{{ $categoriaSel }}</strong>.</p>
-                <a href="{{ route('basket.inicio') }}" class="boton-rojo-centrado">Volver al inicio</a>
+                <p>{!! __('public.team.empty.category', ['category' => e($categoriaSel)]) !!}</p>
+                <a href="{{ route('basket.inicio') }}" class="boton-rojo-centrado">{{ __('public.team.empty.back_home') }}</a>
             </div>
         </div>
     @endif

@@ -10,16 +10,17 @@
 @use('Carbon\Carbon') 
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Partidos - Bellreguard CB')
+@section('title', __('public.matches.meta.title'))
+@section('meta_description', __('public.matches.meta.description'))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
 {{-- Hero principal del calendario --}}
 <x-public-news-hero
-    badge="CALENDARIO OFICIAL"
-    title="Próximos Partidos"
-    subtitle="Consulta el calendario de todos nuestros equipos."
+    :badge="__('public.matches.hero.badge')"
+    :title="__('public.matches.hero.title')"
+    :subtitle="__('public.matches.hero.subtitle')"
 />
 
 {{-- Rejilla principal de partidos agrupados por categoría --}}
@@ -69,9 +70,9 @@
                         @endphp
                         <div class="tarjeta-partido {{ $partido->oculto ? 'tarjeta-partido-oculto' : '' }}">
                             <span class="etiqueta-estado {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
-                                {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                                {{ $isFinalizado ? __('public.matches.status.finished') : __('public.matches.status.upcoming') }}
                             </span>
-                            <span class="jornada">Encuentro</span>
+                            <span class="jornada">{{ __('public.matches.match_label') }}</span>
                             
                             <div class="enfrentamiento">
                                 {{-- EQUIPO LOCAL --}}
@@ -115,7 +116,7 @@
 
                             <div class="acciones-partido">
                                 <a href="{{ route('basket.partidos.detalle', $partido->id) }}" class="btn-detalle-partido">
-                                    Ver detalles del partido
+                                    {{ __('public.matches.detail_cta') }}
                                 </a>
                                 {{-- Acción de visibilidad solo para usuarios con permisos --}}
                                 @if(auth()->user()?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]))
@@ -123,7 +124,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="btn-toggle-oculto-partido">
-                                            {{ $partido->oculto ? 'Mostrar en web' : 'Ocultar en web' }}
+                                            {{ $partido->oculto ? __('public.matches.actions.show') : __('public.matches.actions.hide') }}
                                         </button>
                                     </form>
                                 @endif
@@ -138,9 +139,9 @@
                 <div class="estado-vacio-icono">
                     <i class="fa-regular fa-calendar-xmark"></i>
                 </div>
-                <h3>Calendario en actualización</h3>
-                <p>Estamos cerrando los próximos encuentros. Muy pronto publicaremos nuevas fechas y horarios.</p>
-                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
+                <h3>{{ __('public.matches.empty.title') }}</h3>
+                <p>{{ __('public.matches.empty.text') }}</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">{{ __('public.matches.empty.cta') }}</a>
             </div>
         @endforelse
         

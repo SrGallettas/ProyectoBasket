@@ -68,7 +68,7 @@ class AuthController extends Controller
             $minutosRestantes = (int) ceil($segundosRestantes / 60);
 
             throw ValidationException::withMessages([
-                'email' => "Demasiados intentos de acceso. Vuelve a intentarlo en {$minutosRestantes} minuto(s).",
+                'email' => __('auth.throttle', ['minutes' => $minutosRestantes]),
             ]);
         }
 
@@ -88,7 +88,7 @@ class AuthController extends Controller
 
         // Volvemos atrás con error y conservamos email + remember.
         return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
+            'email' => __('auth.failed'),
         ])->withInput($request->only('email', 'remember'));
     }
 

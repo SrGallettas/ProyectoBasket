@@ -9,28 +9,28 @@
 @use('Carbon\Carbon')
 
 {{-- SEO y metadatos sociales de la página de inicio --}}
-@section('title', 'Inicio - Bellreguard CB')
-@section('meta_description', 'Descubre Bellreguard CB: próximos partidos, último resultado, noticias del club y toda la actualidad del baloncesto en Bellreguard.')
+@section('title', __('public.home.meta.title'))
+@section('meta_description', __('public.home.meta.description'))
 @section('canonical', route('basket.inicio'))
-@section('og_title', 'Bellreguard CB | Partidos, noticias y actualidad')
-@section('og_description', 'Consulta los próximos partidos, el último resultado y las noticias de Bellreguard CB desde la portada oficial del club.')
+@section('og_title', __('public.home.meta.og_title'))
+@section('og_description', __('public.home.meta.og_description'))
 @section('og_url', route('basket.inicio'))
 @section('og_image', asset('img/principal-2.png'))
-@section('og_image_alt', 'Jugadores y ambiente de Bellreguard CB')
+@section('og_image_alt', __('public.home.meta.og_image_alt'))
 @section('twitter_image', asset('img/principal-2.png'))
-@section('twitter_image_alt', 'Jugadores y ambiente de Bellreguard CB')
+@section('twitter_image_alt', __('public.home.meta.og_image_alt'))
 
 {{-- Variable auxiliar para evitar conflictos con otros títulos compartidos --}}
-@php $titulo = 'Inicio - Bellreguard CB'; @endphp
+@php $titulo = __('public.home.meta.title'); @endphp
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
     {{-- Imágenes que alimentan el slider principal de portada --}}
     @php
         $heroImages = [
-            ['src' => asset('img/principal-1.png'), 'alt' => 'Imagen principal 1 Bellreguard'],
-            ['src' => asset('img/principal-2.png'), 'alt' => 'Imagen principal 2 Bellreguard'],
-            ['src' => asset('img/principal-3.png'), 'alt' => 'Imagen principal 3 Bellreguard'],
+            ['src' => asset('img/principal-1.png'), 'alt' => __('public.home.hero.slide_alt', ['number' => 1])],
+            ['src' => asset('img/principal-2.png'), 'alt' => __('public.home.hero.slide_alt', ['number' => 2])],
+            ['src' => asset('img/principal-3.png'), 'alt' => __('public.home.hero.slide_alt', ['number' => 3])],
         ];
     @endphp
 
@@ -50,10 +50,10 @@
 
         <div class="hero-texto">
             <h1>Bellreguard CB</h1>
-            <p>Pasión, dedicación y excelencia en cada partido. Únete a nuestra familia basketbolística.</p>
+            <p>{{ __('public.home.hero.subtitle') }}</p>
             <div class="botones-hero">
-                <a href="{{ route('basket.partidos') }}" class="boton-principal">Ver Próximos Partidos</a>
-                <a href="{{ route('basket.equipo') }}" class="boton-secundario">Conocer el Equipo</a>
+                <a href="{{ route('basket.partidos') }}" class="boton-principal">{{ __('public.home.hero.primary_cta') }}</a>
+                <a href="{{ route('basket.equipo') }}" class="boton-secundario">{{ __('public.home.hero.secondary_cta') }}</a>
             </div>
             <div class="hero-indicadores" aria-hidden="true">
                 @foreach ($heroImages as $index => $heroImage)
@@ -89,26 +89,23 @@
     <section class="inicio-club-cta">
         <div class="inicio-club-cta-card">
             <div class="inicio-club-cta-copy">
-                <p class="inicio-kicker">Únete al club</p>
-                <h2>¿Quieres jugar con nosotros esta temporada?</h2>
-                <p>
-                    Si buscas equipo, quieres traer a tu hijo o simplemente conocer mejor el club,
-                    te ayudamos a encontrar la categoría adecuada y resolver cualquier duda.
-                </p>
+                <p class="inicio-kicker">{{ __('public.home.join.kicker') }}</p>
+                <h2>{{ __('public.home.join.title') }}</h2>
+                <p>{{ __('public.home.join.text') }}</p>
                 <div class="inicio-club-cta-actions">
-                    <a href="{{ route('basket.contacto') }}" class="boton-principal">Contactar con el club</a>
+                    <a href="{{ route('basket.contacto') }}" class="boton-principal">{{ __('public.home.join.cta') }}</a>
                 </div>
             </div>
 
             <div class="inicio-club-cta-aside">
                 <div class="inicio-club-cta-pill">
                     <i class="fa-solid fa-basketball"></i>
-                    <span>Pruebas, cantera y equipos del club</span>
+                    <span>{{ __('public.home.join.pill') }}</span>
                 </div>
                 <ul class="inicio-club-cta-list">
-                    <li><i class="fa-solid fa-check"></i> Información clara sobre categorías y equipos</li>
-                    <li><i class="fa-solid fa-check"></i> Contacto directo con el club</li>
-                    <li><i class="fa-solid fa-check"></i> Acceso rápido a próximos partidos y actualidad</li>
+                    <li><i class="fa-solid fa-check"></i> {{ __('public.home.join.points.categories') }}</li>
+                    <li><i class="fa-solid fa-check"></i> {{ __('public.home.join.points.contact') }}</li>
+                    <li><i class="fa-solid fa-check"></i> {{ __('public.home.join.points.updates') }}</li>
                 </ul>
             </div>
         </div>
@@ -117,9 +114,9 @@
     {{-- Bloque de cifras rápidas que resumen la actividad pública del club --}}
     <section class="inicio-club-stats">
         <div class="inicio-club-stats-header">
-            <p class="inicio-kicker">Sobre el club</p>
-            <h2>Un proyecto deportivo con actividad real</h2>
-            <p>Estas cifras salen del contenido público que ya tiene el club en la web y ayudan a mostrar que la portada está viva.</p>
+            <p class="inicio-kicker">{{ __('public.home.stats_header.kicker') }}</p>
+            <h2>{{ __('public.home.stats_header.title') }}</h2>
+            <p>{{ __('public.home.stats_header.text') }}</p>
         </div>
 
         <div class="inicio-club-stats-grid">
@@ -137,24 +134,24 @@
     @php
         $cardsPartidos = collect([
             [
-                'eyebrow' => 'Próximo partido',
-                'titulo' => $proximoPartido ? $proximoPartido->categoria : 'Calendario en preparación',
+                'eyebrow' => __('public.home.matches.next_eyebrow'),
+                'titulo' => $proximoPartido ? $proximoPartido->categoria : __('public.home.matches.next_pending_title'),
                 'partido' => $proximoPartido,
                 'finalizado' => false,
                 'cta' => route('basket.partidos'),
-                'ctaTexto' => 'Ver calendario completo',
-                'vacioTitulo' => 'Todavía no hay próximos partidos publicados',
-                'vacioTexto' => 'En cuanto cerremos el siguiente encuentro del club, aparecerá aquí en portada.',
+                'ctaTexto' => __('public.home.matches.next_cta'),
+                'vacioTitulo' => __('public.home.matches.next_empty_title'),
+                'vacioTexto' => __('public.home.matches.next_empty_text'),
             ],
             [
-                'eyebrow' => 'Último resultado',
-                'titulo' => $ultimoResultado ? $ultimoResultado->categoria : 'Resultados pendientes',
+                'eyebrow' => __('public.home.matches.last_eyebrow'),
+                'titulo' => $ultimoResultado ? $ultimoResultado->categoria : __('public.home.matches.last_pending_title'),
                 'partido' => $ultimoResultado,
                 'finalizado' => true,
                 'cta' => $ultimoResultado ? route('basket.partidos.detalle', $ultimoResultado->id) : route('basket.partidos'),
-                'ctaTexto' => 'Ver estadísticas del partido',
-                'vacioTitulo' => 'Aún no hay resultados cerrados',
-                'vacioTexto' => 'Cuando el club registre un marcador final, lo mostraremos aquí directamente.',
+                'ctaTexto' => __('public.home.matches.last_cta'),
+                'vacioTitulo' => __('public.home.matches.last_empty_title'),
+                'vacioTexto' => __('public.home.matches.last_empty_text'),
             ],
         ]);
     @endphp
@@ -162,9 +159,9 @@
     {{-- Marcadores destacados de la portada --}}
     <section class="inicio-marcadores">
         <div class="inicio-marcadores-header">
-            <p class="inicio-kicker">Actualidad deportiva</p>
-            <h2>Lo más importante de la semana</h2>
-            <p>Acceso directo al siguiente compromiso del club y al último marcador registrado.</p>
+            <p class="inicio-kicker">{{ __('public.home.matches.kicker') }}</p>
+            <h2>{{ __('public.home.matches.title') }}</h2>
+            <p>{{ __('public.home.matches.text') }}</p>
         </div>
 
         <div class="inicio-marcadores-grid">
@@ -180,7 +177,7 @@
                     <div class="inicio-score-top">
                         <span class="inicio-score-eyebrow">{{ $card['eyebrow'] }}</span>
                         <span class="inicio-score-badge {{ $card['finalizado'] ? 'is-result' : 'is-next' }}">
-                            {{ $card['finalizado'] ? 'Final' : 'Agenda' }}
+                            {{ $card['finalizado'] ? __('public.home.matches.badges.final') : __('public.home.matches.badges.schedule') }}
                         </span>
                     </div>
 
@@ -239,12 +236,12 @@
         <section class="inicio-mini-clasificacion">
             <div class="inicio-mini-clasificacion-header">
                 <div>
-                    <p class="inicio-kicker">Clasificación</p>
-                    <h2>Así va la competición</h2>
+                    <p class="inicio-kicker">{{ __('public.home.table.kicker') }}</p>
+                    <h2>{{ __('public.home.table.title') }}</h2>
                     <p>
                         {{ $clasificacionInicio->nombre }}
                         @if($clasificacionInicio->temporada)
-                            · Temporada {{ $clasificacionInicio->temporada }}
+                            · {{ __('public.home.table.season') }} {{ $clasificacionInicio->temporada }}
                         @endif
                     </p>
                 </div>
@@ -255,7 +252,7 @@
                     <thead>
                         <tr>
                             <th>Pos</th>
-                            <th>Equipo</th>
+                            <th>{{ __('public.home.table.team') }}</th>
                             <th>PJ</th>
                             <th>Pts</th>
                         </tr>
@@ -272,8 +269,8 @@
                                 <td><strong>{{ $fila->posicion_home }}</strong></td>
                                 <td>
                                     <div class="inicio-mini-clasificacion-team">
-                                        <img src="{{ optional($equipoFila)->imagen_club_url ?? asset('img/club_14.png') }}" alt="{{ optional($equipoFila)->nombre ?? 'Equipo' }}">
-                                        <span>{{ optional($equipoFila)->nombre ?? 'Equipo' }}</span>
+                                        <img src="{{ optional($equipoFila)->imagen_club_url ?? asset('img/club_14.png') }}" alt="{{ optional($equipoFila)->nombre ?? __('public.home.table.team_fallback') }}">
+                                        <span>{{ optional($equipoFila)->nombre ?? __('public.home.table.team_fallback') }}</span>
                                     </div>
                                 </td>
                                 <td>{{ $fila->pj }}</td>
@@ -285,7 +282,7 @@
             </div>
 
             <div class="inicio-cta-wrap">
-                <a href="{{ route('basket.clasificacion') }}" class="inicio-mini-clasificacion-link">Ver clasificación completa</a>
+                <a href="{{ route('basket.clasificacion') }}" class="inicio-mini-clasificacion-link">{{ __('public.home.table.cta') }}</a>
             </div>
         </section>
     @endif
@@ -294,9 +291,9 @@
     @if($galeriasDestacadas->isNotEmpty())
         <section class="inicio-galeria-destacada">
             <div class="inicio-galeria-header">
-                <p class="inicio-kicker">Vida del club</p>
-                <h2>Imágenes que enseñan el ambiente Bellreguard</h2>
-                <p>Una selección de álbumes recientes para que la portada también muestre lo que pasa dentro y fuera de la pista.</p>
+                <p class="inicio-kicker">{{ __('public.home.gallery.kicker') }}</p>
+                <h2>{{ __('public.home.gallery.title') }}</h2>
+                <p>{{ __('public.home.gallery.text') }}</p>
             </div>
 
             <div class="inicio-galeria-grid">
@@ -312,24 +309,24 @@
                             @else
                                 <img
                                     src="{{ asset('img/club_14.png') }}"
-                                    alt="Galería sin portada"
+                                    alt="{{ __('public.home.gallery.no_cover_alt') }}"
                                 >
                             @endif
-                            <span class="inicio-galeria-badge">{{ $galeria->imagenes_count }} fotos</span>
+                            <span class="inicio-galeria-badge">{{ __('public.home.gallery.photos_count', ['count' => $galeria->imagenes_count]) }}</span>
                         </a>
 
                         <div class="inicio-galeria-copy">
                             <span class="inicio-galeria-type">{{ \App\Models\Galeria::TIPOS[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
                             <h3>{{ $galeria->titulo }}</h3>
-                            <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: 'Revive este álbum destacado de Bellreguard CB.', $index === 0 ? 150 : 110) }}</p>
-                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-link">Ver álbum</a>
+                            <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: __('public.home.gallery.fallback_description'), $index === 0 ? 150 : 110) }}</p>
+                            <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-link">{{ __('public.home.gallery.card_cta') }}</a>
                         </div>
                     </article>
                 @endforeach
             </div>
 
             <div class="inicio-cta-wrap">
-                <a href="{{ route('basket.galeria') }}" class="inicio-cta-link">Ver toda la galería</a>
+                <a href="{{ route('basket.galeria') }}" class="inicio-cta-link">{{ __('public.home.gallery.cta') }}</a>
             </div>
         </section>
     @endif
@@ -341,8 +338,8 @@
             $noticiasSecundarias = $noticias->skip(1)->take(4);
         @endphp
 
-        <h2>Últimas Noticias</h2>
-        <p class="subtitulo">Mantente al día con todas las novedades del club</p>
+        <h2>{{ __('public.home.news.title') }}</h2>
+        <p class="subtitulo">{{ __('public.home.news.subtitle') }}</p>
         
         @if($noticiaPrincipal)
             <div class="noticias-destacadas-layout">
@@ -353,7 +350,7 @@
 
                     <div class="noticia-principal-copy">
                         <div class="noticia-principal-meta">
-                            <span class="fecha">{{ $noticiaPrincipal->created_at->format('d M, Y') }}</span>
+                            <span class="fecha">{{ $noticiaPrincipal->created_at->translatedFormat('d M, Y') }}</span>
                             @if($noticiaPrincipal->autor)
                                 <span class="noticia-autor">{{ $noticiaPrincipal->autor }}</span>
                             @endif
@@ -361,7 +358,7 @@
 
                         <h3>{{ $noticiaPrincipal->titulo }}</h3>
                         <p>{{ Str::limit($noticiaPrincipal->subtitulo ?: strip_tags($noticiaPrincipal->contenido), 180) }}</p>
-                        <a href="{{ route('noticias.detalle', $noticiaPrincipal->slug) }}" class="noticia-principal-link">Leer noticia destacada</a>
+                        <a href="{{ route('noticias.detalle', $noticiaPrincipal->slug) }}" class="noticia-principal-link">{{ __('public.home.news.featured_cta') }}</a>
                     </div>
                 </article>
 
@@ -374,10 +371,10 @@
                                 </a>
                                 
                                 <div class="info-tarjeta">
-                                    <span class="fecha">{{ $noticia->created_at->format('d M, Y') }}</span>
+                                    <span class="fecha">{{ $noticia->created_at->translatedFormat('d M, Y') }}</span>
                                     <h3>{{ $noticia->titulo }}</h3>
                                     <p>{{ Str::limit($noticia->subtitulo ?: strip_tags($noticia->contenido), 95) }}</p>
-                                    <a href="{{ route('noticias.detalle', $noticia->slug) }}">Leer más →</a>
+                                    <a href="{{ route('noticias.detalle', $noticia->slug) }}">{{ __('public.home.news.more') }}</a>
                                 </div>
                             </article>
                         @endforeach
@@ -389,15 +386,15 @@
                 <div class="estado-vacio-icono">
                     <i class="fas fa-newspaper"></i>
                 </div>
-                <h3>Sin noticias publicadas por ahora</h3>
-                <p>En cuanto tengamos novedades del club, las veras aqui en primer plano.</p>
-                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Contactar con el club</a>
+                <h3>{{ __('public.home.news.empty_title') }}</h3>
+                <p>{{ __('public.home.news.empty_text') }}</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">{{ __('public.home.news.empty_cta') }}</a>
             </div>
         @endif
 
         @if($noticias->isNotEmpty())
             <div class="inicio-cta-wrap">
-                <a href="{{ route('basket.noticias') }}" class="inicio-cta-link">Ver todas las noticias</a>
+                <a href="{{ route('basket.noticias') }}" class="inicio-cta-link">{{ __('public.home.news.cta') }}</a>
             </div>
         @endif
     </section>
@@ -416,9 +413,9 @@
         @endphp
 
         <div class="patrocinadores-header">
-            <p class="inicio-kicker">Red de apoyo</p>
-            <h2>Nuestros Patrocinadores</h2>
-            <p class="subtitulo">Empresas y colaboradores que ayudan a sostener el baloncesto del club y su actividad durante la temporada.</p>
+            <p class="inicio-kicker">{{ __('public.home.sponsors.kicker') }}</p>
+            <h2>{{ __('public.home.sponsors.title') }}</h2>
+            <p class="subtitulo">{{ __('public.home.sponsors.subtitle') }}</p>
         </div>
 
         <div class="rejilla-patrocinadores">
@@ -430,7 +427,7 @@
         </div>
 
         <div class="inicio-cta-wrap">
-            <a href="{{ route('basket.contacto') }}" class="inicio-cta-link">Quiero colaborar con el club</a>
+            <a href="{{ route('basket.contacto') }}" class="inicio-cta-link">{{ __('public.home.sponsors.cta') }}</a>
         </div>
     </section>
 

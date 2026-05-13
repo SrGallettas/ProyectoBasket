@@ -1,68 +1,69 @@
 @extends('layouts.admin')
 
 @section('contenido_admin')
+@section('title', __('admin.dashboard.meta.title'))
 @php
     $adminUser = auth()->user();
     $adminCards = [
         [
-            'titulo' => 'Usuarios',
-            'texto' => 'Cuentas internas del panel, accesos y roles de gestión.',
+            'titulo' => __('admin.dashboard.cards.users.title'),
+            'texto' => __('admin.dashboard.cards.users.text'),
             'ruta' => route('usuarios.index'),
             'imagen' => asset('img/usuarios.png'),
             'icono' => 'fas fa-user-shield',
             'visible' => $adminUser?->role === \App\Models\User::ROLE_ADMIN,
         ],
         [
-            'titulo' => 'Jugadores',
-            'texto' => 'Altas, fichas, dorsales y asignaciones de equipo.',
+            'titulo' => __('admin.dashboard.cards.players.title'),
+            'texto' => __('admin.dashboard.cards.players.text'),
             'ruta' => route('jugadores.index'),
             'imagen' => asset('img/jugadores.png'),
             'icono' => 'fas fa-users',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
-            'titulo' => 'Equipos',
-            'texto' => 'Categorías, escudos y estructura deportiva del club.',
+            'titulo' => __('admin.dashboard.cards.teams.title'),
+            'texto' => __('admin.dashboard.cards.teams.text'),
             'ruta' => route('equipos.index'),
             'imagen' => asset('img/equipo.png'),
             'icono' => 'fas fa-tshirt',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
-            'titulo' => 'Noticias',
-            'texto' => 'Contenido editorial, titulares y publicaciones.',
+            'titulo' => __('admin.dashboard.cards.news.title'),
+            'texto' => __('admin.dashboard.cards.news.text'),
             'ruta' => route('noticias.index'),
             'imagen' => asset('img/noticias.png'),
             'icono' => 'fas fa-newspaper',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]),
         ],
         [
-            'titulo' => 'Merchandising',
-            'texto' => 'Productos, tallas, precios e imágenes de tienda.',
+            'titulo' => __('admin.dashboard.cards.store.title'),
+            'texto' => __('admin.dashboard.cards.store.text'),
             'ruta' => route('merchandising.index'),
             'imagen' => asset('img/merchan.png'),
             'icono' => 'fas fa-shopping-bag',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_EDITOR]),
         ],
         [
-            'titulo' => 'Partidos',
-            'texto' => 'Calendario, cruces, pabellones y categorías.',
+            'titulo' => __('admin.dashboard.cards.matches.title'),
+            'texto' => __('admin.dashboard.cards.matches.text'),
             'ruta' => route('partidos.index'),
             'imagen' => asset('img/partidos.png'),
             'icono' => 'fas fa-calendar-alt',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
-            'titulo' => 'Clasificaciones',
-            'texto' => 'Ligas, jornadas y tabla de posiciones por temporada.',
+            'titulo' => __('admin.dashboard.cards.standings.title'),
+            'texto' => __('admin.dashboard.cards.standings.text'),
             'ruta' => route('clasificaciones.index'),
             'imagen' => asset('img/clasificacion.png'),
             'icono' => 'fas fa-trophy',
             'visible' => $adminUser?->hasAnyRole([\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_COACH]),
         ],
         [
-            'titulo' => 'Galerías',
-            'texto' => 'Álbumes, portadas e imágenes del club.',
+            'titulo' => __('admin.dashboard.cards.galleries.title'),
+            'texto' => __('admin.dashboard.cards.galleries.text'),
             'ruta' => route('galerias.index'),
             'imagen' => asset('img/galeria.png'),
             'icono' => 'fas fa-images',
@@ -73,9 +74,9 @@
 
 <header class="dashboard-admin-hero">
     <div>
-        <p class="dashboard-admin-kicker">Panel de administración</p>
-        <h1>Accesos rápidos del club</h1>
-        <p class="dashboard-admin-copy">Cada tarjeta puede llevar la imagen que tú quieras. Yo te dejo una base visual bonita y luego cambias esas rutas por las definitivas.</p>
+        <p class="dashboard-admin-kicker">{{ __('admin.dashboard.kicker') }}</p>
+        <h1>{{ __('admin.dashboard.title') }}</h1>
+        <p class="dashboard-admin-copy">{{ __('admin.dashboard.copy') }}</p>
     </div>
 
     <div class="dashboard-admin-badge">
@@ -102,7 +103,7 @@
             </div>
 
             <div class="dashboard-admin-card-footer">
-                <span>Entrar</span>
+                <span>{{ __('admin.dashboard.enter') }}</span>
                 <i class="fas fa-arrow-right"></i>
             </div>
         </a>

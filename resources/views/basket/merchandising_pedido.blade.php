@@ -7,16 +7,17 @@
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Solicitar pedido - Bellreguard CB')
+@section('title', __('public.order.meta.title'))
+@section('meta_description', __('public.order.meta.description'))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
 {{-- Hero principal del formulario final --}}
 <x-public-news-hero
-    badge="SOLICITUD DE PEDIDO"
-    title="Finaliza tu solicitud"
-    subtitle="Revísalo todo y envíanos tus datos para que podamos gestionar el pedido contigo."
+    :badge="__('public.order.hero.badge')"
+    :title="__('public.order.hero.title')"
+    :subtitle="__('public.order.hero.subtitle')"
 />
 
 {{-- Contenido principal del formulario y resumen --}}
@@ -30,49 +31,49 @@
     <div class="pedido-layout">
         {{-- Formulario de datos del cliente --}}
         <div class="pedido-card">
-            <span class="merch-kicker">Paso final</span>
-            <h2>Datos de contacto</h2>
-            <p>Este formulario no cobra online. Nos llega tu solicitud y te contactamos para cerrar disponibilidad, entrega y pago.</p>
+            <span class="merch-kicker">{{ __('public.order.form.kicker') }}</span>
+            <h2>{{ __('public.order.form.title') }}</h2>
+            <p>{{ __('public.order.form.text') }}</p>
 
             <form action="{{ route('basket.tienda.pedido.enviar') }}" method="POST" class="pedido-form">
                 @csrf
 
                 <label class="pedido-field">
-                    <span>Nombre</span>
-                    <input type="text" name="nombre" value="{{ old('nombre') }}" required>
+                    <span>{{ __('public.order.fields.name') }}</span>
+                    <input type="text" name="nombre" value="{{ old('nombre') }}">
                 </label>
 
                 <label class="pedido-field">
-                    <span>Apellidos</span>
-                    <input type="text" name="apellidos" value="{{ old('apellidos') }}" required>
+                    <span>{{ __('public.order.fields.surnames') }}</span>
+                    <input type="text" name="apellidos" value="{{ old('apellidos') }}">
                 </label>
 
                 <label class="pedido-field">
-                    <span>Teléfono</span>
-                    <input type="text" name="telefono" value="{{ old('telefono') }}" required>
+                    <span>{{ __('public.order.fields.phone') }}</span>
+                    <input type="text" name="telefono" value="{{ old('telefono') }}">
                 </label>
 
                 <label class="pedido-field">
-                    <span>Correo electrónico</span>
-                    <input type="email" name="correo" value="{{ old('correo') }}" required>
+                    <span>{{ __('public.order.fields.email') }}</span>
+                    <input type="email" name="correo" value="{{ old('correo') }}">
                 </label>
 
                 <label class="pedido-field pedido-field-full">
-                    <span>Notas adicionales</span>
-                    <textarea name="notas" placeholder="Ejemplo: prefiero recogerlo en entrenamiento, dudas con talla, etc.">{{ old('notas') }}</textarea>
+                    <span>{{ __('public.order.fields.notes') }}</span>
+                    <textarea name="notas" placeholder="{{ __('public.order.fields.notes_placeholder') }}">{{ old('notas') }}</textarea>
                 </label>
 
                 <div class="pedido-field pedido-field-full">
-                    <button type="submit" class="pedido-submit">Enviar solicitud de pedido</button>
+                    <button type="submit" class="pedido-submit">{{ __('public.order.form.submit') }}</button>
                 </div>
             </form>
         </div>
 
         {{-- Resumen lateral de la cesta --}}
         <aside class="pedido-summary">
-            <span class="merch-kicker">Resumen</span>
-            <h3>Tu pedido</h3>
-            <p>Comprueba las líneas antes de enviarlo. El importe es orientativo y te lo confirmaremos al responder.</p>
+            <span class="merch-kicker">{{ __('public.order.summary.kicker') }}</span>
+            <h3>{{ __('public.order.summary.title') }}</h3>
+            <p>{{ __('public.order.summary.text') }}</p>
 
             <div class="pedido-items">
                 @foreach($cartItems as $item)
@@ -81,8 +82,8 @@
 
                         <div>
                             <strong>{{ $item['nombre'] }}</strong>
-                            <span>Talla: {{ $item['talla'] }}</span>
-                            <span>Cantidad: {{ $item['cantidad'] }}</span>
+                            <span>{{ __('public.order.summary.size', ['size' => $item['talla']]) }}</span>
+                            <span>{{ __('public.order.summary.quantity', ['quantity' => $item['cantidad']]) }}</span>
                         </div>
 
                         <strong>{{ number_format($item['precio'] * $item['cantidad'], 2, ',', '.') }} €</strong>
@@ -91,7 +92,7 @@
             </div>
 
             <div class="pedido-total">
-                <span>{{ $cartSummary['units'] }} unidades</span>
+                <span>{{ __('public.order.summary.units', ['count' => $cartSummary['units']]) }}</span>
                 <strong>{{ number_format($cartSummary['subtotal'], 2, ',', '.') }} €</strong>
             </div>
         </aside>

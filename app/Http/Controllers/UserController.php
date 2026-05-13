@@ -62,9 +62,6 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'role' => ['required', Rule::in(array_keys(User::ROLES))],
             'password' => 'required|string|min:8|confirmed',
-        ], [
-            'email.unique' => 'Ya existe un usuario con ese email.',
-            'password.confirmed' => 'La confirmación de contraseña no coincide.',
         ]);
 
         User::create($data);
@@ -87,9 +84,6 @@ class UserController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($usuario->id)],
             'role' => ['required', Rule::in(array_keys(User::ROLES))],
             'password' => 'nullable|string|min:8|confirmed',
-        ], [
-            'email.unique' => 'Ya existe un usuario con ese email.',
-            'password.confirmed' => 'La confirmación de contraseña no coincide.',
         ]);
 
         if ($usuario->role === User::ROLE_ADMIN
@@ -97,13 +91,13 @@ class UserController extends Controller
             && User::where('role', User::ROLE_ADMIN)->count() <= 1
         ) {
             return back()->withErrors([
-                'role' => 'Debe existir al menos un administrador activo.',
+                'role' => __('admin.users.errors.keep_admin'),
             ])->withInput();
         }
 
         if ($usuario->id === $request->user()->id && $data['role'] !== User::ROLE_ADMIN) {
             return back()->withErrors([
-                'role' => 'No puedes quitarte a ti mismo el rol de administrador.',
+                'role' => __('admin.users.errors.self_demote'),
             ])->withInput();
         }
 
@@ -120,13 +114,13 @@ class UserController extends Controller
     {
         if ($usuario->id === $request->user()->id) {
             return back()->withErrors([
-                'delete' => 'No puedes eliminar tu propia cuenta mientras estás conectado.',
+                'delete' => __('admin.users.errors.self_delete'),
             ]);
         }
 
         if ($usuario->role === User::ROLE_ADMIN && User::where('role', User::ROLE_ADMIN)->count() <= 1) {
             return back()->withErrors([
-                'delete' => 'Debe existir al menos un administrador activo.',
+                'delete' => __('admin.users.errors.keep_admin'),
             ]);
         }
 

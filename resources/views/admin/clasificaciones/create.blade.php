@@ -4,17 +4,17 @@
 <div class="contenedor-edit-jugador">
     <header class="header-ficha">
         <div>
-            <h2>Nueva Clasificación</h2>
-            <p>Crea una liga y selecciona los equipos participantes.</p>
+            <h2>{{ __('admin.standings.create.title') }}</h2>
+            <p>{{ __('admin.standings.create.subtitle') }}</p>
         </div>
-        <a href="{{ route('clasificaciones.index') }}" class="btn-ficha-accion btn-ficha-volver" title="Volver al listado">
-            <i class="fas fa-arrow-left"></i> Volver al listado
+        <a href="{{ route('clasificaciones.index') }}" class="btn-ficha-accion btn-ficha-volver" title="{{ __('admin.common.back_to_list') }}">
+            <i class="fas fa-arrow-left"></i> {{ __('admin.common.back_to_list') }}
         </a>
     </header>
 
     @if ($errors->any())
         <div class="cuadro-errores-admin">
-            <strong>¡Vaya! Algo ha ido mal:</strong>
+            <strong>{{ __('admin.common.form_error') }}</strong>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -34,17 +34,17 @@
 
             <div class="grid-formulario-fichas">
                 <div class="seccion-form-ficha seccion-personal">
-                    <h3><i class="fas fa-trophy"></i> Datos de la competición</h3>
+                    <h3><i class="fas fa-trophy"></i> {{ __('admin.standings.sections.competition_data') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Nombre</label>
-                        <input type="text" name="nombre" class="input-ficha" value="{{ old('nombre') }}" required>
+                        <label>{{ __('admin.standings.fields.name') }}</label>
+                        <input type="text" name="nombre" class="input-ficha" value="{{ old('nombre') }}">
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Categoría</label>
+                        <label>{{ __('admin.standings.fields.category') }}</label>
                         <select name="categoria" class="input-ficha" data-categoria-clasificacion>
-                            <option value="" {{ old('categoria') ? '' : 'selected' }}>Sin categoría</option>
+                            <option value="" {{ old('categoria') ? '' : 'selected' }}>{{ __('admin.standings.fields.no_category') }}</option>
                             @foreach($categoriasDisponibles as $categoria)
                                 <option value="{{ $categoria }}" {{ old('categoria') === $categoria ? 'selected' : '' }}>
                                     {{ $categoria }}
@@ -54,46 +54,46 @@
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Temporada</label>
+                        <label>{{ __('admin.standings.fields.season') }}</label>
                         <input type="text" name="temporada" class="input-ficha" value="{{ old('temporada') }}" placeholder="2026/27">
                     </div>
 
                     <div class="campo-ficha">
                         <label style="display:flex; align-items:center; gap:8px;">
                             <input type="checkbox" name="activa" value="1" {{ old('activa') ? 'checked' : '' }}>
-                            Marcar como clasificación activa
+                            {{ __('admin.standings.fields.mark_active') }}
                         </label>
                     </div>
                 </div>
 
                 <div class="seccion-form-ficha seccion-deportiva">
-                    <h3><i class="fas fa-users"></i> Equipos incluidos</h3>
-                    <p style="margin-bottom: 14px; color: #666;">Selecciona los equipos que competirán en esta clasificación.</p>
+                    <h3><i class="fas fa-users"></i> {{ __('admin.standings.fields.included_teams') }}</h3>
+                    <p style="margin-bottom: 14px; color: #666;">{{ __('admin.standings.fields.included_teams_help') }}</p>
 
                     <div class="clasificacion-filtros">
-                        <button type="button" class="clasificacion-filtro-btn is-active" data-filtro-tipo="todos">Todos</button>
-                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="local">Locales</button>
-                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="visitante">Visitantes</button>
+                        <button type="button" class="clasificacion-filtro-btn is-active" data-filtro-tipo="todos">{{ __('admin.standings.filters.all') }}</button>
+                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="local">{{ __('admin.standings.filters.local') }}</button>
+                        <button type="button" class="clasificacion-filtro-btn" data-filtro-tipo="visitante">{{ __('admin.standings.filters.visitor') }}</button>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Buscar equipo</label>
-                        <input type="text" class="input-ficha" placeholder="Escribe para filtrar equipos..." data-buscar-equipo>
+                        <label>{{ __('admin.standings.fields.search_team') }}</label>
+                        <input type="text" class="input-ficha" placeholder="{{ __('admin.standings.fields.search_team_placeholder') }}" data-buscar-equipo>
                     </div>
 
                     <div class="clasificacion-acciones-masa">
-                        <button type="button" class="btn-limpiar" data-select-all>Seleccionar todos</button>
-                        <button type="button" class="btn-limpiar" data-clear-all>Limpiar</button>
+                        <button type="button" class="btn-limpiar" data-select-all>{{ __('admin.standings.fields.select_all') }}</button>
+                        <button type="button" class="btn-limpiar" data-clear-all>{{ __('admin.standings.fields.clear') }}</button>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Equipos</label>
+                        <label>{{ __('admin.standings.fields.teams') }}</label>
                         <div class="input-ficha" style="max-height: 380px; overflow:auto;" data-equipos-lista>
                             @foreach($equipos as $equipo)
                                 <label style="display:flex; align-items:center; gap:8px; padding:6px 0;" data-equipo-item data-tipo="{{ $equipo->es_local ? 'local' : 'visitante' }}" data-categoria="{{ $equipo->categoria }}" data-nombre="{{ mb_strtolower($equipo->nombre) }}">
                                     <input type="checkbox" name="equipos[]" value="{{ $equipo->id }}" @checked(in_array($equipo->id, old('equipos', [])))>
                                     <span>
-                                        {{ $equipo->nombre }} ({{ $equipo->categoria }}) · {{ $equipo->es_local ? 'Local' : 'Visitante' }}
+                                        {{ $equipo->nombre }} ({{ $equipo->categoria }}) · {{ $equipo->es_local ? __('admin.standings.fields.local') : __('admin.standings.fields.visitor') }}
                                     </span>
                                 </label>
                             @endforeach
@@ -103,9 +103,9 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('clasificaciones.index') }}" class="btn-cancelar-ficha">Cancelar</a>
+                <a href="{{ route('clasificaciones.index') }}" class="btn-cancelar-ficha">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha">
-                    <i class="fas fa-save"></i> GUARDAR CLASIFICACIÓN
+                    <i class="fas fa-save"></i> {{ __('admin.standings.create.submit') }}
                 </button>
             </div>
         </form>

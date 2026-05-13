@@ -5,11 +5,11 @@
 @section('contenido_admin')
 <x-admin-show-header
     :titulo="$clasificacion->nombre"
-    :subtitulo="'Categoría: ' . ($clasificacion->categoria ?: 'Sin categoría') . ' · Temporada: ' . ($clasificacion->temporada ?: 'Sin temporada')"
+    :subtitulo="__('admin.standings.show.subtitle', ['category' => $clasificacion->categoria ?: __('admin.standings.show.no_category'), 'season' => $clasificacion->temporada ?: __('admin.standings.show.no_season')])"
     :editRoute="route('clasificaciones.edit', $clasificacion->id)"
     :deleteRoute="route('clasificaciones.destroy', $clasificacion->id)"
     :indexRoute="route('clasificaciones.index')"
-    confirmMessage="¿Seguro que deseas eliminar esta clasificación?"
+    :confirmMessage="__('admin.standings.actions.confirm_delete_detail')"
 />
 
 @if(session('mensaje'))
@@ -22,7 +22,7 @@
     <form action="{{ route('clasificaciones.recalcular', $clasificacion->id) }}" method="POST" class="admin-form-inline">
         @csrf
         <button type="submit" class="btn-nuevo">
-            <i class="fas fa-sync-alt"></i> Recalcular clasificación con partidos de liga
+            <i class="fas fa-sync-alt"></i> {{ __('admin.standings.show.recalculate') }}
         </button>
     </form>
 </div>
@@ -32,14 +32,14 @@
         <div class="input-grupal">
             <select name="jornada" class="input-search">
                 @if($jornadas->isEmpty())
-                    <option value="">Sin jornadas calculadas</option>
+                    <option value="">{{ __('admin.standings.filters.no_rounds') }}</option>
                 @else
                     @foreach($jornadas as $jornada)
-                        <option value="{{ $jornada }}" @selected((int) $jornadaSeleccionada === (int) $jornada)>Jornada {{ $jornada }}</option>
+                        <option value="{{ $jornada }}" @selected((int) $jornadaSeleccionada === (int) $jornada)>{{ __('admin.standings.filters.round', ['round' => $jornada]) }}</option>
                     @endforeach
                 @endif
             </select>
-            <button type="submit" class="btn-buscar" title="Filtrar jornada">
+            <button type="submit" class="btn-buscar" title="{{ __('admin.standings.filters.filter_round') }}">
                 <i class="fas fa-filter"></i>
             </button>
         </div>
@@ -48,15 +48,15 @@
     <table class="tabla-admin">
         <thead>
             <tr>
-                <th>Pos</th>
-                <th>Equipo</th>
-                <th>PJ</th>
-                <th>PG</th>
-                <th>PP</th>
-                <th>PF</th>
-                <th>PC</th>
-                <th>Diff</th>
-                <th>Pts</th>
+                <th>{{ __('admin.standings.fields.position') }}</th>
+                <th>{{ __('admin.standings.fields.team') }}</th>
+                <th>{{ __('admin.standings.fields.games_played') }}</th>
+                <th>{{ __('admin.standings.fields.won') }}</th>
+                <th>{{ __('admin.standings.fields.lost') }}</th>
+                <th>{{ __('admin.standings.fields.points_for') }}</th>
+                <th>{{ __('admin.standings.fields.points_against') }}</th>
+                <th>{{ __('admin.standings.fields.diff') }}</th>
+                <th>{{ __('admin.standings.fields.points') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@
             @empty
                 <tr>
                     <td colspan="9" class="admin-empty-cell">
-                        <i class="fas fa-info-circle"></i> No hay tabla calculada para esta jornada.
+                        <i class="fas fa-info-circle"></i> {{ __('admin.standings.empty.table') }}
                     </td>
                 </tr>
             @endforelse
@@ -84,15 +84,15 @@
 </div>
 
 <div class="pizarra-admin" style="margin-top: 20px;">
-    <h3 style="margin-bottom: 14px;">Partidos de la jornada</h3>
+    <h3 style="margin-bottom: 14px;">{{ __('admin.standings.show.round_matches') }}</h3>
     <table class="tabla-admin">
         <thead>
             <tr>
-                <th>Fecha</th>
-                <th>Local</th>
-                <th>Visitante</th>
-                <th>Resultado</th>
-                <th>Lugar</th>
+                <th>{{ __('admin.standings.fields.date') }}</th>
+                <th>{{ __('admin.standings.fields.local') }}</th>
+                <th>{{ __('admin.standings.fields.visitor') }}</th>
+                <th>{{ __('admin.standings.fields.result') }}</th>
+                <th>{{ __('admin.standings.fields.place') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -102,7 +102,7 @@
                     $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
                     $marcador = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null
                         ? ((int) $statsLocal->puntos_totales . ' - ' . (int) $statsVisitante->puntos_totales)
-                        : 'Pendiente';
+                        : __('admin.standings.show.pending');
                 @endphp
                 <tr>
                     <td>{{ Carbon::parse($partido->fecha_hora)->format('d/m/Y H:i') }}</td>
@@ -114,7 +114,7 @@
             @empty
                 <tr>
                     <td colspan="5" class="admin-empty-cell">
-                        <i class="fas fa-info-circle"></i> No hay partidos para este filtro.
+                        <i class="fas fa-info-circle"></i> {{ __('admin.standings.empty.matches') }}
                     </td>
                 </tr>
             @endforelse

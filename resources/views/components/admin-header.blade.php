@@ -1,5 +1,7 @@
 {{-- resources/views/components/admin-header.blade.php --}}
-@props(['titulo', 'subtitulo', 'rutaNuevo' => null, 'textoNuevo' => 'Añadir', 'rutaIndex'])
+@props(['titulo', 'subtitulo', 'rutaNuevo' => null, 'textoNuevo' => null, 'rutaIndex'])
+
+@php($textoNuevo = $textoNuevo ?? __('admin.common.add'))
 
 <header class="header-admin">
     <div>
@@ -20,15 +22,15 @@
         <div class="input-grupal">
             <input type="text" 
                    name="search" 
-                   placeholder="Buscar por nombre..." 
+                   placeholder="{{ __('admin.common.search_placeholder') }}" 
                    value="{{ request('search') }}" 
                    class="input-search">
-            <button type="submit" class="btn-buscar" title="Buscar">
+            <button type="submit" class="btn-buscar" title="{{ __('admin.common.search') }}">
                 <i class="fas fa-search"></i>
             </button>
         </div>
         @if(request('search'))
-            <a href="{{ $rutaIndex }}" class="btn-limpiar" title="Limpiar búsqueda">
+            <a href="{{ $rutaIndex }}" class="btn-limpiar" title="{{ __('admin.common.clear_search') }}">
                 <i class="fas fa-times"></i>
             </a>
         @endif

@@ -2,10 +2,12 @@
     'titulo',
     'subtitulo' => null,
     'backRoute',
-    'backText' => 'Volver al listado',
+    'backText' => null,
     'backClass' => 'btn-nuevo',
     'backIcon' => 'fas fa-arrow-left',
 ])
+
+@php($backText = $backText ?? __('admin.common.back_to_list'))
 
 <header class="header-ficha">
     <div>

@@ -113,10 +113,6 @@ class ClasificacionController extends Controller
             'activa' => 'nullable|boolean',
             'equipos' => 'required|array|min:2',
             'equipos.*' => 'integer|exists:equipos,id',
-        ], [
-            'nombre.required' => 'Debes indicar un nombre para la clasificación.',
-            'equipos.required' => 'Debes seleccionar equipos para la clasificación.',
-            'equipos.min' => 'Debes seleccionar al menos 2 equipos.',
         ]);
 
         // Se usa transacción para que activar, crear y vincular equipos
@@ -240,9 +236,6 @@ class ClasificacionController extends Controller
             'activa' => 'nullable|boolean',
             'equipos' => 'required|array|min:2',
             'equipos.*' => 'integer|exists:equipos,id',
-        ], [
-            'equipos.required' => 'Debes seleccionar equipos para la clasificación.',
-            'equipos.min' => 'Debes seleccionar al menos 2 equipos.',
         ]);
 
         // La transacción evita dejar media actualización aplicada.

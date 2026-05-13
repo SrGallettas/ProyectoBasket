@@ -1,16 +1,18 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.news.meta.edit_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     <x-admin-edit-header
-        titulo="Editar Noticia"
-        subtitulo="Actualiza el contenido editorial y la imagen de portada"
+        :titulo="__('admin.news.edit.title')"
+        :subtitulo="__('admin.news.edit.subtitle')"
         :backRoute="route('noticias.index')"
     />
 
     @if ($errors->any())
     <div class="cuadro-errores-admin">
-        <strong>¡Vaya! Algo ha ido mal:</strong>
+        <strong>{{ __('admin.common.form_error') }}</strong>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -26,68 +28,64 @@
 
             <div class="grid-formulario-fichas">
                 <div class="seccion-form-ficha seccion-personal">
-                    <h3><i class="fas fa-newspaper"></i> Datos de Publicación</h3>
+                    <h3><i class="fas fa-newspaper"></i> {{ __('admin.news.sections.publish') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Título de la Noticia</label>
+                        <label>{{ __('admin.news.fields.title') }}</label>
                         <input
                             type="text"
                             name="titulo"
                             value="{{ old('titulo', $noticia->titulo) }}"
-                            placeholder="Ej: Gran victoria del Senior"
-                            required
+                            placeholder="{{ __('admin.news.fields.title_placeholder') }}"
                             class="input-ficha"
                         >
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Subtítulo o Resumen</label>
+                        <label>{{ __('admin.news.fields.subtitle') }}</label>
                         <textarea
                             name="subtitulo"
                             rows="3"
-                            placeholder="Breve resumen para la portada"
-                            required
+                            placeholder="{{ __('admin.news.fields.subtitle_placeholder') }}"
                             class="input-ficha admin-textarea"
                         >{{ old('subtitulo', $noticia->subtitulo) }}</textarea>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Autor</label>
+                        <label>{{ __('admin.news.fields.author') }}</label>
                         <input
                             type="text"
                             name="autor"
                             value="{{ old('autor', $noticia->autor) }}"
-                            placeholder="Nombre del redactor"
-                            required
+                            placeholder="{{ __('admin.news.fields.author_placeholder') }}"
                             class="input-ficha"
                         >
                     </div>
                 </div>
 
                 <div class="seccion-form-ficha seccion-deportiva">
-                    <h3><i class="fas fa-pen-nib"></i> Cuerpo Editorial</h3>
+                    <h3><i class="fas fa-pen-nib"></i> {{ __('admin.news.sections.body') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Contenido</label>
+                        <label>{{ __('admin.news.fields.content') }}</label>
                         <textarea
                             name="contenido"
                             rows="12"
-                            placeholder="Escribe aquí toda la noticia..."
-                            required
+                            placeholder="{{ __('admin.news.fields.content_placeholder') }}"
                             class="input-ficha admin-textarea"
                         >{{ old('contenido', $noticia->contenido) }}</textarea>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Imagen de portada</label>
-                        <p class="input-help-text">Si subes una nueva imagen, sustituirá la actual. Si no, se conservará la existente.</p>
+                        <label>{{ __('admin.news.fields.cover_image') }}</label>
+                        <p class="input-help-text">{{ __('admin.news.fields.cover_help_edit') }}</p>
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Visibilidad en la web</label>
+                        <label>{{ __('admin.news.fields.visibility') }}</label>
                         <div class="checkbox-wrapper checkbox-wrapper-ficha">
                             <input type="checkbox" name="oculto" value="1" {{ old('oculto', $noticia->oculto) ? 'checked' : '' }}>
-                            <span>Ocultar noticia de la web pública</span>
+                            <span>{{ __('admin.news.fields.hide_public') }}</span>
                         </div>
                     </div>
                 </div>
@@ -98,29 +96,29 @@
                             <img
                                 id="noticia-edit-preview"
                                 src="{{ $noticia->imagen_noticia_url }}"
-                                alt="Imagen actual de la noticia"
+                                alt="{{ __('admin.news.images.current_alt') }}"
                             >
                         </div>
 
                         <div class="info-subida-noticia">
-                            <h3>Imagen de la Noticia</h3>
-                            <p>Para que luzca bien, usa una imagen horizontal con buena presencia en portada.</p>
+                            <h3>{{ __('admin.news.images.title') }}</h3>
+                            <p>{{ __('admin.news.images.help') }}</p>
 
                             <label for="imagen_noticia" class="btn-cambiar-foto">
-                                <i class="fas fa-camera"></i> Cambiar imagen
+                                <i class="fas fa-camera"></i> {{ __('admin.news.images.change') }}
                             </label>
                             <input type="file" name="imagen_noticia" id="imagen_noticia" class="hidden-file-input" accept="image/*" data-image-input="#noticia-edit-preview">
 
-                            <span class="nota-subida">Si no seleccionas ninguna, se mantendrá la actual.</span>
+                            <span class="nota-subida">{{ __('admin.news.images.note_edit') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de noticias">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha" title="Actualizar noticia">
-                    <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
+                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.news.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha" title="{{ __('admin.news.actions.update') }}">
+                    <i class="fas fa-sync-alt"></i> {{ __('admin.news.edit.submit') }}
                 </button>
             </div>
         </form>

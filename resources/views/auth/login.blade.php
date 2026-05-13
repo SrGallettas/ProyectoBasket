@@ -5,7 +5,8 @@
 <x-page-style file="login.css" />
 @endpush
 
-@section('title', 'Acceso - Bellreguard CB')
+@section('title', __('admin.login.meta.title'))
+@section('meta_description', __('admin.login.meta.description'))
 
 @section('contenido')
 <section class="contenedor-login">
@@ -19,8 +20,8 @@
             {{-- BLOQUE 1: CABECERA (Logo y Textos de Bienvenida) --}}
             <div class="login-header">
                 <img src="{{ asset('img/club_14.png') }}" alt="Logo Bellreguard CB" class="logo-login">
-                <h1>Bienvenido de nuevo</h1>
-                <p>Introduce tus credenciales para acceder al panel</p>
+                <h1>{{ __('admin.login.header.title') }}</h1>
+                <p>{{ __('admin.login.header.subtitle') }}</p>
             </div>
 
             {{-- BLOQUE 2: FORMULARIO DE ENTRADA --}}
@@ -30,10 +31,10 @@
 
                 {{-- Campo: Email --}}
                 <div class="grupo-input">
-                    <label for="email">Email de acceso</label>
+                    <label for="email">{{ __('admin.login.fields.email') }}</label>
                     <div class="input-icono">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="admin@bellreguardcb.com" value="{{ old('email') }}" required autofocus>
+                        <input type="email" id="email" name="email" placeholder="{{ __('admin.login.fields.email_placeholder') }}" value="{{ old('email') }}" autofocus>
                     </div>
                     {{-- Validación: Muestra error si el email es incorrecto --}}
                     @error('email')
@@ -43,10 +44,10 @@
 
                 {{-- Campo: Contraseña --}}
                 <div class="grupo-input">
-                    <label for="password">Contraseña</label>
+                    <label for="password">{{ __('admin.login.fields.password') }}</label>
                     <div class="input-icono">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        <input type="password" id="password" name="password" placeholder="••••••••">
                     </div>
                 </div>
 
@@ -59,19 +60,19 @@
                             value="1"
                             {{ old('remember') ? 'checked' : '' }}
                         >
-                        Recordarme
+                        {{ __('admin.login.fields.remember') }}
                     </label>
                 </div>
 
                 {{-- Botón de Acción Principal --}}
                 <button type="submit" class="btn-acceder">
-                    Iniciar Sesión <i class="fas fa-sign-in-alt"></i>
+                    {{ __('admin.login.submit') }} <i class="fas fa-sign-in-alt"></i>
                 </button>
             </form>
 
             {{-- BLOQUE 3: PIE DEL FORMULARIO (Información adicional) --}}
             <div class="login-footer">
-                <p>Si no tienes cuenta, contacta con el administrador del club.</p>
+                <p>{{ __('admin.login.footer') }}</p>
             </div>
         </div>
 
@@ -81,7 +82,7 @@
         <div class="login-decoracion">
             <div class="decoracion-contenido">
                 <h2>Bellreguard CB</h2>
-                <p>Gestión interna y panel de control</p>
+                <p>{{ __('admin.login.branding') }}</p>
             </div>
         </div>
 

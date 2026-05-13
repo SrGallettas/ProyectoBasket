@@ -1,14 +1,16 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.news.meta.index_title'))
+
 @section('contenido_admin')
 <div class="contenedor-admin-noticias">
     
     {{-- 1. USAMOS EL COMPONENTE (Sustituye al header y al buscador viejo) --}}
     <x-admin-header 
-        titulo="Gestión de Noticias" 
-        subtitulo="Aquí puedes crear, editar o eliminar las noticias del club."
+        :titulo="__('admin.news.index.title')" 
+        :subtitulo="__('admin.news.index.subtitle')"
         :rutaNuevo="route('noticias.create')" 
-        textoNuevo="Nueva Noticia"
+        :textoNuevo="__('admin.news.index.new')"
         :rutaIndex="route('noticias.index')"
     />
 
@@ -41,21 +43,17 @@
         <table class="tabla-admin">
             <thead>
                 <tr>
-                    <th>Imagen</th>
-                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Título / Autor{!! $sortIndicator('titulo') !!}</a></th>
-                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Fecha{!! $sortIndicator('created_at') !!}</a></th>
-                    <th class="text-center"><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">Acciones{!! $sortIndicator('oculto') !!}</a></th>
+                    <th>{{ __('admin.news.fields.image') }}</th>
+                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'titulo', 'direction' => $nextDirection('titulo')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.news.fields.title_author') }}{!! $sortIndicator('titulo') !!}</a></th>
+                    <th><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'created_at', 'direction' => $nextDirection('created_at')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.news.fields.date') }}{!! $sortIndicator('created_at') !!}</a></th>
+                    <th class="text-center"><a href="{{ route('noticias.index', ['search' => $search, 'sort' => 'oculto', 'direction' => $nextDirection('oculto')]) }}" style="color: inherit; text-decoration: none; font: inherit;">{{ __('admin.common.actions') }}{!! $sortIndicator('oculto') !!}</a></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($noticias as $noticia)
                 <tr>
                     <td class="td-img">
-                        @if($noticia->imagen_noticia)
-                            <img src="{{ $noticia->imagen_noticia_url }}" alt="Imagen Noticia" class="admin-thumb-60">
-                        @else
-                            <div class="sin-foto"><i class="fas fa-image"></i></div>
-                        @endif
+                        <img src="{{ $noticia->imagen_noticia_url }}" alt="{{ __('admin.news.fields.image') }}" class="admin-thumb-60">
                     </td>
                     <td>
                         <div class="info-principal">
@@ -69,25 +67,25 @@
                     <td>
                         <div class="admin-row-actions">
                             {{-- Botón Ver --}}
-                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion admin-view-btn" title="Ver detalles de la noticia">
+                            <a href="{{ route('noticias.show', $noticia->id) }}" class="btn-accion admin-view-btn" title="{{ __('admin.news.actions.view') }}">
                                 <i class="fas fa-eye"></i>
                             </a>
                             {{-- Botón Editar --}}
-                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion editar" title="Editar noticia">
+                            <a href="{{ route('noticias.edit', $noticia->id) }}" class="btn-accion editar" title="{{ __('admin.news.actions.edit') }}">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('noticias.toggle-oculto', $noticia->id) }}" method="POST" class="admin-form-inline">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="btn-accion {{ $noticia->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $noticia->oculto ? 'Mostrar noticia' : 'Ocultar noticia' }}">
+                                <button type="submit" class="btn-accion {{ $noticia->oculto ? 'mostrar' : 'ocultar' }}" title="{{ $noticia->oculto ? __('admin.news.actions.show') : __('admin.news.actions.hide') }}">
                                     <i class="fas {{ $noticia->oculto ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                                 </button>
                             </form>
                             {{-- Formulario Borrar --}}
-                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?')" class="admin-form-inline">
+                            <form action="{{ route('noticias.destroy', $noticia->id) }}" method="POST" onsubmit="return confirm('{{ __('admin.news.actions.confirm_delete') }}')" class="admin-form-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-accion borrar" title="Eliminar noticia">
+                                <button type="submit" class="btn-accion borrar" title="{{ __('admin.news.actions.delete') }}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -97,7 +95,7 @@
                 @empty
                 <tr>
                     <td colspan="4" class="admin-empty-cell">
-                        <i class="fas fa-info-circle"></i> No se han encontrado noticias disponibles.
+                        <i class="fas fa-info-circle"></i> {{ __('admin.news.empty.index') }}
                     </td>
                 </tr>
                 @endforelse

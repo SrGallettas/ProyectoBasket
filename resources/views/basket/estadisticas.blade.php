@@ -6,14 +6,15 @@
 <x-page-style file="estadisticas.css" />
 @endpush
 
-@section('title', 'Estadísticas - Bellreguard CB')
+@section('title', __('public.stats.meta.title'))
+@section('meta_description', __('public.stats.meta.description'))
 
 @section('contenido')
 {{-- Hero principal de estadísticas --}}
 <x-public-news-hero
-    badge="ESTADISTICAS OFICIALES"
-    title="Estadisticas Bellreguard"
-    subtitle="Resumen de temporada por equipo local en partidos de liga."
+    :badge="__('public.stats.hero.badge')"
+    :title="__('public.stats.hero.title')"
+    :subtitle="__('public.stats.hero.subtitle')"
 />
 
 {{-- Contenido principal con filtro y resumen de temporada --}}
@@ -22,7 +23,7 @@
         {{-- Selector del equipo local a analizar --}}
         <form method="GET" action="{{ route('basket.estadisticas') }}" class="stats-team-filter">
             <label class="stats-team-field">
-                <span>Equipos</span>
+                <span>{{ __('public.stats.filters.teams') }}</span>
                 <select name="equipo_id" class="stats-team-select">
                     @foreach($equiposLocales as $equipo)
                         <option value="{{ $equipo->id }}" @selected((int) optional($equipoSeleccionado)->id === (int) $equipo->id)>
@@ -31,7 +32,7 @@
                     @endforeach
                 </select>
             </label>
-            <button type="submit" class="stats-team-btn">Ver estadísticas</button>
+            <button type="submit" class="stats-team-btn">{{ __('public.stats.filters.submit') }}</button>
         </form>
 
         @if($equipoSeleccionado)
@@ -44,39 +45,39 @@
             <article class="stats-team-panel">
                 <header class="stats-team-head">
                     <div class="stats-team-identidad">
-                        <img src="{{ $escudo }}" alt="Escudo {{ $equipoSeleccionado->nombre }}" loading="lazy">
+                        <img src="{{ $escudo }}" alt="{{ __('public.stats.shield_alt', ['team' => $equipoSeleccionado->nombre]) }}" loading="lazy">
                         <div>
                             <h3>{{ $equipoSeleccionado->nombre }}</h3>
-                            <p>{{ $equipoSeleccionado->categoria ?: 'Sin categoría' }}</p>
+                            <p>{{ $equipoSeleccionado->categoria ?: __('public.stats.no_category') }}</p>
                         </div>
                     </div>
                     <div class="stats-team-pill">
                         <strong>{{ (int) ($resumenTemporada['pj'] ?? 0) }}</strong>
-                        <span>Partidos de liga</span>
+                        <span>{{ __('public.stats.summary.league_matches') }}</span>
                     </div>
                 </header>
 
                 {{-- Resumen básico de récord de temporada --}}
                 <div class="stats-record-grid">
                     <div class="stats-record-card">
-                        <span>Partidos jugados</span>
+                        <span>{{ __('public.stats.summary.played') }}</span>
                         <strong>{{ (int) ($resumenTemporada['pj'] ?? 0) }}</strong>
-                        <small>Liga regular</small>
+                        <small>{{ __('public.stats.summary.regular_league') }}</small>
                     </div>
                     <div class="stats-record-card">
-                        <span>Victorias</span>
+                        <span>{{ __('public.stats.summary.wins') }}</span>
                         <strong>{{ (int) ($resumenTemporada['victorias'] ?? 0) }}</strong>
-                        <small>Partidos ganados</small>
+                        <small>{{ __('public.stats.summary.won_matches') }}</small>
                     </div>
                     <div class="stats-record-card">
-                        <span>Derrotas</span>
+                        <span>{{ __('public.stats.summary.losses') }}</span>
                         <strong>{{ (int) ($resumenTemporada['derrotas'] ?? 0) }}</strong>
-                        <small>Partidos perdidos</small>
+                        <small>{{ __('public.stats.summary.lost_matches') }}</small>
                     </div>
                     <div class="stats-record-card">
-                        <span>Porcentaje</span>
+                        <span>{{ __('public.stats.summary.percentage') }}</span>
                         <strong>{{ isset($resumenTemporada['porcentaje_victorias']) && $resumenTemporada['porcentaje_victorias'] !== null ? number_format($resumenTemporada['porcentaje_victorias'], 1) . '%' : '-' }}</strong>
-                        <small>Victorias sobre PJ</small>
+                        <small>{{ __('public.stats.summary.win_rate') }}</small>
                     </div>
                 </div>
 
@@ -91,51 +92,51 @@
 
                     {{-- Tarjetas de tiro por tipo --}}
                     <div class="stats-shot-card">
-                        <h4>Tiro de campo</h4>
-                        <p>{{ $resumenTemporada['totales']['fgm'] ?? 0 }} anotados · {{ $resumenTemporada['totales']['fg_fallados'] ?? 0 }} fallados · {{ $resumenTemporada['totales']['fga'] ?? 0 }} intentados</p>
+                        <h4>{{ __('public.stats.shots.field_goal') }}</h4>
+                        <p>{{ __('public.stats.shots.line', ['made' => $resumenTemporada['totales']['fgm'] ?? 0, 'missed' => $resumenTemporada['totales']['fg_fallados'] ?? 0, 'attempted' => $resumenTemporada['totales']['fga'] ?? 0]) }}</p>
                         <strong>{{ $pctFg }}</strong>
                     </div>
                     <div class="stats-shot-card">
-                        <h4>Tiro de 2</h4>
-                        <p>{{ $resumenTemporada['totales']['t2m'] ?? 0 }} anotados · {{ $resumenTemporada['totales']['t2_fallados'] ?? 0 }} fallados · {{ $resumenTemporada['totales']['t2a'] ?? 0 }} intentados</p>
+                        <h4>{{ __('public.stats.shots.two_point') }}</h4>
+                        <p>{{ __('public.stats.shots.line', ['made' => $resumenTemporada['totales']['t2m'] ?? 0, 'missed' => $resumenTemporada['totales']['t2_fallados'] ?? 0, 'attempted' => $resumenTemporada['totales']['t2a'] ?? 0]) }}</p>
                         <strong>{{ $pctT2 }}</strong>
                     </div>
                     <div class="stats-shot-card">
-                        <h4>Tiro de 3</h4>
-                        <p>{{ $resumenTemporada['totales']['t3m'] ?? 0 }} anotados · {{ $resumenTemporada['totales']['t3_fallados'] ?? 0 }} fallados · {{ $resumenTemporada['totales']['t3a'] ?? 0 }} intentados</p>
+                        <h4>{{ __('public.stats.shots.three_point') }}</h4>
+                        <p>{{ __('public.stats.shots.line', ['made' => $resumenTemporada['totales']['t3m'] ?? 0, 'missed' => $resumenTemporada['totales']['t3_fallados'] ?? 0, 'attempted' => $resumenTemporada['totales']['t3a'] ?? 0]) }}</p>
                         <strong>{{ $pctT3 }}</strong>
                     </div>
                     <div class="stats-shot-card">
-                        <h4>Tiro libre</h4>
-                        <p>{{ $resumenTemporada['totales']['ftm'] ?? 0 }} anotados · {{ $resumenTemporada['totales']['ft_fallados'] ?? 0 }} fallados · {{ $resumenTemporada['totales']['fta'] ?? 0 }} intentados</p>
+                        <h4>{{ __('public.stats.shots.free_throw') }}</h4>
+                        <p>{{ __('public.stats.shots.line', ['made' => $resumenTemporada['totales']['ftm'] ?? 0, 'missed' => $resumenTemporada['totales']['ft_fallados'] ?? 0, 'attempted' => $resumenTemporada['totales']['fta'] ?? 0]) }}</p>
                         <strong>{{ $pctFt }}</strong>
                     </div>
                 </div>
 
                 {{-- KPIs acumulados y medias por partido --}}
                 <div class="stats-kpi-grid">
-                    <div class="stats-kpi"><span>Puntos</span><strong>{{ $resumenTemporada['totales']['pts'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pts'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Rebotes</span><strong>{{ $resumenTemporada['totales']['reb'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['reb'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Asistencias</span><strong>{{ $resumenTemporada['totales']['ast'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['ast'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Recuperaciones</span><strong>{{ $resumenTemporada['totales']['stl'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['stl'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Tapones</span><strong>{{ $resumenTemporada['totales']['blk'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['blk'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Pérdidas</span><strong>{{ $resumenTemporada['totales']['tov'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['tov'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Faltas</span><strong>{{ $resumenTemporada['totales']['pf'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pf'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Faltas técnicas</span><strong>{{ $resumenTemporada['totales']['tf'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['tf'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Reb. ofensivos</span><strong>{{ $resumenTemporada['totales']['reb_of'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['reb_of'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Reb. defensivos</span><strong>{{ $resumenTemporada['totales']['reb_def'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['reb_def'] ?? 0, 1) }}</small></div>
-                    <div class="stats-kpi"><span>Ratio AST/PER</span><strong>{{ isset($resumenTemporada['ratios']['ast_per']) && $resumenTemporada['ratios']['ast_per'] !== null ? number_format($resumenTemporada['ratios']['ast_per'], 2) : '-' }}</strong><small>Asistencias por pérdida</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.points') }}</span><strong>{{ $resumenTemporada['totales']['pts'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['pts'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.rebounds') }}</span><strong>{{ $resumenTemporada['totales']['reb'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['reb'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.assists') }}</span><strong>{{ $resumenTemporada['totales']['ast'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['ast'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.steals') }}</span><strong>{{ $resumenTemporada['totales']['stl'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['stl'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.blocks') }}</span><strong>{{ $resumenTemporada['totales']['blk'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['blk'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.turnovers') }}</span><strong>{{ $resumenTemporada['totales']['tov'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['tov'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.fouls') }}</span><strong>{{ $resumenTemporada['totales']['pf'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['pf'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.tech_fouls') }}</span><strong>{{ $resumenTemporada['totales']['tf'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['tf'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.off_rebounds') }}</span><strong>{{ $resumenTemporada['totales']['reb_of'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['reb_of'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.def_rebounds') }}</span><strong>{{ $resumenTemporada['totales']['reb_def'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['reb_def'] ?? 0, 1)]) }}</small></div>
+                    <div class="stats-kpi"><span>{{ __('public.stats.kpis.ast_to_ratio') }}</span><strong>{{ isset($resumenTemporada['ratios']['ast_per']) && $resumenTemporada['ratios']['ast_per'] !== null ? number_format($resumenTemporada['ratios']['ast_per'], 2) : '-' }}</strong><small>{{ __('public.stats.kpis.ast_to_ratio_caption') }}</small></div>
                 </div>
 
                 {{-- Reparto de puntos por cuarto y prórroga en toda la temporada --}}
                 <div class="stats-quarters">
-                    <h4>Puntos por partes de la temporada</h4>
+                    <h4>{{ __('public.stats.quarters.title') }}</h4>
                     <div class="stats-quarters-grid">
-                        <div class="stats-quarter-item"><span>Q1</span><strong>{{ $resumenTemporada['totales']['q1'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q1'] ?? 0, 1) }}</small></div>
-                        <div class="stats-quarter-item"><span>Q2</span><strong>{{ $resumenTemporada['totales']['q2'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q2'] ?? 0, 1) }}</small></div>
-                        <div class="stats-quarter-item"><span>Q3</span><strong>{{ $resumenTemporada['totales']['q3'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q3'] ?? 0, 1) }}</small></div>
-                        <div class="stats-quarter-item"><span>Q4</span><strong>{{ $resumenTemporada['totales']['q4'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['q4'] ?? 0, 1) }}</small></div>
-                        <div class="stats-quarter-item"><span>PR</span><strong>{{ $resumenTemporada['totales']['pr'] ?? 0 }}</strong><small>Media {{ number_format($resumenTemporada['medias']['pr'] ?? 0, 1) }} · {{ (int) ($resumenTemporada['partidos_con_prorroga'] ?? 0) }} partidos</small></div>
+                        <div class="stats-quarter-item"><span>Q1</span><strong>{{ $resumenTemporada['totales']['q1'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['q1'] ?? 0, 1)]) }}</small></div>
+                        <div class="stats-quarter-item"><span>Q2</span><strong>{{ $resumenTemporada['totales']['q2'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['q2'] ?? 0, 1)]) }}</small></div>
+                        <div class="stats-quarter-item"><span>Q3</span><strong>{{ $resumenTemporada['totales']['q3'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['q3'] ?? 0, 1)]) }}</small></div>
+                        <div class="stats-quarter-item"><span>Q4</span><strong>{{ $resumenTemporada['totales']['q4'] ?? 0 }}</strong><small>{{ __('public.stats.average', ['value' => number_format($resumenTemporada['medias']['q4'] ?? 0, 1)]) }}</small></div>
+                        <div class="stats-quarter-item"><span>PR</span><strong>{{ $resumenTemporada['totales']['pr'] ?? 0 }}</strong><small>{{ __('public.stats.quarters.overtime_line', ['avg' => number_format($resumenTemporada['medias']['pr'] ?? 0, 1), 'count' => (int) ($resumenTemporada['partidos_con_prorroga'] ?? 0)]) }}</small></div>
                     </div>
                 </div>
             </article>
@@ -146,8 +147,8 @@
             <div class="estado-vacio-icono">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <h3>No hay equipos locales disponibles</h3>
-            <p>Crea equipos locales y registra estadísticas en partidos de liga para ver el resumen de temporada.</p>
+            <h3>{{ __('public.stats.empty.title') }}</h3>
+            <p>{{ __('public.stats.empty.text') }}</p>
         </div>
     @endif
 </section>

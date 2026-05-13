@@ -7,22 +7,23 @@
 @endpush
 
 @section('title', $galeria->titulo . ' - Bellreguard CB')
+@section('meta_description', $galeria->descripcion ?: __('public.gallery_detail.meta.description'))
 
 @section('contenido')
 {{-- Hero con datos básicos del álbum --}}
 <x-public-news-hero
-    badge="ALBUM OFICIAL"
+    :badge="__('public.gallery_detail.hero.badge')"
     title="{{ $galeria->titulo }}"
     subtitle="{{ $galeria->descripcion }}"
 >
     <div class="galeria-detalle-nav">
         <a href="{{ route('basket.galeria') }}" class="galeria-breadcrumb">
-            <i class="fas fa-arrow-left"></i> Volver a la galería
+            <i class="fas fa-arrow-left"></i> {{ __('public.gallery_detail.hero.back') }}
         </a>
     </div>
     <div class="stats-galeria">
-        <span><i class="fas fa-images"></i> {{ $galeria->imagenes->count() }} fotos</span>
-        <span><i class="fas fa-calendar-alt"></i> {{ $galeria->created_at->format('d/m/Y') }}</span>
+        <span><i class="fas fa-images"></i> {{ __('public.gallery.photos_badge', ['count' => $galeria->imagenes->count()]) }}</span>
+        <span><i class="fas fa-calendar-alt"></i> {{ $galeria->created_at->translatedFormat('d/m/Y') }}</span>
     </div>
 </x-public-news-hero>
 
@@ -31,9 +32,9 @@
     <div class="galeria-editorial-shell">
         {{-- Texto introductorio del álbum --}}
         <div class="galeria-editorial-intro">
-            <span class="galeria-kicker">Album fotografico</span>
-            <h2>Recorrido visual</h2>
-            <p>Pulsa cualquier imagen para verla en grande y moverte por el album con las flechas laterales o el teclado.</p>
+            <span class="galeria-kicker">{{ __('public.gallery_detail.intro.kicker') }}</span>
+            <h2>{{ __('public.gallery_detail.intro.title') }}</h2>
+            <p>{{ __('public.gallery_detail.intro.text') }}</p>
         </div>
 
         {{-- Rejilla de fotos que alimenta el lightbox --}}
@@ -45,11 +46,11 @@
                     data-galeria-item
                     data-index="{{ $index }}"
                     data-src="{{ $imagen->image_url }}"
-                    data-alt="{{ $galeria->titulo }} - Foto {{ $index + 1 }}"
+                    data-alt="{{ __('public.gallery_detail.photo_alt', ['title' => $galeria->titulo, 'number' => $index + 1]) }}"
                 >
-                    <img src="{{ $imagen->image_url }}" alt="{{ $galeria->titulo }} - Foto {{ $index + 1 }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
+                    <img src="{{ $imagen->image_url }}" alt="{{ __('public.gallery_detail.photo_alt', ['title' => $galeria->titulo, 'number' => $index + 1]) }}" onerror="this.onerror=null;this.src='{{ asset('img/club_14.png') }}';">
                     <span class="foto-galeria-overlay">
-                        <i class="fas fa-expand"></i> Ver foto
+                        <i class="fas fa-expand"></i> {{ __('public.gallery_detail.view_photo') }}
                     </span>
                 </button>
             @endforeach
@@ -59,11 +60,11 @@
 
 {{-- Lightbox para abrir una foto en grande y navegar por el álbum --}}
 <div class="lightbox-galeria" data-lightbox hidden>
-    <button type="button" class="lightbox-cerrar" data-lightbox-cerrar aria-label="Cerrar visor">
+    <button type="button" class="lightbox-cerrar" data-lightbox-cerrar aria-label="{{ __('public.gallery_detail.lightbox.close') }}">
         <i class="fas fa-times"></i>
     </button>
 
-    <button type="button" class="lightbox-nav lightbox-nav-prev" data-lightbox-prev aria-label="Foto anterior">
+    <button type="button" class="lightbox-nav lightbox-nav-prev" data-lightbox-prev aria-label="{{ __('public.gallery_detail.lightbox.previous') }}">
         <i class="fas fa-chevron-left"></i>
     </button>
 
@@ -75,7 +76,7 @@
         </div>
     </div>
 
-    <button type="button" class="lightbox-nav lightbox-nav-next" data-lightbox-next aria-label="Foto siguiente">
+    <button type="button" class="lightbox-nav lightbox-nav-next" data-lightbox-next aria-label="{{ __('public.gallery_detail.lightbox.next') }}">
         <i class="fas fa-chevron-right"></i>
     </button>
 </div>
@@ -101,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const item = items[currentIndex];
         lightboxImage.src = item.dataset.src;
         lightboxImage.alt = item.dataset.alt;
-        lightboxCounter.textContent = `Foto ${currentIndex + 1} de ${items.length}`;
+        lightboxCounter.textContent = @json(__('public.gallery_detail.lightbox.counter_prefix')) + ' ' + (currentIndex + 1) + ' ' + @json(__('public.gallery_detail.lightbox.counter_separator')) + ' ' + items.length;
     };
 
     const openLightbox = (index) => {

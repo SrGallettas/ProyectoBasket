@@ -7,6 +7,7 @@
 @endpush
 
 @section('title', $noticia->titulo . ' - Bellreguard Basket')
+@section('meta_description', $noticia->subtitulo ?: \Illuminate\Support\Str::limit(strip_tags($noticia->contenido), 160))
 
 @section('contenido')
 {{-- Artículo completo de la noticia seleccionada --}}
@@ -14,8 +15,8 @@
     {{-- Cabecera con categoría, fecha, título y autor --}}
     <header class="articulo-header">
         <div class="articulo-meta">
-            <span class="categoria-badge">ACTUALIDAD</span>
-            <span class="fecha-top">{{ $noticia->created_at->format('d M, Y') }}</span>
+            <span class="categoria-badge">{{ __('public.news_detail.category_badge') }}</span>
+            <span class="fecha-top">{{ $noticia->created_at->translatedFormat('d M, Y') }}</span>
         </div>
         
         <h1 class="titulo-noticia">{{ $noticia->titulo }}</h1>
@@ -27,7 +28,7 @@
             </div>
             <div class="autor-detalles">
                 <span class="nombre-autor">{{ $noticia->autor }}</span>
-                <span class="rol-autor">Redactor Bellreguard Basket</span>
+                <span class="rol-autor">{{ __('public.news_detail.author_role') }}</span>
             </div>
         </div>
     </header>
@@ -47,8 +48,8 @@
     {{-- Pie con opciones de compartir y navegación de vuelta --}}
     <footer class="articulo-footer">
         <div class="caja-compartir">
-            <h3>¿Te ha gustado esta noticia?</h3>
-            <p>Ayúdanos a crecer compartiendo la actualidad del club.</p>
+            <h3>{{ __('public.news_detail.share.title') }}</h3>
+            <p>{{ __('public.news_detail.share.text') }}</p>
             <div class="social-flex">
                 <a href="#" class="social-link fb"><i class="fab fa-facebook-f"></i> Facebook</a>
                 <a href="#" class="social-link tw"><i class="fab fa-twitter"></i> Twitter</a>
@@ -58,7 +59,11 @@
 
         <div class="navegacion-final">
             <a href="{{ route('basket.noticias') }}" class="btn-regresar-lista">
+<<<<<<< HEAD
                 <i class="fas fa-arrow-left"></i> Volver a todas las noticias
+=======
+                <i class="fas fa-arrow-left"></i> {{ __('public.news_detail.back') }}
+>>>>>>> e0ab8cf (VERSION VALENCIANO)
             </a>
         </div>
     </footer>

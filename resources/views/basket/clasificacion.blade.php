@@ -9,16 +9,17 @@
 @use('Carbon\Carbon')
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Clasificación - Bellreguard CB')
+@section('title', __('public.standings.meta.title'))
+@section('meta_description', __('public.standings.meta.description'))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
 {{-- Hero principal de clasificaciones --}}
 <x-public-news-hero
-    badge="CLASIFICACIONES OFICIALES"
-    title="Tabla de Posiciones"
-    subtitle="Consulta la posición de nuestros equipos en todas las categorías."
+    :badge="__('public.standings.hero.badge')"
+    :title="__('public.standings.hero.title')"
+    :subtitle="__('public.standings.hero.subtitle')"
 >
     <div class="icono-trofeo">
         <i class="fas fa-trophy"></i>
@@ -31,7 +32,7 @@
         {{-- Selector de competición y jornada --}}
         <form method="GET" action="{{ route('basket.clasificacion') }}" class="selector-categorias">
             <label class="selector-field">
-                <span>Competición</span>
+                <span>{{ __('public.standings.filters.competition') }}</span>
                 <select name="clasificacion_id" class="btn-cat selector-input">
                     @foreach($clasificaciones as $clasificacion)
                         <option value="{{ $clasificacion->id }}" @selected((int) optional($clasificacionSeleccionada)->id === (int) $clasificacion->id)>
@@ -42,20 +43,20 @@
             </label>
 
             <label class="selector-field">
-                <span>Jornada</span>
+                <span>{{ __('public.standings.filters.round') }}</span>
                 <select name="jornada" class="btn-cat selector-input">
-                    <option value="general" @selected($modoGeneral ?? false)>General</option>
+                    <option value="general" @selected($modoGeneral ?? false)>{{ __('public.standings.filters.general') }}</option>
                     @if($jornadas->isEmpty())
-                        <option value="" disabled>Sin jornadas</option>
+                        <option value="" disabled>{{ __('public.standings.filters.no_rounds') }}</option>
                     @else
                         @foreach($jornadas as $jornada)
-                            <option value="{{ $jornada }}" @selected(!($modoGeneral ?? false) && (int) $jornadaSeleccionada === (int) $jornada)>Jornada {{ $jornada }}</option>
+                            <option value="{{ $jornada }}" @selected(!($modoGeneral ?? false) && (int) $jornadaSeleccionada === (int) $jornada)>{{ __('public.standings.filters.round_label', ['round' => $jornada]) }}</option>
                         @endforeach
                     @endif
                 </select>
             </label>
 
-            <button type="submit" class="btn-cat activo">Ver jornada</button>
+            <button type="submit" class="btn-cat activo">{{ __('public.standings.filters.submit') }}</button>
         </form>
 
         {{-- Tabla principal de clasificación --}}
@@ -64,15 +65,15 @@
                 <i class="fas fa-trophy"></i>
                 {{ $clasificacionSeleccionada->nombre }}
                 @if($clasificacionSeleccionada->temporada)
-                    - Temporada {{ $clasificacionSeleccionada->temporada }}
+                    - {{ __('public.standings.table.season') }} {{ $clasificacionSeleccionada->temporada }}
                 @endif
                 @if($modoGeneral ?? false)
-                    · General
+                    · {{ __('public.standings.filters.general') }}
                 @elseif($jornadaSeleccionada)
-                    · Jornada {{ $jornadaSeleccionada }}
+                    · {{ __('public.standings.filters.round_label', ['round' => $jornadaSeleccionada]) }}
                 @endif
                 @if($jornadaClasificacionMostrada && (int) $jornadaClasificacionMostrada !== (int) $jornadaSeleccionada)
-                    <small>(tabla calculada hasta jornada {{ $jornadaClasificacionMostrada }})</small>
+                    <small>{{ __('public.standings.table.calculated_until', ['round' => $jornadaClasificacionMostrada]) }}</small>
                 @endif
             </div>
             <div class="tabla-scroll">
@@ -80,7 +81,7 @@
                     <thead>
                         <tr>
                             <th>Pos</th>
-                            <th>Equipo</th>
+                            <th>{{ __('public.standings.table.team') }}</th>
                             <th>PJ</th>
                             <th>PG</th>
                             <th>PP</th>
@@ -94,14 +95,14 @@
                         @forelse($filas as $idx => $fila)
                             {{-- Datos rápidos del equipo para la fila de la tabla --}}
                             @php
-                                $nombreEquipo = optional($fila->equipo)->nombre ?? 'Equipo';
+                                $nombreEquipo = optional($fila->equipo)->nombre ?? __('public.standings.table.team_fallback');
                                 $escudoEquipo = optional($fila->equipo)->imagen_club_url ?? asset('img/club_14.png');
                             @endphp
                             <tr class="{{ str_contains(strtolower($nombreEquipo), 'bellreguard') ? 'fila-destacada' : '' }}">
                                 <td><strong>{{ $idx + 1 }}</strong></td>
                                 <td>
                                     <div class="equipo-columna">
-                                        <img src="{{ $escudoEquipo }}" alt="Escudo {{ $nombreEquipo }}" loading="lazy">
+                                        <img src="{{ $escudoEquipo }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreEquipo]) }}" loading="lazy">
                                         <span>{{ $nombreEquipo }}</span>
                                     </div>
                                 </td>
@@ -115,7 +116,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9">Todavía no hay clasificación calculada para esta competición.</td>
+                                <td colspan="9">{{ __('public.standings.empty.table') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -128,9 +129,9 @@
             <div class="tabla-header jornada-header">
                 <i class="fas fa-calendar-alt"></i>
                 @if($modoGeneral ?? false)
-                    Todos los partidos
+                    {{ __('public.standings.matches.all_matches') }}
                 @else
-                    Partidos de la jornada
+                    {{ __('public.standings.matches.round_matches') }}
                 @endif
                 @if(!($modoGeneral ?? false) && $jornadaSeleccionada)
                     <span class="jornada-pill">J{{ $jornadaSeleccionada }}</span>
@@ -141,7 +142,7 @@
             @if(($modoGeneral ?? false) && $partidosJornada->isNotEmpty())
                 @foreach($partidosJornada->groupBy(fn ($partido) => (int) ($partido->jornada ?? 0)) as $jornadaGrupo => $partidosGrupo)
                     <div class="jornada-bloque">
-                        <div class="jornada-bloque-titulo">Jornada {{ $jornadaGrupo }}</div>
+                        <div class="jornada-bloque-titulo">{{ __('public.standings.filters.round_label', ['round' => $jornadaGrupo]) }}</div>
                         <div class="partidos-jornada-grid">
                             @foreach($partidosGrupo as $partido)
                                 {{-- Datos del partido para pintar estado, escudos y marcador --}}
@@ -149,8 +150,8 @@
                                     $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                                     $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
                                     $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
-                                    $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
-                                    $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
+                                    $nombreLocal = optional($partido->equipoLocal)->nombre ?? __('public.standings.matches.local');
+                                    $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? __('public.standings.matches.visitor');
                                     $escudoLocal = optional($partido->equipoLocal)->imagen_club_url ?? asset('img/club_14.png');
                                     $escudoVisitante = optional($partido->equipoVisitante)->imagen_club_url ?? asset('img/club_14.png');
                                 @endphp
@@ -158,14 +159,14 @@
                                 <article class="partido-jornada-card">
                                     <div class="partido-jornada-top">
                                         <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
-                                            {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                                            {{ $isFinalizado ? __('public.matches.status.finished') : __('public.matches.status.upcoming') }}
                                         </span>
                                         <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
                                     </div>
 
                                     <div class="partido-jornada-equipos">
                                         <div class="club-mini">
-                                            <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
+                                            <img src="{{ $escudoLocal }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreLocal]) }}" loading="lazy">
                                             <p>{{ $nombreLocal }}</p>
                                         </div>
 
@@ -178,7 +179,7 @@
                                         @endif
 
                                         <div class="club-mini">
-                                            <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
+                                            <img src="{{ $escudoVisitante }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreVisitante]) }}" loading="lazy">
                                             <p>{{ $nombreVisitante }}</p>
                                         </div>
                                     </div>
@@ -201,8 +202,8 @@
                             $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                             $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
                             $isFinalizado = optional($statsLocal)->puntos_totales !== null && optional($statsVisitante)->puntos_totales !== null;
-                            $nombreLocal = optional($partido->equipoLocal)->nombre ?? 'Local';
-                            $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? 'Visitante';
+                            $nombreLocal = optional($partido->equipoLocal)->nombre ?? __('public.standings.matches.local');
+                            $nombreVisitante = optional($partido->equipoVisitante)->nombre ?? __('public.standings.matches.visitor');
                             $escudoLocal = optional($partido->equipoLocal)->imagen_club_url ?? asset('img/club_14.png');
                             $escudoVisitante = optional($partido->equipoVisitante)->imagen_club_url ?? asset('img/club_14.png');
                         @endphp
@@ -210,14 +211,14 @@
                         <article class="partido-jornada-card">
                             <div class="partido-jornada-top">
                                 <span class="estado-partido {{ $isFinalizado ? 'finalizado' : 'proximo' }}">
-                                    {{ $isFinalizado ? 'Finalizado' : 'Próximo' }}
+                                    {{ $isFinalizado ? __('public.matches.status.finished') : __('public.matches.status.upcoming') }}
                                 </span>
                                 <span class="partido-fecha">{{ Carbon::parse($partido->fecha_hora)->format('d/m · H:i') }}</span>
                             </div>
 
                             <div class="partido-jornada-equipos">
                                 <div class="club-mini">
-                                    <img src="{{ $escudoLocal }}" alt="Escudo {{ $nombreLocal }}" loading="lazy">
+                                    <img src="{{ $escudoLocal }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreLocal]) }}" loading="lazy">
                                     <p>{{ $nombreLocal }}</p>
                                 </div>
 
@@ -230,7 +231,7 @@
                                 @endif
 
                                 <div class="club-mini">
-                                    <img src="{{ $escudoVisitante }}" alt="Escudo {{ $nombreVisitante }}" loading="lazy">
+                                    <img src="{{ $escudoVisitante }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreVisitante]) }}" loading="lazy">
                                     <p>{{ $nombreVisitante }}</p>
                                 </div>
                             </div>
@@ -246,7 +247,7 @@
                 {{-- Estado vacío cuando no hay partidos públicos --}}
                 <div class="partidos-vacio">
                     <i class="fa-regular fa-calendar-xmark"></i>
-                    <p>{{ ($modoGeneral ?? false) ? 'No hay partidos públicos para esta competición.' : 'No hay partidos públicos para esta jornada.' }}</p>
+                    <p>{{ ($modoGeneral ?? false) ? __('public.standings.matches.empty_competition') : __('public.standings.matches.empty_round') }}</p>
                 </div>
             @endif
         </section>
@@ -254,13 +255,13 @@
         {{-- Estado vacío si el club aún no ha publicado clasificaciones --}}
         <div class="tabla-contenedor">
             <div class="tabla-header">
-                <i class="fas fa-info-circle"></i> Sin clasificaciones disponibles
+                <i class="fas fa-info-circle"></i> {{ __('public.standings.empty.title') }}
             </div>
             <div class="tabla-scroll">
                 <table class="tabla-clasificacion">
                     <tbody>
                         <tr>
-                            <td>El club todavía no ha publicado ninguna clasificación.</td>
+                            <td>{{ __('public.standings.empty.text') }}</td>
                         </tr>
                     </tbody>
                 </table>

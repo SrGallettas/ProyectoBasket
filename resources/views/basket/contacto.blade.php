@@ -7,16 +7,17 @@
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Contacto - Bellreguard CB')
+@section('title', __('public.contact.meta.title'))
+@section('meta_description', __('public.contact.meta.description'))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
 {{-- Hero principal de la página --}}
 <x-public-news-hero
-    badge="ATENCION OFICIAL"
-    title="Contacto Bellreguard"
-    subtitle="Ponte en contacto con el Bellreguard CB. Estamos aquí para ayudarte."
+    :badge="__('public.contact.hero.badge')"
+    :title="__('public.contact.hero.title')"
+    :subtitle="__('public.contact.hero.subtitle')"
 />
 
 {{-- Bloque principal con información del club y datos de contacto --}}
@@ -26,11 +27,11 @@
         <div class="bloque-sobre-nosotros">
             <div class="titulo-con-icono">
                 <i class="fas fa-basketball-ball"></i>
-                <h2>Sobre Nosotros</h2>
+                <h2>{{ __('public.contact.about.title') }}</h2>
             </div>
-            <p>El Bellreguard Club de Baloncesto es un referente deportivo en nuestra comunidad, dedicado a fomentar los valores del baloncesto y el trabajo en equipo. Fundado con la pasión por este deporte, nuestro club ha crecido hasta convertirse en una familia donde jugadores de todas las edades encuentran su lugar.</p>
-            <p>Contamos con equipos en diversas categorías, desde formación hasta competición senior, y un cuerpo técnico altamente cualificado que trabaja día a día para desarrollar el talento de nuestros jugadores.</p>
-            <p>Nuestras instalaciones modernas y nuestro compromiso con la excelencia deportiva nos posicionan como uno de los clubes más importantes de la región. Únete a nosotros y forma parte de esta gran familia del baloncesto.</p>
+            <p>{{ __('public.contact.about.p1') }}</p>
+            <p>{{ __('public.contact.about.p2') }}</p>
+            <p>{{ __('public.contact.about.p3') }}</p>
         </div>
 
         {{-- Tarjetas laterales con vías de contacto rápidas --}}
@@ -38,38 +39,38 @@
             <div class="tarjeta-contacto-mini">
                 <div class="icono-contacto-rojo"><i class="fas fa-phone-alt"></i></div>
                 <div class="detalles-contacto">
-                    <h4>Teléfono</h4>
-                    <p>Llámanos en horario de oficina</p>
+                    <h4>{{ __('public.contact.cards.phone.title') }}</h4>
+                    <p>{{ __('public.contact.cards.phone.text') }}</p>
                     <span class="dato-principal">+34 962 834 567</span>
-                    <small>Lun - Vie: 9:00 - 21:00</small>
+                    <small>{{ __('public.contact.cards.phone.hours') }}</small>
                 </div>
             </div>
 
             <div class="tarjeta-contacto-mini">
                 <div class="icono-contacto-rojo"><i class="fas fa-envelope"></i></div>
                 <div class="detalles-contacto">
-                    <h4>Email</h4>
-                    <p>Escríbenos y te responderemos pronto</p>
+                    <h4>{{ __('public.contact.cards.email.title') }}</h4>
+                    <p>{{ __('public.contact.cards.email.text') }}</p>
                     <span class="dato-principal">info@bellreguardcb.com</span>
-                    <small>Respuesta en 24-48 horas</small>
+                    <small>{{ __('public.contact.cards.email.response') }}</small>
                 </div>
             </div>
 
             <div class="tarjeta-contacto-mini">
                 <div class="icono-contacto-rojo"><i class="fas fa-map-marker-alt"></i></div>
                 <div class="detalles-contacto">
-                    <h4>Ubicación</h4>
-                    <p>Visítanos en nuestras instalaciones</p>
-                    <span class="dato-principal">Pabellón Municipal de Bellreguard</span>
-                    <small>Calle del Deporte, 12. 46713 Bellreguard, Valencia</small>
+                    <h4>{{ __('public.contact.cards.location.title') }}</h4>
+                    <p>{{ __('public.contact.cards.location.text') }}</p>
+                    <span class="dato-principal">{{ __('public.contact.cards.location.venue') }}</span>
+                    <small>{{ __('public.contact.cards.location.address') }}</small>
                 </div>
             </div>
 
             <div class="tarjeta-contacto-mini">
                 <div class="icono-contacto-rojo"><i class="fas fa-share-alt"></i></div>
                 <div class="detalles-contacto">
-                    <h4>Redes Sociales</h4>
-                    <p>Síguenos en nuestras redes</p>
+                    <h4>{{ __('public.contact.cards.social.title') }}</h4>
+                    <p>{{ __('public.contact.cards.social.text') }}</p>
                     <div class="iconos-redes-contacto">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -84,8 +85,8 @@
     {{-- Mapa e indicación de la ubicación física del pabellón --}}
     <div class="seccion-mapa">
         <div class="titulo-mapa-centrado">
-            <h2>Cómo Llegar</h2>
-            <p>Encuéntranos en el Pabellón Municipal de Bellreguard</p>
+            <h2>{{ __('public.contact.map.title') }}</h2>
+            <p>{{ __('public.contact.map.subtitle') }}</p>
         </div>
         <div class="mapa-placeholder">
             {{-- Mapa Real de Google Maps --}}
@@ -102,7 +103,7 @@
             {{-- Etiqueta flotante para dar estilo --}}
             <div class="info-flotante-mapa">
                 <i class="fas fa-basketball-ball"></i>
-                <span>Pabellón Municipal de Bellreguard</span>
+                <span>{{ __('public.contact.cards.location.venue') }}</span>
             </div>
         </div>
     </div>

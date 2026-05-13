@@ -7,16 +7,17 @@
 @endpush
 
 {{-- TÍTULO DE LA PESTAÑA --}}
-@section('title', 'Tienda - Bellreguard CB')
+@section('title', __('public.store.meta.title'))
+@section('meta_description', __('public.store.meta.description'))
 
 {{-- CONTENIDO DE LA PÁGINA --}}
 @section('contenido')
 
 {{-- Hero principal de merchandising --}}
 <x-public-news-hero
-    badge="TIENDA OFICIAL"
-    title="Merchandising Oficial"
-    subtitle="Lleva los colores del Bellreguard CB contigo."
+    :badge="__('public.store.hero.badge')"
+    :title="__('public.store.hero.title')"
+    :subtitle="__('public.store.hero.subtitle')"
 >
     <div class="iconos-merchandising">
         <i class="fa-solid fa-shirt"></i>
@@ -42,13 +43,13 @@
     {{-- Cabecera con resumen y acceso rápido a la cesta --}}
     <div class="merch-toolbar">
         <div class="merch-intro">
-            <span class="merch-kicker">Coleccion oficial</span>
-            <h2>Productos Oficiales</h2>
-            <p class="subtitulo merch-subtitulo">Encuentra toda la ropa y accesorios del equipo en una selección cuidada, pensada para acompañar al club dentro y fuera de la pista.</p>
+            <span class="merch-kicker">{{ __('public.store.toolbar.kicker') }}</span>
+            <h2>{{ __('public.store.toolbar.title') }}</h2>
+            <p class="subtitulo merch-subtitulo">{{ __('public.store.toolbar.subtitle') }}</p>
         </div>
 
         <button type="button" class="boton-cesta-flotante" data-open-cart>
-            <span class="boton-cesta-texto">Mi cesta</span>
+            <span class="boton-cesta-texto">{{ __('public.store.toolbar.cart') }}</span>
             <span class="boton-cesta-count">{{ $cartSummary['units'] }}</span>
         </button>
     </div>
@@ -76,15 +77,15 @@
                     <div class="merch-resumen-compra">
                         @if($tallas->isNotEmpty())
                             <div class="bloque-tallas merch-tallas-bloque">
-                                <strong>Tallas:</strong>
+                                <strong>{{ __('public.store.product.sizes') }}</strong>
                                 <span class="tallas-texto merch-tallas-texto">
                                     {{ $tallas->implode(', ') }}
                                 </span>
                             </div>
                         @else
                             <div class="bloque-tallas merch-tallas-bloque">
-                                <strong>Formato:</strong>
-                                <span class="tallas-texto merch-tallas-texto">Sin talla</span>
+                                <strong>{{ __('public.store.product.format') }}</strong>
+                                <span class="tallas-texto merch-tallas-texto">{{ __('public.store.product.no_size') }}</span>
                             </div>
                         @endif
 
@@ -99,9 +100,9 @@
                         @if($tallas->isNotEmpty())
                             {{-- Selector de talla para productos con variantes --}}
                             <label class="merch-field">
-                                <span>Talla</span>
-                                <select class="selector-talla" name="talla" required>
-                                    <option value="">Selecciona talla</option>
+                                <span>{{ __('public.store.form.size') }}</span>
+                                <select class="selector-talla" name="talla">
+                                    <option value="">{{ __('public.store.form.select_size') }}</option>
                                     @foreach($tallas as $talla)
                                         <option value="{{ $talla }}">{{ $talla }}</option>
                                     @endforeach
@@ -109,22 +110,22 @@
                             </label>
                         @else
                             {{-- Valor oculto para productos sin tallaje --}}
-                            <input type="hidden" name="talla" value="Sin talla">
+                            <input type="hidden" name="talla" value="{{ __('public.store.product.no_size') }}">
                             <label class="merch-field merch-field-placeholder">
-                                <span>Talla</span>
-                                <span class="merch-sin-talla merch-sin-talla-box">Sin talla</span>
+                                <span>{{ __('public.store.form.size') }}</span>
+                                <span class="merch-sin-talla merch-sin-talla-box">{{ __('public.store.product.no_size') }}</span>
                             </label>
                         @endif
 
                         {{-- Selector de cantidad y CTA principal --}}
                         <div class="precio-comprar">
                             <label class="merch-field merch-field-cantidad">
-                                <span>Cantidad</span>
-                                <input type="number" name="cantidad" min="1" max="20" value="1" class="selector-cantidad" required>
+                                <span>{{ __('public.store.form.quantity') }}</span>
+                                <input type="number" name="cantidad" min="1" max="20" value="1" class="selector-cantidad">
                             </label>
 
                             <button type="submit" class="boton-comprar">
-                                Añadir a la cesta
+                                {{ __('public.store.form.add_to_cart') }}
                             </button>
                         </div>
                     </form>
@@ -134,7 +135,7 @@
                         <form action="{{ route('basket.tienda.toggle-oculto', $item->id) }}" method="POST" class="public-card-action merch-hide-action">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="public-hide-button">Ocultar en web</button>
+                            <button type="submit" class="public-hide-button">{{ __('public.store.hide') }}</button>
                         </form>
                     @endif
                 </div>
@@ -145,9 +146,9 @@
                 <div class="estado-vacio-icono">
                     <i class="fa-solid fa-bag-shopping"></i>
                 </div>
-                <h3>Tienda temporalmente sin stock</h3>
-                <p>Estamos preparando nuevos productos oficiales del club. Vuelve en unos dias para ver la nueva coleccion.</p>
-                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">Avisadme cuando haya stock</a>
+                <h3>{{ __('public.store.empty.title') }}</h3>
+                <p>{{ __('public.store.empty.text') }}</p>
+                <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">{{ __('public.store.empty.cta') }}</a>
             </div>
         @endforelse
     </div>
@@ -161,14 +162,14 @@
     <div class="cesta-overlay" data-cart-close></div>
 
     {{-- Panel lateral con la cesta activa --}}
-    <aside class="panel-cesta" aria-label="Cesta de compra">
+    <aside class="panel-cesta" aria-label="{{ __('public.store.cart.aria') }}">
         <div class="panel-cesta-header">
             <div>
-                <p class="panel-cesta-kicker">Tu selección</p>
-                <h3>Mi cesta</h3>
+                <p class="panel-cesta-kicker">{{ __('public.store.cart.kicker') }}</p>
+                <h3>{{ __('public.store.cart.title') }}</h3>
             </div>
 
-            <button type="button" class="panel-cesta-close" data-cart-close aria-label="Cerrar cesta">
+            <button type="button" class="panel-cesta-close" data-cart-close aria-label="{{ __('public.store.cart.close') }}">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -181,16 +182,16 @@
 
                     <div class="cesta-item-info">
                         <h4>{{ $cartItem['nombre'] }}</h4>
-                        <p>Talla: {{ $cartItem['talla'] }}</p>
-                        <p>{{ number_format($cartItem['precio'], 2, ',', '.') }} € por unidad</p>
+                        <p>{{ __('public.store.cart.size_line', ['size' => $cartItem['talla']]) }}</p>
+                        <p>{{ __('public.store.cart.unit_price', ['price' => number_format($cartItem['precio'], 2, ',', '.')]) }}</p>
 
                         {{-- Formulario de cantidad por línea con envío automático --}}
                         <form action="{{ route('basket.tienda.cesta.update', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form">
                             @csrf
                             @method('PATCH')
                             <label class="merch-field merch-field-cantidad merch-field-panel">
-                                <span>Cantidad</span>
-                                <input type="number" name="cantidad" min="1" max="20" value="{{ $cartItem['cantidad'] }}" class="selector-cantidad" data-auto-submit-qty required>
+                                <span>{{ __('public.store.form.quantity') }}</span>
+                                <input type="number" name="cantidad" min="1" max="20" value="{{ $cartItem['cantidad'] }}" class="selector-cantidad" data-auto-submit-qty>
                             </label>
                         </form>
 
@@ -198,7 +199,7 @@
                         <form action="{{ route('basket.tienda.cesta.remove', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="cesta-remove-button">Quitar</button>
+                            <button type="submit" class="cesta-remove-button">{{ __('public.store.cart.remove') }}</button>
                         </form>
                     </div>
 
@@ -210,30 +211,30 @@
                 {{-- Estado vacío cuando todavía no se ha añadido nada --}}
                 <div class="cesta-vacia">
                     <i class="fa-solid fa-basket-shopping"></i>
-                    <h4>Tu cesta está vacía</h4>
-                    <p>Añade productos desde la tienda para preparar tu solicitud de pedido.</p>
+                    <h4>{{ __('public.store.cart.empty_title') }}</h4>
+                    <p>{{ __('public.store.cart.empty_text') }}</p>
                 </div>
             @endforelse
         </div>
 
         <div class="panel-cesta-footer">
             <div class="cesta-resumen-linea">
-                <span>Unidades</span>
+                <span>{{ __('public.store.cart.units') }}</span>
                 <strong>{{ $cartSummary['units'] }}</strong>
             </div>
 
             <div class="cesta-resumen-linea">
-                <span>Subtotal orientativo</span>
+                <span>{{ __('public.store.cart.subtotal') }}</span>
                 <strong>{{ number_format($cartSummary['subtotal'], 2, ',', '.') }} €</strong>
             </div>
 
             @if($cartSummary['units'] > 0)
                 <a href="{{ route('basket.tienda.pedido') }}" class="cesta-submit-link">
-                    Solicitar pedido
+                    {{ __('public.store.cart.request_order') }}
                 </a>
             @else
                 <button type="button" class="cesta-submit-link cesta-submit-link-disabled" disabled>
-                    Solicitar pedido
+                    {{ __('public.store.cart.request_order') }}
                 </button>
             @endif
         </div>
@@ -242,10 +243,10 @@
 
 {{-- CTA final para pedidos o consultas directas --}}
 <section class="contacto-pedido">
-    <h2>¿Necesitas ayuda con tu pedido?</h2>
-    <p>Si prefieres consultarlo antes, escríbenos y te orientamos con tallas, stock y entrega.</p>
+    <h2>{{ __('public.store.support.title') }}</h2>
+    <p>{{ __('public.store.support.text') }}</p>
     <a href="mailto:info@bellreguardcb.com" class="boton-contacto">
-        <i class="fa-solid fa-envelope"></i> Contactar Ahora
+        <i class="fa-solid fa-envelope"></i> {{ __('public.store.support.cta') }}
     </a>
 </section>
 

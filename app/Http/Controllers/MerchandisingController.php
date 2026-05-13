@@ -35,7 +35,20 @@ class MerchandisingController extends Controller
 
     public function store(StoreMerchandisingRequest $request)
     {
+<<<<<<< HEAD
         $this->writeService->create($request->validated());
+=======
+        // Validación del formulario.
+        // Si algo falla, Laravel vuelve automáticamente atrás con errores.
+        $request->validate([
+            'nombre'         => 'required|string|max:255',
+            'precio'         => 'required|numeric|min:0',
+            'talla'          => 'required|array|min:1',
+            'imagen_merchan' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'descripcion'    => 'nullable|string',
+            'oculto'         => 'nullable|boolean',
+        ]);
+>>>>>>> e0ab8cf (VERSION VALENCIANO)
 
         return redirect()->route('merchandising.index')->with('mensaje', 'Producto creado con exito');
     }
@@ -50,6 +63,20 @@ class MerchandisingController extends Controller
 
     public function update(UpdateMerchandisingRequest $request, string $id)
     {
+<<<<<<< HEAD
+=======
+        // Validamos los datos recibidos.
+        $request->validate([
+            'nombre'         => 'required|string|max:255',
+            'precio'         => 'required|numeric|min:0',
+            'talla'          => 'required|array|min:1',
+            'imagen_merchan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'descripcion'    => 'nullable|string',
+            'oculto'         => 'nullable|boolean',
+        ]);
+
+        // Buscamos el registro actual.
+>>>>>>> e0ab8cf (VERSION VALENCIANO)
         $item = Merchandising::findOrFail($id);
         $this->writeService->update($item, $request->validated());
 

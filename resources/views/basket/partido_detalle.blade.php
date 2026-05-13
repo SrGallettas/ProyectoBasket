@@ -6,7 +6,8 @@
 <x-page-style file="estadisticas.css" />
 @endpush
 
-@section('title', 'Detalle Partido - Bellreguard CB')
+@section('title', __('public.match_detail.meta.title'))
+@section('meta_description', __('public.match_detail.meta.description', ['local' => $partido->equipoLocal->nombre, 'visitor' => $partido->equipoVisitante->nombre]))
 
 @section('contenido')
 {{-- Helpers locales para limpiar nulos, calcular porcentajes y leer cuartos --}}
@@ -39,8 +40,8 @@
 
 {{-- Hero principal del detalle del partido --}}
 <x-public-news-hero
-    badge="DETALLE OFICIAL"
-    title="Detalle del partido"
+    :badge="__('public.match_detail.hero.badge')"
+    :title="__('public.match_detail.hero.title')"
     subtitle="{{ $partido->equipoLocal->nombre }} vs {{ $partido->equipoVisitante->nombre }}"
 />
 
@@ -52,9 +53,9 @@
             <div class="estado-vacio-icono">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <h3>Sin estadisticas cargadas todavia</h3>
-            <p>Este partido aun no tiene estadisticas completas en el panel de administracion.</p>
-            <a href="{{ route('basket.partidos') }}" class="estado-vacio-accion">Volver a partidos</a>
+            <h3>{{ __('public.match_detail.empty.title') }}</h3>
+            <p>{{ __('public.match_detail.empty.text') }}</p>
+            <a href="{{ route('basket.partidos') }}" class="estado-vacio-accion">{{ __('public.match_detail.empty.cta') }}</a>
         </div>
     @else
         {{-- Cabecera con escudos, marcador final y fecha del encuentro --}}
@@ -94,31 +95,31 @@
 
             $grafStats = [
                 // ── Tiros de campo ──
-                ['label' => 'T. campo intentados',  'local' => $safe($statsLocal->fga),  'vis' => $safe($statsVisitante->fga),  'fmt' => '', 'sep' => 'Tiros de campo'],
-                ['label' => 'T. campo anotados',    'local' => $safe($statsLocal->fgm),  'vis' => $safe($statsVisitante->fgm),  'fmt' => ''],
-                ['label' => '% Tiros de campo',     'local' => $pctNum($statsLocal->fgm, $statsLocal->fga),  'vis' => $pctNum($statsVisitante->fgm, $statsVisitante->fga),  'fmt' => '%'],
+                ['label' => __('public.match_detail.stats.fga'),  'local' => $safe($statsLocal->fga),  'vis' => $safe($statsVisitante->fga),  'fmt' => '', 'sep' => __('public.match_detail.sections.field_goals')],
+                ['label' => __('public.match_detail.stats.fgm'),    'local' => $safe($statsLocal->fgm),  'vis' => $safe($statsVisitante->fgm),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.fg_pct'),     'local' => $pctNum($statsLocal->fgm, $statsLocal->fga),  'vis' => $pctNum($statsVisitante->fgm, $statsVisitante->fga),  'fmt' => '%'],
                 // ── Tiros de 2 ──
-                ['label' => 'T. de 2 intentados',   'local' => $safe($statsLocal->t2a),  'vis' => $safe($statsVisitante->t2a),  'fmt' => '', 'sep' => 'Tiros de 2 puntos'],
-                ['label' => 'T. de 2 anotados',     'local' => $safe($statsLocal->t2m),  'vis' => $safe($statsVisitante->t2m),  'fmt' => ''],
-                ['label' => '% Tiros de 2',         'local' => $pctNum($statsLocal->t2m, $statsLocal->t2a),  'vis' => $pctNum($statsVisitante->t2m, $statsVisitante->t2a),  'fmt' => '%'],
+                ['label' => __('public.match_detail.stats.t2a'),   'local' => $safe($statsLocal->t2a),  'vis' => $safe($statsVisitante->t2a),  'fmt' => '', 'sep' => __('public.match_detail.sections.two_points')],
+                ['label' => __('public.match_detail.stats.t2m'),     'local' => $safe($statsLocal->t2m),  'vis' => $safe($statsVisitante->t2m),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.t2_pct'),         'local' => $pctNum($statsLocal->t2m, $statsLocal->t2a),  'vis' => $pctNum($statsVisitante->t2m, $statsVisitante->t2a),  'fmt' => '%'],
                 // ── Tiros de 3 ──
-                ['label' => 'T. de 3 intentados',   'local' => $safe($statsLocal->t3a),  'vis' => $safe($statsVisitante->t3a),  'fmt' => '', 'sep' => 'Tiros de 3 puntos'],
-                ['label' => 'T. de 3 anotados',     'local' => $safe($statsLocal->t3m),  'vis' => $safe($statsVisitante->t3m),  'fmt' => ''],
-                ['label' => '% Tiros de 3',         'local' => $pctNum($statsLocal->t3m, $statsLocal->t3a),  'vis' => $pctNum($statsVisitante->t3m, $statsVisitante->t3a),  'fmt' => '%'],
+                ['label' => __('public.match_detail.stats.t3a'),   'local' => $safe($statsLocal->t3a),  'vis' => $safe($statsVisitante->t3a),  'fmt' => '', 'sep' => __('public.match_detail.sections.three_points')],
+                ['label' => __('public.match_detail.stats.t3m'),     'local' => $safe($statsLocal->t3m),  'vis' => $safe($statsVisitante->t3m),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.t3_pct'),         'local' => $pctNum($statsLocal->t3m, $statsLocal->t3a),  'vis' => $pctNum($statsVisitante->t3m, $statsVisitante->t3a),  'fmt' => '%'],
                 // ── Tiros libres ──
-                ['label' => 'T. libres intentados', 'local' => $safe($statsLocal->fta),  'vis' => $safe($statsVisitante->fta),  'fmt' => '', 'sep' => 'Tiros libres'],
-                ['label' => 'T. libres anotados',   'local' => $safe($statsLocal->ftm),  'vis' => $safe($statsVisitante->ftm),  'fmt' => ''],
-                ['label' => '% Tiros libres',       'local' => $pctNum($statsLocal->ftm, $statsLocal->fta),  'vis' => $pctNum($statsVisitante->ftm, $statsVisitante->fta),  'fmt' => '%'],
+                ['label' => __('public.match_detail.stats.fta'), 'local' => $safe($statsLocal->fta),  'vis' => $safe($statsVisitante->fta),  'fmt' => '', 'sep' => __('public.match_detail.sections.free_throws')],
+                ['label' => __('public.match_detail.stats.ftm'),   'local' => $safe($statsLocal->ftm),  'vis' => $safe($statsVisitante->ftm),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.ft_pct'),       'local' => $pctNum($statsLocal->ftm, $statsLocal->fta),  'vis' => $pctNum($statsVisitante->ftm, $statsVisitante->fta),  'fmt' => '%'],
                 // ── Rebotes ──
-                ['label' => 'Rebotes totales',   'local' => $rebLocal, 'vis' => $rebVis, 'fmt' => '', 'sep' => 'Rebotes'],
-                ['label' => 'Reb. ofensivos',    'local' => $safe($statsLocal->reb_of),  'vis' => $safe($statsVisitante->reb_of),  'fmt' => ''],
-                ['label' => 'Reb. defensivos',   'local' => $safe($statsLocal->reb_def), 'vis' => $safe($statsVisitante->reb_def), 'fmt' => ''],
+                ['label' => __('public.match_detail.stats.reb_total'),   'local' => $rebLocal, 'vis' => $rebVis, 'fmt' => '', 'sep' => __('public.match_detail.sections.rebounds')],
+                ['label' => __('public.match_detail.stats.reb_off'),    'local' => $safe($statsLocal->reb_of),  'vis' => $safe($statsVisitante->reb_of),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.reb_def'),   'local' => $safe($statsLocal->reb_def), 'vis' => $safe($statsVisitante->reb_def), 'fmt' => ''],
                 // ── Otras ──
-                ['label' => 'Asistencias',    'local' => $safe($statsLocal->ast), 'vis' => $safe($statsVisitante->ast), 'fmt' => '', 'sep' => 'Otras'],
-                ['label' => 'Tapones',        'local' => $safe($statsLocal->blk), 'vis' => $safe($statsVisitante->blk), 'fmt' => ''],
-                ['label' => 'Recuperaciones', 'local' => $safe($statsLocal->stl), 'vis' => $safe($statsVisitante->stl), 'fmt' => ''],
-                ['label' => 'Pérdidas',       'local' => $safe($statsLocal->tov), 'vis' => $safe($statsVisitante->tov), 'fmt' => ''],
-                ['label' => 'Faltas',         'local' => $safe($statsLocal->pf),  'vis' => $safe($statsVisitante->pf),  'fmt' => ''],
+                ['label' => __('public.match_detail.stats.ast'),    'local' => $safe($statsLocal->ast), 'vis' => $safe($statsVisitante->ast), 'fmt' => '', 'sep' => __('public.match_detail.sections.other')],
+                ['label' => __('public.match_detail.stats.blk'),        'local' => $safe($statsLocal->blk), 'vis' => $safe($statsVisitante->blk), 'fmt' => ''],
+                ['label' => __('public.match_detail.stats.stl'), 'local' => $safe($statsLocal->stl), 'vis' => $safe($statsVisitante->stl), 'fmt' => ''],
+                ['label' => __('public.match_detail.stats.tov'),       'local' => $safe($statsLocal->tov), 'vis' => $safe($statsVisitante->tov), 'fmt' => ''],
+                ['label' => __('public.match_detail.stats.pf'),         'local' => $safe($statsLocal->pf),  'vis' => $safe($statsVisitante->pf),  'fmt' => ''],
             ];
         @endphp
 
@@ -126,7 +127,7 @@
         <div class="grafico-estadisticas-wrap">
             <div class="grafico-titulo">
                 <span class="grafico-titulo-equipo">{{ $partido->equipoLocal->nombre }}</span>
-                <span>Estadísticas</span>
+                <span>{{ __('public.match_detail.hero.stats_center') }}</span>
                 <span class="grafico-titulo-equipo">{{ $partido->equipoVisitante->nombre }}</span>
             </div>
 
@@ -177,51 +178,51 @@
                 <thead>
                     <tr>
                         <th class="col-local">{{ $partido->equipoLocal->nombre }}</th>
-                        <th class="col-metrica">Metrica</th>
+                        <th class="col-metrica">{{ __('public.match_detail.table.metric') }}</th>
                         <th class="col-visitante">{{ $partido->equipoVisitante->nombre }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>{{ $safe($statsLocal->fga) }}</td><td>Tiros de campo intentados</td><td>{{ $safe($statsVisitante->fga) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->fgm) }}</td><td>Tiros de campo anotados</td><td>{{ $safe($statsVisitante->fgm) }}</td></tr>
-                    <tr><td>{{ $pct($statsLocal->fgm, $statsLocal->fga) }}</td><td>% Tiros de campo</td><td>{{ $pct($statsVisitante->fgm, $statsVisitante->fga) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->t2a) }}</td><td>Tiros de 2 intentados</td><td>{{ $safe($statsVisitante->t2a) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->t2m) }}</td><td>Tiros de 2 anotados</td><td>{{ $safe($statsVisitante->t2m) }}</td></tr>
-                    <tr><td>{{ $pct($statsLocal->t2m, $statsLocal->t2a) }}</td><td>% Tiros de 2</td><td>{{ $pct($statsVisitante->t2m, $statsVisitante->t2a) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->t3a) }}</td><td>Tiros de 3 intentados</td><td>{{ $safe($statsVisitante->t3a) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->t3m) }}</td><td>Tiros de 3 anotados</td><td>{{ $safe($statsVisitante->t3m) }}</td></tr>
-                    <tr><td>{{ $pct($statsLocal->t3m, $statsLocal->t3a) }}</td><td>% Tiros de 3</td><td>{{ $pct($statsVisitante->t3m, $statsVisitante->t3a) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->fta) }}</td><td>Tiros libres intentados</td><td>{{ $safe($statsVisitante->fta) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->ftm) }}</td><td>Tiros libres anotados</td><td>{{ $safe($statsVisitante->ftm) }}</td></tr>
-                    <tr><td>{{ $pct($statsLocal->ftm, $statsLocal->fta) }}</td><td>% Tiros libres</td><td>{{ $pct($statsVisitante->ftm, $statsVisitante->fta) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->fga) }}</td><td>{{ __('public.match_detail.stats.fga') }}</td><td>{{ $safe($statsVisitante->fga) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->fgm) }}</td><td>{{ __('public.match_detail.stats.fgm') }}</td><td>{{ $safe($statsVisitante->fgm) }}</td></tr>
+                    <tr><td>{{ $pct($statsLocal->fgm, $statsLocal->fga) }}</td><td>{{ __('public.match_detail.stats.fg_pct') }}</td><td>{{ $pct($statsVisitante->fgm, $statsVisitante->fga) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->t2a) }}</td><td>{{ __('public.match_detail.stats.t2a') }}</td><td>{{ $safe($statsVisitante->t2a) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->t2m) }}</td><td>{{ __('public.match_detail.stats.t2m') }}</td><td>{{ $safe($statsVisitante->t2m) }}</td></tr>
+                    <tr><td>{{ $pct($statsLocal->t2m, $statsLocal->t2a) }}</td><td>{{ __('public.match_detail.stats.t2_pct') }}</td><td>{{ $pct($statsVisitante->t2m, $statsVisitante->t2a) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->t3a) }}</td><td>{{ __('public.match_detail.stats.t3a') }}</td><td>{{ $safe($statsVisitante->t3a) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->t3m) }}</td><td>{{ __('public.match_detail.stats.t3m') }}</td><td>{{ $safe($statsVisitante->t3m) }}</td></tr>
+                    <tr><td>{{ $pct($statsLocal->t3m, $statsLocal->t3a) }}</td><td>{{ __('public.match_detail.stats.t3_pct') }}</td><td>{{ $pct($statsVisitante->t3m, $statsVisitante->t3a) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->fta) }}</td><td>{{ __('public.match_detail.stats.fta') }}</td><td>{{ $safe($statsVisitante->fta) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->ftm) }}</td><td>{{ __('public.match_detail.stats.ftm') }}</td><td>{{ $safe($statsVisitante->ftm) }}</td></tr>
+                    <tr><td>{{ $pct($statsLocal->ftm, $statsLocal->fta) }}</td><td>{{ __('public.match_detail.stats.ft_pct') }}</td><td>{{ $pct($statsVisitante->ftm, $statsVisitante->fta) }}</td></tr>
 
-                    <tr class="separador-row"><td colspan="3">Rebotes</td></tr>
-                    <tr><td>{{ $safe($statsLocal->reb_of) }}</td><td>Rebotes ofensivos</td><td>{{ $safe($statsVisitante->reb_of) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->reb_def) }}</td><td>Rebotes defensivos</td><td>{{ $safe($statsVisitante->reb_def) }}</td></tr>
+                    <tr class="separador-row"><td colspan="3">{{ __('public.match_detail.sections.rebounds') }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->reb_of) }}</td><td>{{ __('public.match_detail.stats.reb_off') }}</td><td>{{ $safe($statsVisitante->reb_of) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->reb_def) }}</td><td>{{ __('public.match_detail.stats.reb_def') }}</td><td>{{ $safe($statsVisitante->reb_def) }}</td></tr>
                     <tr>
                         <td>{{ $safe($statsLocal->reb_of) + $safe($statsLocal->reb_def) }}</td>
-                        <td>Rebotes totales</td>
+                        <td>{{ __('public.match_detail.stats.reb_total') }}</td>
                         <td>{{ $safe($statsVisitante->reb_of) + $safe($statsVisitante->reb_def) }}</td>
                     </tr>
 
-                    <tr class="separador-row"><td colspan="3">Otras</td></tr>
-                    <tr><td>{{ $safe($statsLocal->ast) }}</td><td>Asistencias</td><td>{{ $safe($statsVisitante->ast) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->blk) }}</td><td>Tapones</td><td>{{ $safe($statsVisitante->blk) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->tov) }}</td><td>Perdidas</td><td>{{ $safe($statsVisitante->tov) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->stl) }}</td><td>Recuperaciones</td><td>{{ $safe($statsVisitante->stl) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->pf) }}</td><td>Faltas</td><td>{{ $safe($statsVisitante->pf) }}</td></tr>
-                    <tr><td>{{ $safe($statsLocal->tf) }}</td><td>Faltas tecnicas</td><td>{{ $safe($statsVisitante->tf) }}</td></tr>
+                    <tr class="separador-row"><td colspan="3">{{ __('public.match_detail.sections.other') }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->ast) }}</td><td>{{ __('public.match_detail.stats.ast') }}</td><td>{{ $safe($statsVisitante->ast) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->blk) }}</td><td>{{ __('public.match_detail.stats.blk') }}</td><td>{{ $safe($statsVisitante->blk) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->tov) }}</td><td>{{ __('public.match_detail.stats.tov') }}</td><td>{{ $safe($statsVisitante->tov) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->stl) }}</td><td>{{ __('public.match_detail.stats.stl') }}</td><td>{{ $safe($statsVisitante->stl) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->pf) }}</td><td>{{ __('public.match_detail.stats.pf') }}</td><td>{{ $safe($statsVisitante->pf) }}</td></tr>
+                    <tr><td>{{ $safe($statsLocal->tf) }}</td><td>{{ __('public.match_detail.stats.tf') }}</td><td>{{ $safe($statsVisitante->tf) }}</td></tr>
                 </tbody>
             </table>
         </div>
 
         {{-- Tabla final con los puntos por cuarto y prórroga --}}
         <div class="tabla-cuartos-wrap">
-            <h2 class=puntos-por-parte>Puntos por partes</h2>
+            <h2 class=puntos-por-parte>{{ __('public.match_detail.quarters.title') }}</h2>
             <table class="tabla-cuartos">
                 <thead>
                     <tr>
-                        <th>Equipo</th>
+                        <th>{{ __('public.match_detail.table.team') }}</th>
                         <th>Q1</th>
                         <th>Q2</th>
                         <th>Q3</th>

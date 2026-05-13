@@ -1,16 +1,18 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.galleries.meta.edit_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     <x-admin-edit-header
-        titulo="Editar Galería"
-        subtitulo="Actualiza la información del álbum y gestiona sus imágenes"
+        :titulo="__('admin.galleries.edit.title')"
+        :subtitulo="__('admin.galleries.edit.subtitle')"
         :backRoute="route('galerias.index')"
     />
 
     @if ($errors->any())
     <div class="cuadro-errores-admin">
-        <strong>Revisa el formulario:</strong>
+        <strong>{{ __('admin.galleries.form_review') }}</strong>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -26,16 +28,16 @@
             <input type="hidden" name="imagen_principal_nueva" value="" data-imagen-principal-nueva>
 
             <div class="seccion-form-ficha seccion-personal">
-                <h3><i class="fas fa-images"></i> Datos de la Galería</h3>
+                <h3><i class="fas fa-images"></i> {{ __('admin.galleries.sections.data') }}</h3>
 
                 <div class="campo-ficha">
-                    <label>Título de la galería</label>
-                    <input type="text" name="titulo" value="{{ old('titulo', $galeria->titulo) }}" required class="input-ficha">
+                    <label>{{ __('admin.galleries.fields.title') }}</label>
+                    <input type="text" name="titulo" value="{{ old('titulo', $galeria->titulo) }}" class="input-ficha">
                 </div>
 
                 <div class="campo-ficha">
-                    <label>Tipo</label>
-                    <select name="tipo" required class="input-ficha input-white">
+                    <label>{{ __('admin.galleries.fields.type') }}</label>
+                    <select name="tipo" class="input-ficha input-white">
                         @foreach($tipos as $clave => $label)
                             <option value="{{ $clave }}" @selected(old('tipo', $galeria->tipo) === $clave)>{{ $label }}</option>
                         @endforeach
@@ -43,80 +45,80 @@
                 </div>
 
                 <div class="campo-ficha">
-                    <label>Descripción</label>
-                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea" required>{{ old('descripcion', $galeria->descripcion) }}</textarea>
+                    <label>{{ __('admin.galleries.fields.description') }}</label>
+                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea">{{ old('descripcion', $galeria->descripcion) }}</textarea>
                 </div>
 
                 <div class="campo-ficha">
-                    <label>Slug actual</label>
+                    <label>{{ __('admin.galleries.fields.current_slug') }}</label>
                     <input type="text" value="{{ $galeria->slug }}" readonly class="input-ficha">
-                    <p class="input-help-text">Se recalcula automáticamente a partir del título.</p>
+                    <p class="input-help-text">{{ __('admin.galleries.fields.slug_help') }}</p>
                 </div>
 
                 <div class="campo-ficha">
-                    <label>Visibilidad en la web</label>
+                    <label>{{ __('admin.galleries.fields.visibility') }}</label>
                     <div class="checkbox-wrapper checkbox-wrapper-ficha">
                         <input type="checkbox" name="oculto" value="1" {{ old('oculto', $galeria->oculto) ? 'checked' : '' }}>
-                        <span>Ocultar galería de la web pública</span>
+                        <span>{{ __('admin.galleries.fields.hide_public') }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="seccion-foto-ficha">
                 <div class="card-imagen-horizontal">
-                    <div class="preview-foto-noticia galeria-preview-vacio">
-                        <div class="galeria-preview-placeholder">
-                            <i class="fas fa-images"></i>
-                            <span>Añadir nuevas imágenes</span>
+                        <div class="preview-foto-noticia galeria-preview-vacio">
+                            <div class="galeria-preview-placeholder">
+                                <i class="fas fa-images"></i>
+                                <span>{{ __('admin.galleries.images.add_new') }}</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="info-subida-noticia">
-                        <h3>Imágenes de la Galería</h3>
-                        <p>Puedes seguir añadiendo tandas nuevas. Se acumularán antes de guardar y podrán pasar a ser la portada principal.</p>
+                        <div class="info-subida-noticia">
+                        <h3>{{ __('admin.galleries.images.title') }}</h3>
+                        <p>{{ __('admin.galleries.images.help_edit') }}</p>
 
                         <label for="imagenes_galeria_edit" class="btn-cambiar-foto">
-                            <i class="fas fa-camera"></i> Añadir imágenes
+                            <i class="fas fa-camera"></i> {{ __('admin.galleries.images.add_images') }}
                         </label>
                         <input type="file" name="imagenes[]" id="imagenes_galeria_edit" accept="image/*" multiple data-acumular-imagenes class="hidden-file-input">
 
-                        <span class="nota-subida">Si no seleccionas nuevas imágenes, se mantendrán únicamente las actuales.</span>
+                        <span class="nota-subida">{{ __('admin.galleries.images.note_edit') }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="campo-ficha galeria-upload-summary" data-upload-summary hidden>
-                <label>Nuevas imágenes pendientes de subir</label>
-                <p class="input-help-text">Si quieres, una de estas nuevas imágenes puede pasar a ser la principal.</p>
+                <label>{{ __('admin.galleries.images.new_pending') }}</label>
+                <p class="input-help-text">{{ __('admin.galleries.images.new_pending_help') }}</p>
                 <div class="galeria-admin-grid" data-upload-preview></div>
             </div>
 
             <div class="campo-ficha">
-                <label>Imágenes actuales</label>
-                <p class="input-help-text">Selecciona la portada principal o marca las imágenes que quieras eliminar.</p>
+                <label>{{ __('admin.galleries.images.current_images') }}</label>
+                <p class="input-help-text">{{ __('admin.galleries.images.current_images_help') }}</p>
                 <div class="galeria-admin-grid" data-existing-gallery-grid>
                     @forelse($galeria->imagenes as $imagen)
                         <div class="galeria-admin-card" data-existing-image-card>
-                            <img src="{{ $imagen->image_url }}" alt="Imagen {{ $galeria->titulo }}">
+                            <img src="{{ $imagen->image_url }}" alt="{{ __('admin.galleries.fields.image_alt', ['title' => $galeria->titulo]) }}">
                             <label class="galeria-admin-principal">
                                 <input type="radio" name="imagen_principal_existente" value="{{ $imagen->id }}" @checked($imagen->es_principal)>
-                                Imagen principal
+                                {{ __('admin.galleries.images.main_image') }}
                             </label>
                             <label class="galeria-admin-remove galeria-admin-remove-toggle">
                                 <input type="checkbox" name="eliminar_imagenes[]" value="{{ $imagen->id }}">
-                                <span>Quitar imagen</span>
+                                <span>{{ __('admin.galleries.images.remove_image') }}</span>
                             </label>
                         </div>
                     @empty
-                        <p class="admin-subtle-text">Esta galería todavía no tiene imágenes.</p>
+                        <p class="admin-subtle-text">{{ __('admin.galleries.empty.no_images_yet') }}</p>
                     @endforelse
                 </div>
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de galerias">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha" title="Actualizar galeria">
-                    <i class="fas fa-sync-alt"></i> ACTUALIZAR FICHA
+                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.galleries.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha" title="{{ __('admin.galleries.actions.update') }}">
+                    <i class="fas fa-sync-alt"></i> {{ __('admin.galleries.edit.submit') }}
                 </button>
             </div>
         </form>
@@ -162,9 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         <strong>${archivo.name}</strong>
                         <label class="galeria-upload-principal">
                             <input type="radio" name="selector_principal_nueva" value="${index}" ${checked}>
-                            Imagen principal
+                            ${@json(__('admin.galleries.images.main_image'))}
                         </label>
-                        <button type="button" class="galeria-upload-remove" data-index="${index}" title="Quitar imagen">Quitar</button>
+                        <button type="button" class="galeria-upload-remove" data-index="${index}" title="${@json(__('admin.galleries.images.remove_image'))}">${@json(__('admin.galleries.images.remove'))}</button>
                     </div>
                 `;
                 preview.appendChild(item);

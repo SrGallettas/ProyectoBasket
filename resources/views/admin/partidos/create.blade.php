@@ -5,18 +5,18 @@
     
     <header class="header-ficha">
         <div>
-            <h2>Programar Nuevo Partido</h2>
-            <p>Configura el próximo encuentro del club</p>
+            <h2>{{ __('admin.matches.create.title') }}</h2>
+            <p>{{ __('admin.matches.create.subtitle') }}</p>
         </div>
-        <a href="{{ route('partidos.index') }}" class="btn-ficha-accion btn-ficha-volver" title="Volver al listado de partidos">
-            <i class="fas fa-arrow-left"></i> Volver al listado
+        <a href="{{ route('partidos.index') }}" class="btn-ficha-accion btn-ficha-volver" title="{{ __('admin.matches.actions.cancel_back') }}">
+            <i class="fas fa-arrow-left"></i> {{ __('admin.common.back_to_list') }}
         </a>
     </header>
 
     {{-- Bloque de errores (Estilo idéntico al de Merchandising) --}}
     @if ($errors->any())
     <div class="cuadro-errores-admin">
-        <strong>¡Vaya! Algo ha ido mal:</strong>
+        <strong>{{ __('admin.common.form_error') }}</strong>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -33,12 +33,12 @@
                 
                 {{-- SECCIÓN EQUIPOS --}}
                 <div class="seccion-form-ficha seccion-personal">
-                    <h3><i class="fas fa-handshake"></i> Equipos del Encuentro</h3>
+                    <h3><i class="fas fa-handshake"></i> {{ __('admin.matches.sections.teams') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Categoría</label>
+                        <label>{{ __('admin.matches.fields.category') }}</label>
                         <select name="categoria" class="input-ficha" data-categoria-partido>
-                            <option value="" disabled {{ old('categoria') ? '' : 'selected' }}>Selecciona categoría...</option>
+                            <option value="" disabled {{ old('categoria') ? '' : 'selected' }}>{{ __('admin.matches.fields.select_category') }}</option>
                             @foreach(['Senior', 'Senior B', 'Junior', 'Cadete', 'Infantil', 'Alevín'] as $nombre_categoria)
                                 <option value="{{ $nombre_categoria }}" {{ old('categoria') == $nombre_categoria ? 'selected' : '' }}>
                                     {{ $nombre_categoria }}
@@ -50,14 +50,14 @@
                     <div class="campo-ficha">
                         <label style="display:flex; align-items:center; gap:8px;">
                             <input type="checkbox" data-mostrar-todos-equipos>
-                            Mostrar todos los equipos
+                            {{ __('admin.matches.fields.show_all_teams') }}
                         </label>
                     </div>
                     
                     <div class="campo-ficha">
-                        <label>Equipo Local</label>
+                        <label>{{ __('admin.matches.fields.local_team') }}</label>
                         <select name="equipo_local_id" class="input-ficha" data-equipo-local>
-                            <option value="" disabled {{ old('equipo_local_id') ? '' : 'selected' }}>Selecciona equipo local...</option>
+                            <option value="" disabled {{ old('equipo_local_id') ? '' : 'selected' }}>{{ __('admin.matches.fields.select_local_team') }}</option>
                             @foreach($equipos as $equipo)
                                 <option value="{{ $equipo->id }}" data-categoria="{{ $equipo->categoria }}" {{ old('equipo_local_id') == $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
@@ -67,9 +67,9 @@
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Equipo Visitante</label>
+                        <label>{{ __('admin.matches.fields.visitor_team') }}</label>
                         <select name="equipo_visitante_id" class="input-ficha" data-equipo-visitante>
-                            <option value="" disabled {{ old('equipo_visitante_id') ? '' : 'selected' }}>Selecciona equipo visitante...</option>
+                            <option value="" disabled {{ old('equipo_visitante_id') ? '' : 'selected' }}>{{ __('admin.matches.fields.select_visitor_team') }}</option>
                             @foreach($equipos as $equipo)
                                 <option value="{{ $equipo->id }}" data-categoria="{{ $equipo->categoria }}" {{ old('equipo_visitante_id') == $equipo->id ? 'selected' : '' }}>
                                     {{ $equipo->nombre }} ({{ $equipo->categoria }})
@@ -81,30 +81,30 @@
 
                 {{-- SECCIÓN DETALLES --}}
                 <div class="seccion-form-ficha seccion-deportiva">
-                    <h3><i class="fas fa-info-circle"></i> Detalles del Partido</h3>
+                    <h3><i class="fas fa-info-circle"></i> {{ __('admin.matches.sections.details') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>Fecha y Hora</label>
+                        <label>{{ __('admin.matches.fields.date_time') }}</label>
                         <input type="datetime-local" name="fecha_hora" class="input-ficha" value="{{ old('fecha_hora') }}">
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Lugar / Pabellón</label>
+                        <label>{{ __('admin.matches.fields.venue') }}</label>
                         <input type="text" name="lugar" value="{{ old('lugar', 'Pabellón Municipal') }}" class="input-ficha">
                     </div>
 
                     <div class="campo-ficha">
-                        <label>Tipo de partido</label>
+                        <label>{{ __('admin.matches.fields.type') }}</label>
                         <select name="tipo_partido" class="input-ficha" data-tipo-partido>
-                            <option value="liga" {{ old('tipo_partido', 'liga') === 'liga' ? 'selected' : '' }}>Liga</option>
-                            <option value="amistoso" {{ old('tipo_partido') === 'amistoso' ? 'selected' : '' }}>Amistoso</option>
+                            <option value="liga" {{ old('tipo_partido', 'liga') === 'liga' ? 'selected' : '' }}>{{ __('admin.matches.types.league') }}</option>
+                            <option value="amistoso" {{ old('tipo_partido') === 'amistoso' ? 'selected' : '' }}>{{ __('admin.matches.types.friendly') }}</option>
                         </select>
                     </div>
 
                     <div class="campo-ficha" data-campo-liga>
-                        <label>Clasificación (liga)</label>
+                        <label>{{ __('admin.matches.fields.standing') }}</label>
                         <select name="clasificacion_id" class="input-ficha" data-clasificacion-partido>
-                            <option value="" {{ old('clasificacion_id') ? '' : 'selected' }}>Selecciona clasificación...</option>
+                            <option value="" {{ old('clasificacion_id') ? '' : 'selected' }}>{{ __('admin.matches.fields.select_standing') }}</option>
                             @foreach($clasificaciones as $clasificacion)
                                 <option value="{{ $clasificacion->id }}" {{ (int) old('clasificacion_id') === (int) $clasificacion->id ? 'selected' : '' }}>
                                     {{ $clasificacion->nombre }}{{ $clasificacion->temporada ? ' · ' . $clasificacion->temporada : '' }}
@@ -114,30 +114,30 @@
                     </div>
 
                     <div class="campo-ficha" data-campo-liga>
-                        <label>Jornada</label>
-                        <input type="number" name="jornada" min="1" class="input-ficha" value="{{ old('jornada') }}" placeholder="Ej. 3">
+                        <label>{{ __('admin.matches.fields.round') }}</label>
+                        <input type="number" name="jornada" min="1" class="input-ficha" value="{{ old('jornada') }}" placeholder="{{ __('admin.matches.fields.round_placeholder') }}">
                     </div>
 
                     <div class="campo-ficha">
                         <label style="display:flex; align-items:center; gap:8px;">
                             <input type="checkbox" name="oculto" value="1" {{ old('oculto') ? 'checked' : '' }}>
-                            Ocultar este partido en la web publica
+                            {{ __('admin.matches.fields.hide_public') }}
                         </label>
                     </div>
 
                     <div class="campo-ficha" data-campo-liga>
                         <label style="display:flex; align-items:center; gap:8px;">
                             <input type="checkbox" name="oculto_en_clasificacion" value="1" {{ old('oculto_en_clasificacion') ? 'checked' : '' }}>
-                            Ocultar este partido en clasificación
+                            {{ __('admin.matches.fields.hide_standings') }}
                         </label>
                     </div>
 
                 </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha" title="Cancelar y volver al listado de partidos">Cancelar</a>
-                <button type="submit" class="btn-actualizar-ficha" title="Programar partido">
-                    <i class="fas fa-save"></i> PROGRAMAR PARTIDO
+                <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.matches.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha" title="{{ __('admin.matches.index.new') }}">
+                    <i class="fas fa-save"></i> {{ __('admin.matches.create.submit') }}
                 </button>
             </div>
         </form>
