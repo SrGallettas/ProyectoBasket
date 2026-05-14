@@ -13,9 +13,13 @@ class Galeria extends Model
 
     protected $fillable = [
         'titulo',
+        'titulo_es',
+        'titulo_val',
         'slug',
         'carpeta',
         'descripcion',
+        'descripcion_es',
+        'descripcion_val',
         'tipo',
         'oculto',
     ];
@@ -31,6 +35,48 @@ class Galeria extends Model
         'eventos' => 'Eventos',
         'otros' => 'Otros',
     ];
+
+    public function getTituloAttribute(): string
+    {
+        return $this->getLocalizedText('titulo');
+    }
+
+    public function getDescripcionAttribute(): string
+    {
+        return $this->getLocalizedText('descripcion');
+    }
+
+    public function getLocalizedText(string $baseField, ?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+        $locale = $locale === 'val' ? 'val' : 'es';
+
+        $localizedValue = $this->getRawOriginal("{$baseField}_{$locale}");
+        $fallbackValue = $this->getRawOriginal("{$baseField}_es");
+        $legacyValue = $this->getRawOriginal($baseField);
+
+        return (string) ($localizedValue ?: $fallbackValue ?: $legacyValue ?: '');
+    }
+
+    public static function translatedTypes(string $translationPrefix): array
+    {
+        $types = [];
+
+        foreach (array_keys(self::TIPOS) as $type) {
+            $types[$type] = __("$translationPrefix.$type");
+        }
+
+        return $types;
+    }
+
+    public static function translatedTypeLabel(?string $type, string $translationPrefix): string
+    {
+        if (! $type || ! array_key_exists($type, self::TIPOS)) {
+            return (string) ucfirst((string) $type);
+        }
+
+        return __("$translationPrefix.$type");
+    }
 
     public function imagenes()
     {

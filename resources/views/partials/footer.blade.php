@@ -3,7 +3,7 @@
         <div class="footer-col info-club">
             <span class="footer-kicker">Bellreguard CB</span>
             <a href="{{ url('/') }}" class="logo-footer">
-                <img src="{{ asset('img/club_14.png') }}" alt="Logo Bellreguard" />
+                <img src="{{ asset('img/club_14.png') }}" alt="{{ __('ui.club_name') }}" />
                 <div class="texto-logo-footer">
                     <h3>Bellreguard</h3>
                     <span>{{ __('ui.club_name') }}</span>

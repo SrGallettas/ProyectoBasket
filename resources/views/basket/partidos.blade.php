@@ -53,8 +53,8 @@
                     {{-- Icono dinámico según la categoría --}}
                     <i class="fa-solid {{ $categoria == 'Senior' || $categoria == 'Senior B' ? 'fa-trophy' : 'fa-star' }}"></i>
                     <div>
-                        <h3>Equipo {{ $categoria }}</h3>
-                        <p>Bellreguard CB</p>
+                        <h3>{{ __('public.matches.team_heading', ['category' => $categoria]) }}</h3>
+                        <p>{{ __('ui.club_name') }}</p>
                     </div>
                 </div>
 

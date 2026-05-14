@@ -25,7 +25,7 @@
     <div class="contenedor-admin">
         <aside class="sidebar-admin" id="admin-sidebar">
             <div class="admin-perfil">
-                <img src="{{ asset('img/club_14.png') }}" alt="Logo Admin">
+                <img src="{{ asset('img/club_14.png') }}" alt="{{ __('admin.layout.panel') }}">
                 <div class="admin-info">
                     <h4>{{ __('admin.layout.panel') }}</h4>
                     <span>{{ $adminUser?->name }} · {{ \App\Models\User::ROLES[$adminUser?->role] ?? __('admin.layout.user') }}</span>
@@ -130,6 +130,7 @@
             const storageKey = 'admin-sidebar-collapsed';
             const themeStorageKey = 'bb_theme';
             const mobileBreakpoint = 768;
+            const themeToggleText = @json(__('admin.layout.theme_toggle'));
 
             const actualizarBotonesTema = () => {
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -138,7 +139,8 @@
 
                 [desktopThemeToggle, mobileThemeToggle].forEach((boton) => {
                     if (!boton) return;
-                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${boton.id === 'admin-theme-toggle' ? '<span>${@json(__('admin.layout.theme_toggle'))}</span>' : ''}`;
+                    const buttonText = boton.id === 'admin-theme-toggle' ? `<span>${themeToggleText}</span>` : '';
+                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${buttonText}`;
                     boton.setAttribute('aria-label', label);
                     boton.setAttribute('title', label);
                 });

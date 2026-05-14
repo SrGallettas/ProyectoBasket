@@ -31,8 +31,21 @@
                 <h3><i class="fas fa-images"></i> {{ __('admin.galleries.sections.data') }}</h3>
 
                 <div class="campo-ficha">
+                    <label for="idioma_origen">{{ __('admin.galleries.fields.source_language') }}</label>
+                    <select name="idioma_origen" id="idioma_origen" class="input-ficha">
+                        <option value="es" {{ old('idioma_origen', 'es') === 'es' ? 'selected' : '' }}>{{ __('admin.galleries.fields.source_language_es') }}</option>
+                        <option value="val" {{ old('idioma_origen') === 'val' ? 'selected' : '' }}>{{ __('admin.galleries.fields.source_language_val') }}</option>
+                    </select>
+                </div>
+
+                <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.title') }}</label>
-                    <input type="text" name="titulo" value="{{ old('titulo', $galeria->titulo) }}" class="input-ficha">
+                    <input
+                        type="text"
+                        name="titulo"
+                        value="{{ old('titulo', old('idioma_origen') === 'val' ? ($galeria->titulo_val ?: $galeria->titulo_es ?: $galeria->getRawOriginal('titulo')) : ($galeria->titulo_es ?: $galeria->getRawOriginal('titulo'))) }}"
+                        class="input-ficha"
+                    >
                 </div>
 
                 <div class="campo-ficha">
@@ -46,7 +59,7 @@
 
                 <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.description') }}</label>
-                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea">{{ old('descripcion', $galeria->descripcion) }}</textarea>
+                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea">{{ old('descripcion', old('idioma_origen') === 'val' ? ($galeria->descripcion_val ?: $galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion')) : ($galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion'))) }}</textarea>
                 </div>
 
                 <div class="campo-ficha">

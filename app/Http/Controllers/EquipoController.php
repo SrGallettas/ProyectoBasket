@@ -39,7 +39,7 @@ class EquipoController extends Controller
     {
         $this->writeService->create($request->all());
 
-        return redirect()->route('equipos.index')->with('mensaje', 'Equipo creado');
+        return redirect()->route('equipos.index')->with('mensaje', __('admin.flash.team_created'));
     }
 
     public function destroy(string $id)
@@ -50,7 +50,7 @@ class EquipoController extends Controller
             return redirect()
                 ->route('equipos.index')
                 ->withErrors([
-                    'delete' => 'No puedes eliminar este equipo porque tiene partidos asociados.',
+                    'delete' => __('admin.flash.team_delete_blocked'),
                 ]);
         }
 
@@ -70,7 +70,7 @@ class EquipoController extends Controller
         $equipo = Equipo::findOrFail($id);
         $this->writeService->update($equipo, $request->all());
 
-        return redirect()->route('equipos.index')->with('mensaje', 'Equipo actualizado correctamente');
+        return redirect()->route('equipos.index')->with('mensaje', __('admin.flash.team_updated'));
     }
 
     public function show(string $id)
@@ -88,8 +88,8 @@ class EquipoController extends Controller
         return redirect()->route('equipos.index')->with(
             'mensaje',
             $equipo->oculto
-                ? 'Equipo ocultado de la web publica.'
-                : 'Equipo visible de nuevo en la web publica.'
+                ? __('admin.flash.team_hidden')
+                : __('admin.flash.team_shown')
         );
     }
 }

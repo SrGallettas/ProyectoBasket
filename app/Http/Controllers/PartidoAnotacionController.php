@@ -70,7 +70,7 @@ class PartidoAnotacionController extends Controller
         if (! $this->boardService->boardActionsTableExists()) {
             return redirect()
                 ->route('partidos.anotacion', $partido)
-                ->withErrors(['anotacion' => 'Falta ejecutar la migración de la mesa de anotación.']);
+                ->withErrors(['anotacion' => __('admin.flash.board_missing_table')]);
         }
 
         $acciones = $this->boardService->quickActionDefinitions();
@@ -78,7 +78,7 @@ class PartidoAnotacionController extends Controller
 
         if (! $accion) {
             throw ValidationException::withMessages([
-                'accion' => 'La acción seleccionada no es válida.',
+                'accion' => __('admin.flash.board_invalid_action'),
             ]);
         }
 
@@ -127,7 +127,7 @@ class PartidoAnotacionController extends Controller
 
         return redirect()
             ->route('partidos.anotacion', $partido)
-            ->with('mensaje', 'Acción registrada.');
+            ->with('mensaje', __('admin.flash.board_action_saved'));
     }
 
     public function deshacerAccionAnotacion(Partido $partido, Request $request)
@@ -135,7 +135,7 @@ class PartidoAnotacionController extends Controller
         if (! $this->boardService->boardActionsTableExists()) {
             return redirect()
                 ->route('partidos.anotacion', $partido)
-                ->withErrors(['anotacion' => 'Falta ejecutar la migración de la mesa de anotación.']);
+                ->withErrors(['anotacion' => __('admin.flash.board_missing_table')]);
         }
 
         $undone = false;
@@ -191,12 +191,12 @@ class PartidoAnotacionController extends Controller
         if (! $undone) {
             return redirect()
                 ->route('partidos.anotacion', $partido)
-                ->withErrors(['anotacion' => 'No hay acciones recientes para deshacer.']);
+                ->withErrors(['anotacion' => __('admin.flash.board_no_recent_actions')]);
         }
 
         return redirect()
             ->route('partidos.anotacion', $partido)
-            ->with('mensaje', 'Última acción deshecha.');
+            ->with('mensaje', __('admin.flash.board_action_undone'));
     }
 
     public function confirmarAnotacion(Partido $partido, Request $request)
@@ -205,6 +205,6 @@ class PartidoAnotacionController extends Controller
 
         return redirect()
             ->route('partidos.index')
-            ->with('mensaje', 'Sesión de anotación finalizada. Las estadísticas guardadas siguen disponibles en el partido.');
+            ->with('mensaje', __('admin.flash.board_session_closed'));
     }
 }

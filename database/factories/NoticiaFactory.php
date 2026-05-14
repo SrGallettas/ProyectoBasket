@@ -22,8 +22,14 @@ class NoticiaFactory extends Factory
 
         return [
             'titulo' => $titulo,
+            'titulo_es' => $titulo,
+            'titulo_val' => null,
             'subtitulo' => $this->faker->text(150),
+            'subtitulo_es' => $this->faker->text(150),
+            'subtitulo_val' => null,
             'contenido' => $this->faker->text(300),
+            'contenido_es' => $this->faker->text(300),
+            'contenido_val' => null,
             'slug' => $slugBase . '-' . Str::lower(Str::random(6)),
             'imagen_noticia' => 'club_14.png',
             'autor' => $this->faker->name(),

@@ -40,7 +40,7 @@ class JugadorController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('jugadores.index')->with('mensaje', 'Jugador creado con éxito');
+        return redirect()->route('jugadores.index')->with('mensaje', __('admin.flash.player_created'));
     }
 
     public function edit(string $id)
@@ -56,7 +56,7 @@ class JugadorController extends Controller
         $jugador = Jugador::findOrFail($id);
         $this->writeService->update($jugador, $request->validated());
 
-        return redirect()->route('jugadores.index')->with('mensaje', 'Jugador actualizado correctamente');
+        return redirect()->route('jugadores.index')->with('mensaje', __('admin.flash.player_updated'));
     }
 
     public function destroy(string $id)
@@ -64,7 +64,7 @@ class JugadorController extends Controller
         $jugador = Jugador::findOrFail($id);
         $this->writeService->delete($jugador);
 
-        return redirect()->route('jugadores.index')->with('mensaje', 'Jugador eliminado correctamente del club');
+        return redirect()->route('jugadores.index')->with('mensaje', __('admin.flash.player_deleted'));
     }
 
     public function show(string $id)
@@ -82,8 +82,8 @@ class JugadorController extends Controller
         return redirect()->route('jugadores.index')->with(
             'mensaje',
             $jugador->oculto
-                ? 'Jugador ocultado de la web publica.'
-                : 'Jugador visible de nuevo en la web publica.'
+                ? __('admin.flash.player_hidden')
+                : __('admin.flash.player_shown')
         );
     }
 }

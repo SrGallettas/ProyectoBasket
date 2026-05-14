@@ -1,5 +1,5 @@
 @props([
-    'badge' => 'COMUNICADOS OFICIALES',
+    'badge' => __('public.news.hero.badge'),
     'title',
     'subtitle' => null,
 ])

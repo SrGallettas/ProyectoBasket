@@ -21,7 +21,7 @@
 
     {{-- 1. LOGO Y TEXTO --}}
     <a href="{{ url('/') }}" class="navegacion-izquierda">
-        <img src="{{ asset('img/club_14.png') }}" class="logo-navegacion" alt="Logo Bellreguard" />
+        <img src="{{ asset('img/club_14.png') }}" class="logo-navegacion" alt="{{ __('ui.club_name') }}" />
         <div class="titulo-navegacion">
             <h3>Bellreguard</h3>
             <span>{{ __('ui.club_name') }}</span>

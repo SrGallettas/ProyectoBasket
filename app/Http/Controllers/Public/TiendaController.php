@@ -16,7 +16,7 @@ class TiendaController extends Controller
     public function tienda()
     {
         $merchandising = Merchandising::where('oculto', false)
-            ->orderBy('nombre', 'asc')
+            ->orderBy('nombre_es', 'asc')
             ->paginate(9);
 
         $cartItems = $this->cartService->getCartItems();
@@ -32,7 +32,7 @@ class TiendaController extends Controller
 
         if (empty($cartItems)) {
             return redirect()->route('basket.tienda')->withErrors([
-                'cesta' => 'Tu cesta está vacía. Añade al menos un producto antes de solicitar el pedido.',
+                'cesta' => __('public.store.validation.empty_cart'),
             ]);
         }
 
@@ -58,7 +58,7 @@ class TiendaController extends Controller
 
         if (! empty($tallasDisponibles) && ! in_array($tallaSeleccionada, $tallasDisponibles, true)) {
             return back()->withErrors([
-                'talla' => 'Selecciona una talla válida para este producto.',
+                'talla' => __('public.store.validation.invalid_size'),
             ])->withInput();
         }
 
@@ -85,7 +85,7 @@ class TiendaController extends Controller
         session()->put('basket_cart', $cart);
         session()->flash('openCart', true);
 
-        return redirect()->route('basket.tienda')->with('mensaje', 'Producto añadido a la cesta.');
+        return redirect()->route('basket.tienda')->with('mensaje', __('public.store.flash.added_to_cart'));
     }
 
     public function actualizarProductoCesta(Request $request, string $itemKey)
@@ -98,7 +98,7 @@ class TiendaController extends Controller
 
         if (! isset($cart[$itemKey])) {
             return redirect()->route('basket.tienda')->withErrors([
-                'cesta' => 'El producto que intentas actualizar ya no está en la cesta.',
+                'cesta' => __('public.store.validation.missing_cart_item'),
             ]);
         }
 
@@ -119,7 +119,7 @@ class TiendaController extends Controller
         session()->put('basket_cart', $cart);
         session()->flash('openCart', true);
 
-        return redirect()->route('basket.tienda')->with('mensaje', 'Producto eliminado de la cesta.');
+        return redirect()->route('basket.tienda')->with('mensaje', __('public.store.flash.removed_from_cart'));
     }
 
     public function enviarPedidoMerchan(Request $request)
@@ -136,7 +136,7 @@ class TiendaController extends Controller
 
         if (empty($cartItems)) {
             return redirect()->route('basket.tienda')->withErrors([
-                'cesta' => 'Tu cesta está vacía. Añade productos antes de enviar una solicitud.',
+                'cesta' => __('public.store.validation.empty_cart'),
             ]);
         }
 
@@ -151,7 +151,7 @@ class TiendaController extends Controller
 
         return redirect()->route('basket.tienda')->with(
             'mensaje',
-            'Tu solicitud de pedido se ha enviado correctamente. Te responderemos lo antes posible.'
+            __('public.store.flash.order_sent')
         );
     }
 
@@ -160,6 +160,6 @@ class TiendaController extends Controller
         $merchandising->oculto = ! $merchandising->oculto;
         $merchandising->save();
 
-        return redirect()->route('basket.tienda')->with('mensaje', $merchandising->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+        return redirect()->route('basket.tienda')->with('mensaje', $merchandising->oculto ? __('public.flash.hidden') : __('public.flash.shown'));
     }
 }

@@ -30,6 +30,14 @@
                 <h3><i class="fas fa-images"></i> {{ __('admin.galleries.sections.data') }}</h3>
 
                 <div class="campo-ficha">
+                    <label for="idioma_origen">{{ __('admin.galleries.fields.source_language') }}</label>
+                    <select name="idioma_origen" id="idioma_origen" class="input-ficha">
+                        <option value="es" {{ old('idioma_origen', 'es') === 'es' ? 'selected' : '' }}>{{ __('admin.galleries.fields.source_language_es') }}</option>
+                        <option value="val" {{ old('idioma_origen') === 'val' ? 'selected' : '' }}>{{ __('admin.galleries.fields.source_language_val') }}</option>
+                    </select>
+                </div>
+
+                <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.title') }}</label>
                     <input
                         type="text"

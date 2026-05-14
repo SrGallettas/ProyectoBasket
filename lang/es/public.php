@@ -20,7 +20,7 @@ return [
             'title' => '¿Quieres jugar con nosotros esta temporada?',
             'text' => 'Si buscas equipo, quieres traer a tu hijo o simplemente conocer mejor el club, te ayudamos a encontrar la categoría adecuada y resolver cualquier duda.',
             'cta' => 'Contactar con el club',
-            'pill' => 'Pruebas, cantera y equipos del club',
+            'pill' => 'Pruebas, base y equipos del club',
             'points' => [
                 'categories' => 'Información clara sobre categorías y equipos',
                 'contact' => 'Contacto directo con el club',
@@ -107,12 +107,12 @@ return [
     'team' => [
         'meta' => [
             'title' => 'Equipo - Bellreguard CB',
-            'description' => 'Consulta la cantera, las categorías y la plantilla pública de los equipos del Bellreguard CB.',
+            'description' => 'Consulta los equipos de base, las categorías y la plantilla pública de los equipos del Bellreguard CB.',
         ],
         'hero' => [
             'image_alt' => 'Plantilla y equipos del Bellreguard Club de Basket',
             'badge' => 'PLANTILLA OFICIAL',
-            'title' => 'Cantera y equipos del Bellreguard CB',
+            'title' => 'Base y equipos del Bellreguard CB',
             'subtitle' => 'Descubre las categorías del club y consulta la plantilla disponible de cada equipo local.',
         ],
         'summary' => [
@@ -207,6 +207,7 @@ return [
             'title' => 'Próximos partidos',
             'subtitle' => 'Consulta el calendario de todos nuestros equipos.',
         ],
+        'team_heading' => 'Equipo :category',
         'status' => [
             'finished' => 'Finalizado',
             'upcoming' => 'Próximo',
@@ -332,6 +333,14 @@ return [
             'albums_count' => ':count álbumes',
             'photos_count' => ':count fotos en esta página',
         ],
+        'types' => [
+            'all' => 'Todos',
+            'partidos' => 'Partidos',
+            'entrenamientos' => 'Entrenamientos',
+            'equipo' => 'Equipo',
+            'eventos' => 'Eventos',
+            'otros' => 'Otros',
+        ],
         'photos_badge' => ':count fotos',
         'view_album' => 'Ver álbum',
         'hide' => 'Ocultar en web',
@@ -426,6 +435,15 @@ return [
             'missing_cart_item' => 'El producto que intentas actualizar ya no está en la cesta.',
             'empty_cart' => 'Tu cesta está vacía. Añade al menos un producto antes de solicitar el pedido.',
         ],
+        'flash' => [
+            'added_to_cart' => 'Producto añadido a la cesta.',
+            'removed_from_cart' => 'Producto eliminado de la cesta.',
+            'order_sent' => 'Tu solicitud de pedido se ha enviado correctamente. Te responderemos lo antes posible.',
+        ],
+    ],
+    'flash' => [
+        'hidden' => 'Se ha ocultado correctamente.',
+        'shown' => 'Se ha mostrado correctamente.',
     ],
     'gallery_detail' => [
         'meta' => [

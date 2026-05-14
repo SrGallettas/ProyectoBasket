@@ -64,8 +64,8 @@ class PartidoController extends Controller
         $partido->save();
 
         $mensaje = $partido->oculto
-            ? 'Se ha ocultado correctamente.'
-            : 'Se ha mostrado correctamente.';
+            ? __('public.flash.hidden')
+            : __('public.flash.shown');
 
         return redirect()->route('basket.partidos')->with('mensaje', $mensaje);
     }

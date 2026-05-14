@@ -15,6 +15,7 @@ abstract class BaseGaleriaRequest extends FormRequest
     public function baseRules(): array
     {
         return [
+            'idioma_origen' => 'required|in:es,val',
             'titulo' => 'required|string|min:3|max:255',
             'descripcion' => 'required|string|max:2000',
             'tipo' => 'required|in:'.implode(',', array_keys(Galeria::TIPOS)),
@@ -25,6 +26,8 @@ abstract class BaseGaleriaRequest extends FormRequest
     public function baseMessages(): array
     {
         return [
+            'idioma_origen.required' => __('admin.galleries.validation.source_language_required'),
+            'idioma_origen.in' => __('admin.galleries.validation.source_language_invalid'),
             'imagenes.required' => 'Debes subir al menos una imagen.',
             'imagenes.array' => 'Las imágenes deben enviarse en formato válido.',
             'imagenes.min' => 'La galeria debe tener al menos una imagen.',

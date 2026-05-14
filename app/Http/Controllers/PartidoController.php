@@ -41,7 +41,7 @@ class PartidoController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('partidos.index')->with('mensaje', 'Partido programado correctamente');
+        return redirect()->route('partidos.index')->with('mensaje', __('admin.flash.match_created'));
     }
 
     public function show($id)
@@ -67,7 +67,7 @@ class PartidoController extends Controller
         $partido = Partido::findOrFail($id);
         $this->writeService->update($partido, $request->validated());
 
-        return redirect()->route('partidos.index')->with('mensaje', 'Partido actualizado correctamente.');
+        return redirect()->route('partidos.index')->with('mensaje', __('admin.flash.match_updated'));
     }
 
     public function destroy(string $id)
@@ -75,7 +75,7 @@ class PartidoController extends Controller
         $partido = Partido::findOrFail($id);
         $this->writeService->delete($partido);
 
-        return redirect()->route('partidos.index')->with('mensaje', 'Partido eliminado correctamente del club');
+        return redirect()->route('partidos.index')->with('mensaje', __('admin.flash.match_deleted'));
     }
 
     public function toggleOculto(Partido $partido)
@@ -84,8 +84,8 @@ class PartidoController extends Controller
         $partido->save();
 
         $mensaje = $partido->oculto
-            ? 'Partido ocultado de la web publica.'
-            : 'Partido visible de nuevo en la web publica.';
+            ? __('admin.flash.match_hidden')
+            : __('admin.flash.match_shown');
 
         return redirect()->route('partidos.index')->with('mensaje', $mensaje);
     }
@@ -96,8 +96,8 @@ class PartidoController extends Controller
         $partido->save();
 
         $mensaje = $partido->oculto_en_clasificacion
-            ? 'Partido ocultado de la clasificación pública.'
-            : 'Partido visible de nuevo en la clasificación pública.';
+            ? __('admin.flash.match_hidden_standings')
+            : __('admin.flash.match_shown_standings');
 
         return redirect()->route('partidos.index')->with('mensaje', $mensaje);
     }

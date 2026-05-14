@@ -10,7 +10,7 @@ class GaleriaController extends Controller
     public function galeria()
     {
         $tipoSeleccionado = request('tipo', 'todos');
-        $tipos = ['todos' => 'Todos'] + Galeria::TIPOS;
+        $tipos = ['todos' => __('public.gallery.types.all')] + Galeria::translatedTypes('public.gallery.types');
 
         $galerias = Galeria::with('portadaImagen')
             ->withCount('imagenes')
@@ -40,6 +40,6 @@ class GaleriaController extends Controller
         $galeria->oculto = ! $galeria->oculto;
         $galeria->save();
 
-        return redirect()->route('basket.galeria')->with('mensaje', $galeria->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+        return redirect()->route('basket.galeria')->with('mensaje', $galeria->oculto ? __('public.flash.hidden') : __('public.flash.shown'));
     }
 }

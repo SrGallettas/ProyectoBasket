@@ -12,7 +12,7 @@ class NoticiaListService
         $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
 
         $sortableColumns = [
-            'titulo' => 'titulo',
+            'titulo' => 'titulo_es',
             'autor' => 'autor',
             'created_at' => 'created_at',
             'oculto' => 'oculto',
@@ -23,13 +23,15 @@ class NoticiaListService
         $query = Noticia::query()
             ->when($search, function ($builder) use ($search) {
                 $builder->where(function ($subquery) use ($search) {
-                    $subquery->where('titulo', 'like', '%'.$search.'%')
+                    $subquery->where('titulo_es', 'like', '%'.$search.'%')
+                        ->orWhere('titulo_val', 'like', '%'.$search.'%')
                         ->orWhere('autor', 'like', '%'.$search.'%')
-                        ->orWhere('subtitulo', 'like', '%'.$search.'%');
+                        ->orWhere('subtitulo_es', 'like', '%'.$search.'%')
+                        ->orWhere('subtitulo_val', 'like', '%'.$search.'%');
                 });
             });
 
-        if (in_array($sortColumn, ['titulo', 'autor'], true)) {
+        if (in_array($sortColumn, ['titulo_es', 'autor'], true)) {
             $query->orderByRaw('LOWER('.$sortColumn.') '.$direction);
         } else {
             $query->orderBy($sortColumn, $direction);

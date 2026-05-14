@@ -32,11 +32,18 @@
                 <div class="seccion-form-ficha seccion-producto">
                     <h3><i class="fas fa-tag"></i> {{ __('admin.store.sections.general') }}</h3>
                     <div class="campo-ficha">
-                        <label for="nombre">{{ __('admin.store.fields.product_name') }}</label>
+                        <label for="idioma_origen">{{ __('admin.store.fields.source_language') }}</label>
+                        <select name="idioma_origen" id="idioma_origen" class="input-ficha">
+                            <option value="es" {{ old('idioma_origen', 'es') === 'es' ? 'selected' : '' }}>{{ __('admin.store.fields.source_language_es') }}</option>
+                            <option value="val" {{ old('idioma_origen') === 'val' ? 'selected' : '' }}>{{ __('admin.store.fields.source_language_val') }}</option>
+                        </select>
+                    </div>
+                    <div class="campo-ficha">
+                        <label for="nombre">{{ __('admin.store.fields.product_name_input') }}</label>
                         <input type="text" name="nombre" id="nombre" class="input-ficha" value="{{ old('nombre') }}">
                     </div>
                     <div class="campo-ficha">
-                        <label for="descripcion">{{ __('admin.store.fields.description') }}</label>
+                        <label for="descripcion">{{ __('admin.store.fields.description_input') }}</label>
                         <textarea name="descripcion" id="descripcion" rows="4" class="input-ficha">{{ old('descripcion') }}</textarea>
                     </div>
                 </div>

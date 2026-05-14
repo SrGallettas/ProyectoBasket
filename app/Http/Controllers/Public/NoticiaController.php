@@ -30,6 +30,6 @@ class NoticiaController extends Controller
         $noticia->oculto = ! $noticia->oculto;
         $noticia->save();
 
-        return redirect()->route('basket.noticias')->with('mensaje', $noticia->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+        return redirect()->route('basket.noticias')->with('mensaje', $noticia->oculto ? __('public.flash.hidden') : __('public.flash.shown'));
     }
 }

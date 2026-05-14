@@ -14,6 +14,7 @@ abstract class BaseNoticiaRequest extends FormRequest
     public function baseRules(): array
     {
         return [
+            'idioma_origen' => 'required|in:es,val',
             'titulo' => 'required|string|min:5|max:255',
             'subtitulo' => 'required|string|max:500',
             'contenido' => 'required|string',
@@ -25,17 +26,19 @@ abstract class BaseNoticiaRequest extends FormRequest
     public function baseMessages(): array
     {
         return [
-            'titulo.required' => 'El título de la noticia es obligatorio.',
-            'titulo.min' => 'El título es demasiado corto (mínimo 5 caracteres).',
-            'titulo.max' => 'El título no puede superar los 255 caracteres.',
-            'subtitulo.required' => 'La entradilla o resumen es obligatoria.',
-            'subtitulo.max' => 'El resumen es demasiado largo (máximo 500 caracteres).',
-            'contenido.required' => 'El cuerpo de la noticia no puede estar vacío.',
-            'autor.required' => 'Debes indicar quién es el autor de la noticia.',
-            'autor.max' => 'El nombre del autor no debe superar los 100 caracteres.',
-            'imagen_noticia.image' => 'El archivo debe ser una imagen válida.',
-            'imagen_noticia.mimes' => 'Formatos permitidos: jpeg, png, jpg o webp.',
-            'imagen_noticia.max' => 'La imagen es muy pesada. El máximo permitido son 2MB.',
+            'idioma_origen.required' => __('admin.news.validation.source_language_required'),
+            'idioma_origen.in' => __('admin.news.validation.source_language_invalid'),
+            'titulo.required' => __('admin.news.validation.title_required'),
+            'titulo.min' => __('admin.news.validation.title_min'),
+            'titulo.max' => __('admin.news.validation.title_max'),
+            'subtitulo.required' => __('admin.news.validation.subtitle_required'),
+            'subtitulo.max' => __('admin.news.validation.subtitle_max'),
+            'contenido.required' => __('admin.news.validation.content_required'),
+            'autor.required' => __('admin.news.validation.author_required'),
+            'autor.max' => __('admin.news.validation.author_max'),
+            'imagen_noticia.image' => __('admin.news.validation.image'),
+            'imagen_noticia.mimes' => __('admin.news.validation.image_mimes'),
+            'imagen_noticia.max' => __('admin.news.validation.image_max'),
         ];
     }
 }

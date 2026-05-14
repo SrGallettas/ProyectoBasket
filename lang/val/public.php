@@ -20,7 +20,7 @@ return [
             'title' => 'Vols jugar amb nosaltres esta temporada?',
             'text' => 'Si busques equip, vols portar el teu fill o simplement conéixer millor el club, t’ajudem a trobar la categoria adequada i a resoldre qualsevol dubte.',
             'cta' => 'Contactar amb el club',
-            'pill' => 'Proves, cantera i equips del club',
+            'pill' => 'Proves, pedrera i equips del club',
             'points' => [
                 'categories' => 'Informació clara sobre categories i equips',
                 'contact' => 'Contacte directe amb el club',
@@ -107,12 +107,12 @@ return [
     'team' => [
         'meta' => [
             'title' => 'Equip - Bellreguard CB',
-            'description' => 'Consulta la cantera, les categories i la plantilla pública dels equips del Bellreguard CB.',
+            'description' => 'Consulta la pedrera, les categories i la plantilla pública dels equips del Bellreguard CB.',
         ],
         'hero' => [
             'image_alt' => 'Plantilla i equips del Bellreguard Club de Bàsquet',
             'badge' => 'PLANTILLA OFICIAL',
-            'title' => 'Cantera i equips del Bellreguard CB',
+            'title' => 'Pedrera i equips del Bellreguard CB',
             'subtitle' => 'Descobrix les categories del club i consulta la plantilla disponible de cada equip local.',
         ],
         'summary' => [
@@ -187,7 +187,7 @@ return [
         'hero' => [
             'badge' => 'COMUNICATS OFICIALS',
             'title' => 'Actualitat granota',
-            'subtitle' => 'Seguix el dia a dia dels nostres equips, cròniques de partits i events del club.',
+            'subtitle' => 'Seguix el dia a dia dels nostres equips, cròniques de partits i esdeveniments del club.',
         ],
         'listing_bar' => 'Mostrant últimes notícies del club',
         'category_tag' => 'BÀSQUET',
@@ -207,6 +207,7 @@ return [
             'title' => 'Pròxims partits',
             'subtitle' => 'Consulta el calendari de tots els nostres equips.',
         ],
+        'team_heading' => 'Equip :category',
         'status' => [
             'finished' => 'Finalitzat',
             'upcoming' => 'Pròxim',
@@ -332,6 +333,14 @@ return [
             'albums_count' => ':count àlbums',
             'photos_count' => ':count fotos en esta pàgina',
         ],
+        'types' => [
+            'all' => 'Tots',
+            'partidos' => 'Partits',
+            'entrenamientos' => 'Entrenaments',
+            'equipo' => 'Equip',
+            'eventos' => 'Esdeveniments',
+            'otros' => 'Altres',
+        ],
         'photos_badge' => ':count fotos',
         'view_album' => 'Vore àlbum',
         'hide' => 'Ocultar en web',
@@ -426,6 +435,15 @@ return [
             'missing_cart_item' => 'El producte que intentes actualitzar ja no està en la cistella.',
             'empty_cart' => 'La teua cistella està buida. Afig almenys un producte abans de sol·licitar la comanda.',
         ],
+        'flash' => [
+            'added_to_cart' => 'Producte afegit a la cistella.',
+            'removed_from_cart' => 'Producte eliminat de la cistella.',
+            'order_sent' => 'La teua sol·licitud de comanda s’ha enviat correctament. Et respondrem tan prompte com siga possible.',
+        ],
+    ],
+    'flash' => [
+        'hidden' => 'S’ha ocultat correctament.',
+        'shown' => 'S’ha mostrat correctament.',
     ],
     'gallery_detail' => [
         'meta' => [

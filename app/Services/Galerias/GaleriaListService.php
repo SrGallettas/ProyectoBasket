@@ -12,7 +12,7 @@ class GaleriaListService
         $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
 
         $sortableColumns = [
-            'titulo' => 'titulo',
+            'titulo' => 'titulo_es',
             'tipo' => 'tipo',
             'imagenes_count' => 'imagenes_count',
             'slug' => 'slug',
@@ -26,7 +26,11 @@ class GaleriaListService
             ->with('portadaImagen')
             ->when($search, function ($builder) use ($search) {
                 $builder->where(function ($subquery) use ($search) {
-                    $subquery->where('titulo', 'like', '%'.$search.'%')
+                    $subquery->where('titulo_es', 'like', '%'.$search.'%')
+                        ->orWhere('titulo_val', 'like', '%'.$search.'%')
+                        ->orWhere('titulo', 'like', '%'.$search.'%')
+                        ->orWhere('descripcion_es', 'like', '%'.$search.'%')
+                        ->orWhere('descripcion_val', 'like', '%'.$search.'%')
                         ->orWhere('descripcion', 'like', '%'.$search.'%')
                         ->orWhere('tipo', 'like', '%'.$search.'%');
                 });

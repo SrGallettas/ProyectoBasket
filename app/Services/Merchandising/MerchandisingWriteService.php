@@ -4,12 +4,15 @@ namespace App\Services\Merchandising;
 
 use App\Models\Merchandising;
 use App\Services\Media\ImageStorageService;
+use App\Services\Translation\ApertiumTranslationService;
 use Illuminate\Http\UploadedFile;
+use RuntimeException;
 
 class MerchandisingWriteService
 {
     public function __construct(
         private readonly ImageStorageService $imageStorage,
+        private readonly ApertiumTranslationService $translationService,
     ) {}
 
     public function create(array $data): Merchandising
@@ -56,8 +59,14 @@ class MerchandisingWriteService
 
     private function fillItem(Merchandising $item, array $data, bool $updating = false): void
     {
-        $item->nombre = $data['nombre'];
-        $item->descripcion = $data['descripcion'] ?? null;
+        $translations = $this->resolveTranslations($data);
+
+        $item->nombre = $translations['nombre_es'] ?: $translations['nombre_val'];
+        $item->nombre_es = $translations['nombre_es'];
+        $item->nombre_val = $translations['nombre_val'];
+        $item->descripcion = $translations['descripcion_es'] ?: $translations['descripcion_val'];
+        $item->descripcion_es = $translations['descripcion_es'];
+        $item->descripcion_val = $translations['descripcion_val'];
         $item->precio = $data['precio'];
         $item->oculto = filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL);
         $item->talla = $this->normalizeSizeSelection($data['talla'] ?? null);
@@ -68,6 +77,45 @@ class MerchandisingWriteService
             }
 
             $item->imagen_merchan = $this->imageStorage->store($data['imagen_merchan'], 'merchandising');
+        }
+    }
+
+    private function resolveTranslations(array $data): array
+    {
+        $sourceLocale = ($data['idioma_origen'] ?? 'es') === 'val' ? 'val' : 'es';
+        $name = (string) $data['nombre'];
+        $description = (string) ($data['descripcion'] ?? '');
+
+        try {
+            if ($sourceLocale === 'val') {
+                return [
+                    'nombre_es' => $this->translationService->translate($name, [], 'cat_valencia|spa'),
+                    'nombre_val' => $name,
+                    'descripcion_es' => $this->translationService->translate($description, [], 'cat_valencia|spa'),
+                    'descripcion_val' => $description !== '' ? $description : null,
+                ];
+            }
+
+            return [
+                'nombre_es' => $name,
+                'nombre_val' => $this->translationService->translate($name),
+                'descripcion_es' => $description !== '' ? $description : null,
+                'descripcion_val' => $this->translationService->translate($description),
+            ];
+        } catch (RuntimeException) {
+            return $sourceLocale === 'val'
+                ? [
+                    'nombre_es' => null,
+                    'nombre_val' => $name,
+                    'descripcion_es' => null,
+                    'descripcion_val' => $description !== '' ? $description : null,
+                ]
+                : [
+                    'nombre_es' => $name,
+                    'nombre_val' => null,
+                    'descripcion_es' => $description !== '' ? $description : null,
+                    'descripcion_val' => null,
+                ];
         }
     }
 }

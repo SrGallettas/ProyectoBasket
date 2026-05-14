@@ -37,7 +37,7 @@ class MerchandisingController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('merchandising.index')->with('mensaje', 'Producto creado con exito');
+        return redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_created'));
     }
 
     public function edit(string $id)
@@ -53,7 +53,7 @@ class MerchandisingController extends Controller
         $item = Merchandising::findOrFail($id);
         $this->writeService->update($item, $request->validated());
 
-        return redirect()->route('merchandising.index')->with('mensaje', 'Producto actualizado correctamente');
+        return redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_updated'));
     }
 
     public function destroy(string $id)
@@ -61,7 +61,7 @@ class MerchandisingController extends Controller
         $item = Merchandising::findOrFail($id);
         $this->writeService->delete($item);
 
-        return redirect()->route('merchandising.index')->with('mensaje', 'Producto eliminado correctamente');
+        return redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_deleted'));
     }
 
     public function show(string $id)
@@ -80,8 +80,8 @@ class MerchandisingController extends Controller
         return redirect()->route('merchandising.index')->with(
             'mensaje',
             $merchandising->oculto
-                ? 'Producto ocultado de la web publica.'
-                : 'Producto visible de nuevo en la web publica.'
+                ? __('admin.flash.product_hidden')
+                : __('admin.flash.product_shown')
         );
     }
 }

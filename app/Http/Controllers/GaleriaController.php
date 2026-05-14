@@ -45,7 +45,7 @@ class GaleriaController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('galerias.index')->with('mensaje', 'Galeria creada correctamente.');
+        return redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_created'));
     }
 
     public function show(string $id)
@@ -73,7 +73,7 @@ class GaleriaController extends Controller
         $galeria = Galeria::with('imagenes')->findOrFail($id);
         $this->writeService->update($galeria, $request->validated());
 
-        return redirect()->route('galerias.index')->with('mensaje', 'Galeria actualizada correctamente.');
+        return redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_updated'));
     }
 
     public function destroy(string $id)
@@ -81,7 +81,7 @@ class GaleriaController extends Controller
         $galeria = Galeria::with('imagenes')->findOrFail($id);
         $this->writeService->delete($galeria);
 
-        return redirect()->route('galerias.index')->with('mensaje', 'Galeria eliminada correctamente.');
+        return redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_deleted'));
     }
 
     public function toggleOculto(Galeria $galeria)
@@ -92,8 +92,8 @@ class GaleriaController extends Controller
         return redirect()->route('galerias.index')->with(
             'mensaje',
             $galeria->oculto
-                ? 'Galeria ocultada de la web publica.'
-                : 'Galeria visible de nuevo en la web publica.'
+                ? __('admin.flash.gallery_hidden')
+                : __('admin.flash.gallery_shown')
         );
     }
 }

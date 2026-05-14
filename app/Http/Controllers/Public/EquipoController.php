@@ -84,7 +84,7 @@ class EquipoController extends Controller
         $equipo->oculto = ! $equipo->oculto;
         $equipo->save();
 
-        return redirect()->route('basket.equipo')->with('mensaje', $equipo->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+        return redirect()->route('basket.equipo')->with('mensaje', $equipo->oculto ? __('public.flash.hidden') : __('public.flash.shown'));
     }
 
     public function toggleOcultoJugador(Jugador $jugador)
@@ -92,6 +92,6 @@ class EquipoController extends Controller
         $jugador->oculto = ! $jugador->oculto;
         $jugador->save();
 
-        return redirect()->route('basket.equipo', ['categoria' => optional($jugador->equipo)->categoria])->with('mensaje', $jugador->oculto ? 'Se ha ocultado correctamente.' : 'Se ha mostrado correctamente.');
+        return redirect()->route('basket.equipo', ['categoria' => optional($jugador->equipo)->categoria])->with('mensaje', $jugador->oculto ? __('public.flash.hidden') : __('public.flash.shown'));
     }
 }

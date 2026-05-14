@@ -35,7 +35,7 @@ class NoticiaController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('noticias.index')->with('mensaje', 'Noticia creada correctamente');
+        return redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_created'));
     }
 
     public function edit(string $id)
@@ -50,7 +50,7 @@ class NoticiaController extends Controller
         $noticia = Noticia::findOrFail($id);
         $this->writeService->update($noticia, $request->validated());
 
-        return redirect()->route('noticias.index')->with('mensaje', 'Noticia actualizada correctamente');
+        return redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_updated'));
     }
 
     public function destroy(string $id)
@@ -58,7 +58,7 @@ class NoticiaController extends Controller
         $noticia = Noticia::findOrFail($id);
         $this->writeService->delete($noticia);
 
-        return redirect()->route('noticias.index')->with('mensaje', 'Noticia eliminada correctamente');
+        return redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_deleted'));
     }
 
     public function show(string $id)
@@ -76,8 +76,8 @@ class NoticiaController extends Controller
         return redirect()->route('noticias.index')->with(
             'mensaje',
             $noticia->oculto
-                ? 'Noticia ocultada de la web publica.'
-                : 'Noticia visible de nuevo en la web publica.'
+                ? __('admin.flash.news_hidden')
+                : __('admin.flash.news_shown')
         );
     }
 }

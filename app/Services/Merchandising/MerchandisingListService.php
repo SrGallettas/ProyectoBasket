@@ -12,7 +12,7 @@ class MerchandisingListService
         $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
 
         $sortableColumns = [
-            'nombre' => 'nombre',
+            'nombre' => 'nombre_es',
             'talla' => 'talla',
             'precio' => 'precio',
             'oculto' => 'oculto',
@@ -21,18 +21,20 @@ class MerchandisingListService
         $sortColumn = $sortableColumns[$sort] ?? 'nombre';
 
         $query = Merchandising::query()->when($search, function ($builder) use ($search) {
-            $builder->where('nombre', 'like', '%'.$search.'%')
-                ->orWhere('descripcion', 'like', '%'.$search.'%');
+            $builder->where('nombre_es', 'like', '%'.$search.'%')
+                ->orWhere('nombre_val', 'like', '%'.$search.'%')
+                ->orWhere('descripcion_es', 'like', '%'.$search.'%')
+                ->orWhere('descripcion_val', 'like', '%'.$search.'%');
         });
 
-        if (in_array($sortColumn, ['nombre', 'talla'], true)) {
+        if (in_array($sortColumn, ['nombre_es', 'talla'], true)) {
             $query->orderByRaw('LOWER('.$sortColumn.') '.$direction);
         } else {
             $query->orderBy($sortColumn, $direction);
         }
 
         return $query
-            ->orderByRaw('LOWER(nombre) asc')
+            ->orderByRaw('LOWER(nombre_es) asc')
             ->paginate(9)
             ->withQueryString();
     }

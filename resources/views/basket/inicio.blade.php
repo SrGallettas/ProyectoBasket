@@ -316,7 +316,7 @@
                         </a>
 
                         <div class="inicio-galeria-copy">
-                            <span class="inicio-galeria-type">{{ \App\Models\Galeria::TIPOS[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
+                            <span class="inicio-galeria-type">{{ \App\Models\Galeria::translatedTypeLabel($galeria->tipo, 'public.gallery.types') }}</span>
                             <h3>{{ $galeria->titulo }}</h3>
                             <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion ?: __('public.home.gallery.fallback_description'), $index === 0 ? 150 : 110) }}</p>
                             <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="inicio-galeria-link">{{ __('public.home.gallery.card_cta') }}</a>

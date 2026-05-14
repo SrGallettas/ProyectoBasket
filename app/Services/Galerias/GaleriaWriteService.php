@@ -4,25 +4,34 @@ namespace App\Services\Galerias;
 
 use App\Models\Galeria;
 use App\Services\Media\ImageStorageService;
+use App\Services\Translation\ApertiumTranslationService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class GaleriaWriteService
 {
     public function __construct(
         private readonly ImageStorageService $imageStorage,
+        private readonly ApertiumTranslationService $translationService,
     ) {}
 
     public function create(array $data): Galeria
     {
         return DB::transaction(function () use ($data) {
+            $translations = $this->resolveTranslations($data);
+
             $galeria = Galeria::create([
-                'titulo' => $data['titulo'],
-                'slug' => $this->generateUniqueSlug($data['titulo']),
-                'carpeta' => $this->generateUniqueFolder($data['titulo']),
-                'descripcion' => $data['descripcion'],
+                'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
+                'titulo_es' => $translations['titulo_es'],
+                'titulo_val' => $translations['titulo_val'],
+                'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
+                'carpeta' => $this->generateUniqueFolder($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
+                'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
+                'descripcion_es' => $translations['descripcion_es'],
+                'descripcion_val' => $translations['descripcion_val'],
                 'tipo' => $data['tipo'],
                 'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
             ]);
@@ -41,10 +50,16 @@ class GaleriaWriteService
     public function update(Galeria $galeria, array $data): Galeria
     {
         return DB::transaction(function () use ($galeria, $data) {
+            $translations = $this->resolveTranslations($data);
+
             $galeria->update([
-                'titulo' => $data['titulo'],
-                'slug' => $this->generateUniqueSlug($data['titulo'], $galeria->id),
-                'descripcion' => $data['descripcion'],
+                'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
+                'titulo_es' => $translations['titulo_es'],
+                'titulo_val' => $translations['titulo_val'],
+                'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo'], $galeria->id),
+                'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
+                'descripcion_es' => $translations['descripcion_es'],
+                'descripcion_val' => $translations['descripcion_val'],
                 'tipo' => $data['tipo'],
                 'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
             ]);
@@ -218,5 +233,44 @@ class GaleriaWriteService
     private function galleryDirectory(Galeria $galeria): string
     {
         return 'galerias/'.$galeria->carpeta;
+    }
+
+    private function resolveTranslations(array $data): array
+    {
+        $sourceLocale = ($data['idioma_origen'] ?? 'es') === 'val' ? 'val' : 'es';
+        $title = (string) $data['titulo'];
+        $description = (string) ($data['descripcion'] ?? '');
+
+        try {
+            if ($sourceLocale === 'val') {
+                return [
+                    'titulo_es' => $this->translationService->translate($title, [], 'cat_valencia|spa'),
+                    'titulo_val' => $title,
+                    'descripcion_es' => $this->translationService->translate($description, [], 'cat_valencia|spa'),
+                    'descripcion_val' => $description,
+                ];
+            }
+
+            return [
+                'titulo_es' => $title,
+                'titulo_val' => $this->translationService->translate($title),
+                'descripcion_es' => $description,
+                'descripcion_val' => $this->translationService->translate($description),
+            ];
+        } catch (RuntimeException) {
+            return $sourceLocale === 'val'
+                ? [
+                    'titulo_es' => null,
+                    'titulo_val' => $title,
+                    'descripcion_es' => null,
+                    'descripcion_val' => $description,
+                ]
+                : [
+                    'titulo_es' => $title,
+                    'titulo_val' => null,
+                    'descripcion_es' => $description,
+                    'descripcion_val' => null,
+                ];
+        }
     }
 }

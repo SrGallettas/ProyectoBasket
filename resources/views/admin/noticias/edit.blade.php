@@ -31,24 +31,32 @@
                     <h3><i class="fas fa-newspaper"></i> {{ __('admin.news.sections.publish') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>{{ __('admin.news.fields.title') }}</label>
+                        <label>{{ __('admin.news.fields.source_language') }}</label>
+                        <select name="idioma_origen" class="input-ficha">
+                            <option value="es" {{ old('idioma_origen', 'es') === 'es' ? 'selected' : '' }}>{{ __('admin.news.fields.source_language_es') }}</option>
+                            <option value="val" {{ old('idioma_origen') === 'val' ? 'selected' : '' }}>{{ __('admin.news.fields.source_language_val') }}</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>{{ __('admin.news.fields.title_input') }}</label>
                         <input
                             type="text"
                             name="titulo"
-                            value="{{ old('titulo', $noticia->titulo) }}"
-                            placeholder="{{ __('admin.news.fields.title_placeholder') }}"
+                            value="{{ old('titulo', old('idioma_origen') === 'val' ? ($noticia->titulo_val ?: $noticia->titulo_es ?: $noticia->getRawOriginal('titulo')) : ($noticia->titulo_es ?: $noticia->getRawOriginal('titulo'))) }}"
+                            placeholder="{{ __('admin.news.fields.title_placeholder_input') }}"
                             class="input-ficha"
                         >
                     </div>
 
                     <div class="campo-ficha">
-                        <label>{{ __('admin.news.fields.subtitle') }}</label>
+                        <label>{{ __('admin.news.fields.subtitle_input') }}</label>
                         <textarea
                             name="subtitulo"
                             rows="3"
-                            placeholder="{{ __('admin.news.fields.subtitle_placeholder') }}"
+                            placeholder="{{ __('admin.news.fields.subtitle_placeholder_input') }}"
                             class="input-ficha admin-textarea"
-                        >{{ old('subtitulo', $noticia->subtitulo) }}</textarea>
+                        >{{ old('subtitulo', old('idioma_origen') === 'val' ? ($noticia->subtitulo_val ?: $noticia->subtitulo_es ?: $noticia->getRawOriginal('subtitulo')) : ($noticia->subtitulo_es ?: $noticia->getRawOriginal('subtitulo'))) }}</textarea>
                     </div>
 
                     <div class="campo-ficha">
@@ -67,13 +75,13 @@
                     <h3><i class="fas fa-pen-nib"></i> {{ __('admin.news.sections.body') }}</h3>
 
                     <div class="campo-ficha">
-                        <label>{{ __('admin.news.fields.content') }}</label>
+                        <label>{{ __('admin.news.fields.content_input') }}</label>
                         <textarea
                             name="contenido"
                             rows="12"
-                            placeholder="{{ __('admin.news.fields.content_placeholder') }}"
+                            placeholder="{{ __('admin.news.fields.content_placeholder_input') }}"
                             class="input-ficha admin-textarea"
-                        >{{ old('contenido', $noticia->contenido) }}</textarea>
+                        >{{ old('contenido', old('idioma_origen') === 'val' ? ($noticia->contenido_val ?: $noticia->contenido_es ?: $noticia->getRawOriginal('contenido')) : ($noticia->contenido_es ?: $noticia->getRawOriginal('contenido'))) }}</textarea>
                     </div>
 
                     <div class="campo-ficha">

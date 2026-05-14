@@ -13,18 +13,51 @@ class Noticia extends Model
     protected $table = 'noticias';
 
     protected $fillable = [
-        'titulo', 
-        'subtitulo', 
+        'titulo',
+        'titulo_es',
+        'titulo_val',
+        'subtitulo',
+        'subtitulo_es',
+        'subtitulo_val',
         'slug',
-        'contenido', 
-        'imagen_noticia', 
-        'autor', 
+        'contenido',
+        'contenido_es',
+        'contenido_val',
+        'imagen_noticia',
+        'autor',
         'oculto',
     ];
 
     protected $casts = [
         'oculto' => 'boolean',
     ];
+
+    public function getTituloAttribute(): string
+    {
+        return $this->getLocalizedText('titulo');
+    }
+
+    public function getSubtituloAttribute(): string
+    {
+        return $this->getLocalizedText('subtitulo');
+    }
+
+    public function getContenidoAttribute(): string
+    {
+        return $this->getLocalizedText('contenido');
+    }
+
+    public function getLocalizedText(string $baseField, ?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+        $locale = $locale === 'val' ? 'val' : 'es';
+
+        $localizedValue = $this->getRawOriginal("{$baseField}_{$locale}");
+        $fallbackValue = $this->getRawOriginal("{$baseField}_es");
+        $legacyValue = $this->getRawOriginal($baseField);
+
+        return (string) ($localizedValue ?: $fallbackValue ?: $legacyValue ?: '');
+    }
 
     public function getImagenNoticiaUrlAttribute(): string
     {

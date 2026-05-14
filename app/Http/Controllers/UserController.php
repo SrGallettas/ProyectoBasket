@@ -66,7 +66,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->route('usuarios.index')->with('mensaje', 'Usuario creado correctamente.');
+        return redirect()->route('usuarios.index')->with('mensaje', __('admin.flash.user_created'));
     }
 
     public function edit(User $usuario)
@@ -107,7 +107,7 @@ class UserController extends Controller
 
         $usuario->update($data);
 
-        return redirect()->route('usuarios.index')->with('mensaje', 'Usuario actualizado correctamente.');
+        return redirect()->route('usuarios.index')->with('mensaje', __('admin.flash.user_updated'));
     }
 
     public function destroy(Request $request, User $usuario)
@@ -126,6 +126,6 @@ class UserController extends Controller
 
         $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('mensaje', 'Usuario eliminado correctamente.');
+        return redirect()->route('usuarios.index')->with('mensaje', __('admin.flash.user_deleted'));
     }
 }

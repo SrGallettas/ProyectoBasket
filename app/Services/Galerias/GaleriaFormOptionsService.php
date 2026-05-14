@@ -8,6 +8,6 @@ class GaleriaFormOptionsService
 {
     public function typeOptions(): array
     {
-        return Galeria::TIPOS;
+        return Galeria::translatedTypes('admin.galleries.types');
     }
 }

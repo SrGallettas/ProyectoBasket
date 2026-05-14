@@ -136,7 +136,7 @@ class ClasificacionController extends Controller
             $clasificacion->equipos()->sync($data['equipos'] ?? []);
         });
 
-        return redirect()->route('clasificaciones.index')->with('mensaje', 'Clasificación creada correctamente.');
+        return redirect()->route('clasificaciones.index')->with('mensaje', __('admin.flash.standings_created'));
     }
 
     /*
@@ -273,7 +273,7 @@ class ClasificacionController extends Controller
             }
         });
 
-        return redirect()->route('clasificaciones.index')->with('mensaje', 'Clasificación actualizada correctamente.');
+        return redirect()->route('clasificaciones.index')->with('mensaje', __('admin.flash.standings_updated'));
     }
 
     /*
@@ -285,7 +285,7 @@ class ClasificacionController extends Controller
     {
         $clasificacion->delete();
 
-        return redirect()->route('clasificaciones.index')->with('mensaje', 'Clasificación eliminada correctamente.');
+        return redirect()->route('clasificaciones.index')->with('mensaje', __('admin.flash.standings_deleted'));
     }
 
     /*
@@ -304,10 +304,10 @@ class ClasificacionController extends Controller
     public function recalcular(Clasificacion $clasificacion)
     {
         if (! $this->rebuildClasificacionRows($clasificacion)) {
-            return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', 'No hay equipos asignados a esta clasificación.');
+            return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', __('admin.flash.standings_empty'));
         }
 
-        return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', 'Clasificación recalculada correctamente.');
+        return redirect()->route('clasificaciones.show', $clasificacion)->with('mensaje', __('admin.flash.standings_recalculated'));
     }
 
     /*

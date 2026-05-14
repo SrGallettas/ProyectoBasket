@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'apertium' => [
+        'base_url' => env('APERTIUM_BASE_URL'),
+        'langpair' => env('APERTIUM_LANGPAIR', 'es|ca_valencia'),
+        'timeout' => (int) env('APERTIUM_TIMEOUT', 10),
+        'protected_terms' => array_values(array_filter(array_map(
+            'trim',
+            explode(',', (string) env('APERTIUM_PROTECTED_TERMS', 'CB Bellreguard,Bellreguard Basket,Bellreguard CB,Pabellón Municipal de Bellreguard,Pavelló Municipal de Bellreguard,Pista Central'))
+        ))),
+    ],
+
 ];
