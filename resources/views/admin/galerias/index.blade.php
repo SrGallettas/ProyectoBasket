@@ -37,7 +37,7 @@
     @endphp
 
     <div class="pizarra-admin">
-        <table class="tabla-admin">
+        <table class="tabla-admin tabla-admin-galerias">
             <thead>
                 <tr>
                     <th>{{ __('admin.galleries.fields.cover') }}</th>
@@ -51,29 +51,29 @@
             <tbody>
                 @forelse($galerias as $galeria)
                     <tr>
-                        <td class="td-img">
+                        <td class="td-img" data-label="{{ __('admin.galleries.fields.cover') }}">
                             @if($galeria->portada)
                                 <img src="{{ $galeria->portada->image_url }}" alt="{{ __('admin.galleries.fields.cover') }} {{ $galeria->titulo }}" class="admin-thumb-60">
                             @else
                                 <div class="sin-foto"><i class="fas fa-image"></i></div>
                             @endif
                         </td>
-                        <td>
+                        <td data-label="{{ __('admin.galleries.fields.title') }}">
                             <div class="info-principal">
                                 <span class="titulo-row"><strong>{{ $galeria->titulo }}</strong></span><br>
                                 <span class="admin-subtle-text">{{ \Illuminate\Support\Str::limit($galeria->descripcion, 70) }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="{{ __('admin.galleries.fields.type') }}">
                             <span class="admin-badge admin-badge-neutral">{{ $tipos[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
                         </td>
-                        <td>
+                        <td data-label="{{ __('admin.galleries.fields.images') }}">
                             <strong>{{ $galeria->imagenes_count }}</strong>
                         </td>
-                        <td>
+                        <td data-label="Slug">
                             <span class="admin-code">{{ $galeria->slug }}</span>
                         </td>
-                        <td>
+                        <td data-label="{{ __('admin.common.actions') }}">
                             <div class="admin-row-actions">
                                 <a href="{{ route('galerias.show', $galeria->id) }}" class="btn-accion admin-view-btn" title="{{ __('admin.galleries.actions.view') }}">
                                     <i class="fas fa-eye"></i>

@@ -3,19 +3,18 @@
 namespace Tests\Unit;
 
 use App\Models\ImagenGaleria;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ImagenGaleriaUrlTest extends TestCase
 {
-    public function test_genera_la_url_publica_desde_storage(): void
+    public function test_genera_la_url_publica_desde_la_ruta_de_media(): void
     {
         $imagen = new ImagenGaleria([
             'archivo' => 'temporada-2026/foto-1.jpg',
         ]);
 
         $this->assertSame(
-            Storage::disk('public')->url('galerias/temporada-2026/foto-1.jpg'),
+            url('media/galerias/temporada-2026/foto-1.jpg'),
             $imagen->image_url
         );
     }

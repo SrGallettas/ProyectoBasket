@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
 
 class Noticia extends Model
 {
@@ -65,6 +64,6 @@ class Noticia extends Model
             return asset('img/club_14.png');
         }
 
-        return Storage::disk('public')->url('noticias/' . ltrim($this->imagen_noticia, '/'));
+        return asset('storage/noticias/' . ltrim($this->imagen_noticia, '/'));
     }
 }

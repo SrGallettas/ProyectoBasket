@@ -48,7 +48,7 @@
                     <div class="campo-ficha flex-2">
                         <label>{{ __('admin.players.fields.position') }}</label>
                         <p class="ficha-dato-destacado">
-                            <i class="fas fa-basketball-ball"></i> {{ $jugador->posicion }}
+                            <i class="fas fa-basketball-ball"></i> {{ $jugador->posicion_display }}
                         </p>
                     </div>
                 </div>

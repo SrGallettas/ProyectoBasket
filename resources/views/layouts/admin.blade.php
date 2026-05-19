@@ -22,6 +22,8 @@
 </head>
 <body>
     @php($adminUser = auth()->user())
+    @php($currentAdminLocale = app()->getLocale() === 'val' ? 'val' : 'es')
+    @php($nextAdminLocale = $currentAdminLocale === 'val' ? 'es' : 'val')
     <div class="contenedor-admin">
         <aside class="sidebar-admin" id="admin-sidebar">
             <div class="admin-perfil">
@@ -82,8 +84,13 @@
                 </button>
 
                 <button type="button" class="item-admin admin-theme-toggle" id="admin-theme-toggle" aria-label="{{ __('admin.layout.theme_dark') }}">
-                    <i class="fa-regular fa-moon"></i><span>{{ __('admin.layout.theme_toggle') }}</span>
+                    <i class="fa-solid fa-moon"></i><span>{{ __('admin.layout.theme_toggle') }}</span>
                 </button>
+
+                <a href="{{ route('locale.switch', $nextAdminLocale) }}" class="item-admin admin-locale-toggle">
+                    <i class="fas fa-language"></i>
+                    <span>{{ $currentAdminLocale === 'val' ? 'Passar a castellà' : 'Cambiar a valenciano' }}</span>
+                </a>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
                     <i class="fas fa-door-open"></i><span>{{ __('admin.layout.back_to_site') }}</span>
@@ -112,7 +119,7 @@
                     <span>Bellreguard CB</span>
                 </div>
                 <button type="button" class="admin-mobile-theme-toggle" id="admin-mobile-theme-toggle" aria-label="{{ __('admin.layout.theme_dark') }}">
-                    <i class="fa-regular fa-moon"></i>
+                    <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
             @yield('contenido_admin')
@@ -134,17 +141,21 @@
 
             const actualizarBotonesTema = () => {
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const icono = isDark ? 'fa-sun' : 'fa-moon';
+                const icono = isDark
+                    ? '<i class="fa-solid fa-sun"></i>'
+                    : '<i class="fa-solid fa-moon"></i>';
                 const label = isDark ? @json(__('admin.layout.theme_light')) : @json(__('admin.layout.theme_dark'));
 
                 [desktopThemeToggle, mobileThemeToggle].forEach((boton) => {
                     if (!boton) return;
                     const buttonText = boton.id === 'admin-theme-toggle' ? `<span>${themeToggleText}</span>` : '';
-                    boton.innerHTML = `<i class="fa-regular ${icono}"></i>${buttonText}`;
+                    boton.innerHTML = `${icono}${buttonText}`;
                     boton.setAttribute('aria-label', label);
                     boton.setAttribute('title', label);
                 });
             };
+
+            actualizarBotonesTema();
 
             const toggleTema = () => {
                 const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';

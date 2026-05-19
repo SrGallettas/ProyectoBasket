@@ -72,10 +72,7 @@
                     <h4>{{ __('public.contact.cards.social.title') }}</h4>
                     <p>{{ __('public.contact.cards.social.text') }}</p>
                     <div class="iconos-redes-contacto">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/basquetbellreguard/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>

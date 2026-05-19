@@ -21,9 +21,8 @@
     </div>
 
     <div class="equipo-hero-content">
-        <span class="equipo-hero-badge">{{ __('public.player.hero.badge') }}</span>
         <h1>{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}</h1>
-        <p>{{ __('public.player.hero.subtitle', ['team' => $jugador->equipo->nombre, 'position' => $jugador->posicion, 'number' => $jugador->dorsal ?? '00']) }}</p>
+        <p>{{ __('public.player.hero.subtitle', ['team' => $jugador->equipo->nombre, 'position' => $jugador->posicion_display, 'number' => $jugador->dorsal ?? '00']) }}</p>
 
         <div class="botones-categoria">
             <a href="{{ route('basket.equipo', ['categoria' => $jugador->equipo->categoria]) }}" class="boton-categoria activo">
@@ -44,11 +43,9 @@
         <div class="jugador-info-stack">
             {{-- Datos principales del jugador --}}
             <article class="jugador-info-card">
-                <span class="jugador-kicker">{{ __('public.player.kicker') }}</span>
-
                 <div class="jugador-header">
                     <div>
-                        <p class="posicion-tag">{{ $jugador->posicion }}</p>
+                        <p class="posicion-tag">{{ $jugador->posicion_display }}</p>
                         <h2>{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}</h2>
                     </div>
 
@@ -67,7 +64,7 @@
 
                     <div class="jugador-meta-item">
                         <span>{{ __('public.player.meta.category') }}</span>
-                        <strong>{{ $jugador->equipo->categoria }}</strong>
+                        <strong>{{ $categoriaMostrar }}</strong>
                     </div>
 
                     <div class="jugador-meta-item">
@@ -92,7 +89,7 @@
 
                                 <div>
                                     <strong>{{ $companero->nombre }} {{ $companero->apellido ?? '' }}</strong>
-                                    <span>{{ $companero->posicion }}</span>
+                                    <span>{{ $companero->posicion_display }}</span>
                                 </div>
 
                                 <em>#{{ $companero->dorsal ?? '00' }}</em>

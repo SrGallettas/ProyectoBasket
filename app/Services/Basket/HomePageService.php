@@ -114,23 +114,23 @@ class HomePageService
         return collect([
             [
                 'valor' => $equiposActivos,
-                'etiqueta' => 'Equipos activos',
-                'texto' => 'Categorias y grupos del club con presencia publica en la web.',
+                'etiqueta' => __('public.home.stats.active_teams.label'),
+                'texto' => __('public.home.stats.active_teams.text'),
             ],
             [
                 'valor' => $jugadoresActivos,
-                'etiqueta' => 'Jugadores visibles',
-                'texto' => 'Plantilla actual mostrada entre todos los equipos del Bellreguard.',
+                'etiqueta' => __('public.home.stats.visible_players.label'),
+                'texto' => __('public.home.stats.visible_players.text'),
             ],
             [
                 'valor' => $partidosClub->count(),
-                'etiqueta' => 'Partidos publicados',
-                'texto' => 'Encuentros del club disponibles para consultar en calendario y resultados.',
+                'etiqueta' => __('public.home.stats.published_matches.label'),
+                'texto' => __('public.home.stats.published_matches.text'),
             ],
             [
                 'valor' => Noticia::where('oculto', false)->count(),
-                'etiqueta' => 'Noticias activas',
-                'texto' => 'Contenido del club ya publicado para seguir la actualidad del proyecto.',
+                'etiqueta' => __('public.home.stats.active_news.label'),
+                'texto' => __('public.home.stats.active_news.text'),
             ],
         ]);
     }

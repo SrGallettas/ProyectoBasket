@@ -7,6 +7,32 @@ use App\Models\Partido;
 
 class CategoryOrderService
 {
+    public function displayCategory(?string $categoria): string
+    {
+        $categoria = (string) $categoria;
+
+        if ($categoria === '' || app()->getLocale() !== 'val') {
+            return $categoria;
+        }
+
+        return match ($categoria) {
+            'Senior' => 'Sènior',
+            'Senior B' => 'Sènior B',
+            'Senior C' => 'Sènior C',
+            'Senior D' => 'Sènior D',
+            'Junior' => 'Júnior',
+            'Junior A' => 'Júnior A',
+            'Junior B' => 'Júnior B',
+            'Cadete' => 'Cadet',
+            'Cadete A' => 'Cadet A',
+            'Cadete B' => 'Cadet B',
+            'Alevín', 'Alevin' => 'Aleví',
+            'Benjamín', 'Benjamin' => 'Benjamí',
+            'Prebenjamín', 'Prebenjamin' => 'Prebenjamí',
+            default => $categoria,
+        };
+    }
+
     public function matchIncludesPreferredLocalTeam(Partido $partido, array $preferredNames, array $preferredCategories): bool
     {
         foreach ([$partido->equipoLocal, $partido->equipoVisitante] as $equipo) {

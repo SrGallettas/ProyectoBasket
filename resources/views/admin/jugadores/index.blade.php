@@ -148,7 +148,7 @@
                 </td>
 
                 {{-- 6. POSICIÓN --}}
-                <td>{{ $jugador->posicion }}</td>
+                <td>{{ $jugador->posicion_display }}</td>
 
                 {{-- 4. FECHA DE NACIMIENTO --}}
                 <td>

@@ -14,7 +14,7 @@ abstract class BaseNoticiaRequest extends FormRequest
     public function baseRules(): array
     {
         return [
-            'idioma_origen' => 'required|in:es,val',
+            'idioma_origen' => 'nullable|in:es,val',
             'titulo' => 'required|string|min:5|max:255',
             'subtitulo' => 'required|string|max:500',
             'contenido' => 'required|string',
@@ -26,7 +26,6 @@ abstract class BaseNoticiaRequest extends FormRequest
     public function baseMessages(): array
     {
         return [
-            'idioma_origen.required' => __('admin.news.validation.source_language_required'),
             'idioma_origen.in' => __('admin.news.validation.source_language_invalid'),
             'titulo.required' => __('admin.news.validation.title_required'),
             'titulo.min' => __('admin.news.validation.title_min'),

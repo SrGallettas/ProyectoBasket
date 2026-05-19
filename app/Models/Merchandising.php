@@ -4,9 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
-
-
 class Merchandising extends Model
 {
     use HasFactory;
@@ -60,6 +57,6 @@ class Merchandising extends Model
             return asset('img/club_14.png');
         }
 
-        return Storage::disk('public')->url('merchandising/' . ltrim($this->imagen_merchan, '/'));
+        return asset('storage/merchandising/' . ltrim($this->imagen_merchan, '/'));
     }
 }

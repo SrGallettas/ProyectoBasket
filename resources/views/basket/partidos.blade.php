@@ -95,10 +95,10 @@
                             </div>
 
                             <div class="info-adicional">
-                                {{-- Fecha formateada en español (ej: Sábado, 23 Marzo 2026) --}}
+                                {{-- Fecha con el día capitalizado para mejorar la lectura visual --}}
                                 <div class="dato-horario">
                                     <i class="fa-regular fa-calendar-alt"></i> 
-                                    {{ Carbon::parse($partido->fecha_hora)->translatedFormat('l, d F Y') }}
+                                    {{ \Illuminate\Support\Str::ucfirst(Carbon::parse($partido->fecha_hora)->translatedFormat('l, d F Y')) }}
                                 </div>
                                 
                                 {{-- Hora del partido --}}
@@ -150,7 +150,9 @@
 
 @if($partidos->hasPages())
     <section class="seccion-calendario">
-        {{ $partidos->links() }}
+        <div class="contenedor-paginacion">
+            {{ $partidos->links() }}
+        </div>
     </section>
 @endif
 

@@ -53,6 +53,15 @@
     border-radius: 10px;
     padding: 0 12px;
     background: #fff;
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.stats-team-select:hover,
+.stats-team-select:focus {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    outline: none;
 }
 
 .stats-team-btn {
@@ -64,6 +73,13 @@
     color: #fff;
     font-weight: 700;
     cursor: pointer;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease;
+}
+
+.stats-team-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(185, 28, 28, 0.28);
+    filter: saturate(1.06);
 }
 
 .stats-team-panel {
@@ -140,6 +156,13 @@
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 12px 14px;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.stats-record-card:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
 }
 
 .stats-record-card span {
@@ -172,6 +195,13 @@
     border: 1px solid #e2e8f0;
     background: #fff;
     padding: 12px 14px;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.stats-shot-card:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
 }
 
 .stats-shot-card h4 {
@@ -203,6 +233,13 @@
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 10px 12px;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.stats-kpi:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
 }
 
 .stats-kpi span {
@@ -229,6 +266,13 @@
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 12px;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.stats-quarters:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
 }
 
 .stats-quarters h4 {
@@ -248,6 +292,13 @@
     background: #f8fafc;
     padding: 10px;
     text-align: center;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.stats-quarter-item:hover {
+    transform: translateY(-5px);
+    border-color: #ef4444;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1);
 }
 
 .stats-quarter-item span {
@@ -368,7 +419,7 @@
 }
 
 .estadisticas-partido-head {
-    background: #fff;
+    background: #ffffff;
     border-radius: 14px;
     padding: 18px 22px;
     margin-bottom: 20px;
@@ -376,7 +427,17 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+}
+
+.estadisticas-partido-head:hover {
+    transform: translateY(-8px);
+    border-color: rgba(239, 68, 68, 0.18);
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.14);
 }
 
 .equipo-head {
@@ -384,6 +445,7 @@
     align-items: center;
     gap: 10px;
     font-weight: 700;
+    transition: transform 0.24s ease;
 }
 
 .equipo-head:first-child {
@@ -398,10 +460,12 @@
     width: 40px;
     height: 40px;
     object-fit: contain;
+    transition: transform 0.28s ease;
 }
 
 .marcador-head {
     text-align: center;
+    transition: transform 0.24s ease;
 }
 
 .marcador-head strong {
@@ -415,14 +479,41 @@
     margin-top: 4px;
 }
 
+.estadisticas-partido-head:hover .equipo-head:first-child {
+    transform: translateX(4px);
+}
+
+.estadisticas-partido-head:hover .equipo-head:last-child {
+    transform: translateX(-4px);
+}
+
+.estadisticas-partido-head:hover .equipo-head img {
+    transform: scale(1.06);
+}
+
+.estadisticas-partido-head:hover .marcador-head {
+    transform: translateY(-2px) scale(1.02);
+}
+
 .tabla-estadisticas-wrap,
 .tabla-cuartos-wrap {
-    background: #fff;
+    background: #ffffff;
     border-radius: 14px;
     padding: 20px;
     text-align: center;
     margin-bottom: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+}
+
+.tabla-estadisticas-wrap:hover,
+.tabla-cuartos-wrap:hover {
+    transform: translateY(-8px);
+    border-color: rgba(239, 68, 68, 0.18);
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.14);
 }
 
 
@@ -431,6 +522,10 @@
 .tabla-cuartos {
     width: 100%;
     border-collapse: collapse;
+}
+
+.tabla-estadisticas-comparada {
+    table-layout: fixed;
 }
 
 .tabla-estadisticas-comparada th,
@@ -455,15 +550,27 @@
     text-align: center;
     min-width: 230px;
     font-weight: 700;
+    width: 30%;
+}
+
+.tabla-estadisticas-comparada .col-local,
+.tabla-estadisticas-comparada .col-visitante {
+    width: 35%;
 }
 
 .tabla-estadisticas-comparada tbody td:nth-child(2) {
     text-align: center;
     font-weight: 600;
+    color: #475569;
 }
 
 .tabla-estadisticas-comparada tbody tr:nth-child(even) {
-    background: #fcfcfd;
+    background: #f8fafc;
+}
+
+.tabla-estadisticas-comparada tbody td:first-child,
+.tabla-estadisticas-comparada tbody td:last-child {
+    font-weight: 700;
 }
 
 .tabla-estadisticas-comparada .separador-row td {
@@ -476,6 +583,7 @@
 
 .tabla-cuartos-wrap h2 {
     margin-bottom: 12px;
+    color: #111827;
 }
 
 .tabla-cuartos tbody tr:last-child {
@@ -545,11 +653,21 @@
  *******************************************************************************/
 
 .grafico-estadisticas-wrap {
-    background: #fff;
+    background: #ffffff;
     border-radius: 14px;
     padding: 22px 24px;
     margin-bottom: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+}
+
+.grafico-estadisticas-wrap:hover {
+    transform: translateY(-8px);
+    border-color: rgba(239, 68, 68, 0.18);
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.14);
 }
 
 .grafico-titulo {
@@ -588,10 +706,15 @@
     gap: 6px;
     padding: 5px 0;
     border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.24s ease;
 }
 
 .grafico-fila:last-child {
     border-bottom: none;
+}
+
+.grafico-fila:hover {
+    background: #f8fafc;
 }
 
 /* Separador de sección dentro del gráfico */
@@ -607,6 +730,7 @@
     border-radius: 4px;
     margin: 10px 0 4px;
 }
+
 
 /* Valores numéricos */
 .grafico-valor {
@@ -709,8 +833,6 @@ html[data-theme="dark"] .public-news-hero-divider {
 html[data-theme="dark"] .contenedor-estadisticas {
     background: #0b1120;
     border-radius: 14px;
-    padding-top: 24px;
-    padding-bottom: 24px;
 }
 
 html[data-theme="dark"] .stats-team-filter {

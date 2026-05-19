@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
 
 class Equipo extends Model
 {
@@ -45,7 +44,7 @@ class Equipo extends Model
             return asset('img/club_14.png');
         }
 
-        return Storage::disk('public')->url('escudos/' . ltrim($this->imagen_club, '/'));
+        return asset('storage/escudos/' . ltrim($this->imagen_club, '/'));
     }
 
     public function getFotoPlantillaUrlAttribute(): string
@@ -54,6 +53,6 @@ class Equipo extends Model
             return asset('img/equipo.png');
         }
 
-        return Storage::disk('public')->url('equipos/plantillas/' . ltrim($this->foto_plantilla, '/'));
+        return asset('storage/equipos/plantillas/' . ltrim($this->foto_plantilla, '/'));
     }
 }

@@ -93,7 +93,7 @@
                 <h2>{{ __('public.home.join.title') }}</h2>
                 <p>{{ __('public.home.join.text') }}</p>
                 <div class="inicio-club-cta-actions">
-                    <a href="{{ route('basket.contacto') }}" class="boton-principal">{{ __('public.home.join.cta') }}</a>
+                    <a href="{{ route('basket.contacto') }}" class="boton-principal inicio-club-cta-button">{{ __('public.home.join.cta') }}</a>
                 </div>
             </div>
 
@@ -350,9 +350,12 @@
 
                     <div class="noticia-principal-copy">
                         <div class="noticia-principal-meta">
-                            <span class="fecha">{{ $noticiaPrincipal->created_at->translatedFormat('d M, Y') }}</span>
+                            <span class="fecha">{{ $noticiaPrincipal->created_at->translatedFormat('d F, Y') }}</span>
                             @if($noticiaPrincipal->autor)
-                                <span class="noticia-autor">{{ $noticiaPrincipal->autor }}</span>
+                                <span class="noticia-autor-box">
+                                    <i class="far fa-user noticia-autor-icono" aria-hidden="true"></i>
+                                    <span class="noticia-autor">{{ $noticiaPrincipal->autor }}</span>
+                                </span>
                             @endif
                         </div>
 
@@ -371,10 +374,18 @@
                                 </a>
                                 
                                 <div class="info-tarjeta">
-                                    <span class="fecha">{{ $noticia->created_at->translatedFormat('d M, Y') }}</span>
+                                    <div class="info-tarjeta-meta">
+                                        <span class="fecha">{{ $noticia->created_at->translatedFormat('d F, Y') }}</span>
+                                        @if($noticia->autor)
+                                            <span class="noticia-autor-box noticia-autor-box-secundaria">
+                                                <i class="far fa-user noticia-autor-icono" aria-hidden="true"></i>
+                                                <span class="noticia-autor">{{ $noticia->autor }}</span>
+                                            </span>
+                                        @endif
+                                    </div>
                                     <h3>{{ $noticia->titulo }}</h3>
                                     <p>{{ Str::limit($noticia->subtitulo ?: strip_tags($noticia->contenido), 95) }}</p>
-                                    <a href="{{ route('noticias.detalle', $noticia->slug) }}">{{ __('public.home.news.more') }}</a>
+                                    <a href="{{ route('noticias.detalle', $noticia->slug) }}" class="tarjeta-noticia-link">{{ __('public.home.news.more') }}</a>
                                 </div>
                             </article>
                         @endforeach

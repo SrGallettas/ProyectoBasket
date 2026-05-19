@@ -90,7 +90,7 @@ return [
             ],
             'store' => [
                 'title' => 'Merchandising',
-                'text' => 'Productes, talles, preus i imatges de botiga.',
+                'text' => 'Productes, talles, preus i imatges de tenda.',
             ],
             'matches' => [
                 'title' => 'Partits',
@@ -258,17 +258,17 @@ return [
         ],
         'create' => [
             'title' => 'Nou producte',
-            'subtitle' => 'Introdueix els detalls de l’article per a la botiga oficial',
+            'subtitle' => 'Introdueix els detalls de l’article per a la tenda oficial',
             'submit' => 'GUARDAR PRODUCTE',
         ],
         'edit' => [
             'title' => 'Editar producte: :name',
-            'subtitle' => 'Introdueix els detalls de l’article per a la botiga oficial',
+            'subtitle' => 'Introdueix els detalls de l’article per a la tenda oficial',
             'submit' => 'ACTUALITZAR FITXA',
         ],
         'show' => [
             'title' => 'Fitxa del producte',
-            'subtitle' => 'Detalls complets i stock de la botiga',
+            'subtitle' => 'Detalls complets i stock de la tenda',
             'article_name' => 'Nom de l’article',
             'official_price' => 'Preu oficial',
             'product_id' => 'ID producte',
@@ -878,7 +878,7 @@ return [
     'emails' => [
         'orders' => [
             'title' => 'Nova sol·licitud de comanda',
-            'intro' => 'S’ha rebut una nova sol·licitud des de la botiga pública de Bellreguard CB.',
+            'intro' => 'S’ha rebut una nova sol·licitud des de la tenda pública de Bellreguard CB.',
             'customer' => 'Dades del client',
             'products' => 'Productes sol·licitats',
             'fields' => [

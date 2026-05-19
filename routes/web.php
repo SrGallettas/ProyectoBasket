@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClasificacionController;
 use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\GaleriaImageController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\MerchandisingController;
@@ -57,6 +58,9 @@ Route::get('clasificacion', [PublicClasificacionController::class, 'clasificacio
     ->name('basket.clasificacion');
 Route::get('estadisticas', [PublicClasificacionController::class, 'estadisticas'])
     ->name('basket.estadisticas');
+Route::get('media/galerias/{path}', [GaleriaImageController::class, 'show'])
+    ->where('path', '.*')
+    ->name('media.galerias');
 
 Route::get('galeria', [PublicGaleriaController::class, 'galeria'])->name('basket.galeria');
 Route::get('galeria/{slug}', [PublicGaleriaController::class, 'galeriaDetalle'])

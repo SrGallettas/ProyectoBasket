@@ -10,13 +10,17 @@
 @section('meta_description', $noticia->subtitulo ?: \Illuminate\Support\Str::limit(strip_tags($noticia->contenido), 160))
 
 @section('contenido')
+@php
+    $shareUrl = urlencode(request()->fullUrl());
+    $shareText = urlencode($noticia->titulo);
+@endphp
 {{-- Artículo completo de la noticia seleccionada --}}
 <article class="articulo-noticia">
     {{-- Cabecera con categoría, fecha, título y autor --}}
     <header class="articulo-header">
         <div class="articulo-meta">
             <span class="categoria-badge">{{ __('public.news_detail.category_badge') }}</span>
-            <span class="fecha-top">{{ $noticia->created_at->translatedFormat('d M, Y') }}</span>
+            <span class="fecha-top">{{ $noticia->created_at->translatedFormat('d F, Y') }}</span>
         </div>
         
         <h1 class="titulo-noticia">{{ $noticia->titulo }}</h1>
@@ -51,9 +55,9 @@
             <h3>{{ __('public.news_detail.share.title') }}</h3>
             <p>{{ __('public.news_detail.share.text') }}</p>
             <div class="social-flex">
-                <a href="#" class="social-link fb"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="#" class="social-link tw"><i class="fab fa-twitter"></i> Twitter</a>
-                <a href="#" class="social-link wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" class="social-link fb" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareText }}" class="social-link tw" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" class="social-link wa" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             </div>
         </div>
 

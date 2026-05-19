@@ -59,8 +59,8 @@
                             <label>{{ __('admin.players.fields.position') }}</label>
                             <select name="posicion" class="input-ficha input-white">
                                 <option value="" disabled {{ old('posicion') == '' ? 'selected' : '' }}>{{ __('admin.common.select') }}</option>
-                                @foreach(['Base', 'Escolta', 'Alero', 'Ala-Pívot', 'Pívot'] as $pos)
-                                    <option value="{{ $pos }}" {{ old('posicion') == $pos ? 'selected' : '' }}>{{ $pos }}</option>
+                                @foreach(\App\Models\Jugador::positionOptions() as $pos)
+                                    <option value="{{ $pos }}" {{ old('posicion') == $pos ? 'selected' : '' }}>{{ \App\Models\Jugador::displayPositionLabel($pos) }}</option>
                                 @endforeach
                             </select>
                         </div>

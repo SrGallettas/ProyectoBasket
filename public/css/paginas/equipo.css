@@ -176,6 +176,13 @@
     grid-template-columns: minmax(0, 1.2fr) auto;
     gap: 22px;
     align-items: center;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.equipo-resumen:hover {
+    transform: translateY(-8px);
+    border-color: #ef4444;
+    box-shadow: 0 24px 50px rgba(127, 29, 29, 0.16);
 }
 
 .equipo-resumen-badge {
@@ -230,6 +237,13 @@
     background: #fff;
     border: 1px solid #f3d8d3;
     text-align: center;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.equipo-resumen-stat:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 32px rgba(127, 29, 29, 0.12);
 }
 
 .equipo-resumen-stat strong {
@@ -353,13 +367,13 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    padding: 7px 12px;
+    padding: 10px 18px;
     border-radius: 999px;
     background: #fee2e2;
     color: #b91c1c;
-    font-size: 0.78rem;
+    font-size: 1rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
@@ -457,6 +471,7 @@
 
 .jugador-media-card {
     overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .jugador-media-card img {
@@ -465,6 +480,26 @@
     max-height: 560px;
     object-fit: cover;
     display: block;
+    transition: transform 0.5s ease;
+}
+
+.jugador-media-card:hover {
+    transform: translateY(-8px);
+    border-color: #ef4444;
+    box-shadow: 0 24px 48px rgba(127, 29, 29, 0.16);
+}
+
+.jugador-media-card:hover img {
+    transform: scale(1.04);
+}
+
+.equipo-hero-content .boton-categoria {
+    transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease, border-color 0.28s ease, color 0.28s ease;
+}
+
+.equipo-hero-content .boton-categoria:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 18px 36px rgba(127, 29, 29, 0.24);
 }
 
 .jugador-info-stack {
@@ -538,6 +573,13 @@
     border-radius: 18px;
     background: #fff;
     border: 1px solid #f3d8d3;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.jugador-meta-item:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 32px rgba(127, 29, 29, 0.12);
 }
 
 .jugador-meta-item span {
@@ -585,6 +627,13 @@
     background: #fff;
     border: 1px solid #f3d8d3;
     text-decoration: none;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.jugador-companero-link:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 32px rgba(127, 29, 29, 0.12);
 }
 
 .jugador-companero-link img {

@@ -89,6 +89,12 @@
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 18px 35px rgba(0, 0, 0, 0.16);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+}
+
+.boton-cesta-flotante:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 42px rgba(0, 0, 0, 0.22);
 }
 
 .boton-cesta-count {
@@ -118,12 +124,24 @@
     border-radius: 20px;
     background: #ffffff;
     box-shadow: 0 14px 34px rgba(34, 34, 34, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-8px);
+    border-color: rgba(193, 18, 31, 0.24);
+    box-shadow: 0 22px 46px rgba(34, 34, 34, 0.14);
 }
 
 .tarjeta-producto img {
     width: 100%;
     height: 250px;
     object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.tarjeta-producto:hover img {
+    transform: scale(1.06);
 }
 
 .info-producto {
@@ -356,6 +374,13 @@
     border: 1px solid rgba(17, 17, 17, 0.08);
     border-radius: 16px;
     background: #ffffff;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.cesta-item:hover {
+    transform: translateY(-6px);
+    border-color: rgba(193, 18, 31, 0.18);
+    box-shadow: 0 18px 34px rgba(34, 34, 34, 0.12);
 }
 
 .cesta-item img {
@@ -448,6 +473,14 @@
     padding: 14px 18px;
     text-decoration: none;
     font-weight: 700;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease;
+}
+
+.cesta-submit-link:hover,
+.pedido-submit:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 40px rgba(173, 17, 17, 0.28);
+    filter: saturate(1.08);
 }
 
 .cesta-submit-link-disabled {

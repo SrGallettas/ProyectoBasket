@@ -107,7 +107,7 @@ function actualizarIconoTema() {
 
     const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     botonTema.innerHTML = temaActual === 'dark'
-        ? '<i class="fa-regular fa-sun"></i>'
+        ? '<span class="theme-symbol" aria-hidden="true">☀</span>'
         : '<i class="fa-regular fa-moon"></i>';
     botonTema.setAttribute('aria-label', temaActual === 'dark'
         ? @json(__('ui.theme.toggle_light'))

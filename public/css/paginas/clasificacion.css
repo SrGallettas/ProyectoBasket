@@ -50,7 +50,7 @@
     font-weight: 700;
     cursor: pointer;
     border-radius: 10px;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.24s ease, box-shadow 0.24s ease;
 }
 
 .selector-input {
@@ -62,6 +62,11 @@
     color: #fff;
     border-color: #cf1515;
     min-height: 42px;
+}
+
+.btn-cat.activo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(207, 21, 21, 0.26);
 }
 
 .btn-cat:hover:not(.activo) {
@@ -112,6 +117,7 @@
     border-bottom: 1px solid #f1f5f9;
     color: #1e293b;
     font-size: 14px;
+    transition: background-color 0.24s ease, transform 0.24s ease;
 }
 
 .equipo-columna {
@@ -119,6 +125,7 @@
     align-items: center;
     gap: 10px;
     font-weight: 600;
+    transition: transform 0.24s ease;
 }
 
 .equipo-columna img {
@@ -145,6 +152,10 @@
 
 .tabla-clasificacion tr:hover td {
     background: #f8fafc;
+}
+
+.tabla-clasificacion tbody tr:hover .equipo-columna {
+    transform: translateX(6px);
 }
 
 .jornada-partidos {
@@ -294,11 +305,13 @@
     margin: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-size: 13px;
     color: #475569;
     border-top: 1px dashed #e2e8f0;
     padding-top: 10px;
+    text-align: center;
 }
 
 .partido-lugar i {

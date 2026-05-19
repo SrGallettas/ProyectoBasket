@@ -27,6 +27,9 @@ class EquipoController extends Controller
             ->filter()
             ->unique()
             ->values());
+        $categoriasDisplay = $categorias->mapWithKeys(
+            fn ($categoria) => [$categoria => $this->categoryOrderService->displayCategory((string) $categoria)]
+        );
 
         $categoriaSel = (string) $request->get('categoria', '');
         if ($categoriaSel === '' || ! $categorias->contains($categoriaSel)) {
@@ -41,19 +44,24 @@ class EquipoController extends Controller
             ->first();
 
         $jugadores = null;
+        $categoriaMostrar = $this->categoryOrderService->displayCategory($categoriaSel);
         if ($equipoMostrar) {
             $jugadores = $equipoMostrar->jugadores()
                 ->where('oculto', false)
                 ->orderBy('dorsal')
                 ->paginate(9)
                 ->withQueryString();
+
+            $categoriaMostrar = $this->categoryOrderService->displayCategory($equipoMostrar->categoria);
         }
 
         return view('basket.equipo', compact(
             'categorias',
+            'categoriasDisplay',
             'equipoMostrar',
             'categoriaSel',
-            'jugadores'
+            'jugadores',
+            'categoriaMostrar'
         ));
     }
 
@@ -76,7 +84,9 @@ class EquipoController extends Controller
             ->take(4)
             ->get();
 
-        return view('basket.jugador_detalle', compact('jugador', 'companeros'));
+        $categoriaMostrar = $this->categoryOrderService->displayCategory($jugador->equipo->categoria);
+
+        return view('basket.jugador_detalle', compact('jugador', 'companeros', 'categoriaMostrar'));
     }
 
     public function toggleOcultoEquipo(Equipo $equipo)

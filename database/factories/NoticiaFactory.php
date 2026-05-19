@@ -18,17 +18,19 @@ class NoticiaFactory extends Factory
     public function definition(): array
     {
         $titulo = $this->faker->sentence(6);
+        $subtitulo = $this->faker->text(150);
+        $contenido = $this->faker->text(300);
         $slugBase = Str::slug($titulo);
 
         return [
             'titulo' => $titulo,
-            'titulo_es' => $titulo,
+            'titulo_es' => fn (array $attributes) => $attributes['titulo'] ?? $titulo,
             'titulo_val' => null,
-            'subtitulo' => $this->faker->text(150),
-            'subtitulo_es' => $this->faker->text(150),
+            'subtitulo' => $subtitulo,
+            'subtitulo_es' => fn (array $attributes) => $attributes['subtitulo'] ?? $subtitulo,
             'subtitulo_val' => null,
-            'contenido' => $this->faker->text(300),
-            'contenido_es' => $this->faker->text(300),
+            'contenido' => $contenido,
+            'contenido_es' => fn (array $attributes) => $attributes['contenido'] ?? $contenido,
             'contenido_val' => null,
             'slug' => $slugBase . '-' . Str::lower(Str::random(6)),
             'imagen_noticia' => 'club_14.png',

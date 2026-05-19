@@ -6,7 +6,7 @@ return [
     'nav' => [
         'home' => 'Inici',
         'team' => 'Equip',
-        'store' => 'Botiga',
+        'store' => 'Tenda',
         'standings' => 'Classificació',
         'stats' => 'Estadístiques',
         'matches' => 'Partits',
@@ -32,7 +32,7 @@ return [
     'footer' => [
         'description' => 'Fomentant el bàsquet i els seus valors en la nostra comunitat des de fa anys.',
         'quick_links' => 'Enllaços ràpids',
-        'municipal_pavilion' => 'Pavelló Municipal',
+        'municipal_pavilion' => 'Pavelló Municipal de Bellreguard',
         'follow_us' => 'Seguix-nos',
         'social_text' => 'Seguix l\'actualitat del club i mantín-te al dia de partits, notícies i ambient de l\'equip.',
         'copyright' => '© :year Bellreguard CB. Tots els drets reservats.',

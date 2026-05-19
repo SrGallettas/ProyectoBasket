@@ -35,9 +35,7 @@
             <h4>{{ __('ui.footer.follow_us') }}</h4>
             <p class="footer-social-text">{{ __('ui.footer.social_text') }}</p>
             <div class="redes-iconos">
-                <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/basquetbellreguard/" title="Instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>

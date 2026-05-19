@@ -20,7 +20,7 @@ return [
             'title' => 'Vols jugar amb nosaltres esta temporada?',
             'text' => 'Si busques equip, vols portar el teu fill o simplement conéixer millor el club, t’ajudem a trobar la categoria adequada i a resoldre qualsevol dubte.',
             'cta' => 'Contactar amb el club',
-            'pill' => 'Proves, pedrera i equips del club',
+            'pill' => 'Proves, base i equips del club',
             'points' => [
                 'categories' => 'Informació clara sobre categories i equips',
                 'contact' => 'Contacte directe amb el club',
@@ -30,7 +30,7 @@ return [
         'stats_header' => [
             'kicker' => 'Sobre el club',
             'title' => 'Un projecte esportiu amb activitat real',
-            'text' => 'Estes xifres ixen del contingut públic que ja té el club en la web i ajuden a mostrar que la portada està viva.',
+            'text' => 'Aquestes xifres ixen del contingut públic que ja té el club en la web i ajuden a mostrar que la portada està viva.',
         ],
         'stats' => [
             'active_teams' => [
@@ -107,16 +107,16 @@ return [
     'team' => [
         'meta' => [
             'title' => 'Equip - Bellreguard CB',
-            'description' => 'Consulta la pedrera, les categories i la plantilla pública dels equips del Bellreguard CB.',
+            'description' => 'Consulta la base, les categories i la plantilla pública dels equips del Bellreguard CB.',
         ],
         'hero' => [
             'image_alt' => 'Plantilla i equips del Bellreguard Club de Bàsquet',
             'badge' => 'PLANTILLA OFICIAL',
-            'title' => 'Pedrera i equips del Bellreguard CB',
+            'title' => 'Base i equips del Bellreguard CB',
             'subtitle' => 'Descobrix les categories del club i consulta la plantilla disponible de cada equip local.',
         ],
         'summary' => [
-            'text' => 'Consulta la plantilla disponible d’esta categoria i revisa els jugadors publicats actualment en la web del club.',
+            'text' => 'Consulta la plantilla disponible d\'aquesta categoria i revisa els jugadors publicats actualment en la web del club.',
             'players' => 'Jugadors',
             'category' => 'Categoria',
         ],
@@ -380,11 +380,11 @@ return [
     ],
     'store' => [
         'meta' => [
-            'title' => 'Botiga - Bellreguard CB',
+            'title' => 'Tenda - Bellreguard CB',
             'description' => 'Compra merchandising oficial del Bellreguard CB i prepara la teua sol·licitud de comanda.',
         ],
         'hero' => [
-            'badge' => 'BOTIGA OFICIAL',
+            'badge' => 'TENDA OFICIAL',
             'title' => 'Merchandising oficial',
             'subtitle' => 'Emporta’t els colors del Bellreguard CB amb tu.',
         ],
@@ -407,7 +407,7 @@ return [
         ],
         'hide' => 'Ocultar en web',
         'empty' => [
-            'title' => 'Botiga temporalment sense stock',
+            'title' => 'Tenda temporalment sense stock',
             'text' => 'Estem preparant nous productes oficials del club. Torna en uns dies per a vore la nova col·lecció.',
             'cta' => 'Aviseu-me quan hi haja stock',
         ],
@@ -420,7 +420,7 @@ return [
             'unit_price' => ':price € per unitat',
             'remove' => 'Llevar',
             'empty_title' => 'La teua cistella està buida',
-            'empty_text' => 'Afig productes des de la botiga per a preparar la teua sol·licitud de comanda.',
+            'empty_text' => 'Afig productes des de la tenda per a preparar la teua sol·licitud de comanda.',
             'units' => 'Unitats',
             'subtotal' => 'Subtotal orientatiu',
             'request_order' => 'Sol·licitar comanda',

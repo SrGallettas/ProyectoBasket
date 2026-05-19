@@ -31,7 +31,7 @@
             @foreach($categorias as $categoria)
                 <a href="{{ route('basket.equipo', ['categoria' => $categoria]) }}" 
                 class="boton-categoria {{ $categoriaSel == $categoria ? 'activo' : '' }}">
-                {{ $categoria }}
+                {{ $categoriasDisplay[$categoria] ?? $categoria }}
                 </a>
             @endforeach
         </div>
@@ -59,7 +59,7 @@
                     <span>{{ __('public.team.summary.players') }}</span>
                 </div>
                 <div class="equipo-resumen-stat">
-                    <strong>{{ $equipoMostrar->categoria }}</strong>
+                    <strong>{{ $categoriaMostrar }}</strong>
                     <span>{{ __('public.team.summary.category') }}</span>
                 </div>
             </div>
@@ -96,7 +96,7 @@
             
                     <div class="info-jugador">
                         {{-- 1. Posición en pequeño y rojo --}}
-                        <p class="posicion-tag">{{ $jugador->posicion }}</p>
+                        <p class="posicion-tag">{{ $jugador->posicion_display }}</p>
                         
                         {{-- 2. Nombre del Jugador --}}
                         <h3>{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}</h3>
@@ -139,7 +139,7 @@
         {{-- Estado vacío si no existe la categoría solicitada --}}
         <div class="contenedor-mensaje-vacio">
             <div class="alerta-basket">
-                <p>{!! __('public.team.empty.category', ['category' => e($categoriaSel)]) !!}</p>
+                <p>{!! __('public.team.empty.category', ['category' => e($categoriaMostrar)]) !!}</p>
                 <a href="{{ route('basket.inicio') }}" class="boton-rojo-centrado">{{ __('public.team.empty.back_home') }}</a>
             </div>
         </div>
