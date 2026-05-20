@@ -874,6 +874,7 @@ return [
         'board_missing_table' => 'Falta ejecutar la migración de la mesa de anotación.',
         'board_no_recent_actions' => 'No hay acciones recientes para deshacer.',
         'board_invalid_action' => 'La acción seleccionada no es válida.',
+        'translation_partial' => 'Se ha guardado el contenido, pero la traducción automática ha fallado. Revisa el idioma pendiente antes de publicarlo.',
     ],
     'emails' => [
         'orders' => [

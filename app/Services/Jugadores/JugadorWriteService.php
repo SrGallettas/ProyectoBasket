@@ -5,6 +5,7 @@ namespace App\Services\Jugadores;
 use App\Models\Jugador;
 use App\Services\Media\ImageStorageService;
 use Illuminate\Http\UploadedFile;
+use Throwable;
 
 class JugadorWriteService
 {
@@ -15,27 +16,49 @@ class JugadorWriteService
     public function create(array $data): Jugador
     {
         $jugador = new Jugador;
-        $this->fillJugador($jugador, $data);
-        $jugador->save();
+        $newImagePath = null;
 
-        return $jugador;
+        try {
+            $this->fillJugador($jugador, $data, false, $newImagePath);
+            $jugador->save();
+
+            return $jugador;
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath);
+
+            throw $exception;
+        }
     }
 
     public function update(Jugador $jugador, array $data): Jugador
     {
-        $this->fillJugador($jugador, $data, true);
-        $jugador->save();
+        $oldImagePath = $jugador->imagen_jugador;
+        $newImagePath = null;
 
-        return $jugador->refresh();
+        try {
+            $this->fillJugador($jugador, $data, true, $newImagePath);
+            $jugador->save();
+
+            if ($newImagePath !== null && $oldImagePath && $oldImagePath !== $newImagePath) {
+                $this->imageStorage->deleteFromDirectory($oldImagePath, 'jugadores');
+            }
+
+            return $jugador->refresh();
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath);
+
+            throw $exception;
+        }
     }
 
     public function delete(Jugador $jugador): void
     {
-        $this->imageStorage->deleteFromDirectory($jugador->imagen_jugador, 'jugadores');
+        $imagePath = $jugador->imagen_jugador;
         $jugador->delete();
+        $this->imageStorage->deleteFromDirectory($imagePath, 'jugadores');
     }
 
-    private function fillJugador(Jugador $jugador, array $data, bool $updating = false): void
+    private function fillJugador(Jugador $jugador, array $data, bool $updating = false, ?string &$newImagePath = null): void
     {
         $jugador->nombre = $data['nombre'];
         $jugador->apellido = $data['apellido'];
@@ -46,11 +69,15 @@ class JugadorWriteService
         $jugador->oculto = filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL);
 
         if (($data['imagen_jugador'] ?? null) instanceof UploadedFile) {
-            if ($updating) {
-                $this->imageStorage->deleteFromDirectory($jugador->imagen_jugador, 'jugadores');
-            }
+            $newImagePath = $this->imageStorage->store($data['imagen_jugador'], 'jugadores');
+            $jugador->imagen_jugador = $newImagePath;
+        }
+    }
 
-            $jugador->imagen_jugador = $this->imageStorage->store($data['imagen_jugador'], 'jugadores');
+    private function cleanupNewImage(?string $path): void
+    {
+        if ($path !== null) {
+            $this->imageStorage->deleteFromDirectory($path, 'jugadores');
         }
     }
 }

@@ -874,6 +874,7 @@ return [
         'board_missing_table' => 'Falta executar la migració de la taula d’anotació.',
         'board_no_recent_actions' => 'No hi ha accions recents per a desfer.',
         'board_invalid_action' => 'L’acció seleccionada no és vàlida.',
+        'translation_partial' => 'S’ha guardat el contingut, però la traducció automàtica ha fallat. Revisa l’idioma pendent abans de publicar-lo.',
     ],
     'emails' => [
         'orders' => [

@@ -31,9 +31,10 @@
                 {{ session('mensaje') }}
             </div>
         @endif
-        
-        {{-- Agrupamos los partidos por categoría para mostrarlos en bloques --}}
-        @php
+
+        @if($partidos->isNotEmpty())
+            {{-- Agrupamos los partidos por categoría para mostrarlos en bloques --}}
+            @php
             // Orden manual de categorías: primero los equipos más mayores.
             $ordenCategorias = ['Senior', 'Senior B', 'Senior C', 'Senior D', 'Junior', 'Junior A', 'Junior B', 'Cadete', 'Cadete A', 'Cadete B', 'Infantil', 'Infantil A', 'Infantil B', 'Alevín', 'Alevin', 'Benjamín', 'Benjamin', 'Prebenjamín', 'Prebenjamin'];
 
@@ -46,7 +47,7 @@
                 });
         @endphp
 
-        @forelse($partidosPorCategoria as $categoria => $encuentros)
+            @foreach($partidosPorCategoria as $categoria => $encuentros)
             {{-- Bloque visual de una categoría concreta --}}
             <div class="caja-equipo full-width">
                 <div class="titulo-equipo">
@@ -133,7 +134,8 @@
                     @endforeach
                 </div>
             </div>
-        @empty
+            @endforeach
+        @else
             {{-- Estado vacío si todavía no hay calendario publicado --}}
             <div class="estado-vacio partidos-empty-card">
                 <div class="estado-vacio-icono">
@@ -143,12 +145,11 @@
                 <p>{{ __('public.matches.empty.text') }}</p>
                 <a href="{{ route('basket.contacto') }}" class="estado-vacio-accion">{{ __('public.matches.empty.cta') }}</a>
             </div>
-        @endforelse
-        
+        @endif
     </div>
 </section>
 
-@if($partidos->hasPages())
+@if($partidos->isNotEmpty() && $partidos->hasPages())
     <section class="seccion-calendario">
         <div class="contenedor-paginacion">
             {{ $partidos->links() }}

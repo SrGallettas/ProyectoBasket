@@ -27,7 +27,7 @@
 </x-public-news-hero>
 
 {{-- Contenido principal: selector, tabla y partidos de la competición --}}
-<section class="contenedor-clasificacion">
+<section class="contenedor-clasificacion {{ $clasificaciones->isEmpty() ? "estado-vacio-como-partidos estado-vacio-como-partidos-clasificacion" : "" }}">
     @if($clasificaciones->isNotEmpty())
         {{-- Selector de competición y jornada --}}
         <form method="GET" action="{{ route('basket.clasificacion') }}" class="selector-categorias">
@@ -245,27 +245,23 @@
                 </div>
             @else
                 {{-- Estado vacío cuando no hay partidos públicos --}}
-                <div class="partidos-vacio">
-                    <i class="fa-regular fa-calendar-xmark"></i>
+                <div class="estado-vacio">
+                    <div class="estado-vacio-icono">
+                        <i class="fa-regular fa-calendar-xmark"></i>
+                    </div>
+                    <h3>{{ __('public.standings.empty.title') }}</h3>
                     <p>{{ ($modoGeneral ?? false) ? __('public.standings.matches.empty_competition') : __('public.standings.matches.empty_round') }}</p>
                 </div>
             @endif
         </section>
     @else
         {{-- Estado vacío si el club aún no ha publicado clasificaciones --}}
-        <div class="tabla-contenedor">
-            <div class="tabla-header">
-                <i class="fas fa-info-circle"></i> {{ __('public.standings.empty.title') }}
+        <div class="estado-vacio estado-vacio-merchan-gap estado-vacio-merchan-gap-clasificacion">
+            <div class="estado-vacio-icono">
+                <i class="fas fa-info-circle"></i>
             </div>
-            <div class="tabla-scroll">
-                <table class="tabla-clasificacion">
-                    <tbody>
-                        <tr>
-                            <td>{{ __('public.standings.empty.text') }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h3>{{ __('public.standings.empty.title') }}</h3>
+            <p>{{ __('public.standings.empty.text') }}</p>
         </div>
     @endif
 </section>

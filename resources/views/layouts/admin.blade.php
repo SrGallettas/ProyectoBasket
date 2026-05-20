@@ -87,10 +87,14 @@
                     <i class="fa-solid fa-moon"></i><span>{{ __('admin.layout.theme_toggle') }}</span>
                 </button>
 
-                <a href="{{ route('locale.switch', $nextAdminLocale) }}" class="item-admin admin-locale-toggle">
-                    <i class="fas fa-language"></i>
-                    <span>{{ $currentAdminLocale === 'val' ? 'Passar a castellà' : 'Cambiar a valenciano' }}</span>
-                </a>
+                <form action="{{ route('locale.switch', $nextAdminLocale) }}" method="POST" class="admin-locale-form">
+                    @csrf
+                    <input type="hidden" name="redirect_to" value="{{ url()->full() }}">
+                    <button type="submit" class="item-admin admin-locale-toggle">
+                        <i class="fas fa-language"></i>
+                        <span>{{ $currentAdminLocale === 'val' ? 'Passar a castellà' : 'Cambiar a valenciano' }}</span>
+                    </button>
+                </form>
     
                 <a href="{{ url('/') }}" class="item-admin volver-web">
                     <i class="fas fa-door-open"></i><span>{{ __('admin.layout.back_to_site') }}</span>

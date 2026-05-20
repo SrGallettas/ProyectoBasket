@@ -50,13 +50,16 @@
         <div class="login-seccion">
             <div class="selector-idioma" aria-label="{{ __('ui.language.selector_aria') }}">
                 @foreach ($availableLocales as $locale => $label)
-                    <a
-                        href="{{ route('locale.switch', $locale) }}"
-                        class="{{ $currentLocale === $locale ? 'activo' : '' }}"
-                        hreflang="{{ $locale === 'val' ? 'ca' : $locale }}"
-                    >
-                        {{ $label }}
-                    </a>
+                    <form action="{{ route('locale.switch', $locale) }}" method="POST" class="selector-idioma-form">
+                        @csrf
+                        <input type="hidden" name="redirect_to" value="{{ url()->full() }}">
+                        <button
+                            type="submit"
+                            class="{{ $currentLocale === $locale ? 'activo' : '' }}"
+                        >
+                            {{ $label }}
+                        </button>
+                    </form>
                 @endforeach
             </div>
 

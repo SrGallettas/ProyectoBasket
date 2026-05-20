@@ -45,4 +45,8 @@ return [
         ))),
     ],
 
+    'merchandising' => [
+        'orders_email' => env('MERCH_PEDIDOS_EMAIL'),
+    ],
+
 ];

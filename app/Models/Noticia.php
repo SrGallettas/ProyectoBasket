@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Noticia extends Model
 {
@@ -60,10 +60,13 @@ class Noticia extends Model
 
     public function getImagenNoticiaUrlAttribute(): string
     {
-        if (!$this->imagen_noticia || $this->imagen_noticia === 'club_14.png') {
+        if (! $this->imagen_noticia || $this->imagen_noticia === 'club_14.png') {
             return asset('img/club_14.png');
         }
 
-        return asset('storage/noticias/' . ltrim($this->imagen_noticia, '/'));
+        return route('media.uploads', [
+            'collection' => 'noticias',
+            'path' => ltrim($this->imagen_noticia, '/'),
+        ]);
     }
 }

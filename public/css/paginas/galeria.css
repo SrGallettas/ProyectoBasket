@@ -234,21 +234,7 @@
     transform: translateY(-1px);
 }
 
-.galeria-empty-state {
-    grid-column: 1 / -1;
-    background: white;
-    border-radius: 12px;
-    padding: 50px 20px;
-    text-align: center;
-    color: #666;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-}
 
-.galeria-empty-state i {
-    font-size: 38px;
-    color: #cf1515;
-    margin-bottom: 12px;
-}
 
 .contenedor-paginacion-galeria {
     display: flex;

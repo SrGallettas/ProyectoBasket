@@ -23,26 +23,27 @@
 </x-public-news-hero>
 
 {{-- Contenedor principal con filtros y álbumes --}}
-<section class="contenedor-galeria">
+<section class="contenedor-galeria {{ $galerias->isEmpty() ? "estado-vacio-como-partidos estado-vacio-como-partidos-galeria" : "" }}">
     @if(session('mensaje'))
         <div class="public-alert-ok">
             {{ session('mensaje') }}
         </div>
     @endif
 
-    {{-- Filtros por tipo de galería --}}
-    <div class="filtros-galeria">
-        @foreach($tipos as $clave => $label)
-            <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
-               class="btn-filtro {{ $tipoSeleccionado === $clave ? 'activo' : '' }}">
-                {{ $label }}
-            </a>
-        @endforeach
-    </div>
+    @if($galerias->isNotEmpty())
+        {{-- Filtros por tipo de galería --}}
+        <div class="filtros-galeria">
+            @foreach($tipos as $clave => $label)
+                <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
+                   class="btn-filtro {{ $tipoSeleccionado === $clave ? 'activo' : '' }}">
+                    {{ $label }}
+                </a>
+            @endforeach
+        </div>
 
-    {{-- Rejilla de álbumes publicados --}}
-    <div class="rejilla-albumes">
-        @forelse($galerias as $galeria)
+        {{-- Rejilla de álbumes publicados --}}
+        <div class="rejilla-albumes">
+            @foreach($galerias as $galeria)
             <div class="tarjeta-album">
                 <div class="imagen-album">
                     @if($galeria->portada)
@@ -74,20 +75,23 @@
                     </div>
                 </div>
             </div>
-        @empty
-            {{-- Estado vacío si no hay álbumes para el filtro actual --}}
-            <div class="galeria-empty-state">
-                <i class="fas fa-images"></i>
-                <h3>{{ __('public.gallery.empty.title') }}</h3>
-                <p>{{ __('public.gallery.empty.text') }}</p>
-            </div>
-        @endforelse
-    </div>
+            @endforeach
+        </div>
 
-    {{-- Paginación del listado --}}
-    <div class="contenedor-paginacion">
-        {{ $galerias->links() }}
-    </div>
+        {{-- Paginación del listado --}}
+        <div class="contenedor-paginacion">
+            {{ $galerias->links() }}
+        </div>
+    @else
+        {{-- Estado vacío si no hay álbumes para el filtro actual --}}
+        <div class="estado-vacio estado-vacio-merchan-gap estado-vacio-merchan-gap-galeria">
+            <div class="estado-vacio-icono">
+                <i class="fas fa-images"></i>
+            </div>
+            <h3>{{ __('public.gallery.empty.title') }}</h3>
+            <p>{{ __('public.gallery.empty.text') }}</p>
+        </div>
+    @endif
 
 </section>
 @endsection

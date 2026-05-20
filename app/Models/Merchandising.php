@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Merchandising extends Model
 {
     use HasFactory;
@@ -53,10 +54,13 @@ class Merchandising extends Model
 
     public function getImagenMerchanUrlAttribute(): string
     {
-        if (!$this->imagen_merchan || $this->imagen_merchan === 'club_14.png') {
+        if (! $this->imagen_merchan || $this->imagen_merchan === 'club_14.png') {
             return asset('img/club_14.png');
         }
 
-        return asset('storage/merchandising/' . ltrim($this->imagen_merchan, '/'));
+        return route('media.uploads', [
+            'collection' => 'merchandising',
+            'path' => ltrim($this->imagen_merchan, '/'),
+        ]);
     }
 }

@@ -2,38 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Services\Translation\ProtectedTermsService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Jugador extends Model
 {
-    use HasFactory; // IMPORTANTE PARA EL FACTORY
+    use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => ProtectedTermsService::flushCache());
+        static::deleted(fn () => ProtectedTermsService::flushCache());
+    }
 
     private const POSITION_LABELS = [
-        'Base' => [
-            'es' => 'Base',
-            'val' => 'Base',
-        ],
-        'Escolta' => [
-            'es' => 'Escolta',
-            'val' => 'Escorta',
-        ],
-        'Alero' => [
-            'es' => 'Alero',
-            'val' => 'Aler',
-        ],
-        'Ala-Pívot' => [
-            'es' => 'Ala-Pívot',
-            'val' => 'Ala-pivot',
-        ],
-        'Pívot' => [
-            'es' => 'Pívot',
-            'val' => 'Pivot',
-        ],
+        'Base' => ['es' => 'Base', 'val' => 'Base'],
+        'Escolta' => ['es' => 'Escolta', 'val' => 'Escorta'],
+        'Alero' => ['es' => 'Alero', 'val' => 'Aler'],
+        'Ala-Pívot' => ['es' => 'Ala-Pívot', 'val' => 'Ala-pivot'],
+        'Pívot' => ['es' => 'Pívot', 'val' => 'Pivot'],
     ];
 
     protected $table = 'jugadores';
-    
+
     protected $fillable = [
         'nombre',
         'apellido',
@@ -53,7 +45,8 @@ class Jugador extends Model
         'posicion_display',
     ];
 
-    public function equipo() {
+    public function equipo()
+    {
         return $this->belongsTo(Equipo::class);
     }
 
@@ -83,10 +76,13 @@ class Jugador extends Model
 
     public function getImagenJugadorUrlAttribute(): string
     {
-        if (!$this->imagen_jugador || $this->imagen_jugador === 'club_14.png') {
+        if (! $this->imagen_jugador || $this->imagen_jugador === 'club_14.png') {
             return asset('img/club_14.png');
         }
 
-        return asset('storage/jugadores/' . ltrim(basename($this->imagen_jugador), '/'));
+        return route('media.uploads', [
+            'collection' => 'jugadores',
+            'path' => ltrim(basename($this->imagen_jugador), '/'),
+        ]);
     }
 }

@@ -434,6 +434,7 @@ return [
             'invalid_size' => 'Selecciona una talla válida para este producto.',
             'missing_cart_item' => 'El producto que intentas actualizar ya no está en la cesta.',
             'empty_cart' => 'Tu cesta está vacía. Añade al menos un producto antes de solicitar el pedido.',
+            'order_recipient_missing' => 'No podemos tramitar tu pedido ahora mismo. Inténtalo más tarde.',
         ],
         'flash' => [
             'added_to_cart' => 'Producto añadido a la cesta.',

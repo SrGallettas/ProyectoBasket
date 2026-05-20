@@ -2,49 +2,86 @@
 
 namespace App\Services\Noticias;
 
-use App\Models\Equipo;
-use App\Models\Jugador;
 use App\Models\Noticia;
-use App\Models\Partido;
 use App\Services\Media\ImageStorageService;
 use App\Services\Translation\ApertiumTranslationService;
+use App\Services\Translation\ProtectedTermsService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RuntimeException;
+use Throwable;
 
 class NoticiaWriteService
 {
+    private ?string $translationWarning = null;
+
     public function __construct(
         private readonly ImageStorageService $imageStorage,
         private readonly ApertiumTranslationService $translationService,
+        private readonly ProtectedTermsService $protectedTerms,
     ) {}
 
     public function create(array $data): Noticia
     {
-        $noticia = new Noticia;
-        $this->fillNoticia($noticia, $data);
-        $noticia->slug = $this->generateUniqueSlug($noticia->titulo_es ?: $noticia->titulo_val ?: $data['titulo']);
-        $noticia->save();
+        $this->resetTranslationWarning();
 
-        return $noticia;
+        $noticia = new Noticia;
+        $newImagePath = null;
+
+        try {
+            $this->fillNoticia($noticia, $data, false, $newImagePath);
+            $noticia->slug = $this->generateUniqueSlug($noticia->titulo_es ?: $noticia->titulo_val ?: $data['titulo']);
+            $noticia->save();
+
+            return $noticia;
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath);
+
+            throw $exception;
+        }
     }
 
     public function update(Noticia $noticia, array $data): Noticia
     {
-        $this->fillNoticia($noticia, $data, true);
-        $noticia->slug = $this->generateUniqueSlug($noticia->titulo_es ?: $noticia->titulo_val ?: $data['titulo'], $noticia->id);
-        $noticia->save();
+        $this->resetTranslationWarning();
 
-        return $noticia->refresh();
+        $newImagePath = null;
+        $oldImagePath = $noticia->imagen_noticia;
+
+        try {
+            $this->fillNoticia($noticia, $data, true, $newImagePath);
+            $noticia->slug = $this->generateUniqueSlug($noticia->titulo_es ?: $noticia->titulo_val ?: $data['titulo'], $noticia->id);
+            $noticia->save();
+
+            if ($newImagePath !== null && $oldImagePath && $oldImagePath !== $newImagePath) {
+                $this->imageStorage->deleteFromDirectory($oldImagePath, 'noticias');
+            }
+
+            return $noticia->refresh();
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath);
+
+            throw $exception;
+        }
     }
 
     public function delete(Noticia $noticia): void
     {
-        $this->imageStorage->deleteFromDirectory($noticia->imagen_noticia, 'noticias');
+        $imagePath = $noticia->imagen_noticia;
         $noticia->delete();
+        $this->imageStorage->deleteFromDirectory($imagePath, 'noticias');
     }
 
-    private function fillNoticia(Noticia $noticia, array $data, bool $updating = false): void
+    public function consumeTranslationWarning(): ?string
+    {
+        $warning = $this->translationWarning;
+        $this->translationWarning = null;
+
+        return $warning;
+    }
+
+    private function fillNoticia(Noticia $noticia, array $data, bool $updating = false, ?string &$newImagePath = null): void
     {
         $translations = $this->resolveTranslations($data);
 
@@ -61,11 +98,8 @@ class NoticiaWriteService
         $noticia->oculto = filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL);
 
         if (($data['imagen_noticia'] ?? null) instanceof UploadedFile) {
-            if ($updating) {
-                $this->imageStorage->deleteFromDirectory($noticia->imagen_noticia, 'noticias');
-            }
-
-            $noticia->imagen_noticia = $this->imageStorage->store($data['imagen_noticia'], 'noticias');
+            $newImagePath = $this->imageStorage->store($data['imagen_noticia'], 'noticias');
+            $noticia->imagen_noticia = $newImagePath;
         }
     }
 
@@ -116,7 +150,9 @@ class NoticiaWriteService
                 'contenido_es' => $content,
                 'contenido_val' => $this->translationService->translate($content, $protectedTerms),
             ];
-        } catch (RuntimeException) {
+        } catch (RuntimeException $exception) {
+            $this->reportTranslationFallback('news', $sourceLocale, $exception);
+
             return $sourceLocale === 'val'
                 ? [
                     'titulo_es' => null,
@@ -139,47 +175,29 @@ class NoticiaWriteService
 
     private function buildProtectedTerms(?string $author): array
     {
-        $teamTerms = Equipo::query()
-            ->select(['nombre', 'categoria'])
-            ->get()
-            ->flatMap(function (Equipo $equipo) {
-                return [
-                    $equipo->nombre,
-                    $equipo->categoria,
-                ];
-            })
-            ->all();
+        return $this->protectedTerms->forNews($author);
+    }
 
-        $playerTerms = Jugador::query()
-            ->select(['nombre', 'apellido'])
-            ->get()
-            ->flatMap(function (Jugador $jugador) {
-                $fullName = trim($jugador->nombre.' '.$jugador->apellido);
+    private function resetTranslationWarning(): void
+    {
+        $this->translationWarning = null;
+    }
 
-                return array_filter([
-                    $jugador->nombre,
-                    $jugador->apellido,
-                    $fullName !== '' ? $fullName : null,
-                ]);
-            })
-            ->all();
+    private function reportTranslationFallback(string $resource, string $sourceLocale, RuntimeException $exception): void
+    {
+        $this->translationWarning = __('admin.flash.translation_partial');
 
-        $venueTerms = Partido::query()
-            ->select(['lugar', 'categoria'])
-            ->get()
-            ->flatMap(function (Partido $partido) {
-                return array_filter([
-                    $partido->lugar,
-                    $partido->categoria,
-                ]);
-            })
-            ->all();
+        Log::warning('Automatic translation failed while saving content.', [
+            'resource' => $resource,
+            'source_locale' => $sourceLocale,
+            'error' => $exception->getMessage(),
+        ]);
+    }
 
-        return array_values(array_unique(array_filter([
-            $author,
-            ...$teamTerms,
-            ...$playerTerms,
-            ...$venueTerms,
-        ])));
+    private function cleanupNewImage(?string $path): void
+    {
+        if ($path !== null) {
+            $this->imageStorage->deleteFromDirectory($path, 'noticias');
+        }
     }
 }

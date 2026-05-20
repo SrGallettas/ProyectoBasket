@@ -122,10 +122,11 @@
                 </article>
             @empty
                 {{-- Estado vacío si el equipo no tiene jugadores publicados --}}
-                <div class="contenedor-mensaje-vacio full-grid-column">
-                    <div class="alerta-basket">
-                        <p>{!! __('public.team.empty.players', ['team' => e($equipoMostrar->nombre)]) !!}</p>
+                <div class="estado-vacio full-grid-column">
+                    <div class="estado-vacio-icono">
+                        <i class="fas fa-users"></i>
                     </div>
+                    <p>{!! __('public.team.empty.players', ['team' => e($equipoMostrar->nombre)]) !!}</p>
                 </div>
             @endforelse
         </div>
@@ -137,11 +138,12 @@
 
     @else
         {{-- Estado vacío si no existe la categoría solicitada --}}
-        <div class="contenedor-mensaje-vacio">
-            <div class="alerta-basket">
-                <p>{!! __('public.team.empty.category', ['category' => e($categoriaMostrar)]) !!}</p>
-                <a href="{{ route('basket.inicio') }}" class="boton-rojo-centrado">{{ __('public.team.empty.back_home') }}</a>
+        <div class="estado-vacio">
+            <div class="estado-vacio-icono">
+                <i class="fas fa-users-slash"></i>
             </div>
+            <p>{!! __('public.team.empty.category', ['category' => e($categoriaMostrar)]) !!}</p>
+            <a href="{{ route('basket.inicio') }}" class="estado-vacio-accion">{{ __('public.team.empty.back_home') }}</a>
         </div>
     @endif
 </section>

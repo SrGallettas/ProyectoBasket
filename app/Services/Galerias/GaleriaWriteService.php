@@ -3,16 +3,21 @@
 namespace App\Services\Galerias;
 
 use App\Models\Galeria;
+use App\Models\ImagenGaleria;
 use App\Services\Media\ImageStorageService;
 use App\Services\Translation\ApertiumTranslationService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
+use Throwable;
 
 class GaleriaWriteService
 {
+    private ?string $translationWarning = null;
+
     public function __construct(
         private readonly ImageStorageService $imageStorage,
         private readonly ApertiumTranslationService $translationService,
@@ -20,83 +25,130 @@ class GaleriaWriteService
 
     public function create(array $data): Galeria
     {
-        return DB::transaction(function () use ($data) {
-            $translations = $this->resolveTranslations($data);
+        $this->resetTranslationWarning();
+        $storedPaths = [];
 
-            $galeria = Galeria::create([
-                'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
-                'titulo_es' => $translations['titulo_es'],
-                'titulo_val' => $translations['titulo_val'],
-                'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
-                'carpeta' => $this->generateUniqueFolder($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
-                'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
-                'descripcion_es' => $translations['descripcion_es'],
-                'descripcion_val' => $translations['descripcion_val'],
-                'tipo' => $data['tipo'],
-                'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
-            ]);
+        try {
+            return DB::transaction(function () use ($data, &$storedPaths) {
+                $translations = $this->resolveTranslations($data);
 
-            $this->storeImages(
-                $galeria,
-                $data['imagenes'] ?? [],
-                null,
-                isset($data['imagen_principal_nueva']) ? (int) $data['imagen_principal_nueva'] : 0
-            );
+                $galeria = Galeria::create([
+                    'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
+                    'titulo_es' => $translations['titulo_es'],
+                    'titulo_val' => $translations['titulo_val'],
+                    'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
+                    'carpeta' => $this->generateUniqueFolder($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo']),
+                    'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
+                    'descripcion_es' => $translations['descripcion_es'],
+                    'descripcion_val' => $translations['descripcion_val'],
+                    'tipo' => $data['tipo'],
+                    'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
+                ]);
 
-            return $galeria->fresh('imagenes');
-        });
+                $this->storeImages(
+                    $galeria,
+                    $data['imagenes'] ?? [],
+                    null,
+                    isset($data['imagen_principal_nueva']) ? (int) $data['imagen_principal_nueva'] : 0,
+                    $storedPaths,
+                );
+
+                return $galeria->fresh('imagenes');
+            });
+        } catch (Throwable $exception) {
+            $this->cleanupStoredPaths($storedPaths);
+
+            throw $exception;
+        }
     }
 
     public function update(Galeria $galeria, array $data): Galeria
     {
-        return DB::transaction(function () use ($galeria, $data) {
-            $translations = $this->resolveTranslations($data);
+        $this->resetTranslationWarning();
+        $storedPaths = [];
+        $pathsToDeleteAfterCommit = [];
 
-            $galeria->update([
-                'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
-                'titulo_es' => $translations['titulo_es'],
-                'titulo_val' => $translations['titulo_val'],
-                'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo'], $galeria->id),
-                'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
-                'descripcion_es' => $translations['descripcion_es'],
-                'descripcion_val' => $translations['descripcion_val'],
-                'tipo' => $data['tipo'],
-                'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
-            ]);
+        try {
+            return DB::transaction(function () use ($galeria, $data, &$storedPaths, &$pathsToDeleteAfterCommit) {
+                $translations = $this->resolveTranslations($data);
 
-            $idsAEliminar = collect($data['eliminar_imagenes'] ?? [])
-                ->map(fn ($id) => (int) $id)
-                ->all();
+                $galeria->update([
+                    'titulo' => $translations['titulo_es'] ?: $translations['titulo_val'],
+                    'titulo_es' => $translations['titulo_es'],
+                    'titulo_val' => $translations['titulo_val'],
+                    'slug' => $this->generateUniqueSlug($translations['titulo_es'] ?: $translations['titulo_val'] ?: $data['titulo'], $galeria->id),
+                    'descripcion' => $translations['descripcion_es'] ?: $translations['descripcion_val'],
+                    'descripcion_es' => $translations['descripcion_es'],
+                    'descripcion_val' => $translations['descripcion_val'],
+                    'tipo' => $data['tipo'],
+                    'oculto' => filter_var($data['oculto'] ?? false, FILTER_VALIDATE_BOOL),
+                ]);
 
-            $this->ensureGalleryWillKeepImages($galeria, $idsAEliminar, $data['imagenes'] ?? []);
-            $this->deleteImages($galeria, $idsAEliminar);
+                $idsAEliminar = collect($data['eliminar_imagenes'] ?? [])
+                    ->map(fn ($id) => (int) $id)
+                    ->all();
 
-            $imagenPrincipalExistente = array_key_exists('imagen_principal_existente', $data) && $data['imagen_principal_existente'] !== null
-                ? (int) $data['imagen_principal_existente']
-                : null;
-            $indicePrincipalNueva = array_key_exists('imagen_principal_nueva', $data) && $data['imagen_principal_nueva'] !== null
-                ? (int) $data['imagen_principal_nueva']
-                : null;
+                $this->ensureGalleryWillKeepImages($galeria, $idsAEliminar, $data['imagenes'] ?? []);
+                $pathsToDeleteAfterCommit = $this->deleteImages($galeria, $idsAEliminar);
 
-            $nuevasImagenes = $this->storeImages($galeria, $data['imagenes'] ?? [], $imagenPrincipalExistente, $indicePrincipalNueva);
-            $this->syncPrincipalImage($galeria, $imagenPrincipalExistente, $nuevasImagenes, $indicePrincipalNueva);
+                $imagenPrincipalExistente = array_key_exists('imagen_principal_existente', $data) && $data['imagen_principal_existente'] !== null
+                    ? (int) $data['imagen_principal_existente']
+                    : null;
+                $indicePrincipalNueva = array_key_exists('imagen_principal_nueva', $data) && $data['imagen_principal_nueva'] !== null
+                    ? (int) $data['imagen_principal_nueva']
+                    : null;
 
-            return $galeria->fresh('imagenes');
-        });
+                $nuevasImagenes = $this->storeImages(
+                    $galeria,
+                    $data['imagenes'] ?? [],
+                    $imagenPrincipalExistente,
+                    $indicePrincipalNueva,
+                    $storedPaths,
+                );
+                $this->syncPrincipalImage($galeria, $imagenPrincipalExistente, $nuevasImagenes, $indicePrincipalNueva);
+
+                DB::afterCommit(function () use ($pathsToDeleteAfterCommit, $galeria) {
+                    $this->cleanupDeletedPaths($pathsToDeleteAfterCommit, $galeria);
+                });
+
+                return $galeria->fresh('imagenes');
+            });
+        } catch (Throwable $exception) {
+            $this->cleanupStoredPaths($storedPaths);
+
+            throw $exception;
+        }
     }
 
     public function delete(Galeria $galeria): void
     {
-        DB::transaction(function () use ($galeria) {
+        $pathsToDeleteAfterCommit = [];
+        $directory = $this->galleryDirectory($galeria);
+
+        DB::transaction(function () use ($galeria, &$pathsToDeleteAfterCommit, $directory) {
             $galeria->loadMissing('imagenes');
+            $pathsToDeleteAfterCommit = $galeria->imagenes
+                ->map(fn (ImagenGaleria $imagen) => 'galerias/'.$imagen->archivo)
+                ->all();
 
-            foreach ($galeria->imagenes as $imagen) {
-                $this->imageStorage->deleteRelativePath('galerias/'.$imagen->archivo);
-            }
-
-            $this->imageStorage->deleteDirectoryIfEmpty($this->galleryDirectory($galeria));
             $galeria->delete();
+
+            DB::afterCommit(function () use ($pathsToDeleteAfterCommit, $directory) {
+                foreach ($pathsToDeleteAfterCommit as $path) {
+                    $this->imageStorage->deleteRelativePath($path);
+                }
+
+                $this->imageStorage->deleteDirectoryIfEmpty($directory);
+            });
         });
+    }
+
+    public function consumeTranslationWarning(): ?string
+    {
+        $warning = $this->translationWarning;
+        $this->translationWarning = null;
+
+        return $warning;
     }
 
     private function ensureGalleryWillKeepImages(Galeria $galeria, array $idsAEliminar, array $imagenesNuevas): void
@@ -112,25 +164,30 @@ class GaleriaWriteService
         }
     }
 
-    private function deleteImages(Galeria $galeria, array $idsAEliminar): void
+    private function deleteImages(Galeria $galeria, array $idsAEliminar): array
     {
         if ($idsAEliminar === []) {
-            return;
+            return [];
         }
 
         $imagenes = $galeria->imagenes()->whereIn('id', $idsAEliminar)->get();
+        $paths = $imagenes
+            ->map(fn (ImagenGaleria $imagen) => 'galerias/'.$imagen->archivo)
+            ->all();
 
         foreach ($imagenes as $imagen) {
-            $this->imageStorage->deleteRelativePath('galerias/'.$imagen->archivo);
             $imagen->delete();
         }
+
+        return $paths;
     }
 
     private function storeImages(
         Galeria $galeria,
         array $imagenes,
-        ?int $imagenPrincipalExistente = null,
-        ?int $indicePrincipalNueva = null
+        ?int $imagenPrincipalExistente,
+        ?int $indicePrincipalNueva,
+        array &$storedPaths
     ): array {
         $imagenesGuardadas = [];
         $hayImagenPrincipalActual = $galeria->imagenes()->where('es_principal', true)->exists();
@@ -140,8 +197,12 @@ class GaleriaWriteService
                 continue;
             }
 
+            $filename = $this->imageStorage->store($imagen, $this->galleryDirectory($galeria));
+            $relativePath = $galeria->carpeta.'/'.$filename;
+            $storedPaths[] = 'galerias/'.$relativePath;
+
             $imagenesGuardadas[] = $galeria->imagenes()->create([
-                'archivo' => $galeria->carpeta.'/'.$this->imageStorage->store($imagen, $this->galleryDirectory($galeria)),
+                'archivo' => $relativePath,
                 'es_principal' => false,
             ]);
         }
@@ -257,7 +318,9 @@ class GaleriaWriteService
                 'descripcion_es' => $description,
                 'descripcion_val' => $this->translationService->translate($description),
             ];
-        } catch (RuntimeException) {
+        } catch (RuntimeException $exception) {
+            $this->reportTranslationFallback('gallery', $sourceLocale, $exception);
+
             return $sourceLocale === 'val'
                 ? [
                     'titulo_es' => null,
@@ -272,5 +335,37 @@ class GaleriaWriteService
                     'descripcion_val' => null,
                 ];
         }
+    }
+
+    private function resetTranslationWarning(): void
+    {
+        $this->translationWarning = null;
+    }
+
+    private function reportTranslationFallback(string $resource, string $sourceLocale, RuntimeException $exception): void
+    {
+        $this->translationWarning = __('admin.flash.translation_partial');
+
+        Log::warning('Automatic translation failed while saving content.', [
+            'resource' => $resource,
+            'source_locale' => $sourceLocale,
+            'error' => $exception->getMessage(),
+        ]);
+    }
+
+    private function cleanupStoredPaths(array $storedPaths): void
+    {
+        foreach ($storedPaths as $path) {
+            $this->imageStorage->deleteRelativePath($path);
+        }
+    }
+
+    private function cleanupDeletedPaths(array $pathsToDeleteAfterCommit, Galeria $galeria): void
+    {
+        foreach ($pathsToDeleteAfterCommit as $path) {
+            $this->imageStorage->deleteRelativePath($path);
+        }
+
+        $this->imageStorage->deleteDirectoryIfEmpty($this->galleryDirectory($galeria));
     }
 }

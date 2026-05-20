@@ -200,7 +200,11 @@ body.menu-movil-abierto {
     background: rgba(15, 23, 42, 0.05);
 }
 
-.selector-idioma a {
+.selector-idioma-form {
+    margin: 0;
+}
+
+.selector-idioma button {
     min-width: 52px;
     min-height: 34px;
     padding: 0 12px;
@@ -210,18 +214,21 @@ body.menu-movil-abierto {
     justify-content: center;
     text-decoration: none;
     color: #475569;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.08em;
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.selector-idioma a:hover {
+.selector-idioma button:hover {
     color: #b91c1c;
     transform: translateY(-1px);
 }
 
-.selector-idioma a.activo {
+.selector-idioma button.activo {
     background: #ffffff;
     color: #b91c1c;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
@@ -341,6 +348,40 @@ body.menu-movil-abierto {
     text-align: center;
 }
 
+.estado-vacio-merchan-gap {
+    margin-top: 50px;
+}
+
+.estado-vacio-merchan-gap-estadisticas {
+    margin-top: 44px;
+}
+
+.estado-vacio-merchan-gap-clasificacion {
+    margin-top: 46px;
+}
+
+.estado-vacio-como-partidos {
+    margin-top: 0;
+    padding-top: 50px;
+    display: flow-root;
+}
+
+.estado-vacio-como-partidos-noticias {
+    margin-top: 0 !important;
+}
+
+.estado-vacio-como-partidos-galeria {
+    margin-top: 0 !important;
+}
+
+.estado-vacio-como-partidos-estadisticas {
+    margin-top: 0 !important;
+}
+
+.estado-vacio-como-partidos-clasificacion {
+    margin-top: 0 !important;
+}
+
 .estado-vacio-icono {
     width: 62px;
     height: 62px;
@@ -391,6 +432,37 @@ body.menu-movil-abierto {
     background: #cf1515;
     box-shadow: 0 10px 22px rgba(230, 0, 0, 0.25);
     transform: translateY(-2px);
+}
+
+
+html[data-theme="dark"] .estado-vacio {
+    background: linear-gradient(180deg, #1e293b 0%, #111827 100%);
+    border-color: #334155;
+    box-shadow: 0 16px 34px rgba(2, 6, 23, 0.5);
+}
+
+html[data-theme="dark"] .estado-vacio-icono {
+    background: #3f1418;
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .estado-vacio h3 {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .estado-vacio p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .estado-vacio-accion {
+    background: #dc2626;
+    border-color: #ef4444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .estado-vacio-accion:hover {
+    background: #ef4444;
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.28);
 }
 
 
@@ -900,16 +972,20 @@ html[data-theme="dark"] .selector-idioma {
     background: rgba(148, 163, 184, 0.12);
 }
 
-html[data-theme="dark"] .selector-idioma a {
+html[data-theme="dark"] .selector-idioma-form {
+    margin: 0;
+}
+
+.selector-idioma button {
     color: #cbd5e1;
 }
 
 html[data-theme="dark"] .selector-idioma a:hover,
-html[data-theme="dark"] .selector-idioma a.activo {
+html[data-theme="dark"] .selector-idioma button.activo {
     color: #fca5a5;
 }
 
-html[data-theme="dark"] .selector-idioma a.activo {
+html[data-theme="dark"] .selector-idioma button.activo {
     background: #1e293b;
     box-shadow: none;
 }

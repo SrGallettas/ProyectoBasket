@@ -6,6 +6,7 @@ use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\GaleriaImageController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\JugadorController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MerchandisingController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\PartidoAnotacionController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Public\NoticiaController as PublicNoticiaController;
 use App\Http\Controllers\Public\PartidoController as PublicPartidoController;
 use App\Http\Controllers\Public\TiendaController as PublicTiendaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UploadedMediaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,13 +48,7 @@ Route::patch('partidos/{partido}/oculto', [PublicPartidoController::class, 'togg
     ->name('basket.partidos.toggle-oculto')
     ->middleware(['auth', 'role:admin,coach']);
 
-Route::get('idioma/{locale}', function (string $locale) {
-    abort_unless(in_array($locale, ['es', 'val'], true), 404);
-
-    session(['locale' => $locale]);
-
-    return redirect()->back();
-})->name('locale.switch');
+Route::post('idioma/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 Route::get('clasificacion', [PublicClasificacionController::class, 'clasificacion'])
     ->name('basket.clasificacion');
@@ -61,6 +57,9 @@ Route::get('estadisticas', [PublicClasificacionController::class, 'estadisticas'
 Route::get('media/galerias/{path}', [GaleriaImageController::class, 'show'])
     ->where('path', '.*')
     ->name('media.galerias');
+Route::get('media/uploads/{collection}/{path}', [UploadedMediaController::class, 'show'])
+    ->where('path', '.*')
+    ->name('media.uploads');
 
 Route::get('galeria', [PublicGaleriaController::class, 'galeria'])->name('basket.galeria');
 Route::get('galeria/{slug}', [PublicGaleriaController::class, 'galeriaDetalle'])

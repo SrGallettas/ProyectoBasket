@@ -159,10 +159,18 @@ html {
     background: #333;
 }
 
+.admin-locale-form {
+    margin: 0;
+    width: 100%;
+}
+
 .admin-locale-toggle {
-    background: rgba(255, 255, 255, 0.04);
-    color: #d1d5db;
-    font-weight: 700;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
 }
 
 .admin-locale-toggle:visited,
@@ -174,7 +182,7 @@ html {
 
 .admin-locale-toggle:active,
 .admin-locale-toggle.activo {
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
 }
 
 .admin-locale-toggle:hover {
@@ -2520,6 +2528,15 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     margin-bottom: 20px;
 }
 
+.admin-alert-warning {
+    padding: 15px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffe69c;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
 .admin-thumb-60 {
     width: 60px;
     height: 60px;
@@ -3848,8 +3865,13 @@ html[data-theme="dark"] .admin-link-cancel {
     color: #cbd5e1;
 }
 
+html[data-theme="dark"] .admin-locale-form {
+    margin: 0;
+    width: 100%;
+}
+
 html[data-theme="dark"] .admin-locale-toggle {
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
     color: #d1d5db;
 }
 
@@ -3862,7 +3884,7 @@ html[data-theme="dark"] .admin-locale-toggle:hover {
 
 html[data-theme="dark"] .admin-locale-toggle:active,
 html[data-theme="dark"] .admin-locale-toggle.activo {
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
 }
 
 html[data-theme="dark"] .admin-locale-toggle:hover {

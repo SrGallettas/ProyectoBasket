@@ -2,16 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Services\Translation\ProtectedTermsService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Equipo extends Model
 {
-    use HasFactory; // IMPORTANTE PARA EL FACTORY
+    use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => ProtectedTermsService::flushCache());
+        static::deleted(fn () => ProtectedTermsService::flushCache());
+    }
 
     protected $fillable = [
-        'nombre', 
-        'categoria', 'imagen_club', 'foto_plantilla', 'es_local', 'oculto'
+        'nombre',
+        'categoria',
+        'imagen_club',
+        'foto_plantilla',
+        'es_local',
+        'oculto',
     ];
 
     protected $casts = [
@@ -19,7 +30,8 @@ class Equipo extends Model
         'oculto' => 'boolean',
     ];
 
-    public function jugadores() {
+    public function jugadores()
+    {
         return $this->hasMany(Jugador::class);
     }
 
@@ -40,19 +52,25 @@ class Equipo extends Model
 
     public function getImagenClubUrlAttribute(): string
     {
-        if (!$this->imagen_club || $this->imagen_club === 'club_14.png') {
+        if (! $this->imagen_club || $this->imagen_club === 'club_14.png') {
             return asset('img/club_14.png');
         }
 
-        return asset('storage/escudos/' . ltrim($this->imagen_club, '/'));
+        return route('media.uploads', [
+            'collection' => 'escudos',
+            'path' => ltrim($this->imagen_club, '/'),
+        ]);
     }
 
     public function getFotoPlantillaUrlAttribute(): string
     {
-        if (!$this->foto_plantilla) {
+        if (! $this->foto_plantilla) {
             return asset('img/equipo.png');
         }
 
-        return asset('storage/equipos/plantillas/' . ltrim($this->foto_plantilla, '/'));
+        return route('media.uploads', [
+            'collection' => 'plantillas',
+            'path' => ltrim($this->foto_plantilla, '/'),
+        ]);
     }
 }

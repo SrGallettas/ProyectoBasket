@@ -8,6 +8,7 @@ use App\Models\Merchandising;
 use App\Services\Merchandising\MerchandisingFormOptionsService;
 use App\Services\Merchandising\MerchandisingListService;
 use App\Services\Merchandising\MerchandisingWriteService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class MerchandisingController extends Controller
@@ -37,7 +38,9 @@ class MerchandisingController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_created'));
+        return $this->withTranslationWarning(
+            redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_created'))
+        );
     }
 
     public function edit(string $id)
@@ -53,7 +56,9 @@ class MerchandisingController extends Controller
         $item = Merchandising::findOrFail($id);
         $this->writeService->update($item, $request->validated());
 
-        return redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_updated'));
+        return $this->withTranslationWarning(
+            redirect()->route('merchandising.index')->with('mensaje', __('admin.flash.product_updated'))
+        );
     }
 
     public function destroy(string $id)
@@ -83,5 +88,12 @@ class MerchandisingController extends Controller
                 ? __('admin.flash.product_hidden')
                 : __('admin.flash.product_shown')
         );
+    }
+
+    private function withTranslationWarning(RedirectResponse $response): RedirectResponse
+    {
+        $warning = $this->writeService->consumeTranslationWarning();
+
+        return $warning ? $response->with('warning', $warning) : $response;
     }
 }

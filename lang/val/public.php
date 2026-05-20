@@ -434,6 +434,7 @@ return [
             'invalid_size' => 'Selecciona una talla vàlida per a este producte.',
             'missing_cart_item' => 'El producte que intentes actualitzar ja no està en la cistella.',
             'empty_cart' => 'La teua cistella està buida. Afig almenys un producte abans de sol·licitar la comanda.',
+            'order_recipient_missing' => 'Ara mateix no podem tramitar la teua comanda. Torna-ho a intentar més tard.',
         ],
         'flash' => [
             'added_to_cart' => 'Producte afegit a la cistella.',

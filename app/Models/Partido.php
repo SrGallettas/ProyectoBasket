@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Translation\ProtectedTermsService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,10 +10,16 @@ class Partido extends Model
 {
     use HasFactory;
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => ProtectedTermsService::flushCache());
+        static::deleted(fn () => ProtectedTermsService::flushCache());
+    }
+
     protected $fillable = [
-        'equipo_local_id', 
-        'equipo_visitante_id', 
-        'fecha_hora', 
+        'equipo_local_id',
+        'equipo_visitante_id',
+        'fecha_hora',
         'lugar',
         'categoria',
         'tipo_partido',
@@ -33,7 +40,6 @@ class Partido extends Model
         return $this->belongsTo(Equipo::class, 'equipo_local_id');
     }
 
-    // Relación: El partido tiene un equipo visitante
     public function equipoVisitante()
     {
         return $this->belongsTo(Equipo::class, 'equipo_visitante_id');

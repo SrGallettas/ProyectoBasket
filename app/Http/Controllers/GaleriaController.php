@@ -8,6 +8,7 @@ use App\Models\Galeria;
 use App\Services\Galerias\GaleriaFormOptionsService;
 use App\Services\Galerias\GaleriaListService;
 use App\Services\Galerias\GaleriaWriteService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class GaleriaController extends Controller
@@ -45,7 +46,9 @@ class GaleriaController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_created'));
+        return $this->withTranslationWarning(
+            redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_created'))
+        );
     }
 
     public function show(string $id)
@@ -73,7 +76,9 @@ class GaleriaController extends Controller
         $galeria = Galeria::with('imagenes')->findOrFail($id);
         $this->writeService->update($galeria, $request->validated());
 
-        return redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_updated'));
+        return $this->withTranslationWarning(
+            redirect()->route('galerias.index')->with('mensaje', __('admin.flash.gallery_updated'))
+        );
     }
 
     public function destroy(string $id)
@@ -95,5 +100,12 @@ class GaleriaController extends Controller
                 ? __('admin.flash.gallery_hidden')
                 : __('admin.flash.gallery_shown')
         );
+    }
+
+    private function withTranslationWarning(RedirectResponse $response): RedirectResponse
+    {
+        $warning = $this->writeService->consumeTranslationWarning();
+
+        return $warning ? $response->with('warning', $warning) : $response;
     }
 }

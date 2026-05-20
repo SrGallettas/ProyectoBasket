@@ -7,6 +7,7 @@ use App\Mail\MerchandisingPedidoMail;
 use App\Models\Merchandising;
 use App\Services\Basket\CartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class TiendaController extends Controller
@@ -140,8 +141,17 @@ class TiendaController extends Controller
             ]);
         }
 
+        $destinatario = config('services.merchandising.orders_email');
+
+        if (! is_string($destinatario) || $destinatario === '') {
+            Log::error('Merchandising order email is not configured.');
+
+            return redirect()->route('basket.tienda.pedido')->withErrors([
+                'pedido' => __('public.store.validation.order_recipient_missing'),
+            ])->withInput();
+        }
+
         $cartSummary = $this->cartService->buildCartSummary($cartItems);
-        $destinatario = env('MERCH_PEDIDOS_EMAIL', env('MERCH_INTERES_EMAIL', 'paupalopvila@gmail.com'));
 
         Mail::to($destinatario)->send(
             new MerchandisingPedidoMail($validated, $cartItems, $cartSummary)

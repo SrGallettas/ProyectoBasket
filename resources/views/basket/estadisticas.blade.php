@@ -18,7 +18,7 @@
 />
 
 {{-- Contenido principal con filtro y resumen de temporada --}}
-<section class="contenedor-estadisticas">
+<section class="contenedor-estadisticas {{ $equiposLocales->isEmpty() ? "estado-vacio-como-partidos estado-vacio-como-partidos-estadisticas" : "" }}">
     @if($equiposLocales->isNotEmpty())
         {{-- Selector del equipo local a analizar --}}
         <form method="GET" action="{{ route('basket.estadisticas') }}" class="stats-team-filter">
@@ -143,7 +143,7 @@
         @endif
     @else
         {{-- Estado vacío si no hay equipos locales con datos públicos --}}
-        <div class="estado-vacio">
+        <div class="estado-vacio estado-vacio-merchan-gap estado-vacio-merchan-gap-estadisticas">
             <div class="estado-vacio-icono">
                 <i class="fas fa-chart-bar"></i>
             </div>

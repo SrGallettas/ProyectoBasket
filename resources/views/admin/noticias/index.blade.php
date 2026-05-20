@@ -21,6 +21,12 @@
         </div>
     @endif
 
+    @if(session('warning'))
+        <div class="admin-alert-warning">
+            <i class="fas fa-triangle-exclamation"></i> {{ session('warning') }}
+        </div>
+    @endif
+
     @php
         // Alterna asc/desc cuando el usuario pulsa varias veces la misma cabecera.
         $nextDirection = function (string $column) use ($sort, $direction) {

@@ -6,10 +6,14 @@ use App\Models\Merchandising;
 use App\Services\Media\ImageStorageService;
 use App\Services\Translation\ApertiumTranslationService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
+use Throwable;
 
 class MerchandisingWriteService
 {
+    private ?string $translationWarning = null;
+
     public function __construct(
         private readonly ImageStorageService $imageStorage,
         private readonly ApertiumTranslationService $translationService,
@@ -17,25 +21,59 @@ class MerchandisingWriteService
 
     public function create(array $data): Merchandising
     {
-        $item = new Merchandising;
-        $this->fillItem($item, $data);
-        $item->save();
+        $this->resetTranslationWarning();
 
-        return $item;
+        $item = new Merchandising;
+        $newImagePath = null;
+
+        try {
+            $this->fillItem($item, $data, false, $newImagePath);
+            $item->save();
+
+            return $item;
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath, 'merchandising');
+
+            throw $exception;
+        }
     }
 
     public function update(Merchandising $item, array $data): Merchandising
     {
-        $this->fillItem($item, $data, true);
-        $item->save();
+        $this->resetTranslationWarning();
 
-        return $item->refresh();
+        $newImagePath = null;
+        $oldImagePath = $item->imagen_merchan;
+
+        try {
+            $this->fillItem($item, $data, true, $newImagePath);
+            $item->save();
+
+            if ($newImagePath !== null && $oldImagePath && $oldImagePath !== $newImagePath) {
+                $this->imageStorage->deleteFromDirectory($oldImagePath, 'merchandising');
+            }
+
+            return $item->refresh();
+        } catch (Throwable $exception) {
+            $this->cleanupNewImage($newImagePath, 'merchandising');
+
+            throw $exception;
+        }
     }
 
     public function delete(Merchandising $item): void
     {
-        $this->imageStorage->deleteFromDirectory($item->imagen_merchan, 'merchandising');
+        $imagePath = $item->imagen_merchan;
         $item->delete();
+        $this->imageStorage->deleteFromDirectory($imagePath, 'merchandising');
+    }
+
+    public function consumeTranslationWarning(): ?string
+    {
+        $warning = $this->translationWarning;
+        $this->translationWarning = null;
+
+        return $warning;
     }
 
     public function normalizeSizeSelection($sizes): ?string
@@ -57,7 +95,7 @@ class MerchandisingWriteService
         return $normalized->isNotEmpty() ? $normalized->implode(',') : null;
     }
 
-    private function fillItem(Merchandising $item, array $data, bool $updating = false): void
+    private function fillItem(Merchandising $item, array $data, bool $updating = false, ?string &$newImagePath = null): void
     {
         $translations = $this->resolveTranslations($data);
 
@@ -72,11 +110,8 @@ class MerchandisingWriteService
         $item->talla = $this->normalizeSizeSelection($data['talla'] ?? null);
 
         if (($data['imagen_merchan'] ?? null) instanceof UploadedFile) {
-            if ($updating) {
-                $this->imageStorage->deleteFromDirectory($item->imagen_merchan, 'merchandising');
-            }
-
-            $item->imagen_merchan = $this->imageStorage->store($data['imagen_merchan'], 'merchandising');
+            $newImagePath = $this->imageStorage->store($data['imagen_merchan'], 'merchandising');
+            $item->imagen_merchan = $newImagePath;
         }
     }
 
@@ -102,7 +137,9 @@ class MerchandisingWriteService
                 'descripcion_es' => $description !== '' ? $description : null,
                 'descripcion_val' => $this->translationService->translate($description),
             ];
-        } catch (RuntimeException) {
+        } catch (RuntimeException $exception) {
+            $this->reportTranslationFallback('merchandising', $sourceLocale, $exception);
+
             return $sourceLocale === 'val'
                 ? [
                     'nombre_es' => null,
@@ -116,6 +153,29 @@ class MerchandisingWriteService
                     'descripcion_es' => $description !== '' ? $description : null,
                     'descripcion_val' => null,
                 ];
+        }
+    }
+
+    private function resetTranslationWarning(): void
+    {
+        $this->translationWarning = null;
+    }
+
+    private function reportTranslationFallback(string $resource, string $sourceLocale, RuntimeException $exception): void
+    {
+        $this->translationWarning = __('admin.flash.translation_partial');
+
+        Log::warning('Automatic translation failed while saving content.', [
+            'resource' => $resource,
+            'source_locale' => $sourceLocale,
+            'error' => $exception->getMessage(),
+        ]);
+    }
+
+    private function cleanupNewImage(?string $path, string $directory): void
+    {
+        if ($path !== null) {
+            $this->imageStorage->deleteFromDirectory($path, $directory);
         }
     }
 }

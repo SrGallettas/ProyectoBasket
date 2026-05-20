@@ -7,6 +7,7 @@ use App\Http\Requests\Noticias\UpdateNoticiaRequest;
 use App\Models\Noticia;
 use App\Services\Noticias\NoticiaListService;
 use App\Services\Noticias\NoticiaWriteService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class NoticiaController extends Controller
@@ -35,7 +36,9 @@ class NoticiaController extends Controller
     {
         $this->writeService->create($request->validated());
 
-        return redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_created'));
+        return $this->withTranslationWarning(
+            redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_created'))
+        );
     }
 
     public function edit(string $id)
@@ -50,7 +53,9 @@ class NoticiaController extends Controller
         $noticia = Noticia::findOrFail($id);
         $this->writeService->update($noticia, $request->validated());
 
-        return redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_updated'));
+        return $this->withTranslationWarning(
+            redirect()->route('noticias.index')->with('mensaje', __('admin.flash.news_updated'))
+        );
     }
 
     public function destroy(string $id)
@@ -79,5 +84,12 @@ class NoticiaController extends Controller
                 ? __('admin.flash.news_hidden')
                 : __('admin.flash.news_shown')
         );
+    }
+
+    private function withTranslationWarning(RedirectResponse $response): RedirectResponse
+    {
+        $warning = $this->writeService->consumeTranslationWarning();
+
+        return $warning ? $response->with('warning', $warning) : $response;
     }
 }

@@ -19,21 +19,22 @@
 />
 
 {{-- Contenedor principal del listado --}}
-<section class="noticias-container-rectangular">
+<section class="noticias-container-rectangular {{ $noticias->isEmpty() ? "estado-vacio-como-partidos estado-vacio-como-partidos-noticias" : "" }}">
     @if(session('mensaje'))
         <div class="public-alert-ok">
             {{ session('mensaje') }}
         </div>
     @endif
 
-    {{-- Cabecera informativa del listado --}}
-    <div class="noticias-filter-bar">
-        <span><i class="fas fa-list-ul"></i> {{ __('public.news.listing_bar') }}</span>
-    </div>
+    @if($noticias->isNotEmpty())
+        {{-- Cabecera informativa del listado --}}
+        <div class="noticias-filter-bar">
+            <span><i class="fas fa-list-ul"></i> {{ __('public.news.listing_bar') }}</span>
+        </div>
 
-    {{-- Listado horizontal de noticias publicadas --}}
-    <div class="noticias-list-horizontal">
-        @forelse ($noticias as $noticia)
+        {{-- Listado horizontal de noticias publicadas --}}
+        <div class="noticias-list-horizontal">
+            @foreach ($noticias as $noticia)
             <article class="noticia-row">
                 {{-- Imagen --}}
                 <div class="noticia-img-box">
@@ -70,23 +71,24 @@
                     </div>
                 </div>
             </article>
-        @empty
-            {{-- Estado vacío si todavía no hay noticias visibles --}}
-            <div class="estado-vacio">
-                <div class="estado-vacio-icono">
-                    <i class="fas fa-newspaper"></i>
-                </div>
-                <h3>{{ __('public.news.empty_title') }}</h3>
-                <p>{{ __('public.news.empty_text') }}</p>
-                <a href="{{ route('basket.inicio') }}" class="estado-vacio-accion">{{ __('public.news.empty_cta') }}</a>
-            </div>
-        @endforelse
-    </div>
+            @endforeach
+        </div>
 
-    {{-- Paginación del listado --}}
-    <div class="contenedor-paginacion">
-        {{ $noticias->links() }}
-    </div>
+        {{-- Paginación del listado --}}
+        <div class="contenedor-paginacion">
+            {{ $noticias->links() }}
+        </div>
+    @else
+        {{-- Estado vacío si todavía no hay noticias visibles --}}
+        <div class="estado-vacio estado-vacio-merchan-gap estado-vacio-merchan-gap-noticias">
+            <div class="estado-vacio-icono">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <h3>{{ __('public.news.empty_title') }}</h3>
+            <p>{{ __('public.news.empty_text') }}</p>
+            <a href="{{ route('basket.inicio') }}" class="estado-vacio-accion">{{ __('public.news.empty_cta') }}</a>
+        </div>
+    @endif
 </section>
 
 @endsection
