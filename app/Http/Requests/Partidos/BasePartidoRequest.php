@@ -30,6 +30,18 @@ abstract class BasePartidoRequest extends FormRequest
                     return;
                 }
 
+                $puntosLocal = $this->input("puntos_local");
+                $puntosVisitante = $this->input("puntos_visitante");
+                $hayMarcadorLocal = $puntosLocal !== null && $puntosLocal !== "";
+                $hayMarcadorVisitante = $puntosVisitante !== null && $puntosVisitante !== "";
+
+                if ($hayMarcadorLocal xor $hayMarcadorVisitante) {
+                    $validator->errors()->add("puntos_local", __("admin.matches.validation.score_pair_required"));
+                    $validator->errors()->add("puntos_visitante", __("admin.matches.validation.score_pair_required"));
+
+                    return;
+                }
+
                 app(PartidoLigaAssignmentService::class)->validate($this->all());
             },
         ];
@@ -48,6 +60,8 @@ abstract class BasePartidoRequest extends FormRequest
             'jornada' => 'nullable|integer|min:1',
             'oculto' => 'nullable|boolean',
             'oculto_en_clasificacion' => 'nullable|boolean',
+            'puntos_local' => 'nullable|integer|min:0',
+            'puntos_visitante' => 'nullable|integer|min:0',
         ];
     }
 
@@ -64,6 +78,8 @@ abstract class BasePartidoRequest extends FormRequest
             'lugar.required' => 'Debes indicar el lugar del partido (pabellon).',
             'categoria.required' => 'Debes seleccionar una categoria para el partido.',
             'tipo_partido.required' => 'Debes indicar si el partido es de liga o amistoso.',
+            'puntos_local.integer' => 'Los puntos del local deben ser un numero valido.',
+            'puntos_visitante.integer' => 'Los puntos del visitante deben ser un numero valido.',
         ];
     }
 }

@@ -14,7 +14,24 @@ class PartidoWriteService
 
     public function create(array $data): Partido
     {
-        return Partido::create($this->ligaAssignmentService->normalize($data));
+        return DB::transaction(function () use ($data) {
+            $partido = Partido::create($this->ligaAssignmentService->normalize($data));
+            $puntosLocal = $data["puntos_local"] ?? null;
+            $puntosVisitante = $data["puntos_visitante"] ?? null;
+
+            if ($puntosLocal !== null && $puntosLocal !== "" && $puntosVisitante !== null && $puntosVisitante !== "") {
+                $this->statsSyncService->syncPartidoStats(
+                    $partido,
+                    [
+                        "local" => ["puntos_totales" => $puntosLocal],
+                        "visitante" => ["puntos_totales" => $puntosVisitante],
+                    ],
+                    []
+                );
+            }
+
+            return $partido;
+        });
     }
 
     public function update(Partido $partido, array $data): Partido

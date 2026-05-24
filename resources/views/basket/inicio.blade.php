@@ -360,7 +360,7 @@
                         </div>
 
                         <h3>{{ $noticiaPrincipal->titulo }}</h3>
-                        <p>{{ Str::limit($noticiaPrincipal->subtitulo ?: strip_tags($noticiaPrincipal->contenido), 180) }}</p>
+                        <p>{{ Str::limit(strip_tags($noticiaPrincipal->contenido ?: $noticiaPrincipal->subtitulo), 600) }}</p>
                         <a href="{{ route('noticias.detalle', $noticiaPrincipal->slug) }}" class="noticia-principal-link">{{ __('public.home.news.featured_cta') }}</a>
                     </div>
                 </article>

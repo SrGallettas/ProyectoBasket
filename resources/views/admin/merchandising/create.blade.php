@@ -100,7 +100,7 @@
             </div> 
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('merchandising.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.store.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <a href="{{ route('merchandising.index') }}" class="btn-nuevo" title="{{ __('admin.store.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha" title="{{ __('admin.store.actions.save') }}">{{ __('admin.store.create.submit') }}</button>
             </div>
         </form>

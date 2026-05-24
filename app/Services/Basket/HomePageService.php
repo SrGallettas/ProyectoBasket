@@ -14,7 +14,10 @@ use Illuminate\Support\Collection;
 
 class HomePageService
 {
-    public function __construct(private readonly CategoryOrderService $categoryOrderService) {}
+    public function __construct(
+        private readonly CategoryOrderService $categoryOrderService,
+        private readonly StandingsTiebreakService $standingsTiebreakService,
+    ) {}
 
     public function buildViewData(): array
     {
@@ -156,11 +159,13 @@ class HomePageService
             ->when($jornadaClasificacionInicio, function ($query) use ($jornadaClasificacionInicio) {
                 $query->where('jornada', $jornadaClasificacionInicio);
             })
-            ->orderByDesc('pts')
-            ->orderByDesc('diff')
-            ->orderByDesc('pf')
-            ->get()
-            ->values();
+            ->get();
+
+        $filasClasificacionInicio = $this->standingsTiebreakService->sortRows(
+            $filasClasificacionInicio,
+            (int) $clasificacionActiva->id,
+            $jornadaClasificacionInicio ? (int) $jornadaClasificacionInicio : null
+        )->values();
 
         if ($filasClasificacionInicio->isEmpty()) {
             return [$clasificacionInicio, $clasificacionInicioFilas, $clasificacionInicioFilaClub];

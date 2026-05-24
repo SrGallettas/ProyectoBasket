@@ -45,12 +45,14 @@
                         name="titulo"
                         value="{{ old('titulo', old('idioma_origen') === 'val' ? ($galeria->titulo_val ?: $galeria->titulo_es ?: $galeria->getRawOriginal('titulo')) : ($galeria->titulo_es ?: $galeria->getRawOriginal('titulo'))) }}"
                         class="input-ficha"
+                        required
+                        minlength="3"
                     >
                 </div>
 
                 <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.type') }}</label>
-                    <select name="tipo" class="input-ficha input-white">
+                    <select name="tipo" class="input-ficha input-white" required>
                         @foreach($tipos as $clave => $label)
                             <option value="{{ $clave }}" @selected(old('tipo', $galeria->tipo) === $clave)>{{ $label }}</option>
                         @endforeach
@@ -59,7 +61,7 @@
 
                 <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.description') }}</label>
-                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea">{{ old('descripcion', old('idioma_origen') === 'val' ? ($galeria->descripcion_val ?: $galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion')) : ($galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion'))) }}</textarea>
+                    <textarea name="descripcion" rows="6" class="input-ficha admin-textarea" required>{{ old('descripcion', old('idioma_origen') === 'val' ? ($galeria->descripcion_val ?: $galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion')) : ($galeria->descripcion_es ?: $galeria->getRawOriginal('descripcion'))) }}</textarea>
                 </div>
 
                 <div class="campo-ficha">
@@ -106,7 +108,7 @@
                 <div class="galeria-admin-grid" data-upload-preview></div>
             </div>
 
-            <div class="campo-ficha">
+            <div class="campo-ficha galeria-imagenes-actuales">
                 <label>{{ __('admin.galleries.images.current_images') }}</label>
                 <p class="input-help-text">{{ __('admin.galleries.images.current_images_help') }}</p>
                 <div class="galeria-admin-grid" data-existing-gallery-grid>

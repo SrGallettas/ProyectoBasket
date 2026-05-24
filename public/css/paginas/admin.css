@@ -177,7 +177,7 @@ html {
 .admin-locale-toggle:active,
 .admin-locale-toggle.activo,
 .admin-locale-toggle:hover {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .admin-locale-toggle:active,
@@ -218,7 +218,7 @@ body.admin-sidebar-collapsed .item-admin span {
 
 body.admin-sidebar-collapsed .item-admin {
     justify-content: center;
-    padding: 12px;
+    padding: 8px;
 }
 
 body.admin-sidebar-collapsed .item-admin i {
@@ -277,6 +277,7 @@ body.admin-sidebar-collapsed .item-admin:hover i {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    justify-content: center;
     white-space: nowrap;
     box-shadow: 0 16px 28px rgba(220, 38, 38, 0.22);
 }
@@ -402,7 +403,7 @@ body.admin-sidebar-collapsed .item-admin:hover i {
 
 .campo input,
 .campo select {
-    padding: 12px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 15px;
@@ -620,9 +621,6 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 }
 
 .acciones-header-ficha .admin-form-inline button.btn-ficha-accion {
-    appearance: none;
-    font: inherit;
-    line-height: 1;
     width: 100%;
 }
 
@@ -630,13 +628,15 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     height: 42px;
-    /* Un pelín más altos */
     padding: 0 20px;
     border-radius: 8px;
+    font-family: inherit;
     font-size: 13px;
     font-weight: 800;
-    /* Texto más grueso */
+    line-height: 1;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     text-decoration: none;
     border: none;
@@ -644,6 +644,14 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-ficha-accion i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
 }
 
 /* 14. MESA DE ANOTACION DE PARTIDOS */
@@ -838,7 +846,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 }
 
 .admin-live-quarter-chip {
-    padding: 12px;
+    padding: 8px;
     border-radius: 16px;
     background: #f8fafc;
     border: 1px solid #e5e7eb;
@@ -906,7 +914,7 @@ BUSCADOR DE INDEX EQUIPO Y JUGADORES
 }
 
 .admin-live-stat-card {
-    padding: 12px;
+    padding: 8px;
     border-radius: 16px;
     background: #f8fafc;
     border: 1px solid #e5e7eb;
@@ -1083,7 +1091,11 @@ html[data-theme="dark"] .admin-live-secondary-button {
 }
 
 .btn-ficha-accion i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
+    line-height: 1;
 }
 
 /*EDITAR*/
@@ -1143,6 +1155,89 @@ html[data-theme="dark"] .admin-live-secondary-button {
     gap: 25px;
 }
 
+.grid-formulario-fichas-equipo-show {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    align-items: start;
+}
+
+.ficha-datos-grid-equipo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.ficha-media-stack {
+    width: 100%;
+    display: grid;
+    gap: 26px;
+}
+
+.ficha-media-stack-full,
+.ficha-col-foto-full,
+.ficha-col-datos-equipo-full {
+    width: 100%;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-foto {
+    width: 100%;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-foto-principal {
+    width: 100%;
+    height: 360px;
+    padding: 28px;
+    border: 1px solid #eef2f7;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfc 100%);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-foto-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-foto-principal-escudo {
+    width: min(100%, 460px);
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-foto-principal-escudo img {
+    max-width: none;
+    object-fit: cover;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-foto-plantilla .ficha-foto-principal {
+    height: 460px;
+    padding: 0;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-foto-plantilla .ficha-foto-principal img {
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-caption {
+    margin: 14px 0 0;
+    text-align: center;
+    color: #7c8aa0;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
 /* Secciones */
 .seccion-form-ficha h3 {
     font-size: 1.1em;
@@ -1151,6 +1246,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: center;
 }
 
 .seccion-personal h3 {
@@ -1177,7 +1273,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
 
 .input-ficha {
     width: 100%;
-    padding: 10px;
+    padding: 6px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     outline: none;
@@ -1198,7 +1294,8 @@ html[data-theme="dark"] .admin-live-secondary-button {
     border-radius: 10px;
     margin-top: 10px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    flex-wrap: wrap;
     gap: 30px;
     border: 1px dashed #cbd5e0;
 }
@@ -1218,10 +1315,25 @@ html[data-theme="dark"] .admin-live-secondary-button {
     object-fit: cover;
 }
 
+.preview-foto-noticia-vacia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-align: center;
+    padding: 16px;
+}
+
 .checkbox-wrapper-ficha {
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: flex-start;
     min-height: 44px;
 }
 
@@ -1233,17 +1345,25 @@ html[data-theme="dark"] .admin-live-secondary-button {
     gap: 15px;
 }
 
+.form-acciones-ficha-grid {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+}
+
 .btn-cancelar-ficha {
-    padding: 12px 25px;
+    background: #e60000;
+    color: white !important;
+    padding: 12px 20px;
     border-radius: 8px;
     text-decoration: none;
-    color: #718096;
-    font-weight: 600;
-    transition: background 0.2s;
+    font-weight: 700;
+    transition: 0.3s;
+    display: inline-block;
 }
 
 .btn-cancelar-ficha:hover {
-    background: #edf2f7;
+    background: #b30000;
+    transform: translateY(-2px);
 }
 
 .btn-actualizar-ficha {
@@ -1266,7 +1386,6 @@ html[data-theme="dark"] .admin-live-secondary-button {
     transform: translateY(-2px);
 }
 
-
 /* ==========================================================
    VISTA DETALLE DEL JUGADOR (SHOW)
    ========================================================== */
@@ -1276,6 +1395,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
 /* Estilos de la Fotografía Grande */
 .ficha-col-foto {
     text-align: center;
+    margin: 0;
 }
 
 .ficha-foto-principal {
@@ -1295,11 +1415,16 @@ html[data-theme="dark"] .admin-live-secondary-button {
 
 .ficha-foto-principal-escudo {
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    padding: 28px;
+    padding: 0;
 }
 
 .ficha-foto-principal-escudo img {
-    object-fit: contain;
+    object-fit: cover;
+}
+
+.grid-formulario-fichas-equipo-show .pizarra-ficha,
+.pizarra-ficha:has(.grid-formulario-fichas-equipo-show) {
+    background: linear-gradient(180deg, #ffffff 0%, #faf7f3 100%);
 }
 
 /* Estilos de la Información Derecha */
@@ -1307,41 +1432,125 @@ html[data-theme="dark"] .admin-live-secondary-button {
     padding-left: 10px;
 }
 
-.ficha-nombre-principal {
-    font-size: 1.8rem;
-    margin: 0;
+.grid-formulario-fichas-equipo-show .ficha-col-datos {
+    align-self: start;
+    padding: 28px 30px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-datos-equipo-top {
+    position: relative;
+    overflow: hidden;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-datos-equipo-top::after {
+    display: none;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-col-datos .ficha-title-no-margin {
+    margin: 0 0 24px;
+    font-size: 1.28rem;
+    color: #111827;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    justify-content: center;
+    text-align: center;
+}
+
+.grid-formulario-fichas-equipo-show .campo-ficha label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a94a6;
     font-weight: 800;
-    color: #1a1a1a;
-    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.ficha-nombre-principal {
+    font-size: clamp(2rem, 3.2vw, 2.65rem);
+    margin: 0;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.05;
+    text-wrap: balance;
 }
 
 /* Dorsal y Badge */
 .ficha-dorsal-wrapper {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 22px;
+}
+
+.ficha-dorsal-wrapper-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.grid-formulario-fichas-equipo-show .ficha-dorsal-wrapper .campo-ficha {
+    margin-bottom: 0;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid #f3e4d9;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .ficha-dato-destacado {
-    font-size: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    font-size: 1.15rem;
     margin: 0;
-    color: #fb8500;
-    font-weight: 700;
-    padding-top: 5px;
+    color: #b45309;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.ficha-dato-destacado i {
+    color: #ea580c;
 }
 
 /* Filas de información técnica */
 .ficha-info-row {
-    border-bottom: 1px solid #edf2f7;
-    padding-bottom: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    padding: 18px 20px;
+    border: 1px solid #f3e4d9;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.86);
 }
 
 .ficha-valor-azul {
-    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    font-size: 1.15rem;
     margin: 0;
-    font-weight: 600;
-    color: #023e8a;
+    font-weight: 800;
+    color: #0f3d8a;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-space-top {
+    margin-top: 6px;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-date-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 0;
+    color: #334155;
+    font-weight: 700;
+}
+
+.grid-formulario-fichas-equipo-show .ficha-date-text i {
+    color: #b91c1c;
 }
 
 
@@ -1548,7 +1757,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
 /* Aplicar a la estructura de Noticias */
 
 .formulario-admin {
-    padding: 10px;
+    padding: 6px;
 }
 
 .grid-formulario {
@@ -1573,7 +1782,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
 .campo input[type="text"],
 .campo input[type="file"],
 .campo select {
-    padding: 10px;
+    padding: 6px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     outline: none;
@@ -1588,17 +1797,19 @@ html[data-theme="dark"] .admin-live-secondary-button {
 /* BOTONES IGUALES A EQUIPO/JUGADOR */
 
 .btn-cancelar-ficha {
-    padding: 12px 25px;
+    background: #e60000;
+    color: white !important;
+    padding: 12px 20px;
     border-radius: 8px;
     text-decoration: none;
-    color: #718096;
-    font-weight: 600;
-    transition: background 0.2s;
+    font-weight: 700;
+    transition: 0.3s;
     display: inline-block;
 }
 
 .btn-cancelar-ficha:hover {
-    background: #edf2f7;
+    background: #b30000;
+    transform: translateY(-2px);
 }
 
 .btn-actualizar-ficha {
@@ -1612,6 +1823,7 @@ html[data-theme="dark"] .admin-live-secondary-button {
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: center;
     font-size: 1rem;
 }
 
@@ -1942,6 +2154,8 @@ EDITAR PRODUCTO
     border-radius: 12px;
     padding: 25px;
     width: 100%;
+    min-width: 0;
+    flex: 1 1 420px;
 }
 
 /* Miniatura a la izquierda */
@@ -1974,6 +2188,7 @@ EDITAR PRODUCTO
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    justify-content: center;
     color: #94a3b8;
     text-align: center;
     padding: 16px;
@@ -1990,6 +2205,11 @@ EDITAR PRODUCTO
 }
 
 /* Textos y botón a la derecha */
+.info-subida-noticia {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
 .info-subida-noticia h3 {
     margin: 0 0 5px 0;
     color: #1e293b;
@@ -2173,7 +2393,7 @@ VER PRODUCTO
 
 @media (max-width: 768px) {
     .contenedor-ficha-merchan {
-        padding: 12px;
+        padding: 8px;
     }
 
     .pizarra-show {
@@ -2607,7 +2827,7 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 
 .admin-textarea {
     width: 100%;
-    padding: 10px;
+    padding: 6px;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
 }
@@ -3148,6 +3368,10 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     margin-top: 30px;
 }
 
+.galeria-imagenes-actuales {
+    margin-top: 26px;
+}
+
 .galeria-upload-item {
     background: #f8fafc;
     border: 1px solid #e5e7eb;
@@ -3163,7 +3387,7 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 }
 
 .galeria-upload-item-body {
-    padding: 12px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -3225,7 +3449,7 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 
     .item-admin {
         justify-content: center;
-        padding: 12px;
+        padding: 8px;
     }
 
     .item-admin i {
@@ -3268,6 +3492,28 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
         gap: 18px;
     }
 
+    .card-imagen-horizontal {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        padding: 18px;
+        min-width: 0;
+    }
+
+    .preview-foto-noticia {
+        width: 100%;
+        max-width: 180px;
+        min-width: 0;
+        height: 180px;
+        margin: 0 auto;
+    }
+
+    .info-subida-noticia {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+    }
+
     .jugador-form-double-grid,
     .ficha-dorsal-wrapper {
         grid-template-columns: 1fr;
@@ -3292,10 +3538,17 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     .btn-ficha-accion,
     .btn-cancelar-ficha,
     .btn-actualizar-ficha,
+    .btn-nuevo,
     .btn-nuevo-secondary,
     .btn-volver-link {
         width: 100%;
         justify-content: center;
+    }
+
+    .btn-cancelar-ficha {
+        display: flex;
+        align-items: center;
+        text-align: center;
     }
 
     .tabla-admin {
@@ -3541,55 +3794,37 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     }
 
     .tabla-admin-galerias {
-        min-width: 0;
+        min-width: 900px;
     }
 
     .tabla-admin-galerias thead {
-        display: none;
+        display: table-header-group;
     }
 
-    .tabla-admin-galerias,
-    .tabla-admin-galerias tbody,
-    .tabla-admin-galerias tr,
-    .tabla-admin-galerias td {
-        display: block;
+    .tabla-admin-galerias {
+        display: table;
         width: 100%;
     }
 
+    .tabla-admin-galerias tbody {
+        display: table-row-group;
+    }
+
     .tabla-admin-galerias tr {
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 16px;
-        margin-bottom: 14px;
-        background: #fff;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        display: table-row;
     }
 
     .tabla-admin-galerias td {
-        padding: 10px 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .tabla-admin-galerias td:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
+        display: table-cell;
     }
 
     .tabla-admin-galerias td::before {
-        content: attr(data-label);
-        display: block;
-        margin-bottom: 6px;
-        font-size: 0.78rem;
-        font-weight: 800;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: #64748b;
+        content: none;
+        display: none;
     }
 
     .tabla-admin-galerias .td-img {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        display: table-cell;
     }
 
     .tabla-admin-galerias .admin-thumb-60,
@@ -3623,7 +3858,7 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
     }
 
     .contenido-admin {
-        padding: 12px;
+        padding: 8px;
         padding-bottom: 20px;
     }
 
@@ -3659,10 +3894,17 @@ CUADRO DE ERRORES UNIFICADO PARA CREAR OBJETO EN ADMIN
 
     .btn-ficha-accion,
     .btn-cancelar-ficha,
-    .btn-actualizar-ficha {
+    .btn-actualizar-ficha,
+    .btn-nuevo {
         height: auto;
         min-height: 42px;
         padding: 12px 16px;
+    }
+
+    .btn-cancelar-ficha {
+        display: flex;
+        align-items: center;
+        text-align: center;
     }
 }
 
@@ -3862,7 +4104,7 @@ html[data-theme="dark"] .btn-limpiar:hover {
 html[data-theme="dark"] .btn-cancelar-ficha,
 html[data-theme="dark"] .btn-volver-link,
 html[data-theme="dark"] .admin-link-cancel {
-    color: #cbd5e1;
+    color: #ffffff !important;
 }
 
 html[data-theme="dark"] .admin-locale-form {
@@ -3891,9 +4133,6 @@ html[data-theme="dark"] .admin-locale-toggle:hover {
     background: #333;
 }
 
-html[data-theme="dark"] .btn-cancelar-ficha:hover {
-    background: #1f2937;
-}
 
 html[data-theme="dark"] .btn-subir-discreto,
 html[data-theme="dark"] .btn-cambiar-foto {
@@ -3909,4 +4148,103 @@ html[data-theme="dark"] .btn-cambiar-foto:hover {
 
 html[data-theme="dark"] .admin-mobile-backdrop {
     background: rgba(2, 6, 23, 0.72);
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-col-datos {
+    background: #111827;
+    border-color: #334155;
+    box-shadow: 0 20px 42px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-col-datos .ficha-title-no-margin {
+    color: #f8fafc;
+    border-bottom-color: #334155;
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .campo-ficha label {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .ficha-nombre-principal {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-dorsal-wrapper .campo-ficha,
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-info-row {
+    background: rgba(15, 23, 42, 0.62);
+    border-color: #334155;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="dark"] .ficha-dato-destacado {
+    color: #fdba74;
+}
+
+html[data-theme="dark"] .ficha-dato-destacado i {
+    color: #fb923c;
+}
+
+html[data-theme="dark"] .ficha-valor-azul {
+    color: #93c5fd;
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-date-text {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-date-text i {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-foto-principal {
+    border-color: #334155;
+    background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+    box-shadow: 0 20px 42px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .grid-formulario-fichas-equipo-show .ficha-caption {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .grid-info-detalle .info-item p {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador {
+    background: #111827;
+    border-color: #334155;
+    box-shadow: 0 20px 42px rgba(2, 6, 23, 0.45);
+    border-radius: 22px;
+    padding: 28px 30px;
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-title-no-margin {
+    color: #f8fafc;
+    border-bottom-color: #334155;
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador .campo-ficha label {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-dorsal-wrapper .campo-ficha,
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-info-row,
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-space-top {
+    background: rgba(15, 23, 42, 0.62);
+    border-color: #334155;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-date-text {
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .ficha-col-datos-jugador .ficha-date-text i {
+    color: #f87171;
+}
+
+html[data-theme="dark"] .ficha-col-foto .ficha-foto-principal {
+    border-color: #334155;
+    background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+    box-shadow: 0 20px 42px rgba(2, 6, 23, 0.45);
 }

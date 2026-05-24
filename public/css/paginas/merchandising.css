@@ -8,12 +8,11 @@
     font-size: 24px;
 }
 
+
 .productos-oficiales {
     position: relative;
     padding: 50px 40px;
-    background:
-        radial-gradient(circle at top left, rgba(230, 0, 0, 0.08), transparent 32%),
-        linear-gradient(180deg, #faf7f5 0%, #f2f1ef 100%);
+    background: #f5f5f5;
 }
 
 .public-alert-ok {
@@ -78,6 +77,8 @@
 }
 
 .boton-cesta-flotante {
+    position: relative;
+    z-index: 12;
     display: inline-flex;
     align-items: center;
     gap: 12px;
@@ -95,6 +96,32 @@
 .boton-cesta-flotante:hover {
     transform: translateY(-4px);
     box-shadow: 0 24px 42px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 769px) {
+    .merch-toolbar {
+        align-items: flex-start;
+    }
+
+    .boton-cesta-flotante {
+        position: fixed;
+        right: 5em;
+        bottom: 32px;
+        padding: 16px 20px;
+        opacity: 1;
+        transform: translateY(0);
+        transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease, opacity 0.28s ease;
+    }
+
+    .boton-cesta-flotante.is-pinned {
+        box-shadow: 0 24px 46px rgba(0, 0, 0, 0.22);
+    }
+
+    .boton-cesta-flotante.is-hidden {
+        transform: translateY(110px);
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 .boton-cesta-count {
@@ -144,6 +171,13 @@
     transform: scale(1.06);
 }
 
+.tarjeta-producto-media-link {
+    display: block;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+}
+
 .info-producto {
     display: flex;
     flex-direction: column;
@@ -155,6 +189,16 @@
     margin-bottom: 6px;
     font-size: 20px;
     color: #181818;
+}
+
+.tarjeta-producto-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.tarjeta-producto-title-link:hover {
+    color: #c1121f;
 }
 
 .descripcion-producto {
@@ -240,6 +284,19 @@
     padding: 12px 18px;
     font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 14px 26px rgba(173, 17, 17, 0.22);
+    transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease, background 0.24s ease;
+}
+
+.boton-comprar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 34px rgba(173, 17, 17, 0.3);
+    filter: saturate(1.08);
+}
+
+.boton-comprar:active {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(173, 17, 17, 0.24);
 }
 
 .merch-sin-talla {
@@ -287,6 +344,254 @@
     display: flex;
     justify-content: center;
     margin-top: 40px;
+}
+
+.merch-detail-shell {
+    padding: 48px 40px 60px;
+    background: #ffffff;
+}
+
+.merch-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+    gap: 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.merch-detail-media-card,
+.merch-detail-info-card,
+.merch-detail-purchase-card,
+.merch-detail-related-card {
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 14px 32px rgba(34, 34, 34, 0.08);
+}
+
+.merch-detail-media-card {
+    position: sticky;
+    top: 110px;
+    overflow: hidden;
+    padding: 0;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(180deg, #ffffff 0%, #fff8f6 100%);
+    border: 1px solid #f2d5cd;
+    box-shadow: 0 18px 40px rgba(127, 29, 29, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.merch-detail-media-card img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.merch-detail-media-card:hover {
+    transform: translateY(-8px);
+    border-color: #ef4444;
+    box-shadow: 0 24px 48px rgba(127, 29, 29, 0.16);
+}
+
+.merch-detail-media-card:hover img {
+    transform: scale(1.04);
+}
+
+.merch-detail-info-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.merch-detail-info-card,
+.merch-detail-purchase-card,
+.merch-detail-related-card {
+    padding: 28px;
+}
+
+.merch-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.merch-detail-header h2 {
+    margin: 0;
+    font-size: 34px;
+    color: #181818;
+}
+
+.merch-detail-price-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 112px;
+    min-height: 62px;
+    padding: 0 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #e60000 0%, #ad1111 100%);
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    box-shadow: 0 14px 28px rgba(173, 17, 17, 0.22);
+}
+
+.merch-detail-copy {
+    margin: 0 0 22px;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.merch-detail-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.merch-detail-meta-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #f3d8d3;
+    overflow: hidden;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, background-color 0.24s ease;
+}
+
+.merch-detail-meta-item::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #ef4444 0%, #7f1d1d 100%);
+    opacity: 0.88;
+}
+
+.merch-detail-meta-item:hover {
+    transform: translateY(-6px);
+    border-color: #ef4444;
+    box-shadow: 0 16px 32px rgba(127, 29, 29, 0.12);
+    background: #fff7f7;
+}
+
+.merch-detail-meta-item span {
+    position: relative;
+    padding-left: 12px;
+    color: #b91c1c;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.merch-detail-meta-item strong {
+    position: relative;
+    padding-left: 12px;
+    color: #111827;
+    font-size: 16px;
+    line-height: 1.45;
+}
+
+.merch-detail-purchase-head {
+    margin-bottom: 18px;
+}
+
+.merch-detail-purchase-head h3,
+.merch-detail-related-card h3 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    color: #181818;
+}
+
+.merch-detail-purchase-head p,
+.merch-detail-related-card p {
+    margin: 0;
+    color: #5f6368;
+    line-height: 1.7;
+}
+
+.merch-detail-form {
+    gap: 16px;
+}
+
+.merch-detail-purchase-row {
+    align-items: flex-end;
+}
+
+.merch-detail-related-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.merch-related-link {
+    display: grid;
+    grid-template-columns: 74px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 18px;
+    background: #f8f5f2;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+
+.merch-related-link:hover {
+    transform: translateY(-3px);
+    background: #fff0f0;
+    box-shadow: 0 12px 24px rgba(34, 34, 34, 0.1);
+}
+
+.merch-related-link img {
+    width: 74px;
+    height: 84px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 6px;
+}
+
+.merch-related-link strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #181818;
+}
+
+.merch-related-link span {
+    color: #c1121f;
+    font-weight: 800;
+}
+
+.merch-related-link em {
+    color: #7f1d1d;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.merch-detail-actions-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.merch-detail-top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .cesta-overlay {
@@ -370,7 +675,7 @@
     display: grid;
     grid-template-columns: 86px 1fr auto;
     gap: 14px;
-    padding: 14px;
+    padding: 18px;
     border: 1px solid rgba(17, 17, 17, 0.08);
     border-radius: 16px;
     background: #ffffff;
@@ -515,6 +820,7 @@
     border-radius: 999px;
     font-weight: 700;
     text-decoration: none;
+    transition: background 0.2s;
 }
 
 .pedido-layout {
@@ -627,7 +933,8 @@
 
 @media (max-width: 1024px) {
     .merch-toolbar,
-    .pedido-layout {
+    .pedido-layout,
+    .merch-detail-layout {
         grid-template-columns: 1fr;
         display: grid;
     }
@@ -635,11 +942,20 @@
     .rejilla-productos {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .merch-detail-media-card {
+        position: static;
+    }
+
+    .merch-detail-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
     .productos-oficiales,
-    .contacto-pedido {
+    .contacto-pedido,
+    .merch-detail-shell {
         padding: 36px 18px;
     }
 
@@ -658,7 +974,8 @@
 
     .precio-comprar,
     .cesta-inline-form,
-    .pedido-form {
+    .pedido-form,
+    .merch-detail-meta-grid {
         grid-template-columns: 1fr;
         display: grid;
     }
@@ -679,9 +996,32 @@
     .panel-cesta {
         width: 100%;
     }
-}
-    display: inline-block;
-    transition: background 0.2s;
+
+    .merch-detail-info-card,
+    .merch-detail-purchase-card,
+    .merch-detail-related-card {
+        padding: 20px;
+    }
+
+    .merch-detail-media-card {
+        aspect-ratio: 1 / 1;
+    }
+
+    .merch-detail-header {
+        flex-direction: column;
+    }
+
+    .merch-detail-header h2 {
+        font-size: 28px;
+    }
+
+    .merch-related-link {
+        grid-template-columns: 62px 1fr;
+    }
+
+    .merch-related-link em {
+        grid-column: 2;
+    }
 }
 
 .boton-contacto:hover {
@@ -781,6 +1121,10 @@ html[data-theme="dark"] .tarjeta-producto img {
     background: #0b1220;
 }
 
+html[data-theme="dark"] .tarjeta-producto-title-link:hover {
+    color: #fca5a5;
+}
+
 html[data-theme="dark"] .info-producto h3 {
     color: #f8fafc;
 }
@@ -833,10 +1177,16 @@ html[data-theme="dark"] .merch-sin-talla-box {
 
 html[data-theme="dark"] .boton-comprar {
     background: #dc2626;
+    box-shadow: 0 16px 30px rgba(127, 29, 29, 0.34);
 }
 
 html[data-theme="dark"] .boton-comprar:hover {
     background: #ef4444;
+    box-shadow: 0 22px 38px rgba(127, 29, 29, 0.42);
+}
+
+html[data-theme="dark"] .boton-comprar:active {
+    box-shadow: 0 12px 22px rgba(127, 29, 29, 0.3);
 }
 
 html[data-theme="dark"] .public-hide-button {
@@ -935,6 +1285,85 @@ html[data-theme="dark"] .pedido-summary {
     background: linear-gradient(180deg, #172033 0%, #0f172a 100%);
     border-color: #334155;
     box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .merch-detail-shell {
+    background:
+        radial-gradient(circle at top left, rgba(239, 68, 68, 0.12), transparent 28%),
+        linear-gradient(180deg, #08101d 0%, #0b1120 100%);
+}
+
+html[data-theme="dark"] .merch-detail-media-card,
+html[data-theme="dark"] .merch-detail-info-card,
+html[data-theme="dark"] .merch-detail-purchase-card,
+html[data-theme="dark"] .merch-detail-related-card {
+    background: linear-gradient(180deg, #172033 0%, #0f172a 100%);
+    border-color: #334155;
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+}
+
+html[data-theme="dark"] .merch-detail-media-card {
+    background:
+        radial-gradient(circle at top, rgba(248, 113, 113, 0.14), transparent 34%),
+        linear-gradient(180deg, #172033 0%, #0f172a 100%);
+}
+
+html[data-theme="dark"] .merch-detail-header h2,
+html[data-theme="dark"] .merch-detail-purchase-head h3,
+html[data-theme="dark"] .merch-detail-related-card h3,
+html[data-theme="dark"] .merch-related-link strong {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .merch-detail-copy,
+html[data-theme="dark"] .merch-detail-purchase-head p,
+html[data-theme="dark"] .merch-detail-related-card p {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .merch-detail-meta-item,
+html[data-theme="dark"] .merch-related-link {
+    background: #111827;
+}
+
+html[data-theme="dark"] .merch-detail-meta-item {
+    border-color: #334155;
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .merch-detail-meta-item::before {
+    background: linear-gradient(180deg, #f87171 0%, #7f1d1d 100%);
+}
+
+html[data-theme="dark"] .merch-detail-meta-item:hover {
+    background: #172033;
+    border-color: #ef4444;
+    box-shadow: 0 16px 32px rgba(2, 6, 23, 0.42);
+}
+
+html[data-theme="dark"] .merch-detail-meta-item span {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .merch-detail-meta-item strong {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .merch-related-link:hover {
+    background: #172033;
+}
+
+html[data-theme="dark"] .merch-related-link img {
+    background: #0f172a;
+}
+
+html[data-theme="dark"] .merch-related-link span,
+html[data-theme="dark"] .merch-detail-price-badge {
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .merch-related-link em {
+    color: #fca5a5;
 }
 
 html[data-theme="dark"] .pedido-field {
@@ -1105,4 +1534,30 @@ html[data-theme="dark"] .productos-oficiales .pagination .page-item.disabled .pa
         width: 100%;
         text-align: center;
     }
+}
+
+/* Merchandising: keep product images fully visible */
+.tarjeta-producto-media-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    padding: 14px;
+    background: linear-gradient(180deg, #fff9f9 0%, #ffffff 100%);
+}
+
+.tarjeta-producto img,
+.cesta-item img,
+.pedido-item img {
+    object-fit: contain;
+    background: #ffffff;
+}
+
+.tarjeta-producto img {
+    padding: 14px;
+}
+
+.cesta-item img,
+.pedido-item img {
+    padding: 6px;
 }

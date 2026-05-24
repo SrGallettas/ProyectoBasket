@@ -8,6 +8,8 @@ use App\Models\ClasificacionFila;
 use App\Models\Equipo;
 use App\Models\Partido;
 use App\Services\Basket\CategoryOrderService;
+use App\Services\Basket\StandingsStreakService;
+use App\Services\Basket\StandingsTiebreakService;
 use App\Services\Basket\StatsSummaryService;
 use Illuminate\Http\Request;
 
@@ -16,6 +18,8 @@ class ClasificacionController extends Controller
     public function __construct(
         private readonly CategoryOrderService $categoryOrderService,
         private readonly StatsSummaryService $statsSummaryService,
+        private readonly StandingsStreakService $standingsStreakService,
+        private readonly StandingsTiebreakService $standingsTiebreakService,
     ) {}
 
     public function clasificacion()
@@ -41,6 +45,7 @@ class ClasificacionController extends Controller
         $modoGeneral = true;
         $filas = collect();
         $partidosJornada = collect();
+        $rachasUltimosCinco = [];
 
         if ($clasificacionSeleccionada) {
             $jornadasClasificacion = ClasificacionFila::where('clasificacion_id', $clasificacionSeleccionada->id)
@@ -97,10 +102,18 @@ class ClasificacionController extends Controller
                 ->when($jornadaClasificacionMostrada, function ($query) use ($jornadaClasificacionMostrada) {
                     $query->where('jornada', $jornadaClasificacionMostrada);
                 })
-                ->orderByDesc('pts')
-                ->orderByDesc('diff')
-                ->orderByDesc('pf')
                 ->get();
+
+            $filas = $this->standingsTiebreakService->sortRows(
+                $filas,
+                (int) $clasificacionSeleccionada->id,
+                $jornadaClasificacionMostrada ? (int) $jornadaClasificacionMostrada : null
+            );
+
+            $rachasUltimosCinco = $this->standingsStreakService->buildForStandings(
+                (int) $clasificacionSeleccionada->id,
+                $filas->pluck('equipo_id')->all()
+            );
 
             $partidosJornada = Partido::with(['equipoLocal', 'equipoVisitante', 'estadisticas'])
                 ->where('clasificacion_id', $clasificacionSeleccionada->id)
@@ -122,7 +135,8 @@ class ClasificacionController extends Controller
             'jornadaClasificacionMostrada',
             'modoGeneral',
             'filas',
-            'partidosJornada'
+            'partidosJornada',
+            'rachasUltimosCinco'
         ));
     }
 

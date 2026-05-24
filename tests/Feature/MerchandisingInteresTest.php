@@ -14,6 +14,25 @@ class MerchandisingInteresTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_redirige_la_antigua_ficha_publica_a_la_tienda(): void
+    {
+        $productoVisible = Merchandising::factory()->create([
+            'oculto' => false,
+        ]);
+
+        $this->get(route('basket.tienda.producto', $productoVisible))
+            ->assertRedirect(route('basket.tienda'));
+    }
+
+    public function test_oculta_la_ficha_publica_de_un_producto_oculto(): void
+    {
+        $productoOculto = Merchandising::factory()->create([
+            'oculto' => true,
+        ]);
+
+        $this->get(route('basket.tienda.producto', $productoOculto))->assertNotFound();
+    }
+
     public function test_rechaza_anadir_a_cesta_un_producto_oculto(): void
     {
         $productoOculto = Merchandising::factory()->create([

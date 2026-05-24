@@ -25,6 +25,8 @@ return [
         'toggle' => 'Canviar tema',
         'toggle_dark' => 'Activar mode fosc',
         'toggle_light' => 'Activar mode clar',
+        'mode_dark' => 'Mode fosc',
+        'mode_light' => 'Mode clar',
     ],
     'language' => [
         'selector_aria' => 'Selector d\'idioma',

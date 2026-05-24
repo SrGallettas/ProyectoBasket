@@ -65,8 +65,9 @@
 
             @guest
                 <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
-                    <i class="fa-regular fa-moon"></i>
-                </button>
+                        <i class="fa-regular fa-moon"></i>
+                        <span class="theme-label">{{ __('ui.theme.mode_dark') }}</span>
+                    </button>
                 <a href="{{ route('login') }}" class="boton-inicio-sesion">
                     {{ __('ui.auth.login') }}
                 </a>
@@ -76,6 +77,7 @@
                 <div class="auth-actions-wrap">
                     <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
                         <i class="fa-regular fa-moon"></i>
+                        <span class="theme-label">{{ __('ui.theme.mode_dark') }}</span>
                     </button>
                     <a href="{{ route('dashboard') }}" class="boton-admin-nav">
                         {{ __('ui.auth.admin') }}
@@ -109,9 +111,13 @@ function actualizarIconoTema() {
     }
 
     const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const themeLabel = temaActual === 'dark'
+        ? @json(__('ui.theme.mode_light'))
+        : @json(__('ui.theme.mode_dark'));
+
     botonTema.innerHTML = temaActual === 'dark'
-        ? '<span class="theme-symbol" aria-hidden="true">☀</span>'
-        : '<i class="fa-regular fa-moon"></i>';
+        ? `<span class="theme-symbol" aria-hidden="true">☀</span><span class="theme-label">${themeLabel}</span>`
+        : `<i class="fa-regular fa-moon"></i><span class="theme-label">${themeLabel}</span>`;
     botonTema.setAttribute('aria-label', temaActual === 'dark'
         ? @json(__('ui.theme.toggle_light'))
         : @json(__('ui.theme.toggle_dark')));
@@ -148,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.addEventListener('resize', function () {
-        if (window.innerWidth > 1024) {
+        if (window.innerWidth > 1400) {
             nav.classList.remove('nav-abierta');
             toggle.setAttribute('aria-label', @json(__('ui.nav.open_menu')));
             toggle.setAttribute('aria-expanded', 'false');

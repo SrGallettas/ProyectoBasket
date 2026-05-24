@@ -43,6 +43,8 @@
                         type="text"
                         name="titulo"
                         value="{{ old('titulo') }}"
+                        required
+                        minlength="3"
                         placeholder="{{ __('admin.galleries.fields.title_placeholder') }}"
                         class="input-ficha"
                     >
@@ -50,7 +52,7 @@
 
                 <div class="campo-ficha">
                     <label>{{ __('admin.galleries.fields.type') }}</label>
-                    <select name="tipo" class="input-ficha input-white">
+                    <select name="tipo" class="input-ficha input-white" required>
                         <option value="">{{ __('admin.galleries.fields.select_type') }}</option>
                         @foreach($tipos as $clave => $label)
                             <option value="{{ $clave }}" @selected(old('tipo') === $clave)>{{ $label }}</option>
@@ -64,6 +66,7 @@
                         name="descripcion"
                         rows="6"
                         class="input-ficha admin-textarea"
+                        required
                         placeholder="{{ __('admin.galleries.fields.description_placeholder') }}"
                     >{{ old('descripcion') }}</textarea>
                 </div>
@@ -107,8 +110,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('galerias.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.galleries.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo" title="{{ __('admin.galleries.actions.save') }}">
+                <a href="{{ route('galerias.index') }}" class="btn-nuevo" title="{{ __('admin.galleries.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.galleries.actions.save') }}">
                     <i class="fas fa-save"></i> {{ __('admin.galleries.create.submit') }}
                 </button>
             </div>

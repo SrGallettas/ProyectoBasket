@@ -9,8 +9,11 @@ class GaleriaController extends Controller
 {
     public function galeria()
     {
-        $tipoSeleccionado = request('tipo', 'todos');
-        $tipos = ['todos' => __('public.gallery.types.all')] + Galeria::translatedTypes('public.gallery.types');
+        $tiposTraducidos = Galeria::translatedTypes('public.gallery.types');
+        $tipos = ['todos' => __('public.gallery.types.all')] + $tiposTraducidos;
+
+        $tipoSolicitado = request('tipo', 'todos');
+        $tipoSeleccionado = array_key_exists($tipoSolicitado, $tiposTraducidos) ? $tipoSolicitado : 'todos';
 
         $galerias = Galeria::with('portadaImagen')
             ->withCount('imagenes')

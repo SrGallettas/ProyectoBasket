@@ -109,7 +109,7 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('jugadores.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.players.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <a href="{{ route('jugadores.index') }}" class="btn-nuevo" title="{{ __('admin.players.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.players.actions.register') }}">
                     <i class="fas fa-save"></i> {{ __('admin.players.create.submit') }}
                 </button>

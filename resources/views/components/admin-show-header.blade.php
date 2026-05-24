@@ -23,7 +23,7 @@
     <div class="acciones-header-ficha">
         @if($editRoute)
             <a href="{{ $editRoute }}" class="btn-ficha-accion btn-ficha-edit" title="{{ __('admin.common.edit_item') }}">
-                <i class="fas fa-edit"></i>&nbsp;{{ __('admin.common.edit_upper') }}
+                <i class="fas fa-edit"></i><span>{{ __('admin.common.edit_upper') }}</span>
             </a>
         @endif
 
@@ -32,13 +32,13 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-ficha-accion btn-ficha-delete" title="{{ __('admin.common.delete_item') }}">
-                    <i class="fas fa-trash-alt"></i>&nbsp;{{ __('admin.common.delete_upper') }}
+                    <i class="fas fa-trash-alt"></i><span>{{ __('admin.common.delete_upper') }}</span>
                 </button>
             </form>
         @endif
 
         <a href="{{ $indexRoute }}" class="btn-ficha-accion btn-ficha-volver {{ $backClass }}" title="{{ __('admin.common.back_to_list') }}">
-            <i class="fas fa-arrow-left"></i>&nbsp;{{ $backText }}
+            <i class="fas fa-arrow-left"></i><span>{{ $backText }}</span>
         </a>
     </div>
 </header>

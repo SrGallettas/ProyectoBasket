@@ -46,7 +46,7 @@ return [
     ],
 
     'merchandising' => [
-        'orders_email' => env('MERCH_PEDIDOS_EMAIL'),
+        'orders_email' => env('MERCH_PEDIDOS_EMAIL', env('MERCH_INTERES_EMAIL', env('MAIL_FROM_ADDRESS'))),
     ],
 
 ];

@@ -24,16 +24,12 @@ class EquipoFormOptionsService
 
     private function baseCategoryOptions(): array
     {
-        $bases = ['Senior', 'Junior', 'Cadete', 'Infantil', 'Alevín'];
-        $suffixes = ['A', 'B', 'C', 'D'];
         $options = ['Senior'];
+        $bases = ['Junior', 'Cadete', 'Infantil', 'Alevín'];
+        $suffixes = ['A', 'B'];
 
         foreach ($bases as $base) {
             foreach ($suffixes as $suffix) {
-                if ($base === 'Senior' && $suffix === 'A') {
-                    continue;
-                }
-
                 $options[] = $base.' '.$suffix;
             }
         }

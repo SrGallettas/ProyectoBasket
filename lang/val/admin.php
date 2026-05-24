@@ -120,7 +120,7 @@ return [
         'create' => [
             'title' => 'Afegir usuari',
             'subtitle' => 'Crear un nou compte d’accés al panell',
-            'submit' => 'CREAR USUARI',
+            'submit' => 'Crear usuari',
         ],
         'edit' => [
             'title' => 'Editar usuari',
@@ -171,7 +171,7 @@ return [
         'create' => [
             'title' => 'Afegir nou equip',
             'subtitle' => 'Introdueix les dades per a registrar un nou equip del club',
-            'submit' => 'REGISTRAR EQUIP',
+            'submit' => 'Registrar equip',
         ],
         'edit' => [
             'title' => 'Editar equip: :name',
@@ -183,10 +183,12 @@ return [
             'subtitle' => 'Perfil general de l’equip i la seua categoria',
             'shield_caption' => 'Escut oficial del club',
             'template_caption' => 'Foto de plantilla per a la capçalera pública',
+            'template_only_local' => 'La foto de plantilla només s\'usa en equips locals.',
             'data_title' => 'Dades de l’equip',
-            'identifier' => 'Identificador',
+            'team_type' => 'Tipus d\'equip',
+            'team_type_local' => 'Local',
+            'team_type_visitor' => 'Visitant',
             'registered_at' => 'Data de registre',
-            'id_format' => 'Equip #:id',
             'meta_footer' => 'Registre creat el: :date | ID Sistema: #:id',
         ],
         'sections' => [
@@ -210,6 +212,7 @@ return [
         'images' => [
             'default_alt' => 'Imatge per defecte',
             'template_default_alt' => 'Foto de plantilla per defecte',
+            'template_empty' => 'Sense foto de plantilla pujada.',
             'current_team_alt' => 'Imatge actual de l’equip',
             'current_template_alt' => 'Foto de plantilla de l’equip',
             'shield_alt' => 'Escut de :team',
@@ -259,7 +262,7 @@ return [
         'create' => [
             'title' => 'Nou producte',
             'subtitle' => 'Introdueix els detalls de l’article per a la tenda oficial',
-            'submit' => 'GUARDAR PRODUCTE',
+            'submit' => 'Guardar producte',
         ],
         'edit' => [
             'title' => 'Editar producte: :name',
@@ -346,7 +349,7 @@ return [
         'create' => [
             'title' => 'Programar nou partit',
             'subtitle' => 'Configura el pròxim encontre del club',
-            'submit' => 'PROGRAMAR PARTIT',
+            'submit' => 'Programar partit',
         ],
         'edit' => [
             'title' => 'Fitxa d’edició',
@@ -369,6 +372,7 @@ return [
         'sections' => [
             'teams' => 'Equips de l’encontre',
             'details' => 'Detalls del partit',
+            'result' => 'Resultat opcional',
             'stats' => 'Estadístiques del partit',
             'quarters' => 'Punts per quarts',
         ],
@@ -385,6 +389,10 @@ return [
             'visibility' => 'Visibilitat en la web',
             'hide_public' => 'Ocultar este partit en la web pública',
             'hide_standings' => 'Ocultar este partit en classificació',
+            'points_local' => 'Punts del local',
+            'points_visitante' => 'Punts del visitant',
+            'points_placeholder' => 'Opcional',
+            'result_help' => 'Si ja tens el marcador, el pots deixar carregat en crear el partit.',
             'select_category' => 'Selecciona categoria...',
             'select_local_team' => 'Selecciona equip local...',
             'select_visitor_team' => 'Selecciona equip visitant...',
@@ -438,6 +446,7 @@ return [
         ],
         'validation' => [
             'league_team_membership' => 'Els dos equips han de pertànyer a la classificació seleccionada.',
+            'score_pair_required' => 'Has d’indicar els dos marcadors o deixar-los tots dos buits.',
         ],
     ],
     'standings' => [
@@ -455,7 +464,7 @@ return [
         'create' => [
             'title' => 'Nova classificació',
             'subtitle' => 'Crea una lliga i selecciona els equips participants.',
-            'submit' => 'GUARDAR CLASSIFICACIÓ',
+            'submit' => 'Guardar classificació',
         ],
         'edit' => [
             'title' => 'Editar classificació',
@@ -541,7 +550,7 @@ return [
         'create' => [
             'title' => 'Afegir nou jugador',
             'subtitle' => 'Introdueix les dades per a inscriure el jugador en el club',
-            'submit' => 'REGISTRAR JUGADOR',
+            'submit' => 'Registrar jugador',
         ],
         'edit' => [
             'title' => 'Fitxa d’edició',
@@ -624,7 +633,7 @@ return [
         'create' => [
             'title' => 'Afegir nova notícia',
             'subtitle' => 'Introdueix el contingut editorial per a publicar-lo en la web del club',
-            'submit' => 'PUBLICAR NOTÍCIA',
+            'submit' => 'Publicar notícia',
         ],
         'edit' => [
             'title' => 'Editar notícia',
@@ -746,7 +755,7 @@ return [
         'create' => [
             'title' => 'Afegir nova galeria',
             'subtitle' => 'Organitza un nou àlbum d’imatges per a la web del club',
-            'submit' => 'GUARDAR GALERIA',
+            'submit' => 'Guardar galeria',
         ],
         'edit' => [
             'title' => 'Editar galeria',

@@ -30,17 +30,17 @@
         </div>
     @endif
 
-    @if($galerias->isNotEmpty())
-        {{-- Filtros por tipo de galería --}}
-        <div class="filtros-galeria">
-            @foreach($tipos as $clave => $label)
-                <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
-                   class="btn-filtro {{ $tipoSeleccionado === $clave ? 'activo' : '' }}">
-                    {{ $label }}
-                </a>
-            @endforeach
-        </div>
+    {{-- Filtros por tipo de galería --}}
+    <div class="filtros-galeria">
+        @foreach($tipos as $clave => $label)
+            <a href="{{ route('basket.galeria', ['tipo' => $clave !== 'todos' ? $clave : null]) }}"
+               class="btn-filtro {{ $tipoSeleccionado === $clave ? 'activo' : '' }}">
+                {{ $label }}
+            </a>
+        @endforeach
+    </div>
 
+    @if($galerias->isNotEmpty())
         {{-- Rejilla de álbumes publicados --}}
         <div class="rejilla-albumes">
             @foreach($galerias as $galeria)
@@ -56,11 +56,13 @@
                     <span class="badge-fotos">{{ __('public.gallery.photos_badge', ['count' => $galeria->imagenes_count]) }}</span>
                 </div>
                 <div class="info-album">
-                    <span class="tipo-album">{{ $tipos[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
+                    <div class="album-meta-top">
+                        <span class="tipo-album">{{ $tipos[$galeria->tipo] ?? ucfirst($galeria->tipo) }}</span>
+                        <span class="fecha-album">{{ $galeria->created_at->translatedFormat('d/m/Y') }}</span>
+                    </div>
                     <h3>{{ $galeria->titulo }}</h3>
                     <p>{{ \Illuminate\Support\Str::limit($galeria->descripcion, 120) }}</p>
                     <div class="footer-album">
-                        <span class="fecha-album">{{ $galeria->created_at->translatedFormat('d/m/Y') }}</span>
                         <div class="public-inline-actions">
                             <a href="{{ route('basket.galeria.detalle', $galeria->slug) }}" class="btn-ver-album">{{ __('public.gallery.view_album') }}</a>
                             {{-- Acción de visibilidad solo para admin o editor --}}

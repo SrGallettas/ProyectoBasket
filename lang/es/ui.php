@@ -25,6 +25,8 @@ return [
         'toggle' => 'Cambiar tema',
         'toggle_dark' => 'Activar modo oscuro',
         'toggle_light' => 'Activar modo claro',
+        'mode_dark' => 'Modo oscuro',
+        'mode_light' => 'Modo claro',
     ],
     'language' => [
         'selector_aria' => 'Selector de idioma',

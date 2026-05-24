@@ -76,6 +76,8 @@ Route::patch('noticia/{noticia}/oculto', [PublicNoticiaController::class, 'toggl
     ->middleware(['auth', 'role:admin,editor']);
 
 Route::get('tienda', [PublicTiendaController::class, 'tienda'])->name('basket.tienda');
+Route::get('tienda/producto/{merchandising}', [PublicTiendaController::class, 'detalleProducto'])
+    ->name('basket.tienda.producto');
 Route::post('tienda/cesta', [PublicTiendaController::class, 'anadirProductoCesta'])
     ->name('basket.tienda.cesta.add');
 Route::patch('tienda/cesta/{itemKey}', [PublicTiendaController::class, 'actualizarProductoCesta'])

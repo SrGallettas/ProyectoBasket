@@ -83,10 +83,6 @@
                         >{{ old('contenido') }}</textarea>
                     </div>
 
-                    <div class="campo-ficha">
-                        <label>{{ __('admin.news.fields.cover_image') }}</label>
-                        <p class="input-help-text">{{ __('admin.news.fields.cover_help_create') }}</p>
-                    </div>
 
                     <div class="campo-ficha">
                         <label>{{ __('admin.news.fields.visibility') }}</label>
@@ -104,8 +100,8 @@
                         </div>
 
                         <div class="info-subida-noticia">
-                            <h3>{{ __('admin.news.images.title') }}</h3>
-                            <p>{{ __('admin.news.images.help') }}</p>
+                            <h3>{{ __('admin.news.fields.cover_image') }}</h3>
+                            <p>{{ __('admin.news.fields.cover_help_create') }}</p>
 
                             <label for="imagen_noticia" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> {{ __('admin.news.images.select') }}
@@ -119,8 +115,8 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('noticias.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.news.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
-                <button type="submit" class="btn-actualizar-ficha btn-actualizar-rojo" title="{{ __('admin.news.actions.publish') }}">
+                <a href="{{ route('noticias.index') }}" class="btn-nuevo" title="{{ __('admin.news.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.news.actions.publish') }}">
                     <i class="fas fa-save"></i> {{ __('admin.news.create.submit') }}
                 </button>
             </div>

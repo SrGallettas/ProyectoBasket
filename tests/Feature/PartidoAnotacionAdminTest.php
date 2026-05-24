@@ -79,6 +79,79 @@ class PartidoAnotacionAdminTest extends TestCase
         ]);
     }
 
+    public function test_crea_un_partido_con_marcador_opcional_persistido_en_estadisticas(): void
+    {
+        $admin = User::factory()->create([
+            'role' => User::ROLE_ADMIN,
+        ]);
+
+        $equipoLocal = Equipo::factory()->create([
+            'es_local' => true,
+            'oculto' => false,
+        ]);
+
+        $equipoVisitante = Equipo::factory()->create([
+            'es_local' => false,
+            'oculto' => false,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('partidos.store'), [
+            'equipo_local_id' => $equipoLocal->id,
+            'equipo_visitante_id' => $equipoVisitante->id,
+            'fecha_hora' => '2026-05-20 19:00:00',
+            'lugar' => 'Pabellón Municipal',
+            'categoria' => 'Senior',
+            'tipo_partido' => 'amistoso',
+            'puntos_local' => 78,
+            'puntos_visitante' => 64,
+        ]);
+
+        $response->assertRedirect(route('partidos.index'));
+
+        $partido = Partido::query()->latest('id')->firstOrFail();
+
+        $this->assertDatabaseHas('partido_estadisticas', [
+            'partido_id' => $partido->id,
+            'equipo_id' => $equipoLocal->id,
+            'puntos_totales' => 78,
+        ]);
+
+        $this->assertDatabaseHas('partido_estadisticas', [
+            'partido_id' => $partido->id,
+            'equipo_id' => $equipoVisitante->id,
+            'puntos_totales' => 64,
+        ]);
+    }
+
+    public function test_no_permite_guardar_solo_un_marcador_al_crear_partido(): void
+    {
+        $admin = User::factory()->create([
+            'role' => User::ROLE_ADMIN,
+        ]);
+
+        $equipoLocal = Equipo::factory()->create([
+            'es_local' => true,
+            'oculto' => false,
+        ]);
+
+        $equipoVisitante = Equipo::factory()->create([
+            'es_local' => false,
+            'oculto' => false,
+        ]);
+
+        $response = $this->actingAs($admin)->from(route('partidos.create'))->post(route('partidos.store'), [
+            'equipo_local_id' => $equipoLocal->id,
+            'equipo_visitante_id' => $equipoVisitante->id,
+            'fecha_hora' => '2026-05-20 19:00:00',
+            'lugar' => 'Pabellón Municipal',
+            'categoria' => 'Senior',
+            'tipo_partido' => 'amistoso',
+            'puntos_local' => 78,
+        ]);
+
+        $response->assertSessionHasErrors(['puntos_local', 'puntos_visitante']);
+    }
+
     public function test_acumula_varias_acciones_consecutivas_en_el_mismo_partido(): void
     {
         $admin = User::factory()->create([

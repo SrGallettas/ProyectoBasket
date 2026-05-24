@@ -24,7 +24,14 @@ class TiendaController extends Controller
         $cartSummary = $this->cartService->buildCartSummary($cartItems);
         $openCart = session('openCart', false);
 
-        return view('basket.merchandising', compact('merchandising', 'cartItems', 'cartSummary', 'openCart'));
+        return view('basket.merchandising', compact('merchandising', 'cartItems', 'cartSummary'));
+    }
+
+    public function detalleProducto(Merchandising $merchandising)
+    {
+        abort_if($merchandising->oculto, 404);
+
+        return redirect()->route('basket.tienda');
     }
 
     public function mostrarFormularioPedido()
@@ -48,6 +55,7 @@ class TiendaController extends Controller
             'producto_id' => 'required|integer',
             'talla' => 'nullable|string|max:20',
             'cantidad' => 'required|integer|min:1|max:20',
+            'redirect_to' => 'nullable|string|max:2048',
         ]);
 
         $producto = Merchandising::whereKey($validated['producto_id'])
@@ -84,7 +92,22 @@ class TiendaController extends Controller
         }
 
         session()->put('basket_cart', $cart);
-        session()->flash('openCart', true);
+
+        if ($request->ajax() || $request->wantsJson() || $request->expectsJson()) {
+            $cartItems = $this->cartService->getCartItems();
+            $cartSummary = $this->cartService->buildCartSummary($cartItems);
+
+            return response()->json([
+                'message' => __('public.store.flash.added_to_cart'),
+                'cartSummary' => $cartSummary,
+            ]);
+        }
+
+        $redirectTo = (string) ($validated['redirect_to'] ?? '');
+
+        if ($redirectTo !== '' && str_starts_with($redirectTo, url('/'))) {
+            return redirect()->to($redirectTo)->with('mensaje', __('public.store.flash.added_to_cart'));
+        }
 
         return redirect()->route('basket.tienda')->with('mensaje', __('public.store.flash.added_to_cart'));
     }
@@ -106,7 +129,6 @@ class TiendaController extends Controller
         $cart[$itemKey]['cantidad'] = (int) $validated['cantidad'];
 
         session()->put('basket_cart', $cart);
-        session()->flash('openCart', true);
 
         return redirect()->route('basket.tienda');
     }
@@ -118,7 +140,6 @@ class TiendaController extends Controller
         unset($cart[$itemKey]);
 
         session()->put('basket_cart', $cart);
-        session()->flash('openCart', true);
 
         return redirect()->route('basket.tienda')->with('mensaje', __('public.store.flash.removed_from_cart'));
     }

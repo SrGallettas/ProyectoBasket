@@ -248,6 +248,11 @@ return [
             'team' => 'Equipo',
             'team_fallback' => 'Equipo',
             'shield_alt' => 'Escudo :team',
+            'streak' => 'Ult. 5',
+            'result_win' => 'Victoria',
+            'result_draw' => 'Empate',
+            'result_loss' => 'Derrota',
+            'result_empty' => 'Sin suficientes partidos',
         ],
         'matches' => [
             'all_matches' => 'Todos los partidos',
@@ -480,6 +485,7 @@ return [
             'title' => 'Detalle del partido',
             'stats_center' => 'Estadísticas',
         ],
+        'back_to_matches' => 'Volver a partidos',
         'empty' => [
             'title' => 'Sin estadísticas cargadas todavía',
             'text' => 'Este partido aún no tiene estadísticas completas en el panel de administración.',

@@ -7,7 +7,7 @@
             <h2>{{ __('admin.standings.create.title') }}</h2>
             <p>{{ __('admin.standings.create.subtitle') }}</p>
         </div>
-        <a href="{{ route('clasificaciones.index') }}" class="btn-ficha-accion btn-ficha-volver" title="{{ __('admin.common.back_to_list') }}">
+        <a href="{{ route('clasificaciones.index') }}" class="btn-nuevo" title="{{ __('admin.common.back_to_list') }}">
             <i class="fas fa-arrow-left"></i> {{ __('admin.common.back_to_list') }}
         </a>
     </header>
@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('clasificaciones.index') }}" class="btn-cancelar-ficha">{{ __('admin.common.cancel') }}</a>
+                <a href="{{ route('clasificaciones.index') }}" class="btn-nuevo">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha">
                     <i class="fas fa-save"></i> {{ __('admin.standings.create.submit') }}
                 </button>

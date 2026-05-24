@@ -120,7 +120,7 @@ return [
         'create' => [
             'title' => 'Añadir usuario',
             'subtitle' => 'Crear una nueva cuenta de acceso al panel',
-            'submit' => 'CREAR USUARIO',
+            'submit' => 'Crear usuario',
         ],
         'edit' => [
             'title' => 'Editar usuario',
@@ -171,7 +171,7 @@ return [
         'create' => [
             'title' => 'Añadir nuevo equipo',
             'subtitle' => 'Introduce los datos para registrar un nuevo equipo del club',
-            'submit' => 'REGISTRAR EQUIPO',
+            'submit' => 'Registrar equipo',
         ],
         'edit' => [
             'title' => 'Editar equipo: :name',
@@ -183,10 +183,12 @@ return [
             'subtitle' => 'Perfil general del equipo y su categoría',
             'shield_caption' => 'Escudo oficial del club',
             'template_caption' => 'Foto de plantilla para la cabecera pública',
+            'template_only_local' => 'La foto de plantilla solo se usa en equipos locales.',
             'data_title' => 'Datos del equipo',
-            'identifier' => 'Identificador',
+            'team_type' => 'Tipo de equipo',
+            'team_type_local' => 'Local',
+            'team_type_visitor' => 'Visitante',
             'registered_at' => 'Fecha de registro',
-            'id_format' => 'Equipo #:id',
             'meta_footer' => 'Registro creado el: :date | ID Sistema: #:id',
         ],
         'sections' => [
@@ -210,6 +212,7 @@ return [
         'images' => [
             'default_alt' => 'Imagen por defecto',
             'template_default_alt' => 'Foto de plantilla por defecto',
+            'template_empty' => 'Sin foto de plantilla subida.',
             'current_team_alt' => 'Imagen actual del equipo',
             'current_template_alt' => 'Foto de plantilla del equipo',
             'shield_alt' => 'Escudo del :team',
@@ -259,7 +262,7 @@ return [
         'create' => [
             'title' => 'Nuevo producto',
             'subtitle' => 'Introduce los detalles del artículo para la tienda oficial',
-            'submit' => 'GUARDAR PRODUCTO',
+            'submit' => 'Guardar producto',
         ],
         'edit' => [
             'title' => 'Editar producto: :name',
@@ -346,7 +349,7 @@ return [
         'create' => [
             'title' => 'Programar nuevo partido',
             'subtitle' => 'Configura el próximo encuentro del club',
-            'submit' => 'PROGRAMAR PARTIDO',
+            'submit' => 'Programar partido',
         ],
         'edit' => [
             'title' => 'Ficha de edición',
@@ -369,6 +372,7 @@ return [
         'sections' => [
             'teams' => 'Equipos del encuentro',
             'details' => 'Detalles del partido',
+            'result' => 'Resultado opcional',
             'stats' => 'Estadísticas del partido',
             'quarters' => 'Puntos por cuartos',
         ],
@@ -385,6 +389,10 @@ return [
             'visibility' => 'Visibilidad en la web',
             'hide_public' => 'Ocultar este partido en la web pública',
             'hide_standings' => 'Ocultar este partido en clasificación',
+            'points_local' => 'Puntos del local',
+            'points_visitante' => 'Puntos del visitante',
+            'points_placeholder' => 'Opcional',
+            'result_help' => 'Si ya tienes el marcador, puedes dejarlo cargado al crear el partido.',
             'select_category' => 'Selecciona categoría...',
             'select_local_team' => 'Selecciona equipo local...',
             'select_visitor_team' => 'Selecciona equipo visitante...',
@@ -438,6 +446,7 @@ return [
         ],
         'validation' => [
             'league_team_membership' => 'Los dos equipos deben pertenecer a la clasificación seleccionada.',
+            'score_pair_required' => 'Debes indicar ambos marcadores o dejar los dos vacíos.',
         ],
     ],
     'standings' => [
@@ -455,7 +464,7 @@ return [
         'create' => [
             'title' => 'Nueva clasificación',
             'subtitle' => 'Crea una liga y selecciona los equipos participantes.',
-            'submit' => 'GUARDAR CLASIFICACIÓN',
+            'submit' => 'Guardar clasificación',
         ],
         'edit' => [
             'title' => 'Editar clasificación',
@@ -541,7 +550,7 @@ return [
         'create' => [
             'title' => 'Añadir nuevo jugador',
             'subtitle' => 'Introduce los datos para inscribir al jugador en el club',
-            'submit' => 'REGISTRAR JUGADOR',
+            'submit' => 'Registrar jugador',
         ],
         'edit' => [
             'title' => 'Ficha de edición',
@@ -624,7 +633,7 @@ return [
         'create' => [
             'title' => 'Añadir nueva noticia',
             'subtitle' => 'Introduce el contenido editorial para publicarlo en la web del club',
-            'submit' => 'PUBLICAR NOTICIA',
+            'submit' => 'Publicar noticia',
         ],
         'edit' => [
             'title' => 'Editar noticia',
@@ -746,7 +755,7 @@ return [
         'create' => [
             'title' => 'Añadir nueva galería',
             'subtitle' => 'Organiza un nuevo álbum de imágenes para la web del club',
-            'submit' => 'GUARDAR GALERÍA',
+            'submit' => 'Guardar galería',
         ],
         'edit' => [
             'title' => 'Editar galería',

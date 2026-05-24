@@ -79,6 +79,22 @@
                     </div>
                 </div>
 
+                {{-- SECCIÓN RESULTADO OPCIONAL --}}
+                <div class="seccion-form-ficha seccion-deportiva">
+                    <h3><i class="fas fa-basketball-ball"></i> {{ __('admin.matches.sections.result') }}</h3>
+                    <p style="margin-bottom: 16px; color: #666;">{{ __('admin.matches.fields.result_help') }}</p>
+
+                    <div class="campo-ficha">
+                        <label>{{ __('admin.matches.fields.points_local') }}</label>
+                        <input type="number" min="0" step="1" name="puntos_local" value="{{ old('puntos_local') }}" class="input-ficha" placeholder="{{ __('admin.matches.fields.points_placeholder') }}">
+                    </div>
+
+                    <div class="campo-ficha">
+                        <label>{{ __('admin.matches.fields.points_visitante') }}</label>
+                        <input type="number" min="0" step="1" name="puntos_visitante" value="{{ old('puntos_visitante') }}" class="input-ficha" placeholder="{{ __('admin.matches.fields.points_placeholder') }}">
+                    </div>
+                </div>
+
                 {{-- SECCIÓN DETALLES --}}
                 <div class="seccion-form-ficha seccion-deportiva">
                     <h3><i class="fas fa-info-circle"></i> {{ __('admin.matches.sections.details') }}</h3>
@@ -133,10 +149,11 @@
                     </div>
 
                 </div>
+            </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('partidos.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.matches.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
-                <button type="submit" class="btn-actualizar-ficha" title="{{ __('admin.matches.index.new') }}">
+                <a href="{{ route('partidos.index') }}" class="btn-nuevo" title="{{ __('admin.matches.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.matches.index.new') }}">
                     <i class="fas fa-save"></i> {{ __('admin.matches.create.submit') }}
                 </button>
             </div>

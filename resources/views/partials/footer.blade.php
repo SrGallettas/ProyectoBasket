@@ -35,6 +35,12 @@
             <h4>{{ __('ui.footer.follow_us') }}</h4>
             <p class="footer-social-text">{{ __('ui.footer.social_text') }}</p>
             <div class="redes-iconos">
+                <a href="https://www.facebook.com/" title="Facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/" title="X" target="_blank" rel="noopener noreferrer" aria-label="X">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M18.244 2H21.5l-7.11 8.128L22.75 22h-6.544l-5.123-6.697L5.22 22H1.96l7.606-8.694L1.25 2h6.71l4.63 6.11L18.244 2Zm-1.142 18h1.804L6.98 3.895H5.045L17.102 20Z"/>
+                    </svg>
+                </a>
                 <a href="https://www.instagram.com/basquetbellreguard/" title="Instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             </div>
         </div>

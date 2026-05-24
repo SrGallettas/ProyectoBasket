@@ -21,13 +21,12 @@
 >
     <div class="iconos-merchandising">
         <i class="fa-solid fa-shirt"></i>
-        <i class="fa-solid fa-hat-cap"></i>
         <i class="fa-solid fa-bag-shopping"></i>
     </div>
 </x-public-news-hero>
 
 {{-- Productos publicados en la tienda oficial --}}
-<section class="productos-oficiales" data-cart-root data-cart-open="{{ $openCart ? 'true' : 'false' }}">
+<section class="productos-oficiales" data-cart-root data-cart-open="false">
     @if(session('mensaje'))
         <div class="public-alert-ok">
             {{ session('mensaje') }}
@@ -49,7 +48,7 @@
                 <p class="subtitulo merch-subtitulo">{{ __('public.store.toolbar.subtitle') }}</p>
             </div>
 
-            <button type="button" class="boton-cesta-flotante" data-open-cart>
+            <button type="button" class="boton-cesta-flotante" data-open-cart data-cart-fab>
                 <span class="boton-cesta-texto">{{ __('public.store.toolbar.cart') }}</span>
                 <span class="boton-cesta-count">{{ $cartSummary['units'] }}</span>
             </button>
@@ -97,8 +96,9 @@
                     <form action="{{ route('basket.tienda.cesta.add') }}" method="POST" class="merch-add-form">
                         @csrf
                         <input type="hidden" name="producto_id" value="{{ $item->id }}">
+                        <input type="hidden" name="redirect_to" value="{{ route('basket.tienda') }}">
 
-                        @if($tallas->isNotEmpty())
+                        @if($tallas->count() > 1)
                             {{-- Selector de talla para productos con variantes --}}
                             <label class="merch-field">
                                 <span>{{ __('public.store.form.size') }}</span>
@@ -108,6 +108,13 @@
                                         <option value="{{ $talla }}">{{ $talla }}</option>
                                     @endforeach
                                 </select>
+                            </label>
+                        @elseif($tallas->count() === 1)
+                            {{-- Talla unica: se fija automaticamente y se muestra como valor informativo --}}
+                            <input type="hidden" name="talla" value="{{ $tallas->first() }}">
+                            <label class="merch-field merch-field-placeholder">
+                                <span>{{ __('public.store.form.size') }}</span>
+                                <span class="merch-sin-talla merch-sin-talla-box">{{ $tallas->first() }}</span>
                             </label>
                         @else
                             {{-- Valor oculto para productos sin tallaje --}}
@@ -189,7 +196,7 @@
                             <p>{{ __('public.store.cart.unit_price', ['price' => number_format($cartItem['precio'], 2, ',', '.')]) }}</p>
 
                             {{-- Formulario de cantidad por línea con envío automático --}}
-                            <form action="{{ route('basket.tienda.cesta.update', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form">
+                            <form action="{{ route('basket.tienda.cesta.update', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form" data-cart-qty-form>
                                 @csrf
                                 @method('PATCH')
                                 <label class="merch-field merch-field-cantidad merch-field-panel">
@@ -199,14 +206,14 @@
                             </form>
 
                             {{-- Formulario para eliminar la línea --}}
-                            <form action="{{ route('basket.tienda.cesta.remove', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form">
+                            <form action="{{ route('basket.tienda.cesta.remove', $cartItem['producto_id'] . '-' . md5($cartItem['talla'])) }}" method="POST" class="cesta-inline-form" data-cart-remove-form>
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="cesta-remove-button">{{ __('public.store.cart.remove') }}</button>
                             </form>
                         </div>
 
-                        <div class="cesta-item-total">
+                        <div class="cesta-item-total" data-cart-line-total data-unit-price="{{ $cartItem['precio'] }}">
                             {{ number_format($cartItem['precio'] * $cartItem['cantidad'], 2, ',', '.') }} €
                         </div>
                     </article>
@@ -223,12 +230,12 @@
             <div class="panel-cesta-footer">
                 <div class="cesta-resumen-linea">
                     <span>{{ __('public.store.cart.units') }}</span>
-                    <strong>{{ $cartSummary['units'] }}</strong>
+                    <strong data-cart-units>{{ $cartSummary['units'] }}</strong>
                 </div>
 
                 <div class="cesta-resumen-linea">
                     <span>{{ __('public.store.cart.subtotal') }}</span>
-                    <strong>{{ number_format($cartSummary['subtotal'], 2, ',', '.') }} €</strong>
+                    <strong data-cart-subtotal>{{ number_format($cartSummary['subtotal'], 2, ',', '.') }} €</strong>
                 </div>
 
                 @if($cartSummary['units'] > 0)
@@ -260,44 +267,348 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const root = document.querySelector('[data-cart-root]');
+    const floatingCartButton = document.querySelector('[data-cart-fab]');
 
     if (!root) {
         return;
     }
-
-    const openButtons = root.querySelectorAll('[data-open-cart]');
-    const closeButtons = root.querySelectorAll('[data-cart-close]');
 
     function setCartState(isOpen) {
         root.classList.toggle('cart-open', isOpen);
         document.body.classList.toggle('cart-drawer-open', isOpen);
     }
 
-    openButtons.forEach((button) => {
-        button.addEventListener('click', function () {
-            setCartState(true);
-        });
-    });
-
-    closeButtons.forEach((button) => {
-        button.addEventListener('click', function () {
-            setCartState(false);
-        });
-    });
-
-    root.querySelectorAll('[data-auto-submit-qty]').forEach((input) => {
-        input.addEventListener('change', function () {
-            const form = input.closest('form');
-
-            if (form) {
-                form.submit();
+    function bindCartUi() {
+        root.querySelectorAll('[data-open-cart]').forEach((button) => {
+            if (button.dataset.cartBound === 'true') {
+                return;
             }
-        });
-    });
 
-    if (root.dataset.cartOpen === 'true') {
-        setCartState(true);
+            button.dataset.cartBound = 'true';
+            button.addEventListener('click', function () {
+                setCartState(true);
+            });
+        });
+
+        root.querySelectorAll('[data-cart-close]').forEach((button) => {
+            if (button.dataset.cartBound === 'true') {
+                return;
+            }
+
+            button.dataset.cartBound = 'true';
+            button.addEventListener('click', function () {
+                setCartState(false);
+            });
+        });
+
+        root.querySelectorAll('[data-auto-submit-qty]').forEach((input) => {
+            if (input.dataset.cartBound === 'true') {
+                return;
+            }
+
+            input.dataset.cartBound = 'true';
+            input.addEventListener('input', function () {
+                syncLocalCartTotals();
+            });
+            input.addEventListener('change', function () {
+                const form = input.closest('form');
+
+                if (form) {
+                    submitCartQuantityUpdate(form);
+                }
+            });
+        });
+
+        root.querySelectorAll('[data-cart-qty-form]').forEach((form) => {
+            if (form.dataset.ajaxBound === 'true') {
+                return;
+            }
+
+            form.dataset.ajaxBound = 'true';
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                submitCartQuantityUpdate(form);
+            });
+        });
+
+        root.querySelectorAll('.merch-add-form').forEach((form) => {
+            if (form.dataset.ajaxBound === 'true') {
+                return;
+            }
+
+            form.dataset.ajaxBound = 'true';
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                submitAddToCart(form);
+            });
+        });
+
+        root.querySelectorAll('[data-cart-remove-form]').forEach((form) => {
+            if (form.dataset.ajaxBound === 'true') {
+                return;
+            }
+
+            form.dataset.ajaxBound = 'true';
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                submitRemoveFromCart(form);
+            });
+        });
     }
+
+    function bindCartScrollBehavior() {
+        if (!floatingCartButton || window.innerWidth <= 768) {
+            return;
+        }
+        const hideSections = Array.from(document.querySelectorAll('.contacto-pedido, .pie-pagina'));
+        let ticking = false;
+
+        function updateCartButtonPosition() {
+            const isNearTop = window.scrollY < 220;
+            let shouldHide = false;
+
+            floatingCartButton.classList.toggle('is-pinned', !isNearTop);
+
+            const buttonTop = window.innerHeight - floatingCartButton.offsetHeight - 32;
+            const buttonBottom = buttonTop + floatingCartButton.offsetHeight;
+
+            shouldHide = hideSections.some((section) => {
+                const sectionRect = section.getBoundingClientRect();
+
+                return sectionRect.top < buttonBottom && sectionRect.bottom > buttonTop;
+            });
+
+            floatingCartButton.classList.toggle('is-hidden', shouldHide);
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+            if (ticking) {
+                return;
+            }
+
+            ticking = true;
+            window.requestAnimationFrame(updateCartButtonPosition);
+        }, { passive: true });
+
+        updateCartButtonPosition();
+    }
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(value) + ' €';
+    }
+
+    function syncLocalCartTotals() {
+        let units = 0;
+        let subtotal = 0;
+
+        root.querySelectorAll('[data-cart-qty-form]').forEach((form) => {
+            const input = form.querySelector('[data-auto-submit-qty]');
+            const lineTotal = form.closest('.cesta-item')?.querySelector('[data-cart-line-total]');
+
+            if (!input || !lineTotal) {
+                return;
+            }
+
+            const quantity = Math.max(1, Math.min(20, parseInt(input.value || '1', 10) || 1));
+            const unitPrice = parseFloat(lineTotal.dataset.unitPrice || '0');
+            const total = quantity * unitPrice;
+
+            units += quantity;
+            subtotal += total;
+            lineTotal.textContent = formatCurrency(total);
+        });
+
+        const unitsNode = root.querySelector('[data-cart-units]');
+        const subtotalNode = root.querySelector('[data-cart-subtotal]');
+        const countNode = root.querySelector('.boton-cesta-count');
+
+        if (unitsNode) {
+            unitsNode.textContent = units.toString();
+        }
+
+        if (subtotalNode) {
+            subtotalNode.textContent = formatCurrency(subtotal);
+        }
+
+        if (countNode) {
+            countNode.textContent = units.toString();
+        }
+    }
+
+    function showAlert(type, message) {
+        root.querySelectorAll('.public-alert-ok, .public-alert-error').forEach((alert) => alert.remove());
+
+        if (!message) {
+            return;
+        }
+
+        const alert = document.createElement('div');
+        alert.className = type === 'error' ? 'public-alert-error' : 'public-alert-ok';
+        alert.setAttribute('role', type === 'error' ? 'alert' : 'status');
+        alert.textContent = message;
+        root.prepend(alert);
+    }
+
+    function syncCartMarkup(doc) {
+        const nextCount = doc.querySelector('.boton-cesta-count');
+        const currentCount = root.querySelector('.boton-cesta-count');
+
+        if (nextCount && currentCount) {
+            currentCount.textContent = nextCount.textContent;
+        }
+
+        const nextOverlay = doc.querySelector('.cesta-overlay');
+        const currentOverlay = root.querySelector('.cesta-overlay');
+
+        if (nextOverlay && currentOverlay) {
+            currentOverlay.replaceWith(nextOverlay);
+        }
+
+        const nextPanel = doc.querySelector('.panel-cesta');
+        const currentPanel = root.querySelector('.panel-cesta');
+
+        if (nextPanel && currentPanel) {
+            currentPanel.replaceWith(nextPanel);
+        }
+
+        bindCartUi();
+    }
+
+    async function refreshCartMarkup() {
+        const response = await fetch(window.location.href, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+            throw new Error('refresh_failed');
+        }
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        syncCartMarkup(doc);
+    }
+
+    async function submitAddToCart(form) {
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: new FormData(form),
+                credentials: 'same-origin',
+            });
+
+            if (response.ok) {
+                const payload = await response.json();
+                await refreshCartMarkup();
+                showAlert('ok', payload.message || '');
+                form.reset();
+                return;
+            }
+
+            if (response.status === 422) {
+                const payload = await response.json();
+                const firstError = Object.values(payload.errors || {}).flat()[0] || 'No se ha podido añadir el producto.';
+                showAlert('error', firstError);
+                return;
+            }
+
+            showAlert('error', 'No se ha podido añadir el producto en este momento.');
+        } catch (error) {
+            showAlert('error', 'No se ha podido añadir el producto en este momento.');
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+    }
+
+    async function submitCartQuantityUpdate(form) {
+        const quantityInput = form.querySelector('[data-auto-submit-qty]');
+
+        if (quantityInput) {
+            quantityInput.disabled = true;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: new FormData(form),
+                credentials: 'same-origin',
+            });
+
+            if (response.ok) {
+                await refreshCartMarkup();
+                setCartState(true);
+                return;
+            }
+
+            showAlert('error', 'No se ha podido actualizar la cantidad en este momento.');
+        } catch (error) {
+            showAlert('error', 'No se ha podido actualizar la cantidad en este momento.');
+        } finally {
+            if (quantityInput) {
+                quantityInput.disabled = false;
+            }
+        }
+    }
+
+    async function submitRemoveFromCart(form) {
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: new FormData(form),
+                credentials: 'same-origin',
+            });
+
+            if (response.ok) {
+                await refreshCartMarkup();
+                setCartState(true);
+                return;
+            }
+
+            showAlert('error', 'No se ha podido quitar el producto en este momento.');
+        } catch (error) {
+            showAlert('error', 'No se ha podido quitar el producto en este momento.');
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+    }
+
+    bindCartUi();
+    bindCartScrollBehavior();
 });
 </script>
 

@@ -62,10 +62,10 @@ class Equipo extends Model
         ]);
     }
 
-    public function getFotoPlantillaUrlAttribute(): string
+    public function getFotoPlantillaUrlAttribute(): ?string
     {
         if (! $this->foto_plantilla) {
-            return asset('img/equipo.png');
+            return null;
         }
 
         return route('media.uploads', [

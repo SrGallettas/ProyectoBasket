@@ -67,7 +67,7 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('usuarios.index') }}" class="btn-cancelar-ficha">{{ __('admin.common.cancel') }}</a>
+                <a href="{{ route('usuarios.index') }}" class="btn-nuevo">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul">
                     <i class="fas fa-save"></i> {{ __('admin.users.create.submit') }}
                 </button>

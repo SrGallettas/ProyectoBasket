@@ -248,6 +248,11 @@ return [
             'team' => 'Equip',
             'team_fallback' => 'Equip',
             'shield_alt' => 'Escut :team',
+            'streak' => 'Ult. 5',
+            'result_win' => 'Victòria',
+            'result_draw' => 'Empat',
+            'result_loss' => 'Derrota',
+            'result_empty' => 'Sense suficients partits',
         ],
         'matches' => [
             'all_matches' => 'Tots els partits',
@@ -480,6 +485,7 @@ return [
             'title' => 'Detall del partit',
             'stats_center' => 'Estadístiques',
         ],
+        'back_to_matches' => 'Tornar a partits',
         'empty' => [
             'title' => 'Sense estadístiques carregades encara',
             'text' => 'Este partit encara no té estadístiques completes en el panell d’administració.',

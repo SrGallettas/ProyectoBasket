@@ -84,10 +84,6 @@
                         >{{ old('contenido', old('idioma_origen') === 'val' ? ($noticia->contenido_val ?: $noticia->contenido_es ?: $noticia->getRawOriginal('contenido')) : ($noticia->contenido_es ?: $noticia->getRawOriginal('contenido'))) }}</textarea>
                     </div>
 
-                    <div class="campo-ficha">
-                        <label>{{ __('admin.news.fields.cover_image') }}</label>
-                        <p class="input-help-text">{{ __('admin.news.fields.cover_help_edit') }}</p>
-                    </div>
 
                     <div class="campo-ficha">
                         <label>{{ __('admin.news.fields.visibility') }}</label>
@@ -109,8 +105,8 @@
                         </div>
 
                         <div class="info-subida-noticia">
-                            <h3>{{ __('admin.news.images.title') }}</h3>
-                            <p>{{ __('admin.news.images.help') }}</p>
+                            <h3>{{ __('admin.news.fields.cover_image') }}</h3>
+                            <p>{{ __('admin.news.fields.cover_help_edit') }}</p>
 
                             <label for="imagen_noticia" class="btn-cambiar-foto">
                                 <i class="fas fa-camera"></i> {{ __('admin.news.images.change') }}

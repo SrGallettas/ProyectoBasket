@@ -45,11 +45,8 @@
                     <div class="campo-ficha">
                         <label>{{ __('admin.teams.fields.category') }}</label>
                         <select name="categoria" class="input-ficha input-white">
-                            <option value="" disabled {{ old('categoria', $equipo->categoria) == '' ? 'selected' : '' }}>{{ __('admin.common.select') }}</option>
                             @foreach($categoryOptions as $categoria)
-                                <option value="{{ $categoria }}" {{ old('categoria', $equipo->categoria) == $categoria ? 'selected' : '' }}>
-                                    {{ $categoria }}
-                                </option>
+                                <option value="{{ $categoria }}" @selected(old('categoria', $equipo->categoria) === $categoria)>{{ $categoria }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -114,12 +111,16 @@
                         id="foto-plantilla-card"
                         @unless($mostrarFotoPlantilla) style="display: none;" @endunless
                     >
-                        <div class="preview-foto-noticia">
+                        <div class="preview-foto-noticia {{ $equipo->foto_plantilla ? '' : 'preview-foto-noticia-vacia' }}" id="equipo-plantilla-edit-preview-wrap">
                             <img
                                 id="equipo-plantilla-edit-preview"
-                                src="{{ $equipo->foto_plantilla_url }}"
+                                src="{{ $equipo->foto_plantilla_url ?? '' }}"
                                 alt="{{ __('admin.teams.images.current_template_alt') }}"
+                                @if(! $equipo->foto_plantilla) style="display:none;" @endif
                             >
+                            @unless($equipo->foto_plantilla)
+                                <span>{{ __('admin.teams.images.template_empty') }}</span>
+                            @endunless
                         </div>
 
                         <div class="info-subida-noticia">

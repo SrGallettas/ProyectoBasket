@@ -202,8 +202,8 @@
 
             mobileBackdrop?.addEventListener('click', closeMobileMenu);
 
-            document.querySelectorAll('.menu-admin a').forEach((link) => {
-                link.addEventListener('click', function () {
+            document.querySelectorAll('.menu-admin .item-admin').forEach((item) => {
+                item.addEventListener('click', function () {
                     if (isMobile()) {
                         closeMobileMenu();
                     }

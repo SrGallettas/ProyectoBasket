@@ -14,12 +14,7 @@
 @section('contenido')
 
 {{-- Hero principal de la ficha del jugador --}}
-<section class="equipo-hero">
-    <div class="equipo-hero-media">
-        <img src="{{ $jugador->imagen_jugador_url }}" alt="{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}">
-        <div class="equipo-hero-overlay"></div>
-    </div>
-
+<section class="equipo-hero equipo-hero-jugador">
     <div class="equipo-hero-content">
         <h1>{{ $jugador->nombre }} {{ $jugador->apellido ?? '' }}</h1>
         <p>{{ __('public.player.hero.subtitle', ['team' => $jugador->equipo->nombre, 'position' => $jugador->posicion_display, 'number' => $jugador->dorsal ?? '00']) }}</p>

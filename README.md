@@ -31,6 +31,33 @@ Para tests:
 php artisan test
 ```
 
+## Despliegue
+
+Hay un script de despliegue en `tools/deploy_production.sh` pensado para subir la aplicacion a un VPS ya preparado con Laravel y Nginx.
+
+Ejemplo:
+
+```bash
+DEPLOY_HOST=217.154.179.212 ./tools/deploy_production.sh
+```
+
+Variables utiles:
+
+- `DEPLOY_HOST`: host o IP del servidor.
+- `DEPLOY_USER`: usuario SSH. Por defecto `root`.
+- `DEPLOY_APP_DIR`: ruta remota de la app. Por defecto `/var/www/ProyectoBasket/BellreguardBasket`.
+- `DEPLOY_SSH_OPTS`: opciones extra para `ssh` y `scp`.
+- `DEPLOY_SKIP_BUILD=1`: omite `npm run build` si ya has generado los assets.
+
+El script:
+
+- genera el build de frontend
+- empaqueta el proyecto sin `.env` ni la base SQLite local
+- sube el paquete por `scp`
+- conserva una copia del `.env` remoto
+- ejecuta `composer install`, `php artisan migrate --force` y recachea Laravel
+- recrea `public/storage` apuntando a `storage/app/public`
+
 ## Estructura del proyecto
 
 - `app/Http/Controllers`: controladores de admin, autenticacion y zona publica.

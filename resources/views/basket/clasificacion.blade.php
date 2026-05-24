@@ -27,7 +27,7 @@
 </x-public-news-hero>
 
 {{-- Contenido principal: selector, tabla y partidos de la competición --}}
-<section class="contenedor-clasificacion {{ $clasificaciones->isEmpty() ? "estado-vacio-como-partidos estado-vacio-como-partidos-clasificacion" : "" }}">
+<section class="contenedor-clasificacion {{ $clasificaciones->isEmpty() ? 'estado-vacio-como-partidos estado-vacio-como-partidos-clasificacion' : '' }}">
     @if($clasificaciones->isNotEmpty())
         {{-- Selector de competición y jornada --}}
         <form method="GET" action="{{ route('basket.clasificacion') }}" class="selector-categorias">
@@ -82,6 +82,7 @@
                         <tr>
                             <th>Pos</th>
                             <th>{{ __('public.standings.table.team') }}</th>
+                            <th class="columna-racha">{{ __('public.standings.table.streak') }}</th>
                             <th>PJ</th>
                             <th>PG</th>
                             <th>PP</th>
@@ -93,10 +94,10 @@
                     </thead>
                     <tbody>
                         @forelse($filas as $idx => $fila)
-                            {{-- Datos rápidos del equipo para la fila de la tabla --}}
                             @php
                                 $nombreEquipo = optional($fila->equipo)->nombre ?? __('public.standings.table.team_fallback');
                                 $escudoEquipo = optional($fila->equipo)->imagen_club_url ?? asset('img/club_14.png');
+                                $rachaEquipo = $rachasUltimosCinco[$fila->equipo_id] ?? [];
                             @endphp
                             <tr class="{{ str_contains(strtolower($nombreEquipo), 'bellreguard') ? 'fila-destacada' : '' }}">
                                 <td><strong>{{ $idx + 1 }}</strong></td>
@@ -104,6 +105,23 @@
                                     <div class="equipo-columna">
                                         <img src="{{ $escudoEquipo }}" alt="{{ __('public.standings.table.shield_alt', ['team' => $nombreEquipo]) }}" loading="lazy">
                                         <span>{{ $nombreEquipo }}</span>
+                                    </div>
+                                </td>
+                                <td class="celda-racha">
+                                    <div class="racha-ultimos-cinco" aria-label="{{ __('public.standings.table.streak') }} {{ $nombreEquipo }}">
+                                        @foreach($rachaEquipo as $resultado)
+                                            @if($resultado)
+                                                <span
+                                                    class="racha-circulo racha-{{ $resultado['result'] }}"
+                                                    title="{{ __('public.standings.table.result_' . $resultado['result']) }} · {{ $resultado['points_for'] }}-{{ $resultado['points_against'] }} vs {{ $resultado['opponent'] }}"
+                                                ></span>
+                                            @else
+                                                <span
+                                                    class="racha-circulo racha-empty"
+                                                    title="{{ __('public.standings.table.result_empty') }}"
+                                                ></span>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 </td>
                                 <td>{{ $fila->pj }}</td>
@@ -116,7 +134,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9">{{ __('public.standings.empty.table') }}</td>
+                                <td colspan="10">{{ __('public.standings.empty.table') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -145,7 +163,6 @@
                         <div class="jornada-bloque-titulo">{{ __('public.standings.filters.round_label', ['round' => $jornadaGrupo]) }}</div>
                         <div class="partidos-jornada-grid">
                             @foreach($partidosGrupo as $partido)
-                                {{-- Datos del partido para pintar estado, escudos y marcador --}}
                                 @php
                                     $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                                     $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
@@ -197,7 +214,6 @@
                 {{-- Si no es modo general, se muestran solo los partidos de la jornada seleccionada --}}
                 <div class="partidos-jornada-grid">
                     @foreach($partidosJornada as $partido)
-                        {{-- Datos del partido para pintar estado, escudos y marcador --}}
                         @php
                             $statsLocal = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_local_id);
                             $statsVisitante = $partido->estadisticas->firstWhere('equipo_id', $partido->equipo_visitante_id);
@@ -258,12 +274,11 @@
         {{-- Estado vacío si el club aún no ha publicado clasificaciones --}}
         <div class="estado-vacio estado-vacio-merchan-gap estado-vacio-merchan-gap-clasificacion">
             <div class="estado-vacio-icono">
-                <i class="fas fa-info-circle"></i>
+                <i class="fa-solid fa-table-list"></i>
             </div>
             <h3>{{ __('public.standings.empty.title') }}</h3>
             <p>{{ __('public.standings.empty.text') }}</p>
         </div>
     @endif
 </section>
-
 @endsection

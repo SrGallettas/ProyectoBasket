@@ -43,7 +43,13 @@
     :badge="__('public.match_detail.hero.badge')"
     :title="__('public.match_detail.hero.title')"
     subtitle="{{ $partido->equipoLocal->nombre }} vs {{ $partido->equipoVisitante->nombre }}"
-/>
+>
+    <div class="botones-categoria">
+        <a href="{{ route('basket.partidos') }}" class="boton-categoria activo">
+            {{ __('public.match_detail.back_to_matches') }}
+        </a>
+    </div>
+</x-public-news-hero>
 
 {{-- Contenido principal del partido: marcador, gráfico, tabla y cuartos --}}
 <section class="contenedor-estadisticas">

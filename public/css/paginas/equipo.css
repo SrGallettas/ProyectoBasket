@@ -117,6 +117,15 @@
 .pie-pagina {
     margin-top: 0;
 }
+.equipo-hero-jugador {
+    min-height: 340px;
+    padding: 56px 5%;
+    align-items: center;
+}
+
+.equipo-hero-jugador .equipo-hero-content {
+    max-width: 1120px;
+}
 
 .contenedor-paginacion {
     display: flex;
@@ -863,6 +872,11 @@ html[data-theme="dark"] .equipo-jugadores .pagination .page-item.disabled .page-
 }
 
 @media (max-width: 992px) {
+    .equipo-hero-jugador {
+        min-height: 300px;
+        padding: 48px 24px;
+    }
+
     .equipo-hero {
         min-height: 420px;
         padding: 48px 24px;
@@ -900,6 +914,11 @@ html[data-theme="dark"] .equipo-jugadores .pagination .page-item.disabled .page-
 }
 
 @media (max-width: 768px) {
+    .equipo-hero-jugador {
+        min-height: 0;
+        padding: 34px 18px;
+    }
+
     .equipo-hero {
         min-height: 0;
         padding: 34px 18px;
@@ -978,6 +997,10 @@ html[data-theme="dark"] .equipo-jugadores .pagination .page-item.disabled .page-
 }
 
 @media (max-width: 576px) {
+    .equipo-hero-jugador {
+        padding: 28px 16px;
+    }
+
     .equipo-hero {
         padding: 28px 16px;
     }

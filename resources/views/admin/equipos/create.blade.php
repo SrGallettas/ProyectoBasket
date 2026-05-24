@@ -44,11 +44,9 @@
                     <div class="campo-ficha">
                         <label>{{ __('admin.teams.fields.category') }}</label>
                         <select name="categoria" class="input-ficha input-white">
-                            <option value="" disabled {{ old('categoria') == '' ? 'selected' : '' }}>{{ __('admin.common.select') }}</option>
+                            <option value="" disabled {{ old('categoria') === null || old('categoria') === '' ? 'selected' : '' }}>{{ __('admin.common.select') }}</option>
                             @foreach($categoryOptions as $categoria)
-                                <option value="{{ $categoria }}" {{ old('categoria') == $categoria ? 'selected' : '' }}>
-                                    {{ $categoria }}
-                                </option>
+                                <option value="{{ $categoria }}" @selected(old('categoria') === $categoria)>{{ $categoria }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -109,8 +107,9 @@
                         id="foto-plantilla-card"
                         @unless($mostrarFotoPlantilla) style="display: none;" @endunless
                     >
-                        <div class="preview-foto-noticia">
-                            <img id="equipo-plantilla-create-preview" src="{{ asset('img/equipo.png') }}" alt="{{ __('admin.teams.images.template_default_alt') }}">
+                        <div class="preview-foto-noticia preview-foto-noticia-vacia" id="equipo-plantilla-create-preview-wrap">
+                            <img id="equipo-plantilla-create-preview" src="" alt="{{ __('admin.teams.images.template_default_alt') }}" style="display:none;">
+                            <span>{{ __('admin.teams.images.template_empty') }}</span>
                         </div>
 
                         <div class="info-subida-noticia">
@@ -129,7 +128,7 @@
             </div>
 
             <div class="form-acciones-ficha">
-                <a href="{{ route('equipos.index') }}" class="btn-cancelar-ficha" title="{{ __('admin.teams.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
+                <a href="{{ route('equipos.index') }}" class="btn-nuevo" title="{{ __('admin.teams.actions.cancel_back') }}">{{ __('admin.common.cancel') }}</a>
                 <button type="submit" class="btn-actualizar-ficha btn-actualizar-azul" title="{{ __('admin.teams.actions.register') }}">
                     <i class="fas fa-save"></i> {{ __('admin.teams.create.submit') }}
                 </button>

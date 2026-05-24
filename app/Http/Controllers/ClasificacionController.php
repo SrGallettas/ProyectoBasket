@@ -14,10 +14,15 @@ use App\Models\Partido;
 // Request permite leer formularios y parámetros de la petición.
 use Illuminate\Http\Request;
 // DB se usa para agrupar operaciones críticas en transacciones.
+use App\Services\Basket\StandingsTiebreakService;
 use Illuminate\Support\Facades\DB;
 
 class ClasificacionController extends Controller
 {
+    public function __construct(
+        private readonly StandingsTiebreakService $standingsTiebreakService,
+    ) {}
+
     /*
      * LISTADO DE CLASIFICACIONES
      *
@@ -178,10 +183,13 @@ class ClasificacionController extends Controller
             $filas = ClasificacionFila::with('equipo')
                 ->where('clasificacion_id', $clasificacion->id)
                 ->where('jornada', $jornadaSeleccionada)
-                ->orderByDesc('pts')
-                ->orderByDesc('diff')
-                ->orderByDesc('pf')
                 ->get();
+
+            $filas = $this->standingsTiebreakService->sortRows(
+                $filas,
+                (int) $clasificacion->id,
+                (int) $jornadaSeleccionada
+            );
         }
 
         // También cargamos los partidos de liga de esa clasificación.
