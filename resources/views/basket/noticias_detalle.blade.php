@@ -8,6 +8,16 @@
 
 @section('title', $noticia->titulo . ' - Bellreguard Basket')
 @section('meta_description', $noticia->subtitulo ?: \Illuminate\Support\Str::limit(strip_tags($noticia->contenido), 160))
+@section('og_type', 'article')
+@section('og_title', $noticia->titulo . ' - Bellreguard Basket')
+@section('og_description', $noticia->subtitulo ?: \Illuminate\Support\Str::limit(strip_tags($noticia->contenido), 160))
+@section('og_url', route('noticias.detalle', $noticia->slug))
+@section('og_image', $noticia->imagen_noticia_url)
+@section('og_image_alt', $noticia->titulo)
+@section('twitter_title', $noticia->titulo . ' - Bellreguard Basket')
+@section('twitter_description', $noticia->subtitulo ?: \Illuminate\Support\Str::limit(strip_tags($noticia->contenido), 160))
+@section('twitter_image', $noticia->imagen_noticia_url)
+@section('twitter_image_alt', $noticia->titulo)
 
 @section('contenido')
 @php

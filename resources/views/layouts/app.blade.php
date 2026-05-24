@@ -15,13 +15,13 @@
     <meta property="og:title" content="@yield('og_title', View::yieldContent('title', 'Bellreguard CB'))" />
     <meta property="og:description" content="@yield('og_description', View::yieldContent('meta_description', __('ui.meta_description')))" />
     <meta property="og:url" content="@yield('og_url', url()->current())" />
-    <meta property="og:image" content="@yield('og_image', asset('img/principal-1.png'))" />
+    <meta property="og:image" content="@yield('og_image', asset('img/club_14.png'))" />
     <meta property="og:image:alt" content="@yield('og_image_alt', 'Bellreguard CB')" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="@yield('twitter_title', View::yieldContent('og_title', View::yieldContent('title', 'Bellreguard CB')))" />
     <meta name="twitter:description" content="@yield('twitter_description', View::yieldContent('og_description', View::yieldContent('meta_description', __('ui.meta_description'))))" />
-    <meta name="twitter:image" content="@yield('twitter_image', View::yieldContent('og_image', asset('img/principal-1.png')))" />
+    <meta name="twitter:image" content="@yield('twitter_image', View::yieldContent('og_image', asset('img/club_14.png')))" />
     <meta name="twitter:image:alt" content="@yield('twitter_image_alt', View::yieldContent('og_image_alt', 'Bellreguard CB'))" />
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />

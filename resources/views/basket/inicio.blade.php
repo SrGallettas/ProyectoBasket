@@ -15,9 +15,9 @@
 @section('og_title', __('public.home.meta.og_title'))
 @section('og_description', __('public.home.meta.og_description'))
 @section('og_url', route('basket.inicio'))
-@section('og_image', asset('img/principal-2.png'))
+@section('og_image', asset('img/club_14.png'))
 @section('og_image_alt', __('public.home.meta.og_image_alt'))
-@section('twitter_image', asset('img/principal-2.png'))
+@section('twitter_image', asset('img/club_14.png'))
 @section('twitter_image_alt', __('public.home.meta.og_image_alt'))
 
 {{-- Variable auxiliar para evitar conflictos con otros títulos compartidos --}}

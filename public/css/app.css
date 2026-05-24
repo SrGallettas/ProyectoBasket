@@ -284,6 +284,9 @@ body.menu-movil-abierto {
     color: #fff;
     cursor: pointer;
     font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     line-height: 1;
     display: inline-flex;
     align-items: center;
@@ -691,8 +694,10 @@ html[data-theme="dark"] .estado-vacio-accion:hover {
         background: rgba(255, 255, 255, 0.96);
         border-top: 1px solid #e5e7eb;
         padding: 18px 0 6px;
-        max-height: calc(100vh - 88px);
+        max-height: calc(100dvh - 88px);
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
         border-radius: 0 0 18px 18px;
     }
 

@@ -980,6 +980,16 @@ html[data-theme="dark"] .grafico-estadisticas-wrap {
     box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
 }
 
+
+html[data-theme="dark"] .estadisticas-partido-head:hover,
+html[data-theme="dark"] .tabla-estadisticas-wrap:hover,
+html[data-theme="dark"] .tabla-cuartos-wrap:hover,
+html[data-theme="dark"] .grafico-estadisticas-wrap:hover {
+    background: #0f172a;
+    border-color: #334155;
+    box-shadow: 0 20px 38px rgba(2, 6, 23, 0.62);
+}
+
 html[data-theme="dark"] .equipo-head {
     color: #f8fafc;
 }
@@ -1000,6 +1010,11 @@ html[data-theme="dark"] .grafico-separador {
 
 html[data-theme="dark"] .grafico-fila {
     border-bottom-color: #1f2937;
+}
+
+
+html[data-theme="dark"] .grafico-fila:hover {
+    background: #111827;
 }
 
 html[data-theme="dark"] .grafico-label {
