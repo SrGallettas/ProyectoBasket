@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.matches.meta.index_title'))
+
 {{-- Importamos Carbon para el formateo de fechas --}}
 @use('Carbon\Carbon') 
 

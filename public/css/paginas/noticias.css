@@ -479,10 +479,10 @@ html[data-theme="dark"] .public-news-hero-divider {
 }
 
 html[data-theme="dark"] .noticias-container-rectangular {
-    background: #0b1120;
-    border-radius: 14px;
-    padding-top: 24px;
-    padding-bottom: 24px;
+    background: transparent;
+    border-radius: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 html[data-theme="dark"] .public-alert-ok {

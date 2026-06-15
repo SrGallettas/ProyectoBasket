@@ -144,18 +144,20 @@ class HomePageService
         $clasificacionInicioFilas = collect();
         $clasificacionInicioFilaClub = null;
 
-        $clasificacionActiva = Clasificacion::orderByDesc('activa')->orderBy('nombre')->first();
+        $clasificacionDestacada = $this->categoryOrderService->resolvePreferredClassification(
+            Clasificacion::orderByDesc('activa')->orderBy('nombre')->get()
+        );
 
-        if (! $clasificacionActiva) {
+        if (! $clasificacionDestacada) {
             return [$clasificacionInicio, $clasificacionInicioFilas, $clasificacionInicioFilaClub];
         }
 
-        $jornadaClasificacionInicio = ClasificacionFila::where('clasificacion_id', $clasificacionActiva->id)
+        $jornadaClasificacionInicio = ClasificacionFila::where('clasificacion_id', $clasificacionDestacada->id)
             ->whereNotNull('jornada')
             ->max('jornada');
 
         $filasClasificacionInicio = ClasificacionFila::with('equipo')
-            ->where('clasificacion_id', $clasificacionActiva->id)
+            ->where('clasificacion_id', $clasificacionDestacada->id)
             ->when($jornadaClasificacionInicio, function ($query) use ($jornadaClasificacionInicio) {
                 $query->where('jornada', $jornadaClasificacionInicio);
             })
@@ -163,7 +165,7 @@ class HomePageService
 
         $filasClasificacionInicio = $this->standingsTiebreakService->sortRows(
             $filasClasificacionInicio,
-            (int) $clasificacionActiva->id,
+            (int) $clasificacionDestacada->id,
             $jornadaClasificacionInicio ? (int) $jornadaClasificacionInicio : null
         )->values();
 
@@ -177,7 +179,7 @@ class HomePageService
             return $fila;
         });
 
-        $clasificacionInicio = $clasificacionActiva;
+        $clasificacionInicio = $clasificacionDestacada;
         $clasificacionInicioFilas = $filasConPosicion->take(5)->values();
         $clasificacionInicioFilaClub = $filasConPosicion->first(function (ClasificacionFila $fila) {
             return (bool) optional($fila->equipo)->es_local

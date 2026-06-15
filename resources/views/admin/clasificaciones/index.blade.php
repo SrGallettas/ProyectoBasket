@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.standings.meta.index_title'))
+
 @section('contenido_admin')
 <x-admin-header
     :titulo="__('admin.standings.index.title')"

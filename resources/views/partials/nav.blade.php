@@ -1,4 +1,5 @@
 <nav class="barra-navegacion" data-nav>
+    {{-- Datos base del menú público: enlaces, ruta activa e idiomas disponibles. --}}
     @php
         $navLinks = [
             ['label' => __('ui.nav.home'), 'href' => url('/'), 'active' => request()->routeIs('basket.inicio')],
@@ -19,7 +20,7 @@
         ];
     @endphp
 
-    {{-- 1. LOGO Y TEXTO --}}
+    {{-- Logo del club: vuelve siempre a la portada. --}}
     <a href="{{ url('/') }}" class="navegacion-izquierda">
         <img src="{{ asset('img/club_14.png') }}" class="logo-navegacion" alt="{{ __('ui.club_name') }}" />
         <div class="titulo-navegacion">
@@ -28,14 +29,16 @@
         </div>
     </a>
 
+    {{-- Botón hamburguesa: abre y cierra el menú en pantallas pequeñas. --}}
     <button type="button" class="boton-menu-movil" data-nav-toggle aria-label="{{ __('ui.nav.open_menu') }}" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    {{-- 2. MENÚ DE ENLACES (Centrado o distribuido) --}}
+    {{-- Panel desplegable: agrupa enlaces, idioma y acciones de usuario. --}}
     <div class="panel-navegacion" data-nav-panel>
+        {{-- Enlaces principales: se generan desde $navLinks y marcan la página activa. --}}
         <ul class="menu-navegacion">
             @foreach ($navLinks as $link)
                 <li>
@@ -46,8 +49,9 @@
             @endforeach
         </ul>
 
-        {{-- 3. BOTÓN LOGIN / LOGOUT --}}
+        {{-- Acciones de la derecha: idioma, tema y sesión. --}}
         <div class="login-seccion">
+            {{-- Selector de idioma: envía el cambio y vuelve a la URL actual. --}}
             <div class="selector-idioma" aria-label="{{ __('ui.language.selector_aria') }}">
                 @foreach ($availableLocales as $locale => $label)
                     <form action="{{ route('locale.switch', $locale) }}" method="POST" class="selector-idioma-form">
@@ -63,6 +67,7 @@
                 @endforeach
             </div>
 
+            {{-- Usuario visitante: puede cambiar tema e iniciar sesión. --}}
             @guest
                 <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
                         <i class="fa-regular fa-moon"></i>
@@ -73,6 +78,7 @@
                 </a>
             @endguest
 
+            {{-- Usuario autenticado: puede entrar al panel o cerrar sesión. --}}
             @auth
                 <div class="auth-actions-wrap">
                     <button type="button" class="boton-tema-nav" id="theme-toggle" aria-label="{{ __('ui.theme.toggle_dark') }}" title="{{ __('ui.theme.toggle') }}">
@@ -95,82 +101,12 @@
 </nav>
 
 <script>
-const THEME_STORAGE_KEY = 'bb_theme';
-
-function aplicarTemaInicial() {
-    const guardado = localStorage.getItem(THEME_STORAGE_KEY);
-    const preferenciaSistemaOscura = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const tema = guardado || (preferenciaSistemaOscura ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', tema);
-}
-
-function actualizarIconoTema() {
-    const botonTema = document.getElementById('theme-toggle');
-    if (!botonTema) {
-        return;
-    }
-
-    const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    const themeLabel = temaActual === 'dark'
-        ? @json(__('ui.theme.mode_light'))
-        : @json(__('ui.theme.mode_dark'));
-
-    botonTema.innerHTML = temaActual === 'dark'
-        ? `<span class="theme-symbol" aria-hidden="true">☀</span><span class="theme-label">${themeLabel}</span>`
-        : `<i class="fa-regular fa-moon"></i><span class="theme-label">${themeLabel}</span>`;
-    botonTema.setAttribute('aria-label', temaActual === 'dark'
-        ? @json(__('ui.theme.toggle_light'))
-        : @json(__('ui.theme.toggle_dark')));
-}
-
-aplicarTemaInicial();
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.documentElement.classList.add('js-nav');
-
-    const nav = document.querySelector('[data-nav]');
-    const toggle = document.querySelector('[data-nav-toggle]');
-    const panel = document.querySelector('[data-nav-panel]');
-    const botonTema = document.getElementById('theme-toggle');
-
-    if (!nav || !toggle || !panel) {
-        return;
-    }
-
-    toggle.addEventListener('click', function () {
-        const abierto = nav.classList.toggle('nav-abierta');
-        toggle.setAttribute('aria-label', abierto ? @json(__('ui.nav.close_menu')) : @json(__('ui.nav.open_menu')));
-        toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
-        document.body.classList.toggle('menu-movil-abierto', abierto);
-    });
-
-    panel.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', function () {
-            nav.classList.remove('nav-abierta');
-            toggle.setAttribute('aria-label', 'Abrir menu');
-            toggle.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('menu-movil-abierto');
-        });
-    });
-
-    window.addEventListener('resize', function () {
-        if (window.innerWidth > 1400) {
-            nav.classList.remove('nav-abierta');
-            toggle.setAttribute('aria-label', @json(__('ui.nav.open_menu')));
-            toggle.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('menu-movil-abierto');
-        }
-    });
-
-    if (botonTema) {
-        actualizarIconoTema();
-        botonTema.addEventListener('click', function () {
-            const temaActual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-            const siguienteTema = temaActual === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', siguienteTema);
-            localStorage.setItem(THEME_STORAGE_KEY, siguienteTema);
-            actualizarIconoTema();
-        });
-    }
-});
+    window.BellreguardPublic = {
+        openMenuLabel: @json(__('ui.nav.open_menu')),
+        closeMenuLabel: @json(__('ui.nav.close_menu')),
+        themeModeDark: @json(__('ui.theme.mode_dark')),
+        themeModeLight: @json(__('ui.theme.mode_light')),
+        themeToggleDark: @json(__('ui.theme.toggle_dark')),
+        themeToggleLight: @json(__('ui.theme.toggle_light')),
+    };
 </script>

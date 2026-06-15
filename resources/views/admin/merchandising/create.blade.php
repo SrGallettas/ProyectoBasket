@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.store.meta.create_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     <header class="header-ficha">

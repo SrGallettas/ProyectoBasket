@@ -340,6 +340,7 @@ return [
             'create_title' => 'Programar partido - Admin',
             'edit_title' => 'Editar partido - Admin',
             'show_title' => 'Detalle del partido - Admin',
+            'scoring_title' => 'Mesa de anotación - Admin',
         ],
         'index' => [
             'title' => 'Calendario de partidos',

@@ -6,6 +6,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'Bellreguard CB')</title>
+    <script>
+        (function () {
+            const key = 'bb_theme';
+            const saved = localStorage.getItem(key);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <meta name="description" content="@yield('meta_description', __('ui.meta_description'))" />
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
@@ -39,5 +48,6 @@
     </main>
 
     @include('partials.footer')
+    @vite('resources/js/app.js')
 </body>
 </html>

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.store.meta.show_title'))
+
 @section('contenido_admin')
 <div class="contenedor-ficha-merchan">
     <x-admin-show-header

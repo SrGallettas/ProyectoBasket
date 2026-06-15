@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.matches.meta.scoring_title'))
+
 @section('contenido_admin')
 <div class="admin-live-board">
     <div class="admin-live-board-header">

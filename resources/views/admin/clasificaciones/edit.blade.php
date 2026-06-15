@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.standings.meta.edit_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     <x-admin-edit-header

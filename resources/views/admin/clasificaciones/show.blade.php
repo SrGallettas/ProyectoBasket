@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.standings.meta.show_title'))
+
 @use('Carbon\Carbon')
 
 @section('contenido_admin')

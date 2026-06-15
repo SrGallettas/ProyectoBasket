@@ -2,6 +2,7 @@
 
 namespace App\Services\Basket;
 
+use App\Models\Clasificacion;
 use App\Models\Equipo;
 use App\Models\Partido;
 
@@ -16,6 +17,7 @@ class CategoryOrderService
         }
 
         return match ($categoria) {
+            'Senior A' => 'Sènior A',
             'Senior' => 'Sènior',
             'Senior B' => 'Sènior B',
             'Senior C' => 'Sènior C',
@@ -61,6 +63,22 @@ class CategoryOrderService
             || in_array((string) $equipo->categoria, $preferredCategories, true);
     }
 
+    public function resolvePreferredClassification($clasificaciones): ?Clasificacion
+    {
+        return $this->sortClassificationsByPriority($clasificaciones)->first();
+    }
+
+    public function sortClassificationsByPriority($clasificaciones)
+    {
+        return collect($clasificaciones)
+            ->sortBy(fn (Clasificacion $clasificacion) => [
+                $this->classificationPriorityIndex($clasificacion),
+                $clasificacion->activa ? 0 : 1,
+                (string) $clasificacion->nombre,
+            ])
+            ->values();
+    }
+
     public function sortCategoriesByPriority($categorias)
     {
         return collect($categorias)
@@ -75,9 +93,25 @@ class CategoryOrderService
             ->values();
     }
 
+    private function classificationPriorityIndex(Clasificacion $clasificacion): int
+    {
+        $categoria = strtolower(trim((string) $clasificacion->categoria));
+        $nombre = strtolower(trim((string) $clasificacion->nombre));
+
+        if ($categoria === 'senior a' || str_contains($nombre, 'senior a')) {
+            return 0;
+        }
+
+        if ($categoria === 'senior') {
+            return 1;
+        }
+
+        return $clasificacion->activa ? 2 : 3;
+    }
+
     public function categoryPriorityList(): array
     {
-        return ['Senior', 'Senior B', 'Senior C', 'Senior D', 'Junior', 'Junior A', 'Junior B', 'Cadete', 'Cadete A', 'Cadete B', 'Infantil', 'Infantil A', 'Infantil B', 'Alevín', 'Alevin', 'Benjamín', 'Benjamin', 'Prebenjamín', 'Prebenjamin'];
+        return ['Senior A', 'Senior', 'Senior B', 'Senior C', 'Senior D', 'Junior', 'Junior A', 'Junior B', 'Cadete', 'Cadete A', 'Cadete B', 'Infantil', 'Infantil A', 'Infantil B', 'Alevín', 'Alevin', 'Benjamín', 'Benjamin', 'Prebenjamín', 'Prebenjamin'];
     }
 
     public function categoryPriorityIndex(?string $categoria): int

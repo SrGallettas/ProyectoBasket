@@ -1,5 +1,7 @@
 <footer class="pie-pagina">
+    {{-- Rejilla principal del pie: reparte la información en columnas. --}}
     <div class="rejilla-footer">
+        {{-- Columna de identidad: nombre, escudo y descripción breve del club. --}}
         <div class="footer-col info-club">
             <span class="footer-kicker">Bellreguard CB</span>
             <a href="{{ url('/') }}" class="logo-footer">
@@ -12,6 +14,7 @@
             <p class="descripcion-breve">{{ __('ui.footer.description') }}</p>
         </div>
 
+        {{-- Columna de navegación: accesos rápidos a secciones importantes. --}}
         <div class="footer-col">
             <h4>{{ __('ui.footer.quick_links') }}</h4>
             <ul class="lista-footer">
@@ -22,6 +25,7 @@
             </ul>
         </div>
 
+        {{-- Columna de contacto: ubicación, teléfono y correo del club. --}}
         <div class="footer-col">
             <h4>{{ __('ui.nav.contact') }}</h4>
             <ul class="lista-footer contacto-items">
@@ -31,9 +35,11 @@
             </ul>
         </div>
 
+        {{-- Columna de redes sociales: enlaces externos del club. --}}
         <div class="footer-col">
             <h4>{{ __('ui.footer.follow_us') }}</h4>
             <p class="footer-social-text">{{ __('ui.footer.social_text') }}</p>
+            {{-- Iconos sociales: abren en nueva pestaña y usan rel seguro para enlaces externos. --}}
             <div class="redes-iconos">
                 <a href="https://www.facebook.com/" title="Facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://x.com/" title="X" target="_blank" rel="noopener noreferrer" aria-label="X">
@@ -46,6 +52,7 @@
         </div>
     </div>
     
+    {{-- Franja inferior: copyright dinámico y texto secundario. --}}
     <div class="footer-bottom">
         <p class="copy">{{ __('ui.footer.copyright', ['year' => date('Y')]) }}</p>
         <p class="copy footer-copy-secondary">{{ __('ui.footer.secondary_copy') }}</p>

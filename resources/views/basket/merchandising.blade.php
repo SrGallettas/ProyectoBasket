@@ -48,8 +48,8 @@
                 <p class="subtitulo merch-subtitulo">{{ __('public.store.toolbar.subtitle') }}</p>
             </div>
 
-            <button type="button" class="boton-cesta-flotante" data-open-cart data-cart-fab>
-                <span class="boton-cesta-texto">{{ __('public.store.toolbar.cart') }}</span>
+            <button type="button" class="boton-cesta-flotante" data-open-cart data-cart-fab aria-label="{{ __('public.store.toolbar.cart') }}">
+                <i class="fa-solid fa-bag-shopping boton-cesta-texto" aria-hidden="true"></i>
                 <span class="boton-cesta-count">{{ $cartSummary['units'] }}</span>
             </button>
         </div>

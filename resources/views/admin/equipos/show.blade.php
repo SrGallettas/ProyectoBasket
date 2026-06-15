@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.teams.meta.show_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     <x-admin-show-header

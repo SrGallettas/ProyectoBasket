@@ -24,7 +24,9 @@ class ClasificacionController extends Controller
 
     public function clasificacion()
     {
-        $clasificaciones = Clasificacion::orderByDesc('activa')->orderBy('nombre')->get();
+        $clasificaciones = $this->categoryOrderService->sortClassificationsByPriority(
+            Clasificacion::orderByDesc('activa')->orderBy('nombre')->get()
+        );
         $clasificacionSeleccionada = null;
 
         if ($clasificaciones->isNotEmpty()) {
@@ -35,7 +37,7 @@ class ClasificacionController extends Controller
             }
 
             if (! $clasificacionSeleccionada) {
-                $clasificacionSeleccionada = $clasificaciones->firstWhere('activa', true) ?: $clasificaciones->first();
+                $clasificacionSeleccionada = $this->categoryOrderService->resolvePreferredClassification($clasificaciones);
             }
         }
 
@@ -158,6 +160,10 @@ class ClasificacionController extends Controller
             }
             if (! $equipoSeleccionado) {
                 $equipoSeleccionado = $this->categoryOrderService->resolvePreferredLocalTeam(
+                    $equiposLocales,
+                    ['CB Bellreguard Senior A'],
+                    ['Senior A']
+                ) ?: $this->categoryOrderService->resolvePreferredLocalTeam(
                     $equiposLocales,
                     ['CB Bellreguard Senior'],
                     ['Senior']

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', __('admin.matches.meta.create_title'))
+
 @section('contenido_admin')
 <div class="contenedor-edit-jugador">
     
